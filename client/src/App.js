@@ -25,11 +25,11 @@ function BreedsDisplay(props) {
 }
 
 function DogList(props) {
-    const dogs = props.dogs;
-    if (!dogs) {
+    const dogEdges = props.dogEdges;
+    if (!dogEdges) {
         return null;
     }
-    const listItems = dogs.map((dogEdge) => {
+    const listItems = dogEdges.map((dogEdge) => {
         const dog = dogEdge.node;
         const breedEdges = dog.breeds.edges;
         return (
@@ -45,11 +45,32 @@ function DogList(props) {
     );
 }
 
+function HumanList(props) {
+    const humanEdges = props.humanEdges;
+    if (!humanEdges) {
+        return null;
+    }
+    const listItems = humanEdges.map((humanEdge) => {
+        const human = humanEdge.node;
+        return (
+            <li key={human.id}>
+                {human.name}
+            </li>
+        );
+    });
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    );
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             dogs: null,
+            humans: null,
         };
     }
 
@@ -82,10 +103,21 @@ class App extends React.Component {
                         }
                     }
                 }
+                humans {
+                    edges {
+                        node {
+                            name
+                            id
+                        }
+                    }
+                }
             }`}),
         })
             .then(res => res.json())
-            .then(data => this.setState({dogs: data.data.dogs.edges}));
+            .then(data => this.setState({
+                dogs: data.data.dogs.edges,
+                humans: data.data.humans.edges,
+            }));
     }
 
     render() {
@@ -99,7 +131,11 @@ class App extends React.Component {
                     <p>
                         Dogs in the system:
                     </p>
-                        <DogList dogs={this.state.dogs} />
+                    <DogList dogEdges={this.state.dogs} />
+                    <p>
+                        Humans in the system:
+                    </p>
+                    <HumanList humanEdges={this.state.humans} />
                     <a
                         className="App-link"
                         href="https://reactjs.org"
