@@ -2,29 +2,67 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+function DogList(props) {
+    const dogs = props.dogs;
+    if (!dogs) {
+        return null;
+    }
+    const listItems = dogs.map((dogNode) => {
+        const dog = dogNode.node;
+        const breedNodes = dog.breeds.edges;
+        return (
+            <li key={dog.id}>
+                {dog.name}: ({breedNodes.map((breedNode) => breedNode.node.name).join(', ')})
+            </li>
+        );
+    });
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    );
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: null,
+            dogs: null,
         };
     }
 
     componentDidMount() {
-        this.getMessage();
+        this.getEntities();
     }
 
-    getMessage = () => {
+    getEntities = () => {
         fetch('/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({ query: "{ hello }"}),
+            body: JSON.stringify({ query: `{
+                dogs {
+                    edges {
+                        node {
+                            name
+                            id
+                            breeds {
+                                edges {
+                                    node {
+                                        name
+                                        infoLink
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }`}),
         })
             .then(res => res.json())
-            .then(data => this.setState({message: data.data.hello}));
+            .then(data => this.setState({dogs: data.data.dogs.edges}));
     }
 
     render() {
@@ -36,7 +74,8 @@ class App extends React.Component {
                         Edit <code>src/App.js</code> and save to reload.
                     </p>
                     <p>
-                        Backend says: {this.state.message}
+                        Dogs in the system:
+                        <DogList dogs={this.state.dogs} />
                     </p>
                     <a
                         className="App-link"
