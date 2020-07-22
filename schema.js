@@ -1,23 +1,27 @@
 const {
-    buildSchema, // to delete
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLObjectType,
+    GraphQLString,
 } = require('graphql');
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
+/**
+ * The entry point into the schema (root query type).
+ */
+const queryType = new GraphQLObjectType({
+    name: 'Query',
+    fields: () => ({
+        hello: {
+            type: GraphQLString,
+            resolve: () => {
+                return 'This will be a dog training tracking application!'
+            },
+        },
+    }),
+});
 
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'This will be a dog training tracking application!';
-  },
-};
-
-module.exports = {
-    DogTrainingSchema: schema,
-    DogTrainingRoot: root,
-};
+/**
+ * Construct schema and export it.
+ */
+module.exports = new GraphQLSchema({
+    query: queryType,
+});

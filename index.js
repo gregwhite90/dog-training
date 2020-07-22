@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
-const { DogTrainingSchema, DogTrainingRoot } = require('./schema');
+const DogTrainingSchema = require('./schema');
 
 const app = express();
 
@@ -11,7 +11,6 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // Set up the API route
 app.use('/graphql', graphqlHTTP({
     schema: DogTrainingSchema,
-    rootValue: DogTrainingRoot,
     graphiql: true,
 }));
 
