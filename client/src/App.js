@@ -2,17 +2,39 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+function DogDisplay(props) {
+    const { name, breedEdges } = props;
+    const breeds = breedEdges.map((breedEdge) => breedEdge.node);
+    return (
+        <>{name}: <BreedsDisplay breeds={breeds} /></>
+    );
+}
+
+function BreedsDisplay(props) {
+    const { breeds } = props;
+    console.log(breeds);
+    const breedLinks = breeds.map((breed, i) => {
+        return (<>{i ? ', ' : ''}<a key={breed.id} href={breed.infoLink}>{breed.name}</a></>);
+    });
+    console.log(breedLinks);
+    return (
+        <span>
+            ({breedLinks})
+        </span>
+    );
+}
+
 function DogList(props) {
     const dogs = props.dogs;
     if (!dogs) {
         return null;
     }
-    const listItems = dogs.map((dogNode) => {
-        const dog = dogNode.node;
-        const breedNodes = dog.breeds.edges;
+    const listItems = dogs.map((dogEdge) => {
+        const dog = dogEdge.node;
+        const breedEdges = dog.breeds.edges;
         return (
             <li key={dog.id}>
-                {dog.name}: ({breedNodes.map((breedNode) => breedNode.node.name).join(', ')})
+                <DogDisplay name={dog.name} breedEdges={breedEdges} />
             </li>
         );
     });
@@ -52,6 +74,7 @@ class App extends React.Component {
                                 edges {
                                     node {
                                         name
+                                        id
                                         infoLink
                                     }
                                 }
@@ -75,8 +98,8 @@ class App extends React.Component {
                     </p>
                     <p>
                         Dogs in the system:
-                        <DogList dogs={this.state.dogs} />
                     </p>
+                        <DogList dogs={this.state.dogs} />
                     <a
                         className="App-link"
                         href="https://reactjs.org"
