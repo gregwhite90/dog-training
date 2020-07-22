@@ -1,4 +1,5 @@
 import React from 'react';
+import { Formik, Field, Form } from 'formik';
 import logo from './logo.svg';
 import './App.css';
 
@@ -12,11 +13,9 @@ function DogDisplay(props) {
 
 function BreedsDisplay(props) {
     const { breeds } = props;
-    console.log(breeds);
     const breedLinks = breeds.map((breed, i) => {
         return (<>{i ? ', ' : ''}<a key={breed.id} href={breed.infoLink}>{breed.name}</a></>);
     });
-    console.log(breedLinks);
     return (
         <span>
             ({breedLinks})
@@ -65,6 +64,27 @@ function HumanList(props) {
     );
 }
 
+function HumanForm(props) {
+    return (
+        <div>
+            <h1>Add a human</h1>
+            <Formik
+                initialValues={{
+                    name: '',
+                }}
+                onSubmit={(values) => props.handleSubmit(values.humanName)}
+            >
+                <Form>
+                    <label htmlFor="name">Name</label>
+                    <Field id="humanName" name="humanName" />
+
+                    <button type="submit">Add human!</button>
+                </Form>
+            </Formik>
+        </div>
+    );
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -78,14 +98,45 @@ class App extends React.Component {
         this.getEntities();
     }
 
-    getEntities = () => {
+    addHuman = (name) => {
         fetch('/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({ query: `{
+            body: JSON.stringify({
+                query: `mutation IntroduceHuman($input: IntroduceHumanInput!) {
+                    introduceHuman(input: $input) {
+                        human {
+                            name
+                            id
+                        }
+                    }
+                }`,
+                variables: {
+                    input: { name }
+                },
+            }),
+        })
+            .then(res => res.json());
+        // Update list from backend
+        this.getHumans();
+    }
+
+    getEntities = () => {
+        this.getDogs();
+        this.getHumans();
+    }
+
+    getDogs = () => {
+        fetch('/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ query: `query GetAllDogs {
                 dogs {
                     edges {
                         node {
@@ -103,6 +154,22 @@ class App extends React.Component {
                         }
                     }
                 }
+            }`}),
+        })
+            .then(res => res.json())
+            .then(data => this.setState({
+                dogs: data.data.dogs.edges,
+            }));
+    }
+
+    getHumans = () => {
+        fetch('/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ query: `query GetAllHumans {
                 humans {
                     edges {
                         node {
@@ -115,7 +182,6 @@ class App extends React.Component {
         })
             .then(res => res.json())
             .then(data => this.setState({
-                dogs: data.data.dogs.edges,
                 humans: data.data.humans.edges,
             }));
     }
@@ -136,6 +202,7 @@ class App extends React.Component {
                         Humans in the system:
                     </p>
                     <HumanList humanEdges={this.state.humans} />
+                    <HumanForm handleSubmit={this.addHuman}/>
                     <a
                         className="App-link"
                         href="https://reactjs.org"

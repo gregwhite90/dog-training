@@ -2,6 +2,7 @@ const {
     GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
+    GraphQLNonNull,
 } = require('graphql');
 
 const {
@@ -11,6 +12,7 @@ const {
     connectionArgs,
     connectionDefinitions,
     connectionFromArray,
+    mutationWithClientMutationId,
 } = require('graphql-relay');
 
 const {
@@ -19,6 +21,7 @@ const {
     getHuman,
     getHumans,
     getBreed,
+    createHuman,
 } = require('./data')
 
 const { nodeInterface, nodeField } = nodeDefinitions(
@@ -99,6 +102,30 @@ const { connectionType: humanConnection } = connectionDefinitions({
 });
 
 /**
+ * Mutation types
+ */
+const humanMutation = mutationWithClientMutationId({
+    name: 'IntroduceHuman',
+    inputFields: {
+        name: {
+            type: new GraphQLNonNull(GraphQLString),
+        },
+    },
+    outputFields: {
+        human: {
+            type: humanType,
+            resolve: (payload) => getHuman(payload.id),
+        },
+    },
+    mutateAndGetPayload: ({name}) => {
+        const newHuman = createHuman(name);
+        return {
+            id: newHuman.id,
+        }
+    },
+});
+
+/**
  * The entry point into the schema (root query type).
  */
 const queryType = new GraphQLObjectType({
@@ -116,9 +143,17 @@ const queryType = new GraphQLObjectType({
     }),
 });
 
+const mutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: () => ({
+        introduceHuman: humanMutation,
+    }),
+});
+
 /**
  * Construct schema and export it.
  */
 module.exports = new GraphQLSchema({
     query: queryType,
+    mutation: mutationType,
 });

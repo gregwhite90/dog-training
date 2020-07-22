@@ -26,6 +26,16 @@ const dana = {
     name: 'Dana'
 };
 
+let nextHuman = 5;
+createHuman = (name) => {
+    const newHuman = {
+        id: String(nextHuman++),
+        name: name,
+    };
+    data.Humans[newHuman.id] = newHuman;
+    return newHuman;
+}
+
 /**
  * Dog object types
  */
@@ -128,4 +138,5 @@ module.exports = {
     getHuman,
     getHumans,
     getBreed,
+    createHuman,
 };
