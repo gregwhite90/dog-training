@@ -69,25 +69,25 @@ const twizzler = {
 const berneseMountainDog = {
     id: '0',
     name: 'Bernese Mountain Dog',
-    infoLink: 'https://www.akc.org/dog-breeds/bernese-mountain-dog/',
+    infoUrl: 'https://www.akc.org/dog-breeds/bernese-mountain-dog/',
 };
 
 const goldenRetriever = {
     id: '1',
     name: 'Golden Retriever',
-    infoLink: 'https://www.akc.org/dog-breeds/golden-retriever/',
+    infoUrl: 'https://www.akc.org/dog-breeds/golden-retriever/',
 };
 
 const pointer = {
     id: '2',
     name: 'Pointer',
-    infoLink: 'https://www.akc.org/dog-breeds/pointer/',
+    infoUrl: 'https://www.akc.org/dog-breeds/pointer/',
 }
 
 const saintBernard = {
     id: '3',
     name: 'Saint Bernard',
-    infoLink: 'https://www.akc.org/dog-breeds/st-bernard/',
+    infoUrl: 'https://www.akc.org/dog-breeds/st-bernard/',
 };
 
 const data = {
@@ -132,11 +132,16 @@ getBreed = (id) => {
     return data.Breeds[id];
 }
 
+getBreeds = () => {
+    return Object.keys(data.Breeds).map(getBreed);
+}
+
 module.exports = {
     getDog,
     getDogs,
     getHuman,
     getHumans,
     getBreed,
+    getBreeds,
     createHuman,
 };

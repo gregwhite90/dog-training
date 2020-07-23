@@ -2,14 +2,8 @@ const express = require('express');
 const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
 const DogTrainingSchema = require('./schema');
-const { Pool } = require('pg');
+const db = require('./db');
 
-const db_pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
 const app = express();
 
 // Serve the static React files.
@@ -22,13 +16,10 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 // TODO: remove starter code and delete
-app.get('/db', async(req, res) => {
+app.get('/db', async (req, res) => {
     try {
-        const client = await db_pool.connect();
-        const result = await client.query('SELECT * FROM test_table');
-        const results = { 'results': (result) ? result.rows : null};
-        res.json(results);
-        client.release();
+        const { rows } = await db.query('SELECT * FROM test_table');
+        res.send(rows[0]);
     } catch (err) {
         console.error(err);
         res.send("Error " + err);

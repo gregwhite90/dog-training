@@ -13,7 +13,7 @@ declare export opaque type BreedDisplay_breed$ref: FragmentReference;
 declare export opaque type BreedDisplay_breed$fragmentType: BreedDisplay_breed$ref;
 export type BreedDisplay_breed = {|
   +name: ?string,
-  +infoLink: ?string,
+  +infoUrl: ?string,
   +$refType: BreedDisplay_breed$ref,
 |};
 export type BreedDisplay_breed$data = BreedDisplay_breed;
@@ -42,7 +42,7 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "infoLink",
+      "name": "infoUrl",
       "storageKey": null
     }
   ],
@@ -50,6 +50,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'fa50e2b61e2e4c95f34d9ba87ba931f3';
+(node/*: any*/).hash = '1881b0e0ca40a8524eca4e3256ee9f77';
 
 module.exports = node;

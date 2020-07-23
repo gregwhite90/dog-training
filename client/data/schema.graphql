@@ -1,6 +1,7 @@
 type Query {
   dogs: DogConnection
   humans: HumanConnection
+  breeds: BreedConnection
 
   """Fetches an object given its ID"""
   node(
@@ -79,7 +80,7 @@ type Breed implements Node {
   """The ID of an object"""
   id: ID!
   name: String
-  infoLink: String
+  infoUrl: String
 }
 
 """A connection to a list of items."""

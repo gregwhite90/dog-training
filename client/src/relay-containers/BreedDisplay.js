@@ -11,7 +11,7 @@ export default createFragmentContainer(BreedDisplay, {
     breed: graphql`
         fragment BreedDisplay_breed on Breed {
             name
-            infoLink
+            infoUrl
         }
     `,
 });

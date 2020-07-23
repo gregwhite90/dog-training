@@ -41,7 +41,7 @@ query DogsRendererQuery {
 
 fragment BreedDisplay_breed on Breed {
   name
-  infoLink
+  infoUrl
 }
 
 fragment DogDisplay_dog on Dog {
@@ -184,7 +184,7 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "infoLink",
+                                "name": "infoUrl",
                                 "storageKey": null
                               }
                             ],
@@ -208,12 +208,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dc355fbdd1f74e1fd001c50d548e6bf9",
+    "cacheID": "32f66baef188392bc023de5019269528",
     "id": null,
     "metadata": {},
     "name": "DogsRendererQuery",
     "operationKind": "query",
-    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  name\n  infoLink\n}\n\nfragment DogDisplay_dog on Dog {\n  name\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n}\n"
+    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  name\n  infoUrl\n}\n\nfragment DogDisplay_dog on Dog {\n  name\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n}\n"
   }
 };
 })();

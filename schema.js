@@ -21,8 +21,9 @@ const {
     getHuman,
     getHumans,
     getBreed,
+    getBreeds,
     createHuman,
-} = require('./data')
+} = require('./business-logic/data')
 
 const { nodeInterface, nodeField } = nodeDefinitions(
     // Resolve a global ID to its object
@@ -40,7 +41,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     // Resolve an object to its type
     // TODO: Need a better way to do this
     (obj) =>
-        (obj.breeds ? dogType : (obj.infoLink ? breedType : humanType)),
+        (obj.breeds ? dogType : (obj.infoUrl ? breedType : humanType)),
 );
 
 /**
@@ -54,7 +55,7 @@ const breedType = new GraphQLObjectType({
         name: {
             type: GraphQLString,
         },
-        infoLink: {
+        infoUrl: {
             type: GraphQLString,
         },
     }),
@@ -138,6 +139,10 @@ const queryType = new GraphQLObjectType({
         humans: {
             type: humanConnection,
             resolve: (_, args) => connectionFromArray(getHumans(), args),
+        },
+        breeds: {
+            type: breedConnection,
+            resolve: (_, args) => connectionFromArray(getBreeds(), args),
         },
         node: nodeField,
     }),
