@@ -1,19 +1,19 @@
 import React from 'react'
 import { graphql, QueryRenderer } from 'react-relay'
 import environment from '../lib/createRelayEnvironment'
-import DogDisplay from '../relay-containers/DogDisplay';
+import HumanDisplay from '../relay-containers/HumanDisplay';
 
-export default function DogsRenderer() {
+export default function HumansRenderer() {
     return (
         <QueryRenderer
             environment={environment}
             query={graphql`
-                query DogsRendererQuery {
-                    dogs {
+                query HumansRendererQuery {
+                    humans {
                         edges {
                             node {
                                 id
-                                ...DogDisplay_dog
+                                ...HumanDisplay_human
                             }
                         }
                     }
@@ -25,12 +25,12 @@ export default function DogsRenderer() {
                     } else if (props) {
                         return (
                             <ul>
-                                {props.dogs.edges
+                                {props.humans.edges
                                       .map(e => e.node)
-                                      .map(d => {
+                                      .map(h => {
                                           return (
-                                              <li key={d.id}>
-                                                  <DogDisplay dog={d} />
+                                              <li key={h.id}>
+                                                  <HumanDisplay human={h} />
                                               </li>
                                           );
                                       })}
