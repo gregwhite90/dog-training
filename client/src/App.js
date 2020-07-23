@@ -1,53 +1,9 @@
 import React from 'react';
+import DogsRenderer from './renderers/DogsRenderer';
+
 import { Formik, Field, Form } from 'formik';
 import logo from './logo.svg';
 import './App.css';
-
-function DogDisplay(props) {
-    const { name, breedEdges } = props;
-    const breeds = breedEdges.map((breedEdge) => breedEdge.node);
-    return (
-        <>
-            {name}: <BreedsDisplay breeds={breeds} />
-        </>
-    );
-}
-
-function BreedsDisplay(props) {
-    const { breeds } = props;
-    const breedLinks = breeds.map((breed, i) => {
-        return (
-            <React.Fragment key={breed.id}>
-                {i ? ', ' : ''}<a href={breed.infoLink}>{breed.name}</a>
-            </React.Fragment>);
-    });
-    return (
-        <>
-            ({breedLinks})
-        </>
-    );
-}
-
-function DogList(props) {
-    const dogEdges = props.dogEdges;
-    if (!dogEdges) {
-        return null;
-    }
-    const listItems = dogEdges.map((dogEdge) => {
-        const dog = dogEdge.node;
-        const breedEdges = dog.breeds.edges;
-        return (
-            <li key={dog.id}>
-                <DogDisplay name={dog.name} breedEdges={breedEdges} />
-            </li>
-        );
-    });
-    return (
-        <ul>
-            {listItems}
-        </ul>
-    );
-}
 
 function HumanList(props) {
     const humanEdges = props.humanEdges;
@@ -94,7 +50,6 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dogs: null,
             humans: null,
         };
     }
@@ -130,41 +85,7 @@ class App extends React.Component {
     }
 
     getEntities = () => {
-        this.getDogs();
         this.getHumans();
-    }
-
-    getDogs = () => {
-        fetch('/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({ query: `query GetAllDogs {
-                dogs {
-                    edges {
-                        node {
-                            name
-                            id
-                            breeds {
-                                edges {
-                                    node {
-                                        name
-                                        id
-                                        infoLink
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }`}),
-        })
-            .then(res => res.json())
-            .then(data => this.setState({
-                dogs: data.data.dogs.edges,
-            }));
     }
 
     getHumans = () => {
@@ -202,7 +123,7 @@ class App extends React.Component {
                     <p>
                         Dogs in the system:
                     </p>
-                    <DogList dogEdges={this.state.dogs} />
+                    <DogsRenderer />
                     <p>
                         Humans in the system:
                     </p>
