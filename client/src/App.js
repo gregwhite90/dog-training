@@ -7,19 +7,24 @@ function DogDisplay(props) {
     const { name, breedEdges } = props;
     const breeds = breedEdges.map((breedEdge) => breedEdge.node);
     return (
-        <>{name}: <BreedsDisplay breeds={breeds} /></>
+        <>
+            {name}: <BreedsDisplay breeds={breeds} />
+        </>
     );
 }
 
 function BreedsDisplay(props) {
     const { breeds } = props;
     const breedLinks = breeds.map((breed, i) => {
-        return (<>{i ? ', ' : ''}<a key={breed.id} href={breed.infoLink}>{breed.name}</a></>);
+        return (
+            <React.Fragment key={breed.id}>
+                {i ? ', ' : ''}<a href={breed.infoLink}>{breed.name}</a>
+            </React.Fragment>);
     });
     return (
-        <span>
+        <>
             ({breedLinks})
-        </span>
+        </>
     );
 }
 
@@ -70,12 +75,12 @@ function HumanForm(props) {
             <h1>Add a human</h1>
             <Formik
                 initialValues={{
-                    name: '',
+                    humanName: '',
                 }}
                 onSubmit={(values) => props.handleSubmit(values.humanName)}
             >
                 <Form>
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="humanName">Name</label>
                     <Field id="humanName" name="humanName" />
 
                     <button type="submit">Add human!</button>
