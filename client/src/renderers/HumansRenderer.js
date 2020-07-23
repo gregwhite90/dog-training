@@ -1,9 +1,8 @@
 import React from 'react'
 import { graphql, QueryRenderer } from 'react-relay'
-import environment from '../lib/createRelayEnvironment'
 import HumanDisplay from '../relay-containers/HumanDisplay';
 
-export default function HumansRenderer() {
+export default function HumansRenderer({ relay: { environment }}) {
     return (
         <QueryRenderer
             environment={environment}

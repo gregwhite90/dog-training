@@ -1,9 +1,8 @@
 import React from 'react'
 import { graphql, QueryRenderer } from 'react-relay'
-import environment from '../lib/createRelayEnvironment'
 import DogDisplay from '../relay-containers/DogDisplay';
 
-export default function DogsRenderer() {
+export default function DogsRenderer({relay: { environment }}) {
     return (
         <QueryRenderer
             environment={environment}

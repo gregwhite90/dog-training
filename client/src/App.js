@@ -1,55 +1,20 @@
 import React from 'react';
+import environment from './lib/createRelayEnvironment';
 import DogsRenderer from './renderers/DogsRenderer';
 import HumansRenderer from './renderers/HumansRenderer';
+import HumanForm from './forms/HumanForm';
 
-import { Formik, Field, Form } from 'formik';
 import logo from './logo.svg';
 import './App.css';
 
-function HumanForm(props) {
-    return (
-        <div>
-            <h1>Add a human</h1>
-            <Formik
-                initialValues={{
-                    humanName: '',
-                }}
-                onSubmit={(values) => props.handleSubmit(values.humanName)}
-            >
-                <Form>
-                    <label htmlFor="humanName">Name</label>
-                    <Field id="humanName" name="humanName" />
-
-                    <button type="submit">Add human!</button>
-                </Form>
-            </Formik>
-        </div>
-    );
-}
-
 class App extends React.Component {
-    addHuman = (name) => {
-        fetch('/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
+    constructor(props) {
+        super(props);
+        this.state = {
+            relay: {
+                environment
             },
-            body: JSON.stringify({
-                query: `mutation IntroduceHuman($input: IntroduceHumanInput!) {
-                    introduceHuman(input: $input) {
-                        human {
-                            name
-                            id
-                        }
-                    }
-                }`,
-                variables: {
-                    input: { name }
-                },
-            }),
-        })
-            .then(res => res.json());
+        };
     }
 
     render() {
@@ -63,12 +28,12 @@ class App extends React.Component {
                     <p>
                         Dogs in the system:
                     </p>
-                    <DogsRenderer />
+                    <DogsRenderer relay={{environment}}/>
                     <p>
                         Humans in the system:
                     </p>
-                    <HumansRenderer />
-                    <HumanForm handleSubmit={this.addHuman}/>
+                    <HumansRenderer relay={{environment}}/>
+                    <HumanForm relay={{environment}}/>
                     <a
                         className="App-link"
                         href="https://reactjs.org"
