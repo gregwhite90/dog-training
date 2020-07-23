@@ -18,7 +18,7 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "relay": "relay-compiler",
-    "update-schema": "babel-node ./scripts/updateSchema.js"
+    "update-schema": "node ./scripts/updateSchema.js"
   },
   "eslintConfig": {
     "extends": "react-app"
