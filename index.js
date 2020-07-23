@@ -4,7 +4,6 @@ const { graphqlHTTP } = require('express-graphql');
 const DogTrainingSchema = require('./schema');
 const { Pool } = require('pg');
 
-
 const db_pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -25,7 +24,7 @@ app.use('/graphql', graphqlHTTP({
 // TODO: remove starter code and delete
 app.get('/db', async(req, res) => {
     try {
-        const client = await pool.connect();
+        const client = await db_pool.connect();
         const result = await client.query('SELECT * FROM test_table');
         const results = { 'results': (result) ? result.rows : null};
         res.render(results);
