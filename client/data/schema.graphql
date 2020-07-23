@@ -1,0 +1,121 @@
+type Query {
+  dogs: DogConnection
+  humans: HumanConnection
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+"""A connection to a list of items."""
+type DogConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DogEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type DogEdge {
+  """The item at the end of the edge"""
+  node: Dog
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Dog implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String
+
+  """The known breed(s) of the dog."""
+  breeds(after: String, first: Int, before: String, last: Int): BreedConnection
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""A connection to a list of items."""
+type BreedConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BreedEdge]
+}
+
+"""An edge in a connection."""
+type BreedEdge {
+  """The item at the end of the edge"""
+  node: Breed
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Breed implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String
+  infoLink: String
+}
+
+"""A connection to a list of items."""
+type HumanConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [HumanEdge]
+}
+
+"""An edge in a connection."""
+type HumanEdge {
+  """The item at the end of the edge"""
+  node: Human
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Human implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String
+}
+
+type Mutation {
+  introduceHuman(input: IntroduceHumanInput!): IntroduceHumanPayload
+}
+
+type IntroduceHumanPayload {
+  human: Human
+  clientMutationId: String
+}
+
+input IntroduceHumanInput {
+  name: String!
+  clientMutationId: String
+}
