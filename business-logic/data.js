@@ -147,7 +147,7 @@ async function getHumans() {
     return getNodes("humans");
 }
 
-async function getBreeds() => {
+async function getBreeds() {
     return getNodes("breeds");
 }
 
