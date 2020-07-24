@@ -6,7 +6,7 @@ import BreedsRenderer from '../renderers/BreedsRenderer';
 import DogDisplay from '../relay-containers/DogDisplay';
 import BreedDisplay from '../relay-containers/BreedDisplay';
 
-function dogSelectOptionCallback(dog) {
+dogSelectOptionCallback = function(dog) {
     return (
         <option key={dog.id} value={dog.id}>
             <DogDisplay dog={dog} />
@@ -14,7 +14,7 @@ function dogSelectOptionCallback(dog) {
     );
 }
 
-function breedSelectOptionCallback(breed) {
+breedSelectOptionCallback = function(breed) {
     return (
         <option key={breed.id} value={breed.id}>
             <BreedDisplay breed={breed} />
