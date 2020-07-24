@@ -1,3 +1,8 @@
+const db = require('../db');
+
+// TODO: error handling code
+// TODO: authorization
+
 /**
  * Human object types
  */
@@ -28,16 +33,12 @@ const dana = {
 
 let nextHuman = 5;
 createHuman = (name) => {
-    const newHuman = {
-        id: String(nextHuman++),
-        name: name,
-    };
-    data.Humans[newHuman.id] = newHuman;
-    return newHuman;
+    const { rows } = await db.query('INSERT INTO humans(name) VALUES ($1) RETURNING *', [name]);
+    return rows[0];
 }
 
 addBreedToDog = (dogId, breedId) => {
-    data.Dogs[dogId].breeds.push(breedId);
+    await db.query('INSERT INTO dogBreeds(dogId, breedId) VALUES ($1, $2)', [dogId, breedId]);
 }
 
 /**
@@ -116,28 +117,38 @@ const data = {
     },
 };
 
+getNode = (id, tableName) => {
+    const { rows } = await db.query('SELECT * FROM $1 WHERE id=$2', [tableName, id]);
+    return rows[0];
+}
+
 getDog = (id) => {
-    return data.Dogs[id];
+    return getNode(id, "dogs");
 }
 
 getHuman = (id) => {
-    return data.Humans[id];
-}
-
-getDogs = () => {
-    return Object.keys(data.Dogs).map(getDog);
-}
-
-getHumans = () => {
-    return Object.keys(data.Humans).map(getHuman);
+    return getNode(id, "humans");
 }
 
 getBreed = (id) => {
-    return data.Breeds[id];
+    return getNode(id, "breeds");
+}
+
+getNodes = (tableName) => {
+    const { rows } = await db.query('SELECT * FROM $1', [tableName]);
+    return rows;
+}
+
+getDogs = () => {
+    return getNodes("dogs");
+}
+
+getHumans = () => {
+    return getNodes("humans");
 }
 
 getBreeds = () => {
-    return Object.keys(data.Breeds).map(getBreed);
+    return getNodes("breeds");
 }
 
 module.exports = {
