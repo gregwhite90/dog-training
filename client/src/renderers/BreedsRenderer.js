@@ -12,7 +12,7 @@ export default function BreedsRenderer({relay: { environment },
                         edges {
                             node {
                                 id
-                                ...BreedDisplay_breed
+                                ...BreedName_breed
                             }
                         }
                     }

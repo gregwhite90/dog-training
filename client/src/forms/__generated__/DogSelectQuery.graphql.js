@@ -8,38 +8,38 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type BreedName_breed$ref = any;
-export type BreedsRendererQueryVariables = {||};
-export type BreedsRendererQueryResponse = {|
-  +breeds: ?{|
+type DogName_dog$ref = any;
+export type DogSelectQueryVariables = {||};
+export type DogSelectQueryResponse = {|
+  +dogs: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
         +id: string,
-        +$fragmentRefs: BreedName_breed$ref,
+        +$fragmentRefs: DogName_dog$ref,
       |}
     |}>
   |}
 |};
-export type BreedsRendererQuery = {|
-  variables: BreedsRendererQueryVariables,
-  response: BreedsRendererQueryResponse,
+export type DogSelectQuery = {|
+  variables: DogSelectQueryVariables,
+  response: DogSelectQueryResponse,
 |};
 */
 
 
 /*
-query BreedsRendererQuery {
-  breeds {
+query DogSelectQuery {
+  dogs {
     edges {
       node {
         id
-        ...BreedName_breed
+        ...DogName_dog
       }
     }
   }
 }
 
-fragment BreedName_breed on Breed {
+fragment DogName_dog on Dog {
   name
 }
 */
@@ -57,20 +57,20 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "BreedsRendererQuery",
+    "name": "DogSelectQuery",
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "BreedConnection",
+        "concreteType": "DogConnection",
         "kind": "LinkedField",
-        "name": "breeds",
+        "name": "dogs",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "BreedEdge",
+            "concreteType": "DogEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -78,7 +78,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Breed",
+                "concreteType": "Dog",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -87,7 +87,7 @@ return {
                   {
                     "args": null,
                     "kind": "FragmentSpread",
-                    "name": "BreedName_breed"
+                    "name": "DogName_dog"
                   }
                 ],
                 "storageKey": null
@@ -106,20 +106,20 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "BreedsRendererQuery",
+    "name": "DogSelectQuery",
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "BreedConnection",
+        "concreteType": "DogConnection",
         "kind": "LinkedField",
-        "name": "breeds",
+        "name": "dogs",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "BreedEdge",
+            "concreteType": "DogEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -127,7 +127,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Breed",
+                "concreteType": "Dog",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -152,16 +152,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f71b793a03268393a04d9b623f8ea2c4",
+    "cacheID": "907e2a18132b96c66da5a15a6d323c96",
     "id": null,
     "metadata": {},
-    "name": "BreedsRendererQuery",
+    "name": "DogSelectQuery",
     "operationKind": "query",
-    "text": "query BreedsRendererQuery {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedName_breed\n      }\n    }\n  }\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n"
+    "text": "query DogSelectQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogName_dog\n      }\n    }\n  }\n}\n\nfragment DogName_dog on Dog {\n  name\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cdce061e944ed527e0077f44d5a62087';
+(node/*: any*/).hash = 'e1b92a86be227d287f35474a4e517353';
 
 module.exports = node;

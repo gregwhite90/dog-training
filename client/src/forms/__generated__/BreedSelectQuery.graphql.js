@@ -9,8 +9,8 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type BreedName_breed$ref = any;
-export type BreedsRendererQueryVariables = {||};
-export type BreedsRendererQueryResponse = {|
+export type BreedSelectQueryVariables = {||};
+export type BreedSelectQueryResponse = {|
   +breeds: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
@@ -20,15 +20,15 @@ export type BreedsRendererQueryResponse = {|
     |}>
   |}
 |};
-export type BreedsRendererQuery = {|
-  variables: BreedsRendererQueryVariables,
-  response: BreedsRendererQueryResponse,
+export type BreedSelectQuery = {|
+  variables: BreedSelectQueryVariables,
+  response: BreedSelectQueryResponse,
 |};
 */
 
 
 /*
-query BreedsRendererQuery {
+query BreedSelectQuery {
   breeds {
     edges {
       node {
@@ -57,7 +57,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "BreedsRendererQuery",
+    "name": "BreedSelectQuery",
     "selections": [
       {
         "alias": null,
@@ -106,7 +106,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "BreedsRendererQuery",
+    "name": "BreedSelectQuery",
     "selections": [
       {
         "alias": null,
@@ -152,16 +152,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f71b793a03268393a04d9b623f8ea2c4",
+    "cacheID": "76b3504ed79d0456de265b2703efd17c",
     "id": null,
     "metadata": {},
-    "name": "BreedsRendererQuery",
+    "name": "BreedSelectQuery",
     "operationKind": "query",
-    "text": "query BreedsRendererQuery {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedName_breed\n      }\n    }\n  }\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n"
+    "text": "query BreedSelectQuery {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedName_breed\n      }\n    }\n  }\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cdce061e944ed527e0077f44d5a62087';
+(node/*: any*/).hash = 'ce2a944bcbcc657c162094b7b807aad9';
 
 module.exports = node;

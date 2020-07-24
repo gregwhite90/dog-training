@@ -39,7 +39,7 @@ class App extends React.Component {
                         Dogs in the system:
                     </p>
                     <ul>
-                        <DogsRenderer relay={{environment}} nodeCallback={this.dogListCallback} />
+                        <DogsRenderer relay={{environment}} nodesCallback={this.dogListCallback} />
                     </ul>
                     <HumanForm relay={{environment}} />
                     <a

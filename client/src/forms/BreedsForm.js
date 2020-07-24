@@ -1,28 +1,10 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import AddBreedToDogMutation from '../relay-mutations/AddBreedToDog';
-import DogsRenderer from '../renderers/DogsRenderer';
-import BreedsRenderer from '../renderers/BreedsRenderer';
-import DogDisplay from '../relay-containers/DogDisplay';
-import BreedDisplay from '../relay-containers/BreedDisplay';
+import DogSelect from './DogSelect';
+import BreedSelect from './BreedSelect';
 
 function BreedsForm({relay: { environment }}) {
-    function dogSelectOptionCallback(dog) {
-        return (
-            <option key={dog.id} value={dog.id}>
-                <DogDisplay dog={dog} />
-            </option>
-        );
-    }
-
-    function breedSelectOptionCallback(breed) {
-        return (
-            <option key={breed.id} value={breed.id}>
-                <BreedDisplay breed={breed} />
-            </option>
-        );
-    }
-
     return (
         <div>
             <Formik
@@ -36,17 +18,21 @@ function BreedsForm({relay: { environment }}) {
                         values.breedId)}
             >
                 <Form>
-                    <textarea>Add a breed to a dog</textarea>
+                    <h2>Add a breed to a dog</h2>
                     <label htmlFor="dogId">Dog</label>
-                    <Field as="select" name="dogId">
-                        <option value=''>Select a dog</option>
-                        <DogsRenderer relay={{environment}} nodeCallback={dogSelectOptionCallback} />
-                    </Field>
+                    <DogSelect
+                        relay={{environment}}
+                        name="dogId"
+                        defaultValue=''
+                        defaultText="Select a dog"
+                    />
                     <label htmlFor="breedId">Breed</label>
-                    <Field as="select" name="breedId">
-                        <option value=''>Select a breed</option>
-                        <BreedsRenderer relay={{environment}} nodeCallback={breedSelectOptionCallback} />
-                    </Field>
+                    <BreedSelect
+                        relay={{environment}}
+                        name="breedId"
+                        defaultValue=''
+                        defaultText="Select a breed"
+                    />
 
                     <button type="submit">Add!</button>
                 </Form>
