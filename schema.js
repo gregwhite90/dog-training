@@ -3,6 +3,7 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
+    GraphQLID,
 } = require('graphql');
 
 const {
@@ -23,6 +24,7 @@ const {
     getBreed,
     getBreeds,
     createHuman,
+    addBreedToDog,
 } = require('./business-logic/data')
 
 const { nodeInterface, nodeField } = nodeDefinitions(
@@ -105,7 +107,7 @@ const { connectionType: humanConnection } = connectionDefinitions({
 /**
  * Mutation types
  */
-const humanMutation = mutationWithClientMutationId({
+const introduceHumanMutation = mutationWithClientMutationId({
     name: 'IntroduceHuman',
     inputFields: {
         name: {
@@ -123,6 +125,28 @@ const humanMutation = mutationWithClientMutationId({
         return {
             id: newHuman.id,
         }
+    },
+});
+
+const addBreedToDogMutation = mutationWithClientMutationId({
+    name: 'AddBreedToDog',
+    inputFields: {
+        breedId: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+        dogId: {
+            type: new GraphQLNonNull(GraphQLID),
+        }
+    },
+    outputFields: {
+        dog: {
+            type: dogType,
+            resolve: (payload) => getDog(payload.dogId),
+        },
+    },
+    mutateAndGetPayload: ({dogId, breedId}) => {
+        addBreedToDog(dogId, breedId);
+        return { dogId };
     },
 });
 
@@ -151,7 +175,8 @@ const queryType = new GraphQLObjectType({
 const mutationType = new GraphQLObjectType({
     name: 'Mutation',
     fields: () => ({
-        introduceHuman: humanMutation,
+        introduceHuman: introduceHumanMutation,
+        addBreedToDog: addBreedToDogMutation,
     }),
 });
 

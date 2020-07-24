@@ -109,6 +109,7 @@ type Human implements Node {
 
 type Mutation {
   introduceHuman(input: IntroduceHumanInput!): IntroduceHumanPayload
+  addBreedToDog(input: AddBreedToDogInput!): AddBreedToDogPayload
 }
 
 type IntroduceHumanPayload {
@@ -118,5 +119,16 @@ type IntroduceHumanPayload {
 
 input IntroduceHumanInput {
   name: String!
+  clientMutationId: String
+}
+
+type AddBreedToDogPayload {
+  dog: Dog
+  clientMutationId: String
+}
+
+input AddBreedToDogInput {
+  breedId: ID!
+  dogId: ID!
   clientMutationId: String
 }

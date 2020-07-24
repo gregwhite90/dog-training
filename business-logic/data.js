@@ -36,6 +36,10 @@ createHuman = (name) => {
     return newHuman;
 }
 
+addBreedToDog = (dogId, breedId) => {
+    data.Dogs[dogId].breeds.push(breedId);
+}
+
 /**
  * Dog object types
  */
@@ -144,4 +148,5 @@ module.exports = {
     getBreed,
     getBreeds,
     createHuman,
+    addBreedToDog,
 };
