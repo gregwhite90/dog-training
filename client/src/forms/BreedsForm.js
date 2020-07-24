@@ -6,23 +6,23 @@ import BreedsRenderer from '../renderers/BreedsRenderer';
 import DogDisplay from '../relay-containers/DogDisplay';
 import BreedDisplay from '../relay-containers/BreedDisplay';
 
-dogSelectOptionCallback = function(dog) {
-    return (
-        <option key={dog.id} value={dog.id}>
-            <DogDisplay dog={dog} />
-        </option>
-    );
-}
-
-breedSelectOptionCallback = function(breed) {
-    return (
-        <option key={breed.id} value={breed.id}>
-            <BreedDisplay breed={breed} />
-        </option>
-    );
-}
-
 function BreedsForm({relay: { environment }}) {
+    function dogSelectOptionCallback(dog) {
+        return (
+            <option key={dog.id} value={dog.id}>
+                <DogDisplay dog={dog} />
+            </option>
+        );
+    }
+
+    function breedSelectOptionCallback(breed) {
+        return (
+            <option key={breed.id} value={breed.id}>
+                <BreedDisplay breed={breed} />
+            </option>
+        );
+    }
+
     return (
         <div>
             <Formik
