@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, QueryRenderer } from 'react-relay'
-import HumanDisplay from '../relay-containers/HumanDisplay';
+import HumanDisplay from '../containers/HumanDisplay';
 
 export default function HumansRenderer({ relay: { environment }}) {
     return (

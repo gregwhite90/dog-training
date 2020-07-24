@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
-import IntroduceHumanMutation from '../relay-mutations/IntroduceHuman';
-import HumansRenderer from '../renderers/HumansRenderer';
+import IntroduceHumanMutation from '../../relay/mutations/IntroduceHuman';
+import HumansRenderer from '../../relay/query-renderers/HumansRenderer';
 
 function HumanForm({relay: { environment }}) {
     return (

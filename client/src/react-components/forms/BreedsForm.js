@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import AddBreedToDogMutation from '../relay-mutations/AddBreedToDog';
-import DogSelect from './DogSelect';
-import BreedSelect from './BreedSelect';
+import AddBreedToDogMutation from '../../relay/mutations/AddBreedToDog';
+import DogSelect from '../../relay/query-renderers/DogSelect';
+import BreedSelect from '../../relay/query-renderers/BreedSelect';
 
 function BreedsForm({relay: { environment }}) {
     const dogDefaultValue = '';

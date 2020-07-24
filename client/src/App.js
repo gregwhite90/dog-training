@@ -1,9 +1,9 @@
 import React from 'react';
 import environment from './lib/createRelayEnvironment';
-import DogsRenderer from './renderers/DogsRenderer';
-import HumanForm from './forms/HumanForm';
-import BreedsForm from './forms/BreedsForm';
-import DogDisplay from './relay-containers/DogDisplay';
+import DogsRenderer from './relay/query-renderers/DogsRenderer';
+import HumanForm from './react-components/forms/HumanForm';
+import BreedsForm from './react-components/forms/BreedsForm';
+import DogDisplay from './relay/containers/DogDisplay';
 
 import logo from './logo.svg';
 import './App.css';

@@ -4,7 +4,6 @@ import BreedDisplay from './BreedDisplay';
 import DogName from './DogName';
 
 function DogDisplay({dog}) {
-    // TODO: fix
     return (
         <>
             <DogName dog={dog} />: {dog.breeds.edges
