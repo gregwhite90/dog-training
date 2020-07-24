@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react" // eslint-disable-line no-unused-vars
 import { createFragmentContainer, graphql } from "react-relay"
 
 function BreedName({breed}) {
-    return <>{breed.name}</>;
+    return breed.name;
 }
 
 export default createFragmentContainer(BreedName, {

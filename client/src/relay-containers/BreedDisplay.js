@@ -1,17 +1,18 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import BreedName from './BreedName';
 
 function BreedDisplay({breed}) {
     return (
-        <a href={breed.infoUrl}>{breed.name}</a>
+        <a href={breed.infoUrl}><BreedName breed={breed} /></a>
     );
 }
 
 export default createFragmentContainer(BreedDisplay, {
     breed: graphql`
         fragment BreedDisplay_breed on Breed {
-            name
             infoUrl
+            ...BreedName_breed
         }
     `,
 });

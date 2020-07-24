@@ -40,12 +40,15 @@ query DogsRendererQuery {
 }
 
 fragment BreedDisplay_breed on Breed {
-  name
   infoUrl
+  ...BreedName_breed
+}
+
+fragment BreedName_breed on Breed {
+  name
 }
 
 fragment DogDisplay_dog on Dog {
-  name
   breeds {
     edges {
       node {
@@ -54,6 +57,11 @@ fragment DogDisplay_dog on Dog {
       }
     }
   }
+  ...DogName_dog
+}
+
+fragment DogName_dog on Dog {
+  name
 }
 */
 
@@ -153,7 +161,6 @@ return {
                 "plural": false,
                 "selections": [
                   (v0/*: any*/),
-                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -179,14 +186,14 @@ return {
                             "plural": false,
                             "selections": [
                               (v0/*: any*/),
-                              (v1/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
                                 "name": "infoUrl",
                                 "storageKey": null
-                              }
+                              },
+                              (v1/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -195,7 +202,8 @@ return {
                       }
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -208,12 +216,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "32f66baef188392bc023de5019269528",
+    "cacheID": "f280695e5d5c4d74530261e2668b330f",
     "id": null,
     "metadata": {},
     "name": "DogsRendererQuery",
     "operationKind": "query",
-    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  name\n  infoUrl\n}\n\nfragment DogDisplay_dog on Dog {\n  name\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n}\n"
+    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  infoUrl\n  ...BreedName_breed\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n\nfragment DogDisplay_dog on Dog {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n  ...DogName_dog\n}\n\nfragment DogName_dog on Dog {\n  name\n}\n"
   }
 };
 })();

@@ -8,12 +8,13 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+type BreedName_breed$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type BreedDisplay_breed$ref: FragmentReference;
 declare export opaque type BreedDisplay_breed$fragmentType: BreedDisplay_breed$ref;
 export type BreedDisplay_breed = {|
-  +name: ?string,
   +infoUrl: ?string,
+  +$fragmentRefs: BreedName_breed$ref,
   +$refType: BreedDisplay_breed$ref,
 |};
 export type BreedDisplay_breed$data = BreedDisplay_breed;
@@ -35,21 +36,19 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "name",
+      "name": "infoUrl",
       "storageKey": null
     },
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "infoUrl",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "BreedName_breed"
     }
   ],
   "type": "Breed",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '1881b0e0ca40a8524eca4e3256ee9f77';
+(node/*: any*/).hash = '5b6681a7b0dad23cffa6058516ecfbd2';
 
 module.exports = node;

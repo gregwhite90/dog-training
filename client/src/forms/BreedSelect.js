@@ -1,7 +1,6 @@
 import React from 'react';
-import { Field } from 'formik';
 import { graphql, QueryRenderer } from 'react-relay';
-// import BreedName from '../relay-containers/BreedName';
+import selectRender from './utils/selectRender';
 
 function BreedSelect({relay: { environment }, name, defaultValue, defaultText}) {
     return (
@@ -19,30 +18,12 @@ function BreedSelect({relay: { environment }, name, defaultValue, defaultText}) 
                     }
                 }
                 `}
-            render={({error, props}) => {
-                    if (error) {
-                        return <div>{error.message}</div>;
-                    } else if (props) {
-                        return (
-                            <Field as="select" name={name}>
-                                <option value={defaultValue} disabled>{defaultText}</option>
-                                {props.breeds.edges
-                                      .map(e => e.node)
-                                      .map(node => {
-                                          console.log(node);
-                                          return React.createElement('option',
-                                                                     {
-                                                                         key: node.id,
-                                                                         value: node.id,
-                                                                         label: node.name,
-                                                                     },
-                                                                     node.name);
-                                      })}
-                            </Field>
-                        );
-                    }
-                    return <div>Loading</div>;
-            }}
+            render={selectRender({
+                    propName: "breeds",
+                    fieldName: name,
+                    defaultValue,
+                    defaultText,
+            })}
         />
     );
 }

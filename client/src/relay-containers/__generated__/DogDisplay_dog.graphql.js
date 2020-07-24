@@ -9,11 +9,11 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 type BreedDisplay_breed$ref = any;
+type DogName_dog$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type DogDisplay_dog$ref: FragmentReference;
 declare export opaque type DogDisplay_dog$fragmentType: DogDisplay_dog$ref;
 export type DogDisplay_dog = {|
-  +name: ?string,
   +breeds: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
@@ -22,6 +22,7 @@ export type DogDisplay_dog = {|
       |}
     |}>
   |},
+  +$fragmentRefs: DogName_dog$ref,
   +$refType: DogDisplay_dog$ref,
 |};
 export type DogDisplay_dog$data = DogDisplay_dog;
@@ -39,13 +40,6 @@ const node/*: ReaderFragment*/ = {
   "metadata": null,
   "name": "DogDisplay_dog",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -90,12 +84,17 @@ const node/*: ReaderFragment*/ = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "DogName_dog"
     }
   ],
   "type": "Dog",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '32dc5e54a0ae225e714a75e7a9728327';
+(node/*: any*/).hash = '506d968da0644315b3f8487fa6a668f2';
 
 module.exports = node;
