@@ -32,12 +32,12 @@ const dana = {
 };
 
 let nextHuman = 5;
-createHuman = (name) => {
+async function createHuman(name) {
     const { rows } = await db.query('INSERT INTO humans(name) VALUES ($1) RETURNING *', [name]);
     return rows[0];
 }
 
-addBreedToDog = (dogId, breedId) => {
+async function addBreedToDog(dogId, breedId) {
     await db.query('INSERT INTO dogBreeds(dogId, breedId) VALUES ($1, $2)', [dogId, breedId]);
 }
 
@@ -117,37 +117,37 @@ const data = {
     },
 };
 
-getNode = (id, tableName) => {
+async function getNode(id, tableName) {
     const { rows } = await db.query('SELECT * FROM $1 WHERE id=$2', [tableName, id]);
     return rows[0];
 }
 
-getDog = (id) => {
+async function getDog(id) {
     return getNode(id, "dogs");
 }
 
-getHuman = (id) => {
+async function getHuman(id) {
     return getNode(id, "humans");
 }
 
-getBreed = (id) => {
+async function getBreed(id) {
     return getNode(id, "breeds");
 }
 
-getNodes = (tableName) => {
+async function getNodes(tableName) {
     const { rows } = await db.query('SELECT * FROM $1', [tableName]);
     return rows;
 }
 
-getDogs = () => {
+async function getDogs() {
     return getNodes("dogs");
 }
 
-getHumans = () => {
+async function getHumans() {
     return getNodes("humans");
 }
 
-getBreeds = () => {
+async function getBreeds() => {
     return getNodes("breeds");
 }
 
