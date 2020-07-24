@@ -18,7 +18,7 @@ class App extends React.Component {
         };
     }
 
-    dogListCallback = function(dog) {
+    function dogListCallback(dog) {
         return (
             <li key={dog.id}>
                 <DogDisplay dog={dog} />
