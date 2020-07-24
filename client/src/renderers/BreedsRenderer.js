@@ -1,18 +1,18 @@
 import React from 'react'
 import { graphql, QueryRenderer } from 'react-relay'
 
-export default function DogsRenderer({relay: { environment },
-                                      nodesCallback}) {
+export default function BreedsRenderer({relay: { environment },
+                                        nodesCallback}) {
     return (
         <QueryRenderer
             environment={environment}
             query={graphql`
-                query DogsRendererQuery {
-                    dogs {
+                query BreedsRendererQuery {
+                    breeds {
                         edges {
                             node {
                                 id
-                                ...DogDisplay_dog
+                                ...BreedDisplay_breed
                             }
                         }
                     }
@@ -24,7 +24,7 @@ export default function DogsRenderer({relay: { environment },
                     } else if (props) {
                         return (
                             <>
-                                {props.dogs.edges
+                                {props.breeds.edges
                                       .map(e => e.node)
                                       .map(nodesCallback)}
                             </>

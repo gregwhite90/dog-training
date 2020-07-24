@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 function BreedDisplay({breed}) {
     return (
-        <a href={breed.infoLink}>{breed.name}</a>
+        <a href={breed.infoUrl}>{breed.name}</a>
     );
 }
 
