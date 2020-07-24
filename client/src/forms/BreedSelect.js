@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import { graphql, QueryRenderer } from 'react-relay';
-import BreedName from '../relay-containers/BreedName';
+// import BreedName from '../relay-containers/BreedName';
 
 function BreedSelect({relay: { environment }, name, defaultValue, defaultText}) {
     return (
@@ -13,7 +13,7 @@ function BreedSelect({relay: { environment }, name, defaultValue, defaultText}) 
                         edges {
                             node {
                                 id
-                                ...BreedName_breed
+                                name
                             }
                         }
                     }
@@ -25,17 +25,18 @@ function BreedSelect({relay: { environment }, name, defaultValue, defaultText}) 
                     } else if (props) {
                         return (
                             <Field as="select" name={name}>
-                                <option value={defaultValue}>{defaultText}</option>
+                                <option value={defaultValue} disabled>{defaultText}</option>
                                 {props.breeds.edges
                                       .map(e => e.node)
                                       .map(node => {
-                                          return (
-                                              <option
-                                                  key={node.id}
-                                                      value={node.id}
-                                                      label=<BreedName breed={node} />>
-                                              </option>
-                                          );
+                                          console.log(node);
+                                          return React.createElement('option',
+                                                                     {
+                                                                         key: node.id,
+                                                                         value: node.id,
+                                                                         label: node.name,
+                                                                     },
+                                                                     node.name);
                                       })}
                             </Field>
                         );

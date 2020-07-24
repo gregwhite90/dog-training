@@ -8,14 +8,13 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type DogName_dog$ref = any;
 export type DogSelectQueryVariables = {||};
 export type DogSelectQueryResponse = {|
   +dogs: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
         +id: string,
-        +$fragmentRefs: DogName_dog$ref,
+        +name: ?string,
       |}
     |}>
   |}
@@ -33,63 +32,51 @@ query DogSelectQuery {
     edges {
       node {
         id
-        ...DogName_dog
+        name
       }
     }
   }
 }
-
-fragment DogName_dog on Dog {
-  name
-}
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "DogSelectQuery",
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "DogConnection",
+    "kind": "LinkedField",
+    "name": "dogs",
+    "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "DogConnection",
+        "concreteType": "DogEdge",
         "kind": "LinkedField",
-        "name": "dogs",
-        "plural": false,
+        "name": "edges",
+        "plural": true,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "DogEdge",
+            "concreteType": "Dog",
             "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
+            "name": "node",
+            "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Dog",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "DogName_dog"
-                  }
-                ],
+                "kind": "ScalarField",
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
                 "storageKey": null
               }
             ],
@@ -99,6 +86,16 @@ return {
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "DogSelectQuery",
+    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -107,61 +104,19 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "DogSelectQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "DogConnection",
-        "kind": "LinkedField",
-        "name": "dogs",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "DogEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Dog",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "907e2a18132b96c66da5a15a6d323c96",
+    "cacheID": "42f7f7b0f84fe00118d08d996ad017c2",
     "id": null,
     "metadata": {},
     "name": "DogSelectQuery",
     "operationKind": "query",
-    "text": "query DogSelectQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogName_dog\n      }\n    }\n  }\n}\n\nfragment DogName_dog on Dog {\n  name\n}\n"
+    "text": "query DogSelectQuery {\n  dogs {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'e1b92a86be227d287f35474a4e517353';
+(node/*: any*/).hash = '0abc61de3ffa3cba7fbb9c7620ebef61';
 
 module.exports = node;

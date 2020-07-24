@@ -8,14 +8,13 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type BreedName_breed$ref = any;
 export type BreedSelectQueryVariables = {||};
 export type BreedSelectQueryResponse = {|
   +breeds: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
         +id: string,
-        +$fragmentRefs: BreedName_breed$ref,
+        +name: ?string,
       |}
     |}>
   |}
@@ -33,63 +32,51 @@ query BreedSelectQuery {
     edges {
       node {
         id
-        ...BreedName_breed
+        name
       }
     }
   }
 }
-
-fragment BreedName_breed on Breed {
-  name
-}
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "BreedSelectQuery",
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "BreedConnection",
+    "kind": "LinkedField",
+    "name": "breeds",
+    "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "BreedConnection",
+        "concreteType": "BreedEdge",
         "kind": "LinkedField",
-        "name": "breeds",
-        "plural": false,
+        "name": "edges",
+        "plural": true,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "BreedEdge",
+            "concreteType": "Breed",
             "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
+            "name": "node",
+            "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Breed",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "BreedName_breed"
-                  }
-                ],
+                "kind": "ScalarField",
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
                 "storageKey": null
               }
             ],
@@ -99,6 +86,16 @@ return {
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "BreedSelectQuery",
+    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -107,61 +104,19 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "BreedSelectQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "BreedConnection",
-        "kind": "LinkedField",
-        "name": "breeds",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "BreedEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Breed",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "76b3504ed79d0456de265b2703efd17c",
+    "cacheID": "d7c31847d4306f4071d1d88dc1c5aabf",
     "id": null,
     "metadata": {},
     "name": "BreedSelectQuery",
     "operationKind": "query",
-    "text": "query BreedSelectQuery {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedName_breed\n      }\n    }\n  }\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n"
+    "text": "query BreedSelectQuery {\n  breeds {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ce2a944bcbcc657c162094b7b807aad9';
+(node/*: any*/).hash = 'cee18de1f285ee4680fe01aca062e823';
 
 module.exports = node;
