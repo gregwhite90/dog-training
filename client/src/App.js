@@ -6,7 +6,7 @@ import HumanForm from './react-components/forms/HumanForm';
 import BreedsForm from './react-components/forms/BreedsForm';
 import DogDisplay from './relay/containers/DogDisplay';
 import Nav from './react-components/Nav';
-import UserProfile from './react-components/UserProfile';
+import UserProfile from './react-components/authentication/UserProfile';
 
 import logo from './logo.svg';
 import './App.css';
