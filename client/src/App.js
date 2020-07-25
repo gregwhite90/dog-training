@@ -5,7 +5,7 @@ import DogsRenderer from './relay/query-renderers/DogsRenderer';
 import HumanForm from './react-components/forms/HumanForm';
 import BreedsForm from './react-components/forms/BreedsForm';
 import DogDisplay from './relay/containers/DogDisplay';
-import Nav from './react-components/Nav';
+import Navigation from './react-components/Navigation';
 import UserProfile from './react-components/authentication/UserProfile';
 
 import logo from './logo.svg';
@@ -32,7 +32,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <Nav />
+                <Navigation />
                 <UserProfile />
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />

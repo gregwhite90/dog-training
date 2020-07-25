@@ -7,7 +7,7 @@ import LogoutButton from './authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../App.css';
 
-class Nav extends Component {
+class Navigation extends Component {
 
     render() {
 
@@ -36,4 +36,4 @@ class Nav extends Component {
     }
 }
 
-export default withRouter(Nav);
+export default withRouter(Navigation);
