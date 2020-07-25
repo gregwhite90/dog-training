@@ -23,18 +23,20 @@ const Navigation = () => {
                      </Nav>
                 )}
                 <Nav className="justify-content-end">
-                    {if(isAuthenticated) {
+                    {isAuthenticated
+                     ? (
                          <Nav.Item>
                              <LogoutButton />
                          </Nav.Item>
                          <Nav.Item>
-                             <Image src={user.picture} alt={user.name} roundedCircle fluid/>
+                             <Image src={user.picture} alt={user.name} roundedCircle fluid />
                          </Nav.Item>
-                     } else {
-                            <Nav.Item>
-                                <LoginButton />
-                            </Nav.Item>
-                     }}
+                     )
+                     : (
+                         <Nav.Item>
+                             <LoginButton />
+                         </Nav.Item>
+                     )}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
