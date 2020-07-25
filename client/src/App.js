@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import environment from './lib/createRelayEnvironment';
 import DogsRenderer from './relay/query-renderers/DogsRenderer';
 import HumanForm from './react-components/forms/HumanForm';
@@ -61,4 +60,4 @@ class App extends React.Component {
     }
 }
 
-export default withRouter(App);
+export default App;

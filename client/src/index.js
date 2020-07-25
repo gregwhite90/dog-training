@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -8,15 +7,13 @@ import { Auth0Provider } from '@auth0/auth0-react';
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <Auth0Provider
-                domain="dev-uw0xrn72.us.auth0.com"
-                clientId="Uam7i5qRurIvqSgO71fpqH3DoG56z4hz"
-                redirectUri={window.location.origin}
-            >
-                <App />
-            </Auth0Provider>
-        </BrowserRouter>
+        <Auth0Provider
+            domain="dev-uw0xrn72.us.auth0.com"
+            clientId="Uam7i5qRurIvqSgO71fpqH3DoG56z4hz"
+            redirectUri={window.location.origin}
+        >
+            <App />
+        </Auth0Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );
