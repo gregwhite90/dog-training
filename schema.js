@@ -131,7 +131,7 @@ const addBreedToDogMutation = mutationWithClientMutationId({
     outputFields: {
         dog: {
             type: dogType,
-            resolve: ({dog_id}, context) => getNode({id: dog_id, tableName('dogs')}, context),
+            resolve: ({dog_id}, context) => getNode({id: dog_id, tableName: 'dogs'}, context),
         },
     },
     mutateAndGetPayload: ({dog_id, breed_id}, context) => {
@@ -170,7 +170,7 @@ const queryType = new GraphQLObjectType({
             type: breedConnection,
             resolve: (_, args, context) => {
                 return connectionFromPromisedArray(
-                    getNodes({tableName}, context), args
+                    getNodes({tableName: 'breeds'}, context), args
                 );
             },
         },
