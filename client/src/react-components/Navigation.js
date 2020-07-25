@@ -16,13 +16,13 @@ const Navigation = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 {isAuthenticated && (
-                     <Nav className="mr-auto">
+                     <Nav>
                          <Nav.Item>
                              <Nav.Link href="/dogs">My Dogs</Nav.Link>
                          </Nav.Item>
                      </Nav>
                 )}
-                <Nav className="justify-content-end">
+                <Nav className="d-flex justify-content-end">
                     {isAuthenticated
                      ? (
                          <>
@@ -30,7 +30,7 @@ const Navigation = () => {
                                  <LogoutButton />
                              </Nav.Item>
                              <Nav.Item>
-                                 <Image src={user.picture} alt={user.name} roundedCircle fluid />
+                                 <Image src={user.picture} alt={user.name} width="35px" roundedCircle />
                              </Nav.Item>
                          </>
                      )
