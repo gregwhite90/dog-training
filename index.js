@@ -1,3 +1,4 @@
+const sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
@@ -5,6 +6,8 @@ const DogTrainingSchema = require('./schema');
 const db = require('./db');
 
 const app = express();
+
+app.use(sslRedirect());
 
 // Serve the static React files.
 app.use(express.static(path.join(__dirname, 'client/build')));
