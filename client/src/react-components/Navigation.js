@@ -22,7 +22,7 @@ const Navigation = () => {
                          </Nav.Item>
                      </Nav>
                 )}
-                <Nav className="d-flex justify-content-end">
+                <Nav className="ml-auto">
                     {isAuthenticated
                      ? (
                          <>
