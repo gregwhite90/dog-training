@@ -20,15 +20,14 @@ const mutation = graphql`
 
 function commit(
     environment,
-    dogId,
-    breedId,
+    {dog_id, breed_id}
 ) {
     return commitMutation(
         environment,
         {
             mutation,
             variables: {
-                input: { dogId, breedId }
+                input: { dog_id, breed_id }
             },
         }
     );

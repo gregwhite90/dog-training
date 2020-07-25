@@ -40,7 +40,7 @@ query DogsRendererQuery {
 }
 
 fragment BreedDisplay_breed on Breed {
-  infoUrl
+  info_url
   ...BreedName_breed
 }
 
@@ -190,7 +190,7 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "infoUrl",
+                                "name": "info_url",
                                 "storageKey": null
                               },
                               (v1/*: any*/)
@@ -216,12 +216,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f280695e5d5c4d74530261e2668b330f",
+    "cacheID": "06fab6d096a1d5a34ec391ef70d761bf",
     "id": null,
     "metadata": {},
     "name": "DogsRendererQuery",
     "operationKind": "query",
-    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  infoUrl\n  ...BreedName_breed\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n\nfragment DogDisplay_dog on Dog {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n  ...DogName_dog\n}\n\nfragment DogName_dog on Dog {\n  name\n}\n"
+    "text": "query DogsRendererQuery {\n  dogs {\n    edges {\n      node {\n        id\n        ...DogDisplay_dog\n      }\n    }\n  }\n}\n\nfragment BreedDisplay_breed on Breed {\n  info_url\n  ...BreedName_breed\n}\n\nfragment BreedName_breed on Breed {\n  name\n}\n\nfragment DogDisplay_dog on Dog {\n  breeds {\n    edges {\n      node {\n        id\n        ...BreedDisplay_breed\n      }\n    }\n  }\n  ...DogName_dog\n}\n\nfragment DogName_dog on Dog {\n  name\n}\n"
   }
 };
 })();

@@ -9,8 +9,8 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 export type AddBreedToDogInput = {|
-  breedId: string,
-  dogId: string,
+  dog_id: string,
+  breed_id: string,
   clientMutationId?: ?string,
 |};
 export type AddBreedToDogMutationVariables = {|

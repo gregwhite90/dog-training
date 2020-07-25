@@ -80,7 +80,7 @@ type Breed implements Node {
   """The ID of an object"""
   id: ID!
   name: String
-  infoUrl: String
+  info_url: String
 }
 
 """A connection to a list of items."""
@@ -128,7 +128,7 @@ type AddBreedToDogPayload {
 }
 
 input AddBreedToDogInput {
-  breedId: ID!
-  dogId: ID!
+  dog_id: ID!
+  breed_id: ID!
   clientMutationId: String
 }

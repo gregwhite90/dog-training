@@ -12,30 +12,28 @@ function BreedsForm({relay: { environment }}) {
         <div>
             <Formik
                 initialValues={{
-                    dogId: dogDefaultValue,
-                    breedId: breedDefaultValue,
+                    dog_id: dogDefaultValue,
+                    breed_id: breedDefaultValue,
                 }}
                 onSubmit={(values) => {
-                        console.log(values);
                         return AddBreedToDogMutation.commit(
                             environment,
-                            values.dogId,
-                            values.breedId)
+                            values)
                 }}
             >
                 <Form>
                     <h2>Add a breed to a dog</h2>
-                    <label htmlFor="dogId">Dog</label>
+                    <label htmlFor="dog_id">Dog</label>
                     <DogSelect
                         relay={{environment}}
-                        name="dogId"
+                        name="dog_id"
                         defaultValue={dogDefaultValue}
                         defaultText="Select a dog"
                     />
-                    <label htmlFor="breedId">Breed</label>
+                    <label htmlFor="breed_id">Breed</label>
                     <BreedSelect
                         relay={{environment}}
-                        name="breedId"
+                        name="breed_id"
                         defaultValue={breedDefaultValue}
                         defaultText="Select a breed"
                     />
