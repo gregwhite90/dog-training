@@ -25,12 +25,14 @@ const Navigation = () => {
                 <Nav className="justify-content-end">
                     {isAuthenticated
                      ? (
-                         <Nav.Item>
-                             <LogoutButton />
-                         </Nav.Item>
-                         <Nav.Item>
-                             <Image src={user.picture} alt={user.name} roundedCircle fluid />
-                         </Nav.Item>
+                         <>
+                             <Nav.Item>
+                                 <LogoutButton />
+                             </Nav.Item>
+                             <Nav.Item>
+                                 <Image src={user.picture} alt={user.name} roundedCircle fluid />
+                             </Nav.Item>
+                         </>
                      )
                      : (
                          <Nav.Item>
