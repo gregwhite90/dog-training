@@ -1,9 +1,12 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import environment from './lib/createRelayEnvironment';
 import DogsRenderer from './relay/query-renderers/DogsRenderer';
 import HumanForm from './react-components/forms/HumanForm';
 import BreedsForm from './react-components/forms/BreedsForm';
 import DogDisplay from './relay/containers/DogDisplay';
+import Nav from './react-components/Nav';
+import UserProfile from './react-components/UserProfile';
 
 import logo from './logo.svg';
 import './App.css';
@@ -29,6 +32,8 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
+                <Nav />
+                <UserProfile />
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <p>
@@ -56,4 +61,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withRouter(App);

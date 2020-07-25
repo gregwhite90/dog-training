@@ -17,29 +17,18 @@ const {
 } = require('graphql-relay');
 
 const {
-    getDog,
-    getDogs,
-    getHuman,
-    getHumans,
-    getBreed,
-    getBreeds,
+    getNode,
+    getNodes,
     getDogBreeds,
     createHuman,
     addBreedToDog,
-} = require('./business-logic/data')
+} = require('./business-logic/data');
 
 const { nodeInterface, nodeField } = nodeDefinitions(
     // Resolve a global ID to its object
-    (globalID) => {
+    (globalID, context) => {
         const { type, id } = fromGlobalId(globalID);
-        switch(type) {
-            case 'Dog':
-                return getDog(id);
-            case 'Human':
-                return getHuman(id);
-            case 'Breed':
-                return getBreed(id);
-        }
+        return getNode({id, tableName: `${type}s`}, context);
     },
     // Resolve an object to its type
     // TODO: Need a better way to do this
@@ -80,8 +69,8 @@ const dogType = new GraphQLObjectType({
             type: breedConnection,
             description: 'The known breed(s) of the dog.',
             args: connectionArgs,
-            resolve: (dog, args) =>
-                connectionFromPromisedArray(getDogBreeds(dog.id), args),
+            resolve: (dog, args, context) =>
+                connectionFromPromisedArray(getDogBreeds({id: dog.id}, context), args),
         },
     }),
 });
@@ -118,11 +107,11 @@ const introduceHumanMutation = mutationWithClientMutationId({
     outputFields: {
         human: {
             type: humanType,
-            resolve: (payload) => getHuman(payload.id),
+            resolve: ({id}, context) => getNode({id, tableName: 'humans'}, context),
         },
     },
-    mutateAndGetPayload: ({name}) => {
-        const newHuman = createHuman(name);
+    mutateAndGetPayload: ({name}, context) => {
+        const newHuman = createHuman(name, context);
         return {
             id: newHuman.id,
         }
@@ -142,13 +131,13 @@ const addBreedToDogMutation = mutationWithClientMutationId({
     outputFields: {
         dog: {
             type: dogType,
-            resolve: (payload) => getDog(payload.dog_id),
+            resolve: ({dog_id}, context) => getNode({id: dog_id, tableName('dogs')}, context),
         },
     },
-    mutateAndGetPayload: ({dog_id, breed_id}) => {
+    mutateAndGetPayload: ({dog_id, breed_id}, context) => {
         const dog = fromGlobalId(dog_id);
         const breed = fromGlobalId(breed_id);
-        addBreedToDog(dog.id, breed.id);
+        addBreedToDog({dog_id: dog.id, breed_id: breed.id}, context);
         return {
             dog_id: dog.id,
         };
@@ -163,15 +152,27 @@ const queryType = new GraphQLObjectType({
     fields: () => ({
         dogs: {
             type: dogConnection,
-            resolve: (_, args) => connectionFromPromisedArray(getDogs(), args),
+            resolve: (_, args, context) => {
+                return connectionFromPromisedArray(
+                    getNodes({tableName: 'dogs'}, context), args
+                );
+            },
         },
         humans: {
             type: humanConnection,
-            resolve: (_, args) => connectionFromPromisedArray(getHumans(), args),
+            resolve: (_, args, context) => {
+                return connectionFromPromisedArray(
+                    getNodes({tableName: 'humans'}, context), args
+                );
+             },
         },
         breeds: {
             type: breedConnection,
-            resolve: (_, args) => connectionFromPromisedArray(getBreeds(), args),
+            resolve: (_, args, context) => {
+                return connectionFromPromisedArray(
+                    getNodes({tableName}, context), args
+                );
+            },
         },
         node: nodeField,
     }),
