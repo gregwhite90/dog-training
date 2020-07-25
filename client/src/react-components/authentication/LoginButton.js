@@ -10,7 +10,7 @@ const LoginButton = () => {
             variant="primary"
             onClick={() => loginWithRedirect()}
         >
-            Log In
+            Log In or Sign up
         </Button>
     );
 }

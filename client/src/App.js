@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import environment from './lib/createRelayEnvironment';
 import DogsRenderer from './relay/query-renderers/DogsRenderer';
 import HumanForm from './react-components/forms/HumanForm';

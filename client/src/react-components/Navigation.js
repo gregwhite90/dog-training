@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Image from 'react-bootstrap/Image';
 import LoginButton from './authentication/LoginButton';
 import LogoutButton from './authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -22,9 +23,20 @@ const Navigation = () => {
                      </Nav>
                 )}
                 <Nav className="justify-content-end">
-                    <Nav.Item>
-                        {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-                    </Nav.Item>
+                    {
+                        if(isAuthenticated) {
+                            <Nav.Item>
+                                <LogoutButton />
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Image src={user.picture} alt={user.name} roundedCircle fluid/>
+                            </Nav.Item>
+                        } else {
+                            <Nav.Item>
+                                <LoginButton />
+                            </Nav.Item>
+                        }
+                    }
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
