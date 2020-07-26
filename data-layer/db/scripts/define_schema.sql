@@ -1,12 +1,15 @@
+CREATE DOMAIN UINT as INT
+       CHECK (VALUE >= 0);
+
 CREATE TABLE dogs (
-       id           SERIAL UNSIGNED PRIMARY KEY,
+       id           SERIAL PRIMARY KEY,
        name         VARCHAR NOT NULL,
        picture      VARCHAR
 );
 
 CREATE TABLE behaviors (
-       id                   SERIAL UNSIGNED PRIMARY KEY,
-       dog_id               INT UNSIGNED NOT NULL,
+       id                   SERIAL PRIMARY KEY,
+       dog_id               INT NOT NULL,
        name                 VARCHAR NOT NULL,
        explanation          VARCHAR,
        demo_media           VARCHAR,
@@ -32,9 +35,9 @@ CREATE TABLE behaviors (
 CREATE TYPE frequency AS ENUM ('CONTINUOUS', 'INTERMITTENT');
 
 CREATE TABLE training_stages (
-       id                    SERIAL UNSIGNED PRIMARY KEY,
-       behavior_id           INT UNSIGNED NOT NULL,
-       seq                   INT UNSIGNED NOT NULL,
+       id                    SERIAL PRIMARY KEY,
+       behavior_id           INT NOT NULL,
+       seq                   UINT NOT NULL,
        lure                  BOOLEAN NOT NULL,
        shape                 BOOLEAN NOT NULL,
        verbal                BOOLEAN NOT NULL,
@@ -52,24 +55,22 @@ CREATE TABLE training_stages (
 );
 
 CREATE TABLE training_sessions (
-       id                      SERIAL UNSIGNED PRIMARY KEY,
-       dog_id                  INT UNSIGNED NOT NULL,
-       minutes_long            INT UNSIGNED,
+       id                      SERIAL PRIMARY KEY,
+       dog_id                  INT NOT NULL,
+       minutes_long            UINT,
        start_timestamp         TIMESTAMP WITH TIME ZONE,
        CONSTRAINT fk_dog
                   FOREIGN KEY(dog_id) REFERENCES dogs(id)
-                  ON DELETE CASCADE,
-       CONSTRAINT nonnegative_minutes
-                  CHECK((minutes IS NULL) OR (minutes >= 0))
+                  ON DELETE CASCADE
 );
 
 CREATE TYPE qualitative_level AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
 CREATE TABLE training_progress (
-       training_session_id     INT UNSIGNED NOT NULL,
-       training_stage_id       INT UNSIGNED NOT NULL,
-       successes               INT UNSIGNED,
-       attempts                INT UNSIGNED,
+       training_session_id     INT NOT NULL,
+       training_stage_id       INT NOT NULL,
+       successes               UINT,
+       attempts                UINT,
        distance                qualitative_level,
        duration                qualitative_level,
        distractions            qualitative_level,
@@ -87,7 +88,7 @@ CREATE TYPE user_dog_role AS ENUM ('OWNER', 'TRAINER', 'VIEWER');
 
 CREATE TABLE user_dogs (
        user_id         VARCHAR NOT NULL,
-       dog_id          INT UNSIGNED NOT NULL,
+       dog_id          INT NOT NULL,
        user_role       user_dog_role,
        CONSTRAINT fk_dog
                   FOREIGN KEY(dog_id) REFERENCES dogs(id)
@@ -100,7 +101,7 @@ CREATE TYPE user_training_session_role AS ENUM ('MAINTAINER', 'PARTICIPANT');
 
 CREATE TABLE user_training_sessions (
        user_id                      VARCHAR NOT NULL,
-       training_session_id          INT UNSIGNED NOT NULL,
+       training_session_id          INT NOT NULL,
        user_role                    user_training_session_role NOT NULL,
        CONSTRAINT fk_training_session
                   FOREIGN KEY(training_session_id) REFERENCES training_sessions(id)
