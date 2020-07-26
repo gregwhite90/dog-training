@@ -2,8 +2,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
-const DogTrainingSchema = require('./schema');
-const db = require('./db');
+const DogTrainingSchema = require('./graphql/schema');
 const isTokenValid = require('./validate');
 
 const app = express();
