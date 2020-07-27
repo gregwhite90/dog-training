@@ -25,7 +25,7 @@ class AuthUser {
 
     async get_viewer() {
         // TODO: error handling code if unauthenticated?
-        return this.user_model.get_one({id: this.user_id});
+        return this.user_model.get_one({id: await this.user_id});
     }
 
     async get_all_dogs({id}) {
