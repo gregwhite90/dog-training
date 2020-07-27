@@ -3,10 +3,8 @@ const { Dog } = require('../data-layer/db/models/Dog');
 
 // TODO: decide if want to do these as static methods (these classes don't hold meaningful state).
 
-async function getUserId(context) {
-    const user_model = new User();
-    return user_model.get_one_by_email(context.user_email).user_id;
-    // TODO: error handling code
+function getUserId(context) {
+    return context.user;
 }
 
 class AuthUser {

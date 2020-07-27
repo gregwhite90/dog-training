@@ -12,7 +12,7 @@ const context = req => {
     const { decoded } = isTokenValid(token);
     console.log(decoded);
     // TODO: error handling logic
-    return { user_email: decoded.email };
+    return { user: decoded.sub };
 }
 
 app.use(sslRedirect());

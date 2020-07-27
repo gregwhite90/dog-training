@@ -13,11 +13,11 @@ function getKey(header, callback) {
 }
 
 async function isTokenValid(token) {
-    console.debug('in isTokenValid');
+    console.log('in isTokenValid');
     if (token) {
-        console.debug('found token');
+        console.log('found token');
         const bearerToken = token.split(" ");
-        console.debug(bearerToken[1]);
+        console.log(bearerToken[1]);
 
         const result = new Promise((resolve, reject) => {
             jwt.verify(
@@ -30,11 +30,11 @@ async function isTokenValid(token) {
                 },
                 (error, decoded) => {
                     if (error) {
-                        console.debug(error);
+                        console.log(error);
                         resolve({ error });
                     }
                     if (decoded) {
-                        console.debug(decoded);
+                        console.log(decoded);
                         resolve({ decoded });
                     }
                 }
