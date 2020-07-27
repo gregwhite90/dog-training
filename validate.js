@@ -48,4 +48,3 @@ async function isTokenValid(token) {
 }
 
 module.exports = isTokenValid;
-B
