@@ -4,7 +4,7 @@ const { Dog } = require('../data-layer/db/models/Dog');
 // TODO: decide if want to do these as static methods (these classes don't hold meaningful state).
 
 function getUserId(context) {
-    return context.user;
+    return context().user;
 }
 
 class AuthUser {
