@@ -45,7 +45,7 @@ class App extends React.Component {
                                     <About />
                                 </Route>
                                 <Route path="/dogs">
-                                    <Dogs relay={{environment}}/>
+                                    <Dogs relay={this.state.relay}/>
                                 </Route>
                                 <Route path="/">
                                     <Home />
