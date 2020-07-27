@@ -9,8 +9,7 @@ const {
 /**
  * Definitions and functions needed for the queries at the root.
  */
-const { nodeField } = require('./types/objects/Node');
-const { userType } = require('./types/objects/User');
+const { nodeField, userType } = require('./types/objects/Nodes');
 const { AuthUser } = require('../business-layer/models');
 // TODO: Confirm right one for the resolver
 

@@ -7,8 +7,10 @@ const {
     connectionDefinitions,
 } = require('graphql-relay');
 
-const { dogType } = require('../objects/Dog');
-const { userType } = require('../objects/User');
+const {
+    dogType,
+    userType,
+} = require('../objects/Nodes');
 
 const userDogRoleType = new GraphQLEnumType({
     name: 'UserDogRole',
