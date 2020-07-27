@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Image from 'react-bootstrap/Image';
-import LoginButton from './authentication/LoginButton';
-import LogoutButton from './authentication/LogoutButton';
+import { LinkContainer } from 'react-router-bootstrap';
+import LoginButton from '../authentication/LoginButton';
+import LogoutButton from '../authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
-import '../App.css';
+import '../../App.css';
 
 const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
@@ -15,14 +17,22 @@ const Navigation = () => {
             <Navbar.Brand href="/">Dog Training</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                {isAuthenticated && (
-                     <Nav>
-                         <Nav.Item>
-                             <Nav.Link href="/dogs">My Dogs</Nav.Link>
-                         </Nav.Item>
-                     </Nav>
-                )}
+                {is Authenticated &&
+                 (
+                     <Nav.Item>
+                         <LinkContainer to="/dogs" exact="true">
+                             Dogs
+                         </LinkContainer>
+                     </Nav.Item>
+                 )
+
+                }
                 <Nav className="ml-auto">
+                    <Nav.Item>
+                        <LinkContainer to="/about" exact="true">
+                            About
+                        </LinkContainer>
+                    </Nav.Item>
                     {isAuthenticated
                      ? (
                          <>
@@ -45,4 +55,4 @@ const Navigation = () => {
     );
 }
 
-export default Navigation;
+export default withRouter(Navigation);
