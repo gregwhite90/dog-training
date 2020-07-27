@@ -9,7 +9,8 @@ const app = express();
 
 const context = req => {
     const { authorization: token } = req.headers;
-    return { token };
+    const user = isTokenValid(token);
+    return { user };
 }
 
 app.use(sslRedirect());
@@ -23,11 +24,7 @@ app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     graphiql: {
         headerEditorEnabled: true,
     },
-    context: (req) => {
-        const { authorization: token } = req.headers;
-        const user = isTokenValid(token);
-        return { user };
-    },
+    context: () => context(req),
 })));
 
 app.listen(process.env.PORT || 5000);
