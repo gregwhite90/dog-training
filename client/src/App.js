@@ -9,7 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-import environment from './lib/createRelayEnvironment';
+import { withAuth0 } from '@auth0/auth0-react';
+import createEnvironment from './lib/createRelayEnvironment';
 
 import Navigation from './react-components/nav/Navigation';
 import Home from './react-components/pages/Home';
@@ -24,9 +25,10 @@ import './App.css';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        const { getAccessTokenSilently } = props.auth0;
         this.state = {
             relay: {
-                environment
+                environment: createEnvironment(getAccessTokenSilently),
             },
         };
     }
@@ -57,4 +59,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withAuth0(App);
