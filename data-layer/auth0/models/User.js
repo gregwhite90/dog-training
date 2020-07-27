@@ -8,6 +8,13 @@ const auth0 = new ManagementClient({
 });
 
 class User {
+
+    async get_one_by_email({email}) {
+        const users = await auth0.getUsersByEmail(email);
+        // TODO: error-handling code
+        return users[0];
+    }
+
     async get_one({id}) {
         const user = await auth0.getUser({id});
     }

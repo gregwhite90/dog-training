@@ -9,8 +9,10 @@ const app = express();
 
 const context = req => {
     const { authorization: token } = req.headers;
-    const user = isTokenValid(token);
-    return { user };
+    const { decoded } = isTokenValid(token);
+    console.log(decoded);
+    // TODO: error handling logic
+    return { user_email: decoded.email };
 }
 
 app.use(sslRedirect());

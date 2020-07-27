@@ -3,8 +3,9 @@ const { Dog } = require('../data-layer/db/models/Dog');
 
 // TODO: decide if want to do these as static methods (these classes don't hold meaningful state).
 
-function getUserId(context) {
-    return context.user.user_id;
+async function getUserId(context) {
+    const user_model = new User();
+    return user_model.get_one_by_email(context.user_email).user_id;
     // TODO: error handling code
 }
 
@@ -18,7 +19,7 @@ class AuthUser {
     // TODO: wrap the User methods that require authentication and authorization
     async get_one({id}) {
         // TODO: confirm error handling strategy
-        if (id !== this.user_id) {
+        if (id !== await this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
         return this.user_model.get_one({id});
@@ -30,7 +31,7 @@ class AuthUser {
     }
 
     async get_all_dogs({id}) {
-        if (id !== this.user_id) {
+        if (id !== await this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
         var dog_model = new Dog();
@@ -50,7 +51,7 @@ class AuthDog {
         // TODO: take the return value of dog and insert a row into the user_dogs table for current user
         const user_dog_relation = await this.dog_model.add_to_user({
             dog_id: new_dog.id,
-            user_id: this.user_id,
+            user_id: await this.user_id,
             user_role: 'OWNER',
         });
         // TODO: figure out return value
@@ -67,8 +68,8 @@ class AuthDog {
 
     async get_all_users({id}) {
         const auth = await this.dog_model.check_authorization_for_dog({
-            dog_id,
-            user_id,
+            dog_id: id,
+            user_id: await this.user_id,
         });
         // TODO: handle authorization failure
         return this.dog_model.get_all_users({id});
