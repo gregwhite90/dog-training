@@ -57,7 +57,7 @@ class Dog {
 
     async get_all_dogs_for_user({id}) {
         const { rows } = await db.query(
-            'SELECT * FROM dogs WHERE id IN (SELECT dog_id FROM user_dogs WHERE user_id=$1)',
+            'SELECT * FROM dogs WHERE id IN (SELECT dog_id AS id FROM user_dogs WHERE user_id=$1)',
             [id]
         );
         // TODO: error-handling code?

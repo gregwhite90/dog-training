@@ -12,6 +12,7 @@ export default function createEnvironment(getAccessTokenSilently) {
         getAccessTokenSilently
     ) {
         const token = getAccessTokenSilently().then(token => token);
+        console.log(token);
         // TODO: error-handling code
         return fetch('/graphql', {
             method: 'POST',

@@ -6,7 +6,7 @@ const { Dog } = require('../data-layer/db/models/Dog');
 function getUserId(context) {
     console.log('In get user id helper in business layer');
     console.log(context);
-    return context().user;
+    return context.user;
 }
 
 class AuthUser {
