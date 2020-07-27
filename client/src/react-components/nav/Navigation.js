@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -21,16 +21,15 @@ const Navigation = () => {
                  (
                      <Nav.Item>
                          <LinkContainer to="/dogs" exact="true">
-                             Dogs
+                             <span>Dogs</span>
                          </LinkContainer>
                      </Nav.Item>
                  )
-
                 }
                 <Nav className="ml-auto">
                     <Nav.Item>
                         <LinkContainer to="/about" exact="true">
-                            About
+                            <span>About</span>
                         </LinkContainer>
                     </Nav.Item>
                     {isAuthenticated

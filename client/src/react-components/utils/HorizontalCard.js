@@ -12,14 +12,16 @@ export default function HorizontalCard({imgCols, node: {picture, title, text}}) 
                     }
                 </div>
                 <div class="col-md-{12 - imgCols}">
-                    <Card.Title>
-                        {title}
-                    </Card.Title>
-                    {text &&
-                     (<Card.Text>
-                         {text}
-                     </Card.Text>)
-                    }
+                    <Card.Body>
+                        <Card.Title>
+                            {title}
+                        </Card.Title>
+                        {text &&
+                         (<Card.Text>
+                             {text}
+                         </Card.Text>)
+                        }
+                    </Card.Body>
                 </div>
             </div>
         </Card>

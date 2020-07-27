@@ -8,9 +8,7 @@ function DogCard({dog}) {
         picture: dog.picture,
         title: dog.name,
     };
-    return (
-        <HorizontalCard node={node}/>
-    );
+    return (<HorizontalCard node={node}/>);
 }
 
 export default createFragmentContainer(DogCard, {

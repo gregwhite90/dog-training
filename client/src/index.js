@@ -6,15 +6,11 @@ import * as serviceWorker from './serviceWorker';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Auth0Provider
-            domain="dev-uw0xrn72.us.auth0.com"
-            clientId="Uam7i5qRurIvqSgO71fpqH3DoG56z4hz"
-            redirectUri={window.location.origin}
-        >
+    (<React.StrictMode>
+        <Auth0Provider domain="dev-uw0xrn72.us.auth0.com" clientId="Uam7i5qRurIvqSgO71fpqH3DoG56z4hz" redirectUri={window.location.origin}>
             <App />
         </Auth0Provider>
-    </React.StrictMode>,
+    </React.StrictMode>),
     document.getElementById('root')
 );
 

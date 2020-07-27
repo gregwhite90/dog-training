@@ -8,5 +8,5 @@ export default function Dogs({relay: { environment }}) {
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     // TODO: Form to add a new dog
-    return <DogsList relay={{environment}} />;
+    return (<DogsList relay={{environment}} />);
 }
