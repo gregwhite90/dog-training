@@ -51,7 +51,7 @@ class AuthDog {
         // TODO: only needs authentication
         const new_dog = await this.dog_model.create_one({name, picture});
         // TODO: take the return value of dog and insert a row into the user_dogs table for current user
-        const user_dog_relation = await this.dog_model.add_to_user({
+        const user_dog_relation = this.dog_model.add_to_user({
             dog_id: new_dog.id,
             user_id: await this.user_id,
             user_role: 'OWNER',
@@ -61,8 +61,8 @@ class AuthDog {
 
     async get_one({id}) {
         const auth = await this.dog_model.check_authorization_for_dog({
-            dog_id,
-            user_id,
+            dog_id: id,
+            user_id: await this.user_id,
         });
         // TODO: handle authorization failure
         return this.dog_model.get_one({id});

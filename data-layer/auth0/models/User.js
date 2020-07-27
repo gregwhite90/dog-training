@@ -10,9 +10,9 @@ const auth0 = new ManagementClient({
 class User {
 
     async get_one({id}) {
-        const user = await auth0.getUser({id});
+        console.log('Calling out to Auth0');
+        const user = auth0.getUser({id});
         // TODO: figure out return value
-        console.log(user);
         return user;
     }
 }

@@ -32,7 +32,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
             case 'Dog':
                 model = new AuthDog(context);
                 break;
-            return model.get_one({id});
+            return model.get_one({id}).then(node => node);
         }
     },
     // TODO: Believe may be possible to have each type resolve its own type.
