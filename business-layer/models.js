@@ -4,11 +4,14 @@ const { Dog } = require('../data-layer/db/models/Dog');
 // TODO: decide if want to do these as static methods (these classes don't hold meaningful state).
 
 function getUserId(context) {
+    console.log('In get user id helper in business layer');
+    console.log(context);
     return context().user;
 }
 
 class AuthUser {
     constructor(context) {
+        console.log('creating auth user');
         this.user_model = new User();
         this.user_id = getUserId(context);
         // TODO: propagate the error if necessary.
@@ -39,6 +42,7 @@ class AuthUser {
 
 class AuthDog {
     constructor(context) {
+        console.log('creating auth dog');
         this.dog_model = new Dog();
         this.user_id = getUserId(context);
     }

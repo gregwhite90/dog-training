@@ -11,6 +11,9 @@ class User {
 
     async get_one({id}) {
         const user = await auth0.getUser({id});
+        // TODO: figure out return value
+        console.log(user);
+        return user;
     }
 }
 
