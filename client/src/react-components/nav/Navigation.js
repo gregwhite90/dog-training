@@ -17,7 +17,7 @@ const Navigation = () => {
             <Navbar.Brand href="/">Dog Training</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                {is Authenticated &&
+                {isAuthenticated &&
                  (
                      <Nav.Item>
                          <LinkContainer to="/dogs" exact="true">
