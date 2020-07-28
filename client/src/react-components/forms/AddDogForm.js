@@ -86,21 +86,13 @@ class AddDogForm extends React.Component {
                                              label="Picture"
                                              accept="image/*"
                                              id="picture-upload"
-                                             onchange={() => {
-                                                     console.log('in pic upload change handler');
-                                                     const files = document.getElementById('picture-upload').files;
-                                                     const file = files[0];
-                                                     if (file) {
-                                                         this.getSignedRequest(file);
-                                                     }
-                                             }}
                                          />
-                                         <Field name="picture" type="hidden" value={pictureDefaultValue}/>
+                                         <Field name="picture" type="hidden" />
                                      </Form.Group>
                                      <Form.Group as={Col}
                                                  className={`md-${12 - imgCols}`}
                                                  controlId="formGridName">
-                                         <Field name="name" placeholder="Name" value={nameDefaultValue}/>
+                                         <Field name="name" placeholder="Name" />
                                      </Form.Group>
                                  </Form.Row>
                                  <Button variant="primary" type="submit" disabled={this.state.isUploading || isSubmitting}>
