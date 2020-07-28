@@ -59,14 +59,16 @@ class AddDogForm extends React.Component {
                         // TODO: figure out what to do with the file input
                         return AddDogMutation.commit(
                             this.props.environment,
-                            {name, picture: picture === '' ? null : picture},
+                            {name, picture: (picture === '' ? null : picture)},
                             {id: this.props.auth0.user.user_id}).then(_ => setSubmitting(false));
                 }}
                 onChange={(e, { setValues }) => {
-                        if (e.target.id !== 'picture-upload' || !(e.target.files && e.target.files.length === 1)) {
+                        console.log('in pic upload change handler');
+                        console.log(e.target.id);
+                        console.log(e.target.files ? e.target.files.length : e.target.files);
+                        if (e.target.id !== 'picture_upload' || !(e.target.files && e.target.files.length === 1)) {
                             return;
                         }
-                        console.log('in pic upload change handler');
                         this.setState({isUploading: true});
                         this.getSignedRequest(e.target.files[0]).then(url => {
                             setValues({picture: url});
@@ -85,7 +87,7 @@ class AddDogForm extends React.Component {
                                          <Form.File
                                              label="Picture"
                                              accept="image/*"
-                                             id="picture-upload"
+                                             id="picture_upload"
                                          />
                                          <Field name="picture" type="hidden" />
                                      </Form.Group>

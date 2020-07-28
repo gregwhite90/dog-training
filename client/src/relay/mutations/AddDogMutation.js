@@ -37,15 +37,17 @@ let tempID = 0;
 
 function commit(
     environment,
-    {dog_name, dog_picture},
+    {name, picture},
     user
 ) {
+    console.log(`Called commit with ${name}, ${picture}`);
+    console.log(user);
     return commitMutation(
         environment,
         {
             mutation,
             variables: {
-                input: { dog_name, dog_picture }
+                input: { name, picture },
             },
             updater: (store) => {
                 // Get the payload returned from the server
@@ -59,8 +61,8 @@ function commit(
                 // Create a Dog record for the store with a temporary ID
                 const id = `client:newDog:${tempID++}`;
                 const node = store.create(id, 'Dog');
-                node.setValue(dog_name, 'name');
-                node.setValue(dog_picture, 'picture');
+                node.setValue(name, 'name');
+                node.setValue(picture, 'picture');
                 node.setValue(id, 'id');
                 node.setValue('Dog', '_node_type');
 
