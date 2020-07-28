@@ -32,13 +32,13 @@ const { nodeInterface, nodeField } = nodeDefinitions(
             case 'Dog':
                 model = new AuthDog(context);
                 break;
-            return model.get_one({id}).then(node => node);
+            return model.get_one({id});
         }
     },
     // TODO: Believe may be possible to have each type resolve its own type.
     // otherwise, need to put an resolveType here
     (obj) =>
-        (obj.dogs ? userType : dogType)
+        (obj._node_type === 'User' ? userType : dogType)
 );
 
 /**

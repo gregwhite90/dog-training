@@ -51,10 +51,7 @@ const queryType = new GraphQLObjectType({
             resolve: (_, _args, context) => {
                 console.log('resolving viewer with context');
                 const user_model = new AuthUser(context);
-                return user_model.get_viewer().then(viewer => {
-                    console.log(viewer);
-                    return viewer;
-                });
+                return user_model.get_viewer();
             },
         }
     }),

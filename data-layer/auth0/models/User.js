@@ -9,11 +9,26 @@ const auth0 = new ManagementClient({
 
 class User {
 
+    // TODO: can the interface be imported (requires knowledge of the GQL schema)
+    /**
+     * Generate GraphQL-layer-friendly object from raw persistence layer output
+     */
+    static create_object(raw_user) {
+        return {
+            _node_type: 'User',
+            id: raw_user.user_id,
+            name: raw_user.name,
+            picture: raw_user.picture, // TODO: confirm treatment if null
+        };
+    }
+
+
+    /**
+     * Read User-only operations
+     */
+
     static async get_one({id}) {
-        console.log('Calling out to Auth0');
-        const user = auth0.getUser({id});
-        // TODO: figure out return value
-        return user;
+        return auth0.getUser({id});
     }
 }
 

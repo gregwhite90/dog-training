@@ -20,19 +20,20 @@ class AuthUser extends AuthModel {
         if (id !== this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
-        return User.get_one({id});
+        return User.get_one({id})
+                   .then(User.create_object);
     }
 
     async get_viewer() {
-        // TODO: error handling code if unauthenticated?
-        return User.get_one({id: this.user_id});
+        return this.get_one({id: this.user_id});
     }
 
     async get_all_dogs({id}) {
         if (id !== this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
-        return Dog.get_all_dogs_for_user({id});
+        return Dog.get_all_dogs_for_user({id})
+                  .then(dogs => dogs.map(Dog.create_object));
     }
 }
 
@@ -60,16 +61,19 @@ class AuthDog extends AuthModel {
             user_id: this.user_id,
         });
         // TODO: handle authorization failure
-        return Dog.get_one({id});
+        return Dog.get_one({id})
+                  .then(Dog.create_object);
     }
 
     async get_all_users({id}) {
-        const auth = Dog.check_authorization_for_dog({
+        const auth = await Dog.check_authorization_for_dog({
             dog_id: id,
             user_id: this.user_id,
         });
         // TODO: handle authorization failure
-        return Dog.get_all_users({id});
+        const ids = await Dog.get_all_user_ids({id});
+        return Promise.all(ids.map(id => User.get_one({id})))
+                      .then(raw_users => raw_users.map(User.create_object));
     }
 }
 
