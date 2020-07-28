@@ -24,7 +24,7 @@ app.use('/graphql',
             graphiql: {
                 headerEditorEnabled: true,
             },
-            context: () => { user: { id: req.user.sub } },
+            context: { user: { id: req.user.sub } },
         }))
 );
 
