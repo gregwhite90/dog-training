@@ -54,7 +54,7 @@ const queryType = new GraphQLObjectType({
                 return user_model.get_viewer().then(viewer => {
                     console.log(viewer);
                     return viewer;
-                }
+                });
             },
         }
     }),
