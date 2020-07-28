@@ -32,12 +32,18 @@ export type DogsListQuery = {|
 /*
 query DogsListQuery {
   viewer {
-    dogs {
+    dogs(first: 2147483647) {
       edges {
         node {
           id
           ...DogCard_dog
+          __typename
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
     id
@@ -57,7 +63,53 @@ var v0 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cursor",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "PageInfo",
+  "kind": "LinkedField",
+  "name": "pageInfo",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "endCursor",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "hasNextPage",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v4 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 2147483647
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -74,11 +126,11 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": null,
+            "alias": "dogs",
             "args": null,
             "concreteType": "UserToDogConnection",
             "kind": "LinkedField",
-            "name": "dogs",
+            "name": "__DogList_dogs_connection",
             "plural": false,
             "selections": [
               {
@@ -98,6 +150,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v0/*: any*/),
+                      (v1/*: any*/),
                       {
                         "args": null,
                         "kind": "FragmentSpread",
@@ -105,10 +158,12 @@ return {
                       }
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v3/*: any*/)
             ],
             "storageKey": null
           }
@@ -135,7 +190,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": null,
+            "args": (v4/*: any*/),
             "concreteType": "UserToDogConnection",
             "kind": "LinkedField",
             "name": "dogs",
@@ -171,15 +226,27 @@ return {
                         "kind": "ScalarField",
                         "name": "picture",
                         "storageKey": null
-                      }
+                      },
+                      (v1/*: any*/)
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v3/*: any*/)
             ],
-            "storageKey": null
+            "storageKey": "dogs(first:2147483647)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "filters": null,
+            "handle": "connection",
+            "key": "DogList_dogs",
+            "kind": "LinkedHandle",
+            "name": "dogs"
           },
           (v0/*: any*/)
         ],
@@ -188,16 +255,28 @@ return {
     ]
   },
   "params": {
-    "cacheID": "03632e92b2c928e1ac0d722c5f897035",
+    "cacheID": "d5efafcc5df186579c6ed8f78e23010f",
     "id": null,
-    "metadata": {},
+    "metadata": {
+      "connection": [
+        {
+          "count": null,
+          "cursor": null,
+          "direction": "forward",
+          "path": [
+            "viewer",
+            "dogs"
+          ]
+        }
+      ]
+    },
     "name": "DogsListQuery",
     "operationKind": "query",
-    "text": "query DogsListQuery {\n  viewer {\n    dogs {\n      edges {\n        node {\n          id\n          ...DogCard_dog\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n"
+    "text": "query DogsListQuery {\n  viewer {\n    dogs(first: 2147483647) {\n      edges {\n        node {\n          id\n          ...DogCard_dog\n          __typename\n        }\n        cursor\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '61450b39958ba7c8d9c689f4cd8a90b3';
+(node/*: any*/).hash = '0821b9d5f6376470f8095aef54dda892';
 
 module.exports = node;

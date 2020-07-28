@@ -16,14 +16,15 @@ const { AuthUser } = require('../business-layer/models');
 /**
  * Definitions for all mutations at the root.
  */
-/**
 const {
     addDogMutation,
+    /**
     removeDogForViewerMutation,
     removeDogForAllMutation,
     editDogMutation,
+    */
 } = require('./mutations/Dog');
-
+/**
 const {
     addBehaviorMutation,
     removeBehaviorMutation,
@@ -85,7 +86,5 @@ const mutationType = new GraphQLObjectType({
  */
 module.exports = new GraphQLSchema({
     query: queryType,
-    /**
     mutation: mutationType,
-    */
 });

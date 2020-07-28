@@ -135,7 +135,7 @@ const { connectionType: dogToUserConnection } = connectionDefinitions({
     */
 });
 
-const { connectionType: userToDogConnection } = connectionDefinitions({
+const { connectionType: userToDogConnection, edgeType: userToDogEdge } = connectionDefinitions({
     name: 'UserToDog',
     nodeType: dogType,
     /**
@@ -153,4 +153,5 @@ module.exports = {
     dogTypeOwnedScalarFields,
     userType,
     nodeField,
+    userToDogEdge,
 };

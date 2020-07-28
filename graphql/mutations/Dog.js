@@ -9,8 +9,13 @@ const {
 
 const {
     dogType,
-    dogTypeOwnedScalarFields
-} = require('../objects/Dog');
+    dogTypeOwnedScalarFields,
+    userToDogEdge,
+} = require('../types/objects/Nodes');
+
+const {
+    AuthDog,
+} = require('../../business-layer/models');
 
 const addDogMutation = mutationWithClientMutationId({
     name: 'AddDog',
@@ -20,18 +25,18 @@ const addDogMutation = mutationWithClientMutationId({
     },
     outputFields: {
         // TODO: confirm if want to return additional info
-        dog: {
-            type: dogType,
+        dogEdge: {
+            type: userToDogEdge,
             // TODO: actually implement
-            resolve: ({id}, context) => getNode({id, tableName: 'humans'}, context),
+            resolveNode: (dog, context) => {
+                return dog;
+            },
         },
     },
     mutateAndGetPayload: ({name, picture}, context) => {
         // TODO: actually implement
-        const newHuman = createHuman(name, context);
-        return {
-            id: newHuman.id,
-        }
+        const dog_model = new AuthDog(context);
+        return dog_model.create_one({name, picture});
     },
 });
 /**

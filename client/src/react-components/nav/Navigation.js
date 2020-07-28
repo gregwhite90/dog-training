@@ -11,6 +11,7 @@ import '../../App.css';
 
 const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
+    const MARGIN_WITHIN_NAV = 3;
 
     return (
         <Navbar bg="light" expand="md">
@@ -22,7 +23,7 @@ const Navigation = () => {
                     {isAuthenticated &&
                      (
                          <LinkContainer to="/dogs" exact>
-                             <Nav.Item>
+                             <Nav.Item className={`mr-${MARGIN_WITHIN_NAV}`}>
                                  <span>Dogs</span>
                              </Nav.Item>
                          </LinkContainer>
@@ -38,7 +39,7 @@ const Navigation = () => {
                 {isAuthenticated
                  ? (
                      <Nav>
-                         <Nav.Item className="mr-2">
+                         <Nav.Item className={`mr-${MARGIN_WITHIN_NAV}`}>
                              <LogoutButton />
                          </Nav.Item>
                          <Nav.Item>

@@ -47,11 +47,12 @@ class AuthDog extends AuthModel {
         // TODO: only needs authentication
         const new_dog = await Dog.create_one({name, picture});
         // TODO: take the return value of dog and insert a row into the user_dogs table for current user
-        const user_dog_relation = Dog.add_to_user({
+        const user_dog_relation = await Dog.add_to_user({
             dog_id: new_dog.id,
             user_id: this.user_id,
             user_role: 'OWNER',
         });
+        return Dog.create_object(new_dog);
         // TODO: figure out return value
     }
 

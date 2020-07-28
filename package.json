@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "auth0": "^2.27.1",
+    "aws-sdk": "^2.721.0",
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
     "express-jwt": "^6.0.0",

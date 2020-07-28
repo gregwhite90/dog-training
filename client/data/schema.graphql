@@ -84,3 +84,21 @@ type DogToUserEdge {
   """A cursor for use in pagination"""
   cursor: String!
 }
+
+type Mutation {
+  """Create a new dog with the currently logged in user as an 'owner'."""
+  addDog(input: AddDogInput!): AddDogPayload
+}
+
+type AddDogPayload {
+  dogEdge: UserToDogEdge
+  clientMutationId: String
+}
+
+input AddDogInput {
+  name: String!
+
+  """URL of the profile image of this dog."""
+  picture: String
+  clientMutationId: String
+}

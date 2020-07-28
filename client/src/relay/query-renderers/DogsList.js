@@ -11,7 +11,9 @@ export default function DogsList({relay: { environment }}) {
             query={graphql`
                 query DogsListQuery {
                     viewer {
-                        dogs {
+                        dogs(
+                            first: 2147483647 # max GraphQLInt
+                        ) @connection(key: "DogList_dogs") {
                             edges {
                                 node {
                                     id

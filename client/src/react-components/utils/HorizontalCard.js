@@ -8,12 +8,12 @@ export default function HorizontalCard({imgCols, node: {picture, title, text}}) 
     return (
         <Card fluid="md">
             <Row className="no-gutters">
-                <Col className="md-{imgCols}">
+                <Col className={`md-${imgCols}`}>
                     {picture &&
-                     (<Card.Img src={picture} />)
+                     (<Card.Img className="p-2" src={picture} />)
                     }
                 </Col>
-                <Col className="md-{12 - imgCols}">
+                <Col className={`md-${12 - imgCols}`}>
                     <Card.Body>
                         <Card.Title>
                             {title}
