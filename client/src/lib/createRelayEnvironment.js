@@ -10,7 +10,10 @@ export default function createEnvironment(getAccessTokenSilently) {
         operation,
         variables
     ) {
-        const token = getAccessTokenSilently().then(token => token);
+        const token = getAccessTokenSilently({
+            audience: 'https://dog-training-staging.herokuapp.com/graphql',
+            scope: 'read:viewer',
+        }).then(token => token);
         console.log(token);
         // TODO: error-handling code
         return fetch('/graphql', {

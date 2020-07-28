@@ -1,50 +1,32 @@
-const jwt = require("jsonwebtoken");
-const jwksClient = require("jwks-rsa");
+/**
+ * From: https://auth0.com/docs/quickstart/backend/nodejs#validate-access-tokens
+*/
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
 
-const client = jwksClient({
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+// Authentication middleware. When used, the
+// Access Token must exist and be verified against
+// the Auth0 JSON Web Key Set
+const checkJwt = jwt({
+    // Dynamically provide a signing key
+    // based on the kid in the header and
+    // the signing keys provided by the JWKS endpoint.
+    secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+    }),
+
+    // Validate the audience and the issuer.
+    audience: process.env.API_IDENTIFIER,
+    issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+    algorithms: ['RS256']
 });
 
-function getKey(header, callback) {
-    client.getSigningKey(header.kid, function(error, key) {
-        const signingKey = key.publicKey || key.rsaPublicKey;
-        callback(null, signingKey);
-    });
-}
+const checkScopes = (scopes) => jwtAuthz(scopes);
 
-async function isTokenValid(token) {
-    console.log('in isTokenValid');
-    if (token) {
-        console.log('found token');
-        const bearerToken = token.split(" ");
-        console.log(bearerToken[1]);
-
-        const result = new Promise((resolve, reject) => {
-            jwt.verify(
-                bearerToken[1],
-                getKey,
-                {
-                    audience: process.env.API_IDENTIFIER,
-                    issuer: `https://${process.env.AUTH0_DOMAIN}/`,
-                    algorithms: ["RS256"]
-                },
-                (error, decoded) => {
-                    if (error) {
-                        console.log(error);
-                        resolve({ error });
-                    }
-                    if (decoded) {
-                        console.log(decoded);
-                        resolve({ decoded });
-                    }
-                }
-            );
-        });
-
-        return result;
-    }
-
-    return { error: "No token provided" };
-}
-
-module.exports = isTokenValid;
+module.exports = {
+    checkJwt,
+    checkScopes,
+};

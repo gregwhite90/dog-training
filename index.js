@@ -3,24 +3,12 @@ const express = require('express');
 const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
 const DogTrainingSchema = require('./graphql/schema');
-const isTokenValid = require('./validate');
+const {
+    checkJwt,
+    checkScopes,
+}= require('./validate');
 
 const app = express();
-
-const context = req => {
-    console.log('In server context function req => user_id');
-    const { authorization: token } = req.headers;
-    const user_id = isTokenValid(token)
-        .then( ({decoded, error}) => {
-            console.log(decoded);
-            console.log(error);
-            return decoded.sub;
-        });
-    console.log('Got token and user_id');
-    console.log(user_id);
-    // TODO: error handling logic
-    return { user: user_id };
-}
 
 app.use(sslRedirect());
 
@@ -28,17 +16,16 @@ app.use(sslRedirect());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Set up the API route
-app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => {
-    console.log('In gql top-level handler');
-    var value = {
-        schema: DogTrainingSchema,
-        graphiql: {
-            headerEditorEnabled: true,
-        },
-        context: () => context(req),
-    };
-    console.log(value);
-    return value;
-}));
+app.use('/graphql',
+        checkJwt,
+        checkScopes(['read:viewer']),
+        graphqlHTTP((req, res, graphQLParams) => ({
+            schema: DogTrainingSchema,
+            graphiql: {
+                headerEditorEnabled: true,
+            },
+            context: () => { user: { id: req.user.sub } },
+        }))
+);
 
 app.listen(process.env.PORT || 5000);

@@ -1,17 +1,9 @@
 const { User } = require('../data-layer/auth0/models/User');
 const { Dog } = require('../data-layer/db/models/Dog');
 
-// TODO: decide if want to do these as static methods (these classes don't hold meaningful state).
-
-function getUserId(context) {
-    console.log('In get user id helper in business layer');
-    console.log(context);
-    return context().user;
-}
-
 class AuthModel {
     constructor(context) {
-        this.user_id = getUserId(context);
+        this.user_id = context.user.id;
     }
 }
 
