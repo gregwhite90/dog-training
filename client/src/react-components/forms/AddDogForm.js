@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form as FormikForm, Field } from 'formik';
+import { Formik, Form as FormikForm } from 'formik';
 import AddDogMutation from '../../relay/mutations/AddDogMutation';
 import { useAuth0 } from '@auth0/auth0-react';
 import Card from 'react-bootstrap/Card';
@@ -74,16 +74,12 @@ export default function AddDogForm({imgCols, relay: { environment }}) {
                                                 }
                                         }}
                                     />
-                                    <Form.Control>
-                                        <Field name="picture" id="picture-url" type="hidden" />
-                                    </Form.Control>
+                                    <Form.Control name="picture" id="picture-url" type="hidden" />
                                 </Form.Group>
                                 <Form.Group as={Col}
                                             md={12 - imgCols}
                                             controlId="formGridName">
-                                    <Form.Control>
-                                        <Field name="name" placeholder="Name" />
-                                    </Form.Control>
+                                    <Form.Control name="name" placeholder="Name" />
                                 </Form.Group>
                             </Form.Row>
                         </Form>
