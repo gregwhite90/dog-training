@@ -13,43 +13,47 @@ const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
 
     return (
-        <Navbar bg="light" expand="md" className="m-3">
-            <Navbar.Brand href="/">Dog Training</Navbar.Brand>
+        <Navbar bg="light" expand="md">
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Brand href="/">Dog Training</Navbar.Brand>
+
             <Navbar.Collapse id="basic-navbar-nav">
-                {isAuthenticated &&
-                 (
-                     <LinkContainer to="/dogs" exact="true">
-                         <Nav.Item>
-                             <span>Dogs</span>
-                         </Nav.Item>
-                     </LinkContainer>
-                 )
-                }
-            </Navbar.Collapse>
-            <Nav className="ml-auto">
-                <LinkContainer to="/about" exact="true">
-                    <Nav.Item>
-                        <span>About</span>
-                    </Nav.Item>
-                </LinkContainer>
+                <Nav className="mr-auto">
+                    {isAuthenticated &&
+                     (
+                         <LinkContainer to="/dogs" exact>
+                             <Nav.Item>
+                                 <span>Dogs</span>
+                             </Nav.Item>
+                         </LinkContainer>
+                     )
+                    }
+                    <LinkContainer to="/about" exact>
+                        <Nav.Item>
+                            <span>About</span>
+                        </Nav.Item>
+                    </LinkContainer>
+                </Nav>
+
                 {isAuthenticated
                  ? (
-                     <>
-                         <Nav.Item>
+                     <Nav>
+                         <Nav.Item className="mr-2">
                              <LogoutButton />
                          </Nav.Item>
                          <Nav.Item>
                              <Image src={user.picture} alt={user.name} width="35px" roundedCircle />
                          </Nav.Item>
-                     </>
+                     </Nav>
                  )
                  : (
-                     <Nav.Item>
-                         <LoginButton />
-                     </Nav.Item>
+                     <Nav>
+                         <Nav.Item>
+                             <LoginButton />
+                         </Nav.Item>
+                     </Nav>
                  )}
-            </Nav>
+            </Navbar.Collapse>
         </Navbar>
     );
 }

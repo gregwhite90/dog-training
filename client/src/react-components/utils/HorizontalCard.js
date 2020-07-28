@@ -13,7 +13,7 @@ export default function HorizontalCard({imgCols, node: {picture, title, text}}) 
                      (<Card.Img src={picture} />)
                     }
                 </Col>
-                <Col class="md-{12 - imgCols}">
+                <Col className="md-{12 - imgCols}">
                     <Card.Body>
                         <Card.Title>
                             {title}
@@ -24,7 +24,7 @@ export default function HorizontalCard({imgCols, node: {picture, title, text}}) 
                          </Card.Text>)
                         }
                     </Card.Body>
-                </div>
+                </Col>
             </Row>
         </Card>
     );
