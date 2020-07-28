@@ -74,21 +74,16 @@ export default function AddDogForm({imgCols, relay: { environment }}) {
                                                 }
                                         }}
                                     />
-                                    <Field name="picture">
-                                        <Form.Control
-                                            id="picture-url"
-                                            type="hidden"
-                                            value={pictureDefaultValue}
-                                        />
-                                    </Field>
+                                    <Form.Control>
+                                        <Field name="picture" id="picture-url" type="hidden" />
+                                    </Form.Control>
                                 </Form.Group>
                                 <Form.Group as={Col}
                                             md={12 - imgCols}
                                             controlId="formGridName">
-                                    <Field name="name">
-                                        <Form.Label>Name</Form.Label>
-                                        <Form.Control placeholder="Name" value={nameDefaultValue}/>
-                                    </Field>
+                                    <Form.Control>
+                                        <Field name="name" placeholder="Name" />
+                                    </Form.Control>
                                 </Form.Group>
                             </Form.Row>
                         </Form>
