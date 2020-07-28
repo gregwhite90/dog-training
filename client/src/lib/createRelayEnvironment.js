@@ -10,25 +10,24 @@ export default function createEnvironment(getAccessTokenSilently) {
         operation,
         variables
     ) {
-        const token = getAccessTokenSilently({
+        return getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
             scope: 'read:viewer',
-        }).then(token => token);
-        console.log(token);
-        // TODO: error-handling code
-        return fetch('/graphql', {
-            method: 'POST',
-            headers: {
-                'Accept': 'Application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                query: operation.text,
-                variables,
-            }),
-        }).then(response => {
-            return response.json();
+        }).then(token => {
+            console.log(token);
+            // TODO: error-handling code
+            return fetch('/graphql', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'Application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    query: operation.text,
+                    variables,
+                }),
+            }).then(response => response.json());
         });
     }
 
