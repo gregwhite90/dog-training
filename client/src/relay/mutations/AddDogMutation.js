@@ -38,11 +38,12 @@ let tempID = 0;
 function commit(
     environment,
     {name, picture},
-    user
+    user,
+    updateStateCallback
 ) {
     console.log(`Called commit with ${name}, ${picture}`);
     console.log(user);
-    return commitMutation(
+    commitMutation(
         environment,
         {
             mutation,
@@ -56,6 +57,8 @@ function commit(
                 const newEdge = payload.getLinkedRecord('dogEdge');
                 // Add it to the user's dog list
                 sharedUpdater(store, user, newEdge);
+
+                updateStateCallback();
             },
             optimisticUpdater: (store) => {
                 // Create a Dog record for the store with a temporary ID

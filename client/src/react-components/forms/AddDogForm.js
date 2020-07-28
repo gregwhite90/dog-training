@@ -49,6 +49,9 @@ class AddDogForm extends React.Component {
         const nameDefaultValue = '';
         const pictureDefaultValue = '';
         var imgCols = this.props.imgCols || 3; // TODO: fix to be consistent styling
+        // TODO: figure out why the user id is not coming through
+        // TODO: make sure the file upload change handler actually gets called
+        console.log(this.props);
         return (
             <Formik
                 initialValues={{
@@ -57,10 +60,11 @@ class AddDogForm extends React.Component {
                 }}
                 onSubmit={({ name, picture }, { setSubmitting }) => {
                         // TODO: figure out what to do with the file input
-                        return AddDogMutation.commit(
-                            this.props.environment,
+                        AddDogMutation.commit(
+                            this.props.relay.environment,
                             {name, picture: (picture === '' ? null : picture)},
-                            {id: this.props.auth0.user.user_id}).then(_ => setSubmitting(false));
+                            {id: this.props.auth0.user.user_id},
+                            () => setSubmitting(false));
                 }}
                 onChange={(e, { setValues }) => {
                         console.log('in pic upload change handler');
