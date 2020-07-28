@@ -1,17 +1,19 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 export default function HorizontalCard({imgCols, node: {picture, title, text}}) {
     imgCols = imgCols || 3;
     return (
-        <Card>
-            <div class="row no-gutters">
-                <div class="col-md-{imgCols}">
+        <Card fluid="md">
+            <Row className="no-gutters">
+                <Col className="md-{imgCols}">
                     {picture &&
                      (<Card.Img src={picture} />)
                     }
-                </div>
-                <div class="col-md-{12 - imgCols}">
+                </Col>
+                <Col class="md-{12 - imgCols}">
                     <Card.Body>
                         <Card.Title>
                             {title}
@@ -23,7 +25,7 @@ export default function HorizontalCard({imgCols, node: {picture, title, text}}) 
                         }
                     </Card.Body>
                 </div>
-            </div>
+            </Row>
         </Card>
     );
 }

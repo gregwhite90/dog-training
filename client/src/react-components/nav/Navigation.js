@@ -13,43 +13,43 @@ const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
 
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="md" className="m-3">
             <Navbar.Brand href="/">Dog Training</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 {isAuthenticated &&
                  (
-                     <Nav.Item>
-                         <LinkContainer to="/dogs" exact="true">
+                     <LinkContainer to="/dogs" exact="true">
+                         <Nav.Item>
                              <span>Dogs</span>
-                         </LinkContainer>
-                     </Nav.Item>
+                         </Nav.Item>
+                     </LinkContainer>
                  )
                 }
-                <Nav className="ml-auto">
-                    <Nav.Item>
-                        <LinkContainer to="/about" exact="true">
-                            <span>About</span>
-                        </LinkContainer>
-                    </Nav.Item>
-                    {isAuthenticated
-                     ? (
-                         <>
-                             <Nav.Item>
-                                 <LogoutButton />
-                             </Nav.Item>
-                             <Nav.Item>
-                                 <Image src={user.picture} alt={user.name} width="35px" roundedCircle />
-                             </Nav.Item>
-                         </>
-                     )
-                     : (
-                         <Nav.Item>
-                             <LoginButton />
-                         </Nav.Item>
-                     )}
-                </Nav>
             </Navbar.Collapse>
+            <Nav className="ml-auto">
+                <LinkContainer to="/about" exact="true">
+                    <Nav.Item>
+                        <span>About</span>
+                    </Nav.Item>
+                </LinkContainer>
+                {isAuthenticated
+                 ? (
+                     <>
+                         <Nav.Item>
+                             <LogoutButton />
+                         </Nav.Item>
+                         <Nav.Item>
+                             <Image src={user.picture} alt={user.name} width="35px" roundedCircle />
+                         </Nav.Item>
+                     </>
+                 )
+                 : (
+                     <Nav.Item>
+                         <LoginButton />
+                     </Nav.Item>
+                 )}
+            </Nav>
         </Navbar>
     );
 }

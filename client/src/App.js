@@ -40,17 +40,19 @@ class App extends React.Component {
                     <Navigation />
                     <Container fluid>
                         <Row>
-                            <Switch>
-                                <Route path="/about">
-                                    <About />
-                                </Route>
-                                <Route path="/dogs">
-                                    <Dogs relay={this.state.relay}/>
-                                </Route>
-                                <Route path="/">
-                                    <Home />
-                                </Route>
-                            </Switch>
+                            <Col>
+                                <Switch>
+                                    <Route path="/about">
+                                        <About />
+                                    </Route>
+                                    <Route path="/dogs">
+                                        <Dogs relay={this.state.relay}/>
+                                    </Route>
+                                    <Route path="/">
+                                        <Home />
+                                    </Route>
+                                </Switch>
+                            </Col>
                         </Row>
                     </Container>
                 </div>
