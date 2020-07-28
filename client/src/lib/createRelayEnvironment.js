@@ -8,8 +8,7 @@ import {
 export default function createEnvironment(getAccessTokenSilently) {
     function fetchQuery(
         operation,
-        variables,
-        getAccessTokenSilently
+        variables
     ) {
         const token = getAccessTokenSilently().then(token => token);
         console.log(token);

@@ -9,7 +9,7 @@ const auth0 = new ManagementClient({
 
 class User {
 
-    async get_one({id}) {
+    static async get_one({id}) {
         console.log('Calling out to Auth0');
         const user = auth0.getUser({id});
         // TODO: figure out return value
