@@ -57,13 +57,11 @@ class ImageUpload extends React.Component {
         this.setState({ error: undefined, progress: 0 });
         this.props.onStartUploading();
 
-        let { error,
-              response: {
-                  signedRequests: {
-                      getObject,
-                      putObject
-                  }
-              }
+        let {
+            signedRequests: {
+                getObject,
+                putObject
+            }
         } = await this.getSignedRequest(file);
         console.log('request signed');
         console.log(putObject);
