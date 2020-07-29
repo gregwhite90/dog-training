@@ -10,25 +10,36 @@ class ImageUpload extends React.Component {
         this.state = { progress: -1 };
     }
 
+    handleUploadingError(error) {
+        console.log('Got an error');
+        console.log(error);
+        this.props.onFinishUploading(null);
+        this.setState({ error, progress: -1 });
+        return {error};
+    }
+
     // TODO: authorization to get an S3 signed key
     getSignedRequest(file) {
+        console.log('in getSignedRequest');
         const file_name = encodeURIComponent(file.name);
         const file_type = encodeURIComponent(file.type);
 
         return fetch(
-            `/sign-s3?file_name=${file_name}&file_type=${file_type}`,
+            `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}`,
             {
                 method: 'GET',
             })
             .then(response => {
+                console.log('Got a response!');
+                console.log(response);
                 if (response.ok) {
-                    return response = response.json();
+                    return {response: response.json()};
                 }
                 // TODO: error-handling
+                return this.handleUploadingError('Response not ok.');
             })
             .catch(error => {
-                this.props.onFinishUploading(null);
-                this.setState({ error, progress: -1 });
+                return this.handleUploadingError(error);
             });
     }
 
@@ -37,32 +48,41 @@ class ImageUpload extends React.Component {
             method: 'PUT',
         })
             .then(response => {
+                console.log('Got a response');
+                console.log(response);
                 if (response.ok) {
-                    return url;
+                    this.props.value = url;
+                    this.props.onFinishUploading(url);
+                    return {response: url};
                 }
                 // TODO: error-handling code
+                return this.handleUploadingError('Response not ok.');
             })
             .catch(error => {
-                this.props.onFinishUploading(null);
-                this.setState({ error, progress: -1});
+                return this.handleUploadingError(error);
             });
     }
 
     async handleFileChange(e) {
+        console.log('handling file change');
+        console.log(e.target);
         if (!e.target.files) {
             return;
         }
         let file = e.target.files[0];
 
+        console.log(file);
+
         this.setState({ error: undefined, progress: 0 });
         this.props.onStartUploading();
 
-        let { signedRequest, url } = await this.getSignedRequest(file);
-        await this.uploadFile(file, signedRequest, url);
+        console.log('getting signed request');
 
-        this.props.value = url;
-
-        this.props.onFinishUploading(url);
+        let { error, response: { signedRequest, url }} = await this.getSignedRequest(file);
+        console.log('request signed');
+        console.log(signedRequest);
+        console.log(url);
+        let upload_result = await this.uploadFile(file, signedRequest, url);
         this.setState({ error: undefined, progress: -1 });
 
     }

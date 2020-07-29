@@ -38,7 +38,7 @@ let tempID = 0;
 function commit(
     environment,
     {name, picture},
-    user,
+    user, // TODO: this is just an ID right now
     updateStateCallback
 ) {
     console.log(`Called commit with ${name}, ${picture}`);
@@ -61,6 +61,7 @@ function commit(
                 updateStateCallback();
             },
             optimisticUpdater: (store) => {
+                console.log('in optimistic updater');
                 // Create a Dog record for the store with a temporary ID
                 const id = `client:newDog:${tempID++}`;
                 const node = store.create(id, 'Dog');

@@ -7,14 +7,14 @@ import Image from 'react-bootstrap/Image';
 export default function HorizontalCard({imgCols, node: {picture, title, text}}) {
     imgCols = imgCols || 3;
     return (
-        <Container fluid="md" className="p-3 border rounded">
+        <Container fluid="md" className="p-3 mb-3 border rounded">
             <Row className="no-gutters">
-                <Col className={`md-${imgCols}`}>
+                <Col md={imgCols}>
                     {picture &&
                      (<Image className="p-2" src={picture} thumbnail />)
                     }
                 </Col>
-                <Col className={`md-${12 - imgCols}`}>
+                <Col md={12 - imgCols}>
                     <h3>{title}</h3>
                     {text &&
                      (<p>

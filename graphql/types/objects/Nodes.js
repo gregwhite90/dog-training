@@ -32,13 +32,25 @@ const { nodeInterface, nodeField } = nodeDefinitions(
             case 'Dog':
                 model = new AuthDog(context);
                 break;
+            default:
+                console.log(`Unknown type in node resolver: ${type}`);
+                break;
             return model.get_one({id});
         }
     },
     // TODO: Believe may be possible to have each type resolve its own type.
     // otherwise, need to put an resolveType here
-    (obj) =>
-        (obj._node_type === 'User' ? userType : dogType)
+    (obj) => {
+        switch (obj._node_type) {
+            case 'User':
+                return userType;
+            case 'Dog':
+                return dogType;
+            default:
+                console.log(`Unknown obj in obj -> type node resolver: ${obj}`);
+                break;
+        }
+    },
 );
 
 /**
@@ -48,9 +60,7 @@ const userType = new GraphQLObjectType({
     name: 'User',
     interfaces: [nodeInterface],
     fields: () => ({
-        id: { // Generated and maintained by Auth0
-            type: new GraphQLNonNull(GraphQLID),
-        },
+        id: globalIdField(),
         name: {
             type: new GraphQLNonNull(GraphQLString),
         },
