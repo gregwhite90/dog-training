@@ -18,14 +18,13 @@ export default function HorizontalCard({
     return (
         <Container fluid="md" className="p-3 mb-3 border rounded">
             <Row className="no-gutters">
-                {picture &&
-                 (<Col md={imgCols}>
-                     {picture_needs_s3 ?
-                      <AuthS3Image className="p-2" thumbnail picture={picture} /> :
-                      <Image className="p-2" src={picture} thumbnail />
-                     }
-                 </Col>)
-                }
+                <Col md={imgCols}>
+                    {picture &&
+                     (picture_needs_s3
+                     ? <AuthS3Image className="p-2" thumbnail picture={picture} />
+                     : <Image className="p-2" src={picture} thumbnail />
+                     )}
+                </Col>
                 <Col md={12 - imgCols}>
                     <h3>{title}</h3>
                     {text &&
