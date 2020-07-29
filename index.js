@@ -86,7 +86,7 @@ app.get('/sign-s3', (req, res) => {
     }
     // TODO: prefix file name with user_id/ ?
     // TODO: check that the user is asking for access to the right image
-    const { error, signedRequests } = getS3SignedURL(file_name, file_type, operation);
+    const { error, signedRequests } = getS3SignedUrl(file_name, file_type, operation);
     if (error) {
         res.end();
     }
