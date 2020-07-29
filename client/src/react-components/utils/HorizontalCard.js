@@ -1,31 +1,28 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 export default function HorizontalCard({imgCols, node: {picture, title, text}}) {
     imgCols = imgCols || 3;
     return (
-        <Card fluid="md">
+        <Container fluid="md" className="p-3 border rounded">
             <Row className="no-gutters">
                 <Col className={`md-${imgCols}`}>
                     {picture &&
-                     (<Card.Img className="p-2" src={picture} />)
+                     (<Image className="p-2" src={picture} thumbnail />)
                     }
                 </Col>
                 <Col className={`md-${12 - imgCols}`}>
-                    <Card.Body>
-                        <Card.Title>
-                            {title}
-                        </Card.Title>
-                        {text &&
-                         (<Card.Text>
-                             {text}
-                         </Card.Text>)
-                        }
-                    </Card.Body>
+                    <h3>{title}</h3>
+                    {text &&
+                     (<p>
+                         {text}
+                     </p>)
+                    }
                 </Col>
             </Row>
-        </Card>
+        </Container>
     );
 }

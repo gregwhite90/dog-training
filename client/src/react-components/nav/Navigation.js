@@ -8,7 +8,7 @@ import LoginButton from '../authentication/LoginButton';
 import LogoutButton from '../authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../../App.css';
-import logo from '../../public/logo_dark.svg';
+import logo from '../../logo_dark.svg';
 
 const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
@@ -18,7 +18,7 @@ const Navigation = () => {
         <Navbar bg="light" expand="md">
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Brand href="/">
-                <img src={logo} height=30 alt="logo" />
+                <img src={logo} height="30" alt="logo" />
             </Navbar.Brand>
 
             <Navbar.Collapse id="basic-navbar-nav">
