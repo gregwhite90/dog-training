@@ -31,11 +31,18 @@ class ImageUpload extends React.Component {
             })
             .then(response => {
                 console.log('Got a response!');
-                console.log(response);
                 if (response.ok) {
                     return {response: response.json()};
                 }
                 // TODO: error-handling
+                return {error: 'Response not ok.'};
+            })
+            .then(({response, error}) => {
+                console.log('response was ok.');
+                console.log(response);
+                if (response) {
+                    return response;
+                }
                 return this.handleUploadingError('Response not ok.');
             })
             .catch(error => {
@@ -46,7 +53,7 @@ class ImageUpload extends React.Component {
     uploadFile(file, signedRequest, url) {
         return fetch(signedRequest, {
             method: 'PUT',
-            body:file,
+            body: file,
         })
             .then(response => {
                 console.log('Got a response');
