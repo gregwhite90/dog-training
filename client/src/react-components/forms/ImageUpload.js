@@ -25,7 +25,7 @@ class ImageUpload extends React.Component {
         const file_type = encodeURIComponent(file.type);
 
         return fetch(
-            `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}`,
+            `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}&operation=putObject`,
             {
                 method: 'GET',
             })
@@ -46,6 +46,7 @@ class ImageUpload extends React.Component {
     uploadFile(file, signedRequest, url) {
         return fetch(signedRequest, {
             method: 'PUT',
+            body:file,
         })
             .then(response => {
                 console.log('Got a response');
@@ -78,11 +79,18 @@ class ImageUpload extends React.Component {
 
         console.log('getting signed request');
 
-        let { error, response: { signedRequest, url }} = await this.getSignedRequest(file);
+        let { error,
+              response: {
+                  signedRequests: {
+                      getObject,
+                      putObject
+                  }
+              }
+        } = await this.getSignedRequest(file);
         console.log('request signed');
-        console.log(signedRequest);
-        console.log(url);
-        let upload_result = await this.uploadFile(file, signedRequest, url);
+        console.log(putObject);
+        console.log(getObject);
+        let upload_result = await this.uploadFile(file, putObject, getObject);
         this.setState({ error: undefined, progress: -1 });
 
     }
@@ -103,7 +111,7 @@ class ImageUpload extends React.Component {
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={() => this.handleFileChange}
+                        onChange={(e) => this.handleFileChange(e)}
                     />
                 </div>
 

@@ -6,6 +6,7 @@ import HorizontalCard from '../../react-components/utils/HorizontalCard';
 function DogCard({dog}) {
     const node = {
         picture: dog.picture,
+        picture_needs_s3: false,
         title: dog.name,
     };
     return (<HorizontalCard node={node}/>);

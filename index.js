@@ -30,31 +30,69 @@ app.use('/graphql',
         }))
 );
 
-app.get('/sign-s3', (req, res) => {
+function getS3SignedUrl(file_name, file_type, operation) {
     const s3 = new aws.S3();
-    const { file_name, file_type } = req.query;
-    // TODO: prefix file name with user_id/ ?
-    const s3_bucket = process.env.S3_BUCKET;
-    const s3_params = {
-        Bucket: s3_bucket,
+    if (!operation || operation !== 'getObject' || operation !== 'putObject') {
+        // TODO: handle failure. send something back?
+        return {error: `Invalid operation: ${operation}`};
+    }
+    const s3_common_params = {
+        Bucket: process.env.S3_BUCKET,
         Key: file_name,
+    };
+    const s3_put_params = {
+        ...s3_common_params,
         Expires: 60,
         ContentType: file_type,
     };
+    const s3_get_params = {
+        ...s3_common_params,
+        Expires: 24 * 60,
+    };
 
-    s3.getSignedUrl('putObject', s3_params, (err, data) => {
+    const s3_params = operation === 'getObject' ? s3_get_params : s3_put_params;
+
+    let signedRequests = {};
+
+    s3.getSignedUrl(operation, s3_params, (err, data) => {
         if (err) {
             // TODO: error-handling code
             console.log(err);
-            return res.end();
+            return {error: err};
         }
-        const returnData = {
-            signedRequest: data,
-            url: `https://${s3_bucket}.s3.amazonaws.com/${fileName}`,
-        };
-        res.write(JSON.stringify(returnData));
-        res.end();
+        signedRequests[operation] = data;
     });
+
+    if (operation === 'putObject') {
+        s3.getSignedUrl('getObject', s3_get_params, (err, data) => {
+            if (err) {
+                // TODO: error-handling code
+                console.log(err);
+                return {error: err};
+            }
+            signedRequests['getObject'] = data;
+        });
+    }
+
+    return {signedRequests};
+}
+
+// TODO: authentication and authorization for this route
+app.get('/sign-s3', (req, res) => {
+    const { file_name, file_type, operation } = req.query;
+    if (!operation || operation !== 'getObject' || operation !== 'putObject') {
+        // TODO: send something back?
+        res.end();
+    }
+    // TODO: prefix file name with user_id/ ?
+    // TODO: check that the user is asking for access to the right image
+    const { error, signedRequests } = getS3SignedURL(file_name, file_type, operation);
+    if (error) {
+        res.end();
+    }
+    if (signedRequests) {
+        res.json(signedRequests);
+    }
 });
 
 app.listen(process.env.PORT || 5000);
