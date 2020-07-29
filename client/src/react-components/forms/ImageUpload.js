@@ -29,42 +29,20 @@ class ImageUpload extends React.Component {
             {
                 method: 'GET',
             })
-            .then(response => {
-                console.log('Got a response!');
-                if (response.ok) {
-                    return {response: response.json()};
-                }
-                // TODO: error-handling
-                return {error: 'Response not ok.'};
-            })
-            .then(({response, error}) => {
-                if (response) {
-                    console.log(response);
-                    return response;
-                }
-                return this.handleUploadingError('Response not ok.');
-            })
+            .then(response => response.json())
+            .then(data => data)
             .catch(error => {
                 return this.handleUploadingError(error);
             });
     }
 
-    uploadFile(file, signedRequest, url) {
-        return fetch(signedRequest, {
+    uploadFile(file, signedRequest) {
+        fetch(signedRequest, {
             method: 'PUT',
             body: file,
         })
-            .then(response => {
-                console.log('Got a response');
-                if (response.ok) {
-                    console.log(response);
-                    this.props.value = url;
-                    this.props.onFinishUploading(url);
-                    return {response: url};
-                }
-                // TODO: error-handling code
-                return this.handleUploadingError('Response not ok.');
-            })
+            .then(response => response.json())
+            .then(data => data)
             .catch(error => {
                 return this.handleUploadingError(error);
             });
@@ -90,7 +68,8 @@ class ImageUpload extends React.Component {
         console.log('request signed');
         console.log(putObject);
         console.log(getObject);
-        let upload_result = await this.uploadFile(file, putObject, getObject);
+        await this.uploadFile(file, putObject);
+        this.props.onFinishUploading(getObject);
         this.setState({ error: undefined, progress: -1 });
 
     }
