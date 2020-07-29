@@ -53,34 +53,24 @@ function getS3SignedUrl(file_name, file_type, operation) {
 
     console.log(`Going for signed requests`);
 
-    let { data, error } = s3.getSignedUrl(operation, s3_params, (err, data) => {
+    s3.getSignedUrl(operation, s3_params, (err, data) => {
         if (err) {
             // TODO: error-handling code
             console.log(err);
-            return {error: err};
         }
         console.log(data);
-        return {data};
+        signedRequests[data];
     });
 
-    if (data) {
-        signedRequests[operation] = data;
-    }
-
     if (operation === 'putObject') {
-        let { data, error } = s3.getSignedUrl('getObject', s3_get_params, (err, data) => {
+        s3.getSignedUrl('getObject', s3_get_params, (err, data) => {
             if (err) {
                 // TODO: error-handling code
                 console.log(err);
-                return {error: err};
             }
             console.log(dta)
-            return {data};
-        });
-
-        if (data) {
             signedRequests['getObject'] = data;
-        }
+        });
     }
 
     console.log('going to return from getS3SignedUrl');
