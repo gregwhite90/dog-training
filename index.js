@@ -34,20 +34,20 @@ function getS3SignedUrl(file_name, file_type, operation) {
     console.log(`In getS3SignedUrl for operation ${operation} with file ${file_name} of type ${file_type}`);
     const s3 = new aws.S3();
     const s3_common_params = {
-        Bucket: process.env.S3_BUCKET,
+        Bucket: process.env.S3_BUCKET_NAME,
         Key: file_name,
     };
     const s3_put_params = {
-        ...s3_common_params,
         Expires: 60,
         ContentType: file_type,
+        ...s3_common_params,
     };
     const s3_get_params = {
-        ...s3_common_params,
         Expires: 24 * 60,
+        ...s3_common_params,
     };
 
-    const s3_params = operation === 'getObject' ? s3_get_params : s3_put_params;
+    const s3_params = (operation === 'getObject' ? s3_get_params : s3_put_params);
 
     let signedRequests = {};
 
