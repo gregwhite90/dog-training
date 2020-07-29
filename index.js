@@ -33,10 +33,6 @@ app.use('/graphql',
 function getS3SignedUrl(file_name, file_type, operation) {
     console.log(`In getS3SignedUrl for operation ${operation} with file ${file_name} of type ${file_type}`);
     const s3 = new aws.S3();
-    if (!operation || operation !== 'getObject' || operation !== 'putObject') {
-        // TODO: handle failure. send something back?
-        return {error: `Invalid operation: ${operation}`};
-    }
     const s3_common_params = {
         Bucket: process.env.S3_BUCKET,
         Key: file_name,
@@ -97,7 +93,7 @@ function getS3SignedUrl(file_name, file_type, operation) {
 app.get('/sign-s3', (req, res) => {
     let { file_name, file_type, operation } = req.query;
     operation = operation.trim();
-    if (!operation || operation !== 'getObject' || operation !== 'putObject') {
+    if (!operation || !(operation === 'getObject' || operation === 'putObject')) {
         console.log(`Invalid operation: ${operation}`);
         // TODO: send something back?
         res.end();
