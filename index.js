@@ -43,7 +43,6 @@ function getS3SignedUrl(file_name, file_type, operation) {
         ...s3_common_params,
     };
     const s3_get_params = {
-        Expires: 24 * 60,
         ...s3_common_params,
     };
 
@@ -53,24 +52,10 @@ function getS3SignedUrl(file_name, file_type, operation) {
 
     console.log(`Going for signed requests`);
 
-    s3.getSignedUrl(operation, s3_params, (err, data) => {
-        if (err) {
-            // TODO: error-handling code
-            console.log(err);
-        }
-        console.log(data);
-        signedRequests[data];
-    });
-
+    // TODO: error-handling code
+    signedRequests[operation] = s3.getSignedUrl(operation, s3_params);
     if (operation === 'putObject') {
-        s3.getSignedUrl('getObject', s3_get_params, (err, data) => {
-            if (err) {
-                // TODO: error-handling code
-                console.log(err);
-            }
-            console.log(dta)
-            signedRequests['getObject'] = data;
-        });
+        signedRequests['getObject'] = s3.getSignedUrl('getObject', s3_get_params);
     }
 
     console.log('going to return from getS3SignedUrl');
