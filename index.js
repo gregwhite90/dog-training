@@ -96,7 +96,7 @@ function getS3SignedUrl(file_name, file_type, operation) {
 // TODO: authentication and authorization for this route
 app.get('/sign-s3', (req, res) => {
     let { file_name, file_type, operation } = req.query;
-    operation = trim(operation);
+    operation = operation.trim();
     if (!operation || operation !== 'getObject' || operation !== 'putObject') {
         console.log(`Invalid operation: ${operation}`);
         // TODO: send something back?
