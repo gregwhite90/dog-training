@@ -100,15 +100,11 @@ class ImageUpload extends React.Component {
                     </div>
                 </div>
                 <div style={{ marginTop: 10 }}>
-                    <label className="button">
-                        Upload new picture
-                        <input
-                            hidden
-                            type="file"
-                            accept="image/*"
-                            onChange={() => this.handleFileChange}
-                        />
-                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={() => this.handleFileChange}
+                    />
                 </div>
 
             </div>
