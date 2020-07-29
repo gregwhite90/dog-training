@@ -12,6 +12,7 @@ ReactDOM.render(
                        redirectUri={window.location.origin}
                        audience="https://dog-training-staging.herokuapp.com/graphql"
                        scope="read:viewer"
+                       useRefreshTokens={true}
         >
             <App />
         </Auth0Provider>

@@ -86,7 +86,7 @@ class ImageUpload extends React.Component {
                             hidden
                             type="file"
                             accept="image/*"
-                            onChange={this.handleFileChange}
+                            onChange={() => this.handleFileChange}
                         />
                     </label>
                 </div>
