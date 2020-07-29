@@ -38,9 +38,8 @@ class ImageUpload extends React.Component {
                 return {error: 'Response not ok.'};
             })
             .then(({response, error}) => {
-                console.log('response was ok.');
-                console.log(response);
                 if (response) {
+                    console.log(response);
                     return response;
                 }
                 return this.handleUploadingError('Response not ok.');
@@ -57,8 +56,8 @@ class ImageUpload extends React.Component {
         })
             .then(response => {
                 console.log('Got a response');
-                console.log(response);
                 if (response.ok) {
+                    console.log(response);
                     this.props.value = url;
                     this.props.onFinishUploading(url);
                     return {response: url};
@@ -72,19 +71,13 @@ class ImageUpload extends React.Component {
     }
 
     async handleFileChange(e) {
-        console.log('handling file change');
-        console.log(e.target);
         if (!e.target.files) {
             return;
         }
         let file = e.target.files[0];
 
-        console.log(file);
-
         this.setState({ error: undefined, progress: 0 });
         this.props.onStartUploading();
-
-        console.log('getting signed request');
 
         let { error,
               response: {
