@@ -12,8 +12,8 @@ import ImageUpload from '../utils/ImageUpload';
 
 class AddDogForm extends React.Component {
 
-    constructor({imgCols, relay: { environment }}) {
-        super({imgCols, relay: { environment }});
+    constructor(props) {
+        super(props);
         this.state = {
             isUploading: false,
         };

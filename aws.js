@@ -35,7 +35,7 @@ function signS3Handler(req, res) {
     // If user is uploading a new file, prefix the path to avoid collisions
     if (operation === 'putObject') {
         const user_id = encodeURIComponent(req.user.sub);
-        key =`/user_uploads/${user_id}/${file_name}`;
+        key =`user_uploads/${user_id}/${file_name}`;
     }
 
     if (!operation || !(operation === 'getObject' || operation === 'putObject')) {

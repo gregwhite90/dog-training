@@ -3,10 +3,10 @@ import { graphql, QueryRenderer } from 'react-relay';
 
 import DogCard from '../containers/DogCard';
 
-export default function DogsList({relay: { environment }}) {
+export default function DogsList(props) {
     return (
         <QueryRenderer
-            environment={environment}
+            environment={props.relay.environment}
             query={graphql`
                 query DogsListQuery {
                     viewer {
