@@ -50,7 +50,7 @@ function signS3Handler(req, res) {
         console.log(error);
         res.end();
     }
-    if (signedRequests) {
+    if (signedRequest) {
         console.log({signedRequest});
         res.json({signedRequest, key});
     }
