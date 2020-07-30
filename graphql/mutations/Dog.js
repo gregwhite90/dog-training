@@ -30,10 +30,12 @@ const addDogMutation = mutationWithClientMutationId({
         dogEdge: {
             type: new GraphQLNonNull(userToDogEdge),
             resolve: ({dog, all_dogs}) => {
-                return {
-                    cursor: cursorForObjectInConnection([...all_dogs], dog),
-                    node: dog
-                };
+                return all_dogs.then(dogs => {
+                    return {
+                        cursor: cursorForObjectInConnection(dogs, dog),
+                        node: dog
+                    };
+                });
             },
         },
     },
