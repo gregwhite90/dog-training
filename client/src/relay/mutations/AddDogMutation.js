@@ -22,11 +22,10 @@ const mutation = graphql`
     }
 `;
 
-function sharedUpdater(store, newEdge) {
+function sharedUpdater(store, viewer, newEdge) {
     console.log('in shared updater');
-    debugger;
     // Get current user record from the store
-    const viewerProxy = store.getRootField('viewer');
+    const viewerProxy = store.get(viewer.id);
     console.log(`viewerProxy type: ${viewerProxy.getType()}`);
     console.log(`viewerProxy dataID: ${viewerProxy.getDataID()}`);
 
@@ -46,7 +45,7 @@ let tempID = 0;
 function commit(
     environment,
     {name, picture},
-    updateStateCallback
+    viewer
 ) {
     console.log(`Called commit with ${name}, ${picture}`);
     commitMutation(
@@ -63,9 +62,7 @@ function commit(
                 // Get the edge of the newly created record
                 const newEdge = payload.getLinkedRecord('dogEdge');
                 // Add it to the viewer's dog list
-                sharedUpdater(store, newEdge);
-
-                updateStateCallback();
+                sharedUpdater(store, viewer, newEdge);
             },
             optimisticUpdater: (store) => {
                 console.log('in optimistic updater');
@@ -85,7 +82,7 @@ function commit(
                 newEdge.setLinkedRecord(node, 'node');
 
                 // Add to the viewer's dog list
-                sharedUpdater(store, newEdge);
+                sharedUpdater(store, viewer, newEdge);
             },
         }
     );

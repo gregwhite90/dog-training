@@ -23,7 +23,7 @@ class ImageUpload extends React.Component {
     }
 
     // TODO: authorization to get an S3 signed key
-    getSignedRequest(file) {
+    getSignedRequest(file, hash) {
         console.log('in getSignedRequest');
         return this.props.auth0.getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
@@ -38,6 +38,7 @@ class ImageUpload extends React.Component {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
+                        'Content-MD5':  hash,
                         'Authorization': `Bearer ${token}`,
                     },
                 })
@@ -53,61 +54,59 @@ class ImageUpload extends React.Component {
     /**
      * Based on: https://github.com/satazor/js-spark-md5
      */
-    md5Checksum(file, callback, chunk_megabytes = 2) {
-        var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
-        const chunkSize = chunk_megabytes * 1024 * 1024;
-        const chunks = Math.ceil(file.size / chunkSize);
-        var currentChunk = 0;
-        const spark = new SparkMD5.ArrayBuffer();
-        const fileReader = new FileReader();
+    md5Checksum(file, chunk_megabytes = 2) {
+        return new Promise((resolve, reject) => {
+            var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+            const chunkSize = chunk_megabytes * 1024 * 1024;
+            const chunks = Math.ceil(file.size / chunkSize);
+            var currentChunk = 0;
+            const spark = new SparkMD5.ArrayBuffer();
+            const fileReader = new FileReader();
 
-        fileReader.onload = function (e) {
-            console.log('read chunk nr', currentChunk + 1, 'of', chunks);
-            spark.append(e.target.result);                   // Append array buffer
-            currentChunk++;
+            fileReader.onload = function (e) {
+                spark.append(e.target.result); // Append array buffer
+                currentChunk++;
 
-            if (currentChunk < chunks) {
-                loadNext();
-            } else {
-                callback(spark.end());  // Compute hash
+                if (currentChunk < chunks) {
+                    loadNext();
+                } else {
+                    resolve(spark.end());  // Compute hash
+                }
+            };
+
+            fileReader.onerror = function (error) {
+                reject(error);
+            };
+
+            function loadNext() {
+                const start = currentChunk * chunkSize;
+                const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
             }
-        };
 
-        fileReader.onerror = function () {
-            // TODO: better error handling
-            console.warn('oops, something went wrong.');
-        };
-
-        function loadNext() {
-            const start = currentChunk * chunkSize;
-            const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
-
-            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
-        }
-
-        loadNext();
+            loadNext();
+        });
     }
 
-    uploadFile(file, signedRequest) {
-        this.md5Checksum(file, (hash) => {
-            fetch(signedRequest, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': file.type,
-                    'Content-MD5': hash,
-                },
-                body: file,
+    uploadFile(file, signedRequest, hash) {
+        fetch(signedRequest, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': file.type,
+                'Content-MD5': hash,
+            },
+            body: file,
+        })
+            .then(response => {
+                // TODO: handle failure more gracefully
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
             })
-                .then(response => {
-                    // TODO: handle failure more gracefully
-                    if (!response.ok) {
-                        throw new Error('Upload failed');
-                    }
-                })
-                .catch(error => {
-                    return this.handleUploadingError(error);
-                });
-        });
+            .catch(error => {
+                return this.handleUploadingError(error);
+            });
     }
 
     async handleFileChange(e) {
@@ -119,11 +118,13 @@ class ImageUpload extends React.Component {
         this.setState({ error: undefined, progress: 0 });
         this.props.onStartUploading();
 
-        let { signedRequest, key } = await this.getSignedRequest(file);
+        let hash = await this.md5Checksum(file);
+
+        let { signedRequest, key } = await this.getSignedRequest(file, hash);
         console.log('request signed');
         console.log(signedRequest);
         console.log(key);
-        await this.uploadFile(file, signedRequest);
+        await this.uploadFile(file, signedRequest, hash);
         this.props.picture = key;
         this.props.onFinishUploading(key);
         this.setState({ error: undefined, progress: -1 });
