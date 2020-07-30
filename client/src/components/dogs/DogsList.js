@@ -4,19 +4,24 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import DogCard from './DogCard';
 
 function DogsList(props) {
+    const nodes =
+        props && props.viewer && props.viewer.edges
+        ? props.viewer.edges
+               .filter(Boolean)
+               .map(edge => edge.node)
+               .filter(Boolean)
+        : [];
     return (
         <>
-            {props.user.dogs.edges
-                  .map(e => e.node)
-                  .map(dog => <DogCard key={dog.id} dog={dog} />)
-            }
+            {nodes.map(node => <DogCard key={node.id} dog={node} />)}
         </>
     );
 }
 
 export default createFragmentContainer(DogsList, {
-    user: graphql`
-        fragment DogsList_user on User {
+    viewer: graphql`
+        fragment DogsList_viewer on User {
+            id
             dogs(
                 first: 2147483647 # max GraphQLInt
             ) @connection(key: "DogsList_dogs") {

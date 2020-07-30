@@ -12,6 +12,7 @@ const {
     dogType,
     dogTypeOwnedScalarFields,
     userToDogEdge,
+    userType,
 } = require('../types/objects/Nodes');
 
 const {
@@ -29,8 +30,8 @@ const addDogMutation = mutationWithClientMutationId({
         // TODO: confirm if want to return additional info
         dogEdge: {
             type: new GraphQLNonNull(userToDogEdge),
-            resolve: ({dog, all_dogs}) => {
-                return all_dogs.then(dogs => {
+            resolve: ({dog, user_model}) => {
+                return user_model.get_all_dogs_for_viewer().then(dogs => {
                     return {
                         cursor: cursorForObjectInConnection(dogs, dog),
                         node: dog
@@ -38,6 +39,12 @@ const addDogMutation = mutationWithClientMutationId({
                 });
             },
         },
+        viewer: {
+            type: new GraphQLNonNull(userType),
+            resolve: ({user_model}) => {
+                return user_model.get_viewer();
+            },
+        }
     },
     mutateAndGetPayload: ({name, picture}, context) => {
         const dog_model = new AuthDog(context);

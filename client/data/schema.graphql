@@ -93,6 +93,7 @@ type Mutation {
 
 type AddDogPayload {
   dogEdge: UserToDogEdge!
+  viewer: User!
   clientMutationId: String
 }
 

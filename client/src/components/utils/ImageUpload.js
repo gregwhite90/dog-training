@@ -3,6 +3,8 @@ import AuthS3Image from './AuthS3Image';
 
 import { withAuth0 } from '@auth0/auth0-react';
 
+import * as SparkMD5 from 'spark-md5';
+
 // TODO: probably pass in styling information. Especially sizing
 
 class ImageUpload extends React.Component {
@@ -48,21 +50,64 @@ class ImageUpload extends React.Component {
     }
 
     // TODO: add an MD5 integrity check to the upload
+    /**
+     * Based on: https://github.com/satazor/js-spark-md5
+     */
+    md5Checksum(file, callback, chunk_megabytes = 2) {
+        var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+        const chunkSize = chunk_megabytes * 1024 * 1024;
+        const chunks = Math.ceil(file.size / chunkSize);
+        var currentChunk = 0;
+        const spark = new SparkMD5.ArrayBuffer();
+        const fileReader = new FileReader();
+
+        fileReader.onload = function (e) {
+            console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+            spark.append(e.target.result);                   // Append array buffer
+            currentChunk++;
+
+            if (currentChunk < chunks) {
+                loadNext();
+            } else {
+                callback(spark.end());  // Compute hash
+            }
+        };
+
+        fileReader.onerror = function () {
+            // TODO: better error handling
+            console.warn('oops, something went wrong.');
+        };
+
+        function loadNext() {
+            const start = currentChunk * chunkSize;
+            const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+        }
+
+        loadNext();
+    }
 
     uploadFile(file, signedRequest) {
-        fetch(signedRequest, {
-            method: 'PUT',
-            body: file,
-        })
-            .then(response => {
-                // TODO: handle failure more gracefully
-                if (!response.ok) {
-                    throw new Error('Upload failed');
-                }
+        this.md5Checksum(file, (hash) => {
+            fetch(signedRequest, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': file.type,
+                    'Content-MD5': hash,
+                },
+                body: file,
             })
-            .catch(error => {
-                return this.handleUploadingError(error);
-            });
+                .then(response => {
+                    // TODO: handle failure more gracefully
+                    if (!response.ok) {
+                        throw new Error('Upload failed');
+                    }
+                })
+                .catch(error => {
+                    return this.handleUploadingError(error);
+                });
+        });
     }
 
     async handleFileChange(e) {

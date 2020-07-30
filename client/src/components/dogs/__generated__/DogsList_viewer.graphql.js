@@ -10,9 +10,10 @@
 import type { ReaderFragment } from 'relay-runtime';
 type DogCard_dog$ref = any;
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type DogsList_user$ref: FragmentReference;
-declare export opaque type DogsList_user$fragmentType: DogsList_user$ref;
-export type DogsList_user = {|
+declare export opaque type DogsList_viewer$ref: FragmentReference;
+declare export opaque type DogsList_viewer$fragmentType: DogsList_viewer$ref;
+export type DogsList_viewer = {|
+  +id: string,
   +dogs: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
@@ -21,18 +22,26 @@ export type DogsList_user = {|
       |}
     |}>
   |},
-  +$refType: DogsList_user$ref,
+  +$refType: DogsList_viewer$ref,
 |};
-export type DogsList_user$data = DogsList_user;
-export type DogsList_user$key = {
-  +$data?: DogsList_user$data,
-  +$fragmentRefs: DogsList_user$ref,
+export type DogsList_viewer$data = DogsList_viewer;
+export type DogsList_viewer$key = {
+  +$data?: DogsList_viewer$data,
+  +$fragmentRefs: DogsList_viewer$ref,
   ...
 };
 */
 
 
-const node/*: ReaderFragment*/ = {
+const node/*: ReaderFragment*/ = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": {
@@ -47,8 +56,9 @@ const node/*: ReaderFragment*/ = {
       }
     ]
   },
-  "name": "DogsList_user",
+  "name": "DogsList_viewer",
   "selections": [
+    (v0/*: any*/),
     {
       "alias": "dogs",
       "args": null,
@@ -73,13 +83,7 @@ const node/*: ReaderFragment*/ = {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -137,7 +141,8 @@ const node/*: ReaderFragment*/ = {
   "type": "User",
   "abstractKey": null
 };
+})();
 // prettier-ignore
-(node/*: any*/).hash = '4694c6b4915a065254b81ec387788bda';
+(node/*: any*/).hash = '9c2ec93f7f6dd04df198a4db71481abf';
 
 module.exports = node;

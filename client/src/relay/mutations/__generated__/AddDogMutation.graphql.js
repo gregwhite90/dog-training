@@ -24,7 +24,10 @@ export type AddDogMutationResponse = {|
         +name: string,
         +picture: ?string,
       |}
-    |}
+    |},
+    +viewer: {|
+      +id: string
+    |},
   |}
 |};
 export type AddDogMutation = {|
@@ -46,6 +49,9 @@ mutation AddDogMutation(
         picture
       }
     }
+    viewer {
+      id
+    }
   }
 }
 */
@@ -58,7 +64,14 @@ var v0 = [
     "name": "input"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": [
@@ -89,13 +102,7 @@ v1 = [
             "name": "node",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
+              (v1/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -115,6 +122,18 @@ v1 = [
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "viewer",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/)
+        ],
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -126,7 +145,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "AddDogMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -135,19 +154,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "AddDogMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "e3575a8c01ad5bda7396a582b982c8d5",
+    "cacheID": "630c2fc875e9597c41686a3206448ee9",
     "id": null,
     "metadata": {},
     "name": "AddDogMutation",
     "operationKind": "mutation",
-    "text": "mutation AddDogMutation(\n  $input: AddDogInput!\n) {\n  addDog(input: $input) {\n    dogEdge {\n      node {\n        id\n        name\n        picture\n      }\n    }\n  }\n}\n"
+    "text": "mutation AddDogMutation(\n  $input: AddDogInput!\n) {\n  addDog(input: $input) {\n    dogEdge {\n      node {\n        id\n        name\n        picture\n      }\n    }\n    viewer {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '3eb24e6393733f1957d85ef5923fc890';
+(node/*: any*/).hash = '598c53efed28337680ae793fc6f02ac6';
 
 module.exports = node;

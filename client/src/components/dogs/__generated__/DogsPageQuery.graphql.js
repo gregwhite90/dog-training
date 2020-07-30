@@ -8,24 +8,24 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type DogsList_user$ref = any;
-export type DogsListQueryVariables = {||};
-export type DogsListQueryResponse = {|
+type DogsApp_viewer$ref = any;
+export type DogsPageQueryVariables = {||};
+export type DogsPageQueryResponse = {|
   +viewer: ?{|
-    +$fragmentRefs: DogsList_user$ref
+    +$fragmentRefs: DogsApp_viewer$ref
   |}
 |};
-export type DogsListQuery = {|
-  variables: DogsListQueryVariables,
-  response: DogsListQueryResponse,
+export type DogsPageQuery = {|
+  variables: DogsPageQueryVariables,
+  response: DogsPageQueryResponse,
 |};
 */
 
 
 /*
-query DogsListQuery {
+query DogsPageQuery {
   viewer {
-    ...DogsList_user
+    ...DogsApp_viewer
     id
   }
 }
@@ -35,7 +35,13 @@ fragment DogCard_dog on Dog {
   picture
 }
 
-fragment DogsList_user on User {
+fragment DogsApp_viewer on User {
+  id
+  ...DogsList_viewer
+}
+
+fragment DogsList_viewer on User {
+  id
   dogs(first: 2147483647) {
     edges {
       node {
@@ -54,26 +60,26 @@ fragment DogsList_user on User {
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 2147483647
-  }
-],
-v1 = {
+var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 2147483647
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "DogsListQuery",
+    "name": "DogsPageQuery",
     "selections": [
       {
         "alias": null,
@@ -86,7 +92,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "DogsList_user"
+            "name": "DogsApp_viewer"
           }
         ],
         "storageKey": null
@@ -99,7 +105,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "DogsListQuery",
+    "name": "DogsPageQuery",
     "selections": [
       {
         "alias": null,
@@ -109,9 +115,10 @@ return {
         "name": "viewer",
         "plural": false,
         "selections": [
+          (v0/*: any*/),
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "concreteType": "UserToDogConnection",
             "kind": "LinkedField",
             "name": "dogs",
@@ -133,7 +140,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v0/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -198,30 +205,29 @@ return {
           },
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "DogsList_dogs",
             "kind": "LinkedHandle",
             "name": "dogs"
-          },
-          (v1/*: any*/)
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "eabb2f57d5286181b072a2dddba22664",
+    "cacheID": "f0707bd14bb4bfa5736c13dea15c92e9",
     "id": null,
     "metadata": {},
-    "name": "DogsListQuery",
+    "name": "DogsPageQuery",
     "operationKind": "query",
-    "text": "query DogsListQuery {\n  viewer {\n    ...DogsList_user\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsList_user on User {\n  dogs(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '8f688cd6685254b7ae3b5d8bc8f16441';
+(node/*: any*/).hash = 'ce6f7dbe1002ccfb66ed56261aabaf0d';
 
 module.exports = node;

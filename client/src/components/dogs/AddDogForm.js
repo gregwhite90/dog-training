@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form as FormikForm, Field } from 'formik';
-import AddDogMutation from '../../relay/mutations/AddDogMutation';
 import { withAuth0 } from '@auth0/auth0-react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -8,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import ImageUpload from '../utils/ImageUpload';
+import ImageUpload from 'components/utils/ImageUpload';
 
 class AddDogForm extends React.Component {
 
@@ -34,10 +33,13 @@ class AddDogForm extends React.Component {
                 }}
                 onSubmit={({ name, picture }, { setSubmitting }) => {
                         // TODO: figure out what to do with the file input
-                        AddDogMutation.commit(
-                            this.props.relay.environment,
-                            {name, picture: (picture === '' ? null : picture)},
-                            () => setSubmitting(false));
+                        this.props.onSubmit(
+                            {
+                                name,
+                                picture: (picture === '' ? null : picture)
+                            },
+                            () => setSubmitting(false)
+                        );
                 }}
             >
                 {({ isSubmitting, setSubmitting, setFieldValue }) => {

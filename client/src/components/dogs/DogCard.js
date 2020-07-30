@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 
-import HorizontalCard from '../../react-components/utils/HorizontalCard';
+import HorizontalCard from 'components/utils/HorizontalCard';
 
 function DogCard(props) {
     const node = {
