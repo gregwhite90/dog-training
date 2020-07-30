@@ -32,7 +32,7 @@ const addDogMutation = mutationWithClientMutationId({
             resolve: ({dog, user}) => {
                 return {
                     cursor: cursorForObjectInConnection(
-                        [...user_model.get_all_dogs({user.id})],
+                        user_model.get_all_dogs({user.id}),
                         dog
                     ),
                     node: dog
