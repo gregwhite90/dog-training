@@ -12,7 +12,7 @@ export default function DogsList(props) {
                     viewer {
                         dogs(
                             first: 2147483647 # max GraphQLInt
-                        ) @connection(key: "DogList_dogs") {
+                        ) @connection(key: "DogsList_dogs") {
                             edges {
                                 node {
                                     id
