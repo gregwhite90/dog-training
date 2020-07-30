@@ -41,7 +41,7 @@ class ImageUpload extends React.Component {
                 .catch(error => {
                     return this.handleUploadingError(error);
                 });
-        }
+        });
     }
 
     uploadFile(file, signedRequest) {
