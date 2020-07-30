@@ -1,3 +1,5 @@
+import { installRelayDevTools } from 'relay-devtools';
+
 import {
     Environment,
     Network,
@@ -30,6 +32,8 @@ export default function createEnvironment(getAccessTokenSilently) {
             }).then(response => response.json());
         });
     }
+
+    installRelayDevTools();
 
     return new Environment({
         network: Network.create(fetchQuery),
