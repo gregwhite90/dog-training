@@ -18,10 +18,7 @@ import Home from './react-components/pages/Home';
 import About from './react-components/pages/About';
 import Dogs from './react-components/pages/Dogs';
 
-/**
-import logo from './logo.svg';
-*/
-import './App.css';
+import './App.scss';
 
 class App extends React.Component {
     constructor(props) {
