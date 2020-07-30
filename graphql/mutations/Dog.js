@@ -16,6 +16,7 @@ const {
 
 const {
     AuthDog,
+    AuthUser,
 } = require('../../business-layer/models');
 
 const addDogMutation = mutationWithClientMutationId({
