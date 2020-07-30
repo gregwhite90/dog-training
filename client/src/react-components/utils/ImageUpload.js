@@ -47,13 +47,19 @@ class ImageUpload extends React.Component {
         });
     }
 
+    // TODO: add an MD5 integrity check to the upload
+
     uploadFile(file, signedRequest) {
         fetch(signedRequest, {
             method: 'PUT',
             body: file,
         })
-            .then(response => response.json())
-            .then(data => data)
+            .then(response => {
+                // TODO: handle failure more gracefully
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+            })
             .catch(error => {
                 return this.handleUploadingError(error);
             });
