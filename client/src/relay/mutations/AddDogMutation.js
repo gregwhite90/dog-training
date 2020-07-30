@@ -21,6 +21,7 @@ const mutation = graphql`
 
 function sharedUpdater(store, newEdge) {
     console.log('in shared updater');
+    debugger;
     // Get current user record from the store
     const viewerProxy = store.getRootField('viewer');
     console.log(`viewerProxy type: ${viewerProxy.getType()}`);
