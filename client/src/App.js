@@ -21,14 +21,14 @@ import Dogs from './react-components/pages/Dogs';
 import './App.scss';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        const { getAccessTokenSilently } = props.auth0;
-        this.state = {
+
+    componentDidMount() {
+        const { getAccessTokenSilently } = this.props.auth0;
+        this.setState({
             relay: {
-                environment: createEnvironment(getAccessTokenSilently),
-            },
-        };
+                environment: createEnvironment(getAccessTokenSilently)
+            }
+        });
     }
 
     render() {
