@@ -39,7 +39,7 @@ class AddDogForm extends React.Component {
                             {name, picture: (picture === '' ? null : picture)},
                             {
                                 _node_type: 'User',
-                                id: this.props.auth0.user.sub,
+                                id: this.props.auth0.user.sub, // TODO: need to get the global ID?
                                 name: this.props.auth0.user.name,
                                 picture: this.props.auth0.user.picture,
                             }, // TODO: see what needs to go in

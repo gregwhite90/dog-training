@@ -20,14 +20,18 @@ const mutation = graphql`
 `;
 
 function sharedUpdater(store, user, newEdge) {
+    console.log('in shared updater');
     // Get current user record from the store
     const userProxy = store.get(user.id);
+    console.log(`userProxy type: ${userProxy.getType()}`);
+    console.log(`userProxy dataID: ${userProxy.getDataID()}`);
 
     // Get the user's dog list
     const conn = ConnectionHandler.getConnection(
         userProxy,
         'DogList_dogs',
     );
+    console.log(`Connection `);
 
     // Insert the new dog into the dog list connection
     ConnectionHandler.insertEdgeAfter(conn, newEdge);
@@ -51,6 +55,7 @@ function commit(
                 input: { name, picture },
             },
             updater: (store) => {
+                console.log('in updater');
                 // Get the payload returned from the server
                 const payload = store.getRootField('addDog');
                 // Get the edge of the newly created record
