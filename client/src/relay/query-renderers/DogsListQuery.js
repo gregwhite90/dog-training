@@ -16,6 +16,7 @@ export default function DogsListQuery(props) {
                 `}
             render={({error, props}) => {
                     if (error) {
+                        console.log(error);
                         return <div>{error.message}</div>;
                     } else if (props) {
                         return <DogsList user={props.viewer}/>;
