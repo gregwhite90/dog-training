@@ -8,7 +8,7 @@ const jwksRsa = require('jwks-rsa');
 // Authentication middleware. When used, the
 // Access Token must exist and be verified against
 // the Auth0 JSON Web Key Set
-const checkAPIJwt = jwt({
+const checkJwt = jwt({
     // Dynamically provide a signing key
     // based on the kid in the header and
     // the signing keys provided by the JWKS endpoint.
@@ -24,9 +24,9 @@ const checkAPIJwt = jwt({
     algorithms: ['RS256']
 });
 
-const checkAPIScopes = (scopes) => jwtAuthz(scopes);
+const checkScopes = (scopes) => jwtAuthz(scopes);
 
 module.exports = {
-    checkAPIJwt,
-    checkAPIScopes,
+    checkJwt,
+    checkScopes,
 };

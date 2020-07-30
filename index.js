@@ -4,8 +4,8 @@ const path = require('path');
 const { graphqlHTTP } = require('express-graphql');
 const DogTrainingSchema = require('./graphql/schema');
 const {
-    checkAPIJwt,
-    checkAPIScopes,
+    checkJwt,
+    checkScopes,
 }= require('./validate');
 const aws = require('aws-sdk');
 aws.config.region = process.env.AWS_REGION;
@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Set up the API route
 app.use('/graphql',
-        checkAPIJwt,
-        checkAPIScopes(['read:viewer']),
+        checkJwt,
+        checkScopes(['read:viewer']),
         graphqlHTTP((req, res, graphQLParams) => ({
             schema: DogTrainingSchema,
             graphiql: {
@@ -30,12 +30,12 @@ app.use('/graphql',
         }))
 );
 
-function getS3SignedUrl(file_name, file_type, operation) {
-    console.log(`In getS3SignedUrl for operation ${operation} with file ${file_name} of type ${file_type}`);
+function getS3SignedUrl(key, file_type, operation) {
+    console.log(`In getS3SignedUrl for operation ${operation} with key ${key} of type ${file_type}`);
     const s3 = new aws.S3();
     const s3_common_params = {
         Bucket: process.env.S3_BUCKET_NAME,
-        Key: file_name,
+        Key: key,
     };
     const s3_put_params = {
         Expires: 60,
@@ -48,42 +48,43 @@ function getS3SignedUrl(file_name, file_type, operation) {
 
     const s3_params = (operation === 'getObject' ? s3_get_params : s3_put_params);
 
-    let signedRequests = {};
-
     console.log(`Going for signed requests`);
 
     // TODO: error-handling code
-    signedRequests[operation] = s3.getSignedUrl(operation, s3_params);
-    if (operation === 'putObject') {
-        signedRequests['getObject'] = s3.getSignedUrl('getObject', s3_get_params);
-    }
-
-    console.log('going to return from getS3SignedUrl');
-    console.log({signedRequests});
-
-    return {signedRequests};
+    return { signedRequest: s3.getSignedUrl(operation, s3_params) };
 }
 
 // TODO: authentication and authorization for this route
-app.get('/sign-s3', (req, res) => {
-    let { file_name, file_type, operation } = req.query;
-    operation = operation.trim();
+app.get('/sign-s3', checkJwt, checkScopes(['edit:assets']), (req, res) => {
+
+    // TODO: implement stricter authorization mechanism? issue is if the
+    // dog is shared among multiple users for example, they need to see the images
+
+    const { file_name, file_type, operation } = req.query;
+
+    let key = file_name;
+
+    // If user is uploading a new file, prefix the path to avoid collisions
+    if (operation === 'putObject') {
+        const user_id = encodeURIComponent(req.user.sub);
+        key =`/user_uploads/${user_id}/${file_name}`;
+    }
+
     if (!operation || !(operation === 'getObject' || operation === 'putObject')) {
         console.log(`Invalid operation: ${operation}`);
         // TODO: send something back?
         res.end();
     }
-    // TODO: prefix file name with user_id/ ?
     // TODO: check that the user is asking for access to the right image
-    const { error, signedRequests } = getS3SignedUrl(file_name, file_type, operation);
+    const { error, signedRequest } = getS3SignedUrl(key, file_type, operation);
 
     if (error) {
         console.log(error);
         res.end();
     }
     if (signedRequests) {
-        console.log({signedRequests});
-        res.json({signedRequests});
+        console.log({signedRequest});
+        res.json({signedRequest, key});
     }
 });
 

@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import ImageUpload from './ImageUpload';
+import ImageUpload from '../utils/ImageUpload';
 
 class AddDogForm extends React.Component {
 
@@ -65,7 +65,6 @@ class AddDogForm extends React.Component {
                                                          }
                                                          this.setState({isUploading: false});
                                                  }}
-                                                 value=""
                                              />
                                              <Field name="picture" type="hidden" />
                                          </Form.Group>

@@ -1,7 +1,9 @@
 import React from 'react';
-import Image from 'react-bootstrap/Image';
+import AuthS3Image from './AuthS3Image';
 
 import { withAuth0 } from '@auth0/auth0-react';
+
+// TODO: probably pass in styling information. Especially sizing
 
 class ImageUpload extends React.Component {
 
@@ -21,19 +23,25 @@ class ImageUpload extends React.Component {
     // TODO: authorization to get an S3 signed key
     getSignedRequest(file) {
         console.log('in getSignedRequest');
-        const file_name = encodeURIComponent(file.name);
-        const file_type = encodeURIComponent(file.type);
+        return this.props.auth0.getAccessTokenSilently.then(token => {
+            const file_name = encodeURIComponent(file.name);
+            const file_type = encodeURIComponent(file.type);
 
-        return fetch(
-            `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}&operation=putObject`,
-            {
-                method: 'GET',
-            })
-            .then(response => response.json())
-            .then(data => data)
-            .catch(error => {
-                return this.handleUploadingError(error);
-            });
+            return fetch(
+                `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}&operation=putObject`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => data)
+                .catch(error => {
+                    return this.handleUploadingError(error);
+                });
+        }
     }
 
     uploadFile(file, signedRequest) {
@@ -57,28 +65,24 @@ class ImageUpload extends React.Component {
         this.setState({ error: undefined, progress: 0 });
         this.props.onStartUploading();
 
-        let {
-            signedRequests: {
-                getObject,
-                putObject
-            }
-        } = await this.getSignedRequest(file);
+        let { signedRequest, key } = await this.getSignedRequest(file);
         console.log('request signed');
-        console.log(putObject);
-        console.log(getObject);
-        await this.uploadFile(file, putObject);
-        this.props.onFinishUploading(getObject);
+        console.log(signedRequest);
+        console.log(key);
+        await this.uploadFile(file, signedRequest);
+        this.props.picture = key;
+        this.props.onFinishUploading(key);
         this.setState({ error: undefined, progress: -1 });
-
     }
 
     render() {
         return (
             <div>
                 <div>
-                    {this.props.value !== '' &&
+                    {this.props.picture &&
+                     this.props.picture !== '' &&
                      this.state.progress === -1 &&
-                     <Image src={this.props.value} />}
+                     <AuthS3Image picture={this.props.picture} />}
                     <div style={{ maxWidth: 144 }}>
                         {this.state.progress > -1 &&
                          <div>Uploading...</div>}
