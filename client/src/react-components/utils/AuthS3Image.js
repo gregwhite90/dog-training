@@ -11,7 +11,7 @@ class AuthS3Image extends React.Component {
             scope: 'edit:assets',
         })
         .then(token => {
-            const {response, error} = fetch(
+            const data = fetch(
                 `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&operation=getObject`,
                 {
                     method: 'GET',
@@ -20,22 +20,13 @@ class AuthS3Image extends React.Component {
                         'Authorization': `Bearer ${token}`,
                     },
                 })
-                .then(response => {
-                    console.log('Got a response!');
-                    console.log(response);
-                    if (response.ok) {
-                        return {response: response.json()};
-                    }
-                    // TODO: error-handling
-                    return {error: 'Response not ok.'};
-                })
-                .catch(error => {
-                    return {error};
-                });
-            if (!error && response) {
+                .then(response => response.json())
+                .then(data => data)
+                .catch(error => console.log(error));
+            if (data) {
                 // TODO: ensure this exists
                 // TODO: handle failure gracefully
-                this.props.src = response.signedRequest;
+                this.props.src = data.signedRequest;
             }
         })
         .catch(error => console.log(error));
