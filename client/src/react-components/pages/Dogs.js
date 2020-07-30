@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import DogsList from '../../relay/query-renderers/DogsList';
+import DogsListQuery from '../../relay/query-renderers/DogsListQuery';
 import AddDogForm from '../forms/AddDogForm';
 
 export default function Dogs(props) {
@@ -10,7 +10,7 @@ export default function Dogs(props) {
     return (
         <>
             <h1>My dogs</h1>
-            <DogsList relay={props.relay} />
+            <DogsListQuery relay={props.relay} />
             <h1>Add a dog!</h1>
             <AddDogForm relay={props.relay}/>
         </>
