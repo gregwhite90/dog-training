@@ -5,7 +5,7 @@ const {
 
 const {
     mutationWithClientMutationId,
-    cursorForObjectConnection,
+    cursorForObjectInConnection,
 } = require('graphql-relay');
 
 const {
