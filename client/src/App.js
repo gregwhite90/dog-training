@@ -21,6 +21,10 @@ import Dogs from './react-components/pages/Dogs';
 import './App.scss';
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { relay: { environment: null }};
+    }
 
     componentDidMount() {
         const { getAccessTokenSilently } = this.props.auth0;
