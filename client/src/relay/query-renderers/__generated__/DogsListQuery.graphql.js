@@ -130,7 +130,7 @@ return {
             "args": null,
             "concreteType": "UserToDogConnection",
             "kind": "LinkedField",
-            "name": "__DogList_dogs_connection",
+            "name": "__DogsList_dogs_connection",
             "plural": false,
             "selections": [
               {
@@ -244,7 +244,7 @@ return {
             "args": (v4/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "DogList_dogs",
+            "key": "DogsList_dogs",
             "kind": "LinkedHandle",
             "name": "dogs"
           },
@@ -277,6 +277,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0821b9d5f6376470f8095aef54dda892';
+(node/*: any*/).hash = 'a3bb8e393fe14b19e704da429ae1ad27';
 
 module.exports = node;

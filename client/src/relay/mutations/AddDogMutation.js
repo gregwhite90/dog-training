@@ -19,16 +19,16 @@ const mutation = graphql`
     }
 `;
 
-function sharedUpdater(store, user, newEdge) {
+function sharedUpdater(store, newEdge) {
     console.log('in shared updater');
     // Get current user record from the store
-    const userProxy = store.getRootField('viewer');
-    console.log(`userProxy type: ${userProxy.getType()}`);
-    console.log(`userProxy dataID: ${userProxy.getDataID()}`);
+    const viewerProxy = store.getRootField('viewer');
+    console.log(`viewerProxy type: ${viewerProxy.getType()}`);
+    console.log(`viewerProxy dataID: ${viewerProxy.getDataID()}`);
 
     // Get the user's dog list
     const conn = ConnectionHandler.getConnection(
-        userProxy,
+        viewerProxy,
         'DogsList_dogs',
     );
     console.log(`Connection gotten`);
@@ -42,11 +42,9 @@ let tempID = 0;
 function commit(
     environment,
     {name, picture},
-    user, // TODO: this is just an ID right now
     updateStateCallback
 ) {
     console.log(`Called commit with ${name}, ${picture}`);
-    console.log(user);
     commitMutation(
         environment,
         {
@@ -60,8 +58,8 @@ function commit(
                 const payload = store.getRootField('addDog');
                 // Get the edge of the newly created record
                 const newEdge = payload.getLinkedRecord('dogEdge');
-                // Add it to the user's dog list
-                sharedUpdater(store, user, newEdge);
+                // Add it to the viewer's dog list
+                sharedUpdater(store, newEdge);
 
                 updateStateCallback();
             },
@@ -78,12 +76,12 @@ function commit(
                 // Create a new edge that contains the newly created Dog
                 const newEdge = store.create(
                     `client:newEdge:${tempID++}`,
-                    'DogEdge',
+                    'UserToDogEdge',
                 );
                 newEdge.setLinkedRecord(node, 'node');
 
-                // Add to the user's dog list
-                sharedUpdater(store, user, newEdge);
+                // Add to the viewer's dog list
+                sharedUpdater(store, newEdge);
             },
         }
     );

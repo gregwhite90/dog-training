@@ -37,12 +37,6 @@ class AddDogForm extends React.Component {
                         AddDogMutation.commit(
                             this.props.relay.environment,
                             {name, picture: (picture === '' ? null : picture)},
-                            {
-                                _node_type: 'User',
-                                id: this.props.auth0.user.sub, // TODO: need to get the global ID?
-                                name: this.props.auth0.user.name,
-                                picture: this.props.auth0.user.picture,
-                            }, // TODO: see what needs to go in
                             () => setSubmitting(false));
                 }}
             >
