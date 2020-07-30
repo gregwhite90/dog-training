@@ -70,7 +70,7 @@ class ImageUpload extends React.Component {
                 if (currentChunk < chunks) {
                     loadNext();
                 } else {
-                    resolve(spark.end());  // Compute hash
+                    resolve(btoa(spark.end(true)));  // Compute hash
                 }
             };
 
