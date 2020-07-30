@@ -29,24 +29,19 @@ const addDogMutation = mutationWithClientMutationId({
         // TODO: confirm if want to return additional info
         dogEdge: {
             type: new GraphQLNonNull(userToDogEdge),
-            resolve: ({dog, user}) => {
+            resolve: ({dog, all_dogs}) => {
                 return {
-                    cursor: cursorForObjectInConnection(
-                        user_model.get_all_dogs({user.id}),
-                        dog
-                    ),
+                    cursor: cursorForObjectInConnection(all_dogs, dog),
                     node: dog
                 };
             },
         },
     },
     mutateAndGetPayload: ({name, picture}, context) => {
-        // TODO: actually implement
         const dog_model = new AuthDog(context);
         const user_model = new AuthUser(context);
         const dog = dog_model.create_one({name, picture});
-        const user = user_model.get_viewer();
-        return {dog, user};
+        return {dog, all_dogs: user_model.get_all_dogs_for_viewer()};
     },
 });
 /**
