@@ -37,7 +37,7 @@ class AuthUser extends AuthModel {
     }
 
     async get_all_dogs_for_viewer() {
-        return this.get_all_dogs_for_user({id: this.user_id})
+        return this.get_all_dogs({id: this.user_id})
                    .then(dogs => dogs.map(Dog.create_object));
     }
 }
