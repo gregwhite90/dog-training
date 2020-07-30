@@ -23,7 +23,10 @@ class ImageUpload extends React.Component {
     // TODO: authorization to get an S3 signed key
     getSignedRequest(file) {
         console.log('in getSignedRequest');
-        return this.props.auth0.getAccessTokenSilently.then(token => {
+        return this.props.auth0.getAccessTokenSilently({
+            audience: 'https://dog-training-staging.herokuapp.com/graphql',
+            scope: 'edit:assets',
+        }).then(token => {
             const file_name = encodeURIComponent(file.name);
             const file_type = encodeURIComponent(file.type);
 
