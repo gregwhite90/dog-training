@@ -18,7 +18,7 @@ export type AddDogMutationVariables = {|
 |};
 export type AddDogMutationResponse = {|
   +addDog: ?{|
-    +dogEdge: ?{|
+    +dogEdge: {|
       +node: ?{|
         +id: string,
         +name: string,

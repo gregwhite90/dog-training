@@ -5,6 +5,7 @@ const {
 
 const {
     mutationWithClientMutationId,
+    cursorForObjectConnection,
 } = require('graphql-relay');
 
 const {
@@ -26,10 +27,16 @@ const addDogMutation = mutationWithClientMutationId({
     outputFields: {
         // TODO: confirm if want to return additional info
         dogEdge: {
-            type: userToDogEdge,
-            // TODO: actually implement
-            resolveNode: (dog, context) => {
-                return dog;
+            type: new GraphQLNonNull(userToDogEdge),
+            resolve: (dog, context) => {
+                const user_model = new AuthUser(context);
+                return {
+                    cursor: cursorForObjectInConnection(
+                        [...user_model.get_all_dogs_for_viewer()],
+                        dog
+                    ),
+                    node: dog
+                };
             },
         },
     },
