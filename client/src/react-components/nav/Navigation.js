@@ -7,7 +7,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import LoginButton from '../authentication/LoginButton';
 import LogoutButton from '../authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
-import '../../App.css';
 import logo from '../../logo_dark.svg';
 
 const Navigation = () => {
@@ -15,7 +14,7 @@ const Navigation = () => {
     const MARGIN_WITHIN_NAV = 3;
 
     return (
-        <Navbar bg="light" expand="md">
+        <Navbar bg="light" expand="md" className="border-bottom border-primary">
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Brand href="/">
                 <img src={logo} height="30" alt="logo" />
