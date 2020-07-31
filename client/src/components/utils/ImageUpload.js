@@ -16,6 +16,10 @@ class ImageUpload extends React.Component {
             error: null,
             src: null,
         };
+        this.handleUploadingError = this.handleUploadingError.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
+        this.getSignedRequest = this.getSignedRequest.bind(this);
+        this.uploadFile = this.uploadFile.bind(this);
     }
 
     handleUploadingError(error) {
@@ -150,7 +154,7 @@ class ImageUpload extends React.Component {
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => this.handleFileChange(e)}
+                        onChange={this.handleFileChange}
                     />
                 </div>
 
