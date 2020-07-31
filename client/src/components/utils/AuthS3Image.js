@@ -10,7 +10,8 @@ class AuthS3Image extends React.Component {
 
     componentDidMount() {
         const file_name = encodeURIComponent(this.props.picture);
-        return this.props.auth0.getAccessTokenSilently({
+
+        this.props.auth0.getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
             scope: 'read:assets',
         })
@@ -25,15 +26,8 @@ class AuthS3Image extends React.Component {
                     },
                 })
                 .then(response => response.json())
-                .then(data => data)
+                .then(data => this.setState({src: data.signedRequest}))
                 .catch(error => console.log(error));
-            console.log('Checking for the signed request in AuthS3Image');
-            console.log(data);
-            if (data) {
-                // TODO: ensure this exists
-                // TODO: handle failure gracefully
-                this.setState({src: data.signedRequest});
-            }
         })
         .catch(error => console.log(error));
     }
