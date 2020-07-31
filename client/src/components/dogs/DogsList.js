@@ -5,11 +5,11 @@ import DogCard from './DogCard';
 
 function DogsList(props) {
     const nodes =
-        props && props.viewer && props.viewer.edges
-        ? props.viewer.edges
+        props && props.viewer && props.viewer.dogs && props.viewer.dogs.edges
+        ? props.viewer.dogs.edges
                .filter(Boolean)
                .map(edge => edge.node)
-               .filter(Boolean)
+               .filter(Boolean);
         : [];
     return (
         <>

@@ -1,62 +1,72 @@
 const aws = require('aws-sdk');
 aws.config.region = process.env.AWS_REGION;
 
-function getS3SignedUrl(key, file_type, operation) {
-    console.log(`In getS3SignedUrl for operation ${operation} with key ${key} of type ${file_type}`);
+function getS3SignedGetURL(key, params = {}) {
     const s3 = new aws.S3();
-    const s3_common_params = {
+    const s3_params = {
         Bucket: process.env.S3_BUCKET_NAME,
         Key: key,
+        ...params,
     };
-    const s3_put_params = {
-        Expires: 60,
-        ContentType: file_type,
-        ...s3_common_params,
-    };
-    const s3_get_params = {
-        ...s3_common_params,
-    };
-
-    const s3_params = (operation === 'getObject' ? s3_get_params : s3_put_params);
-
-    console.log(`Going for signed requests`);
-
     // TODO: error-handling code
-    return { signedRequest: s3.getSignedUrl(operation, s3_params) };
+    return { signedRequest: s3.getSignedUrl('getObject', s3_params) };
 }
 
-function signS3Handler(req, res) {
+function getS3SignedPutURL(key, params = {}) {
+    const s3 = new aws.S3();
+    const s3_params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key,
+        Expires: 60,
+        ...params,
+    };
+    // TODO: error-handling code
+    return { signedRequest: s3.getSignedUrl('putObject', s3_params) };
+}
+
+function signS3GetHandler(req, res) {
     // TODO: implement stricter authorization mechanism? issue is if the
     // dog is shared among multiple users for example, they need to see the images
 
-    const { file_name, file_type, operation } = req.query;
-    let key = file_name;
+    const { file_name } = req.query;
+    const key = decodeURIComponent(file_name);
 
-    // If user is uploading a new file, prefix the path to avoid collisions
-    if (operation === 'putObject') {
-        const user_id = encodeURIComponent(req.user.sub);
-        key =`user_uploads/${user_id}/${file_name}`;
-    }
-
-    if (!operation || !(operation === 'getObject' || operation === 'putObject')) {
-        console.log(`Invalid operation: ${operation}`);
-        // TODO: send something back?
-        res.end();
-    }
     // TODO: check that the user is asking for access to the right image
-    const { error, signedRequest } = getS3SignedUrl(key, file_type, operation);
+    const { signedRequest } = getS3SignedGetUrl(key);
 
-    if (error) {
-        console.log(error);
-        res.end();
+    // TODO: error-handling
+    if (signedRequest) {
+        console.log({signedRequest});
+        res.json({signedRequest});
     }
+}
+
+function signS3PutHandler(req, res) {
+    // TODO: implement stricter authorization mechanism? issue is if the
+    // dog is shared among multiple users for example, they need to see the images
+
+    const { file_name, file_type, hash } = req.query;
+    const params = {
+        'ContentType': decodeURIComponent(file_type),
+        'ContentMD5': hash,
+    };
+
+    // Prefix the path to avoid collisions
+    const user_id = encodeURIComponent(req.user.sub);
+    const timestamp = encodeURIComponent(Date.now().toISOString());
+    const key =`user_uploads/${user_id}/${timestamp}/${file_name}`;
+
+    // TODO: check that the user is asking for access to the right image
+    const { signedRequest } = getS3SignedPutUrl(key, params);
+
+    // TODO: error-handling
     if (signedRequest) {
         console.log({signedRequest});
         res.json({signedRequest, key});
     }
-
 }
 
 module.exports = {
-    signS3Handler,
+    signS3PutHandler,
+    signS3GetHandler,
 };

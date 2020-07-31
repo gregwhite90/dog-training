@@ -11,7 +11,7 @@ ReactDOM.render(
                        clientId="Uam7i5qRurIvqSgO71fpqH3DoG56z4hz"
                        redirectUri={window.location.origin}
                        audience="https://dog-training-staging.herokuapp.com/graphql"
-                       scope="read:viewer edit:assets"
+                       scope="read:viewer read:assets write:assets"
                        useRefreshTokens={true}
         >
             <App />

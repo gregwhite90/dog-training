@@ -7,7 +7,7 @@ const {
     checkJwt,
     checkScopes,
 }= require('./validate');
-const { signS3Handler } = require('./aws');
+const { signS3PutHandler, signS3GetHandler } = require('./aws');
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use('/graphql',
         }))
 );
 
-
-app.get('/sign-s3', checkJwt, checkScopes(['edit:assets']), signS3Handler);
+app.get('/sign-s3/put', checkJwt, checkScopes(['write:assets']), signS3PutHandler);
+app.get('/sign-s3/get', checkJwt, checkScopes(['read:assets']), signS3GetHandler);
 
 app.listen(process.env.PORT || 5000);

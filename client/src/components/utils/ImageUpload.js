@@ -11,7 +11,9 @@ class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { progress: -1 };
+        this.state = {
+            progress: -1,
+        };
     }
 
     handleUploadingError(error) {
@@ -27,18 +29,17 @@ class ImageUpload extends React.Component {
         console.log('in getSignedRequest');
         return this.props.auth0.getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
-            scope: 'edit:assets',
+            scope: 'write:assets',
         }).then(token => {
             const file_name = encodeURIComponent(file.name);
             const file_type = encodeURIComponent(file.type);
 
             return fetch(
-                `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&file_type=${file_type}&operation=putObject`,
+                `https://dog-training-staging.herokuapp.com/sign-s3/put?file_name=${file_name}&file_type=${file_type}&hash=${hash}`,
                 {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-MD5':  hash,
                         'Authorization': `Bearer ${token}`,
                     },
                 })
@@ -50,13 +51,14 @@ class ImageUpload extends React.Component {
         });
     }
 
-    // TODO: add an MD5 integrity check to the upload
     /**
      * Based on: https://github.com/satazor/js-spark-md5
      */
     md5Checksum(file, chunk_megabytes = 2) {
         return new Promise((resolve, reject) => {
-            var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+            var blobSlice = (File.prototype.slice ||
+                             File.prototype.mozSlice ||
+                             File.prototype.webkitSlice);
             const chunkSize = chunk_megabytes * 1024 * 1024;
             const chunks = Math.ceil(file.size / chunkSize);
             var currentChunk = 0;
@@ -125,19 +127,18 @@ class ImageUpload extends React.Component {
         console.log(signedRequest);
         console.log(key);
         await this.uploadFile(file, signedRequest, hash);
-        this.props.picture = key;
+        this.setState({ src: key, error: undefined, progress: -1 });
         this.props.onFinishUploading(key);
-        this.setState({ error: undefined, progress: -1 });
     }
 
     render() {
         return (
             <div>
                 <div>
-                    {this.props.picture &&
-                     this.props.picture !== '' &&
+                    {this.state.src &&
+                     this.state.src !== '' &&
                      this.state.progress === -1 &&
-                     <AuthS3Image picture={this.props.picture} />}
+                     <AuthS3Image picture={this.state.key} />}
                     <div style={{ maxWidth: 144 }}>
                         {this.state.progress > -1 &&
                          <div>Uploading...</div>}

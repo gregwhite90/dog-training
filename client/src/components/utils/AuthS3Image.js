@@ -8,11 +8,11 @@ class AuthS3Image extends React.Component {
         const file_name = encodeURIComponent(this.props.picture);
         return this.props.auth0.getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
-            scope: 'edit:assets',
+            scope: 'read:assets',
         })
         .then(token => {
             const data = fetch(
-                `https://dog-training-staging.herokuapp.com/sign-s3?file_name=${file_name}&operation=getObject`,
+                `https://dog-training-staging.herokuapp.com/sign-s3/get?file_name=${file_name}`,
                 {
                     method: 'GET',
                     headers: {
@@ -26,14 +26,14 @@ class AuthS3Image extends React.Component {
             if (data) {
                 // TODO: ensure this exists
                 // TODO: handle failure gracefully
-                this.props.src = data.signedRequest;
+                this.setState({src: data.signedRequest});
             }
         })
         .catch(error => console.log(error));
     }
 
     render() {
-        return <Image {...this.props}/>;
+        return <Image src={this.state.src} {...this.props}/>;
     }
 
 }

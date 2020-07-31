@@ -13,8 +13,8 @@ export default function HorizontalCard(props) {
                 <Col md={imgCols}>
                     {props.node.picture &&
                      (props.node.picture_needs_s3
-                     ? <AuthS3Image className="p-2" thumbnail picture={props.node.picture} />
-                     : <Image className="p-2" src={props.node.picture} thumbnail />
+                     ? <AuthS3Image className="p-2" picture={props.node.picture} rounded />
+                     : <Image className="p-2" src={props.node.picture} rounded />
                      )}
                 </Col>
                 <Col md={12 - props.imgCols}>
