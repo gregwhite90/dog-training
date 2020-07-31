@@ -10,9 +10,9 @@ function renderImage(props) {
         if (props.node.picture_needs_s3) {
             return <AuthS3Image
                        picture={props.node.picture}
-                       toImageChild={{rounded: true, fluid: true, className: "m-2"}} />;
+                       toImageChild={{thumbnail: true, fluid: true }} />;
         } else {
-            return <Image className="m-2" src={props.node.picture} fluid rounded />;
+            return <Image src={props.node.picture} fluid thumbnail />;
         }
     }
 }
@@ -23,7 +23,7 @@ export default function HorizontalCard(props) {
     const imgCols = props.imgCols || 3;
     return (
         <Container fluid="md" className="p-3 mb-3 border rounded">
-            <Row className="no-gutters">
+            <Row>
                 <Col md={imgCols}>{renderImage(props)}</Col>
                 <Col md={12 - props.imgCols}>
                     <h3>{props.node.title}</h3>

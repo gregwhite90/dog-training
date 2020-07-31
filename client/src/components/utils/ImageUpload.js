@@ -145,7 +145,10 @@ class ImageUpload extends React.Component {
                     {this.state.src &&
                      this.state.src !== '' &&
                      this.state.progress === -1 &&
-                     <AuthS3Image picture={this.state.src} />}
+                     <AuthS3Image
+                         picture={this.state.src}
+                         toChildImage={...this.props.toChildImage} />
+                    }
                     <div style={{ maxWidth: 144 }}>
                         {this.state.progress > -1 &&
                          <div>Uploading...</div>}

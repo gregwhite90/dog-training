@@ -43,30 +43,31 @@ class AddDogForm extends React.Component {
                      return (
                          <Container fluid="md" className="p-3 mb-3 border rounded">
                              <FormikForm>
-                                 <Row className="no-gutters">
-                                     <Form.Row>
-                                         <Form.Group as={Col}
-                                                     md={imgCols}
-                                                     controlId="formGridPicture">
-                                             <ImageUpload
-                                                 onStartUploading={() => {
-                                                         this.setState({isUploading: true});
-                                                 }}
-                                                 onFinishUploading={(url) => {
-                                                         if (url) {
-                                                             setFieldValue('uploaded_picture', url);
-                                                         }
-                                                         this.setState({isUploading: false});
-                                                 }}
-                                             />
-                                             <Field name="uploaded_picture" type="hidden"/>
-                                         </Form.Group>
-                                         <Form.Group as={Col}
-                                                     md={12 - imgCols}
-                                                     controlId="formGridName">
-                                             <Field name="dog_name" placeholder="Name"/>
-                                         </Form.Group>
-                                     </Form.Row>
+                                 <Form.Row>
+                                     <Form.Group controlId="formGridPicture">
+                                         <ImageUpload
+                                             onStartUploading={() => {
+                                                     this.setState({isUploading: true});
+                                             }}
+                                             onFinishUploading={(url) => {
+                                                     if (url) {
+                                                         setFieldValue('uploaded_picture', url);
+                                                     }
+                                                     this.setState({isUploading: false});
+                                             }}
+                                             toChildImage={{ className: `col-md-${imgCols}`,
+                                                             thumbnail: true,
+                                                             fluid: true}}
+                                         />
+                                         <Field name="uploaded_picture" type="hidden"/>
+                                     </Form.Group>
+                                 </Form.Row>
+                                 <Form.Row>
+                                     <Form.Group controlId="formGridName">
+                                         <Field name="dog_name" placeholder="Name"/>
+                                     </Form.Group>
+                                 </Form.Row>
+                                 <Form.Row>
                                      <Button
                                          variant="primary"
                                          type="submit"
@@ -74,7 +75,7 @@ class AddDogForm extends React.Component {
                                      >
                                          Add dog!
                                      </Button>
-                                 </Row>
+                                 </Form.Row>
                              </FormikForm>
                          </Container>
                      );
