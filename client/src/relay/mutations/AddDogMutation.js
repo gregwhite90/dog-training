@@ -59,8 +59,12 @@ function commit(
                 console.log('in updater');
                 // Get the payload returned from the server
                 const payload = store.getRootField('addDog');
+                console.log('payload gotten');
+                console.log(payload);
                 // Get the edge of the newly created record
                 const newEdge = payload.getLinkedRecord('dogEdge');
+                console.log('newEdge gotten');
+                console.log(newEdge);
                 // Add it to the viewer's dog list
                 sharedUpdater(store, viewer, newEdge);
             },
