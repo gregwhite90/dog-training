@@ -29,9 +29,10 @@ class AddDogForm extends React.Component {
             <Formik initialValues={{ dog_name: nameDefaultValue, uploaded_picture: pictureDefaultValue }}
                     onSubmit={({ dog_name, uploaded_picture }, { setSubmitting }) => {
                             // TODO: figure out what to do with the file input
-                            let picture = null;
-                            if (!uploaded_picture || uploaded_picture === '') {
-                                picture = uploaded_picture;
+                            console.log()
+                            let picture = uploaded_picture;
+                            if (uploaded_picture === '') {
+                                picture = null;
                             }
                             this.props.onSubmit({ name: dog_name, picture },
                                                 () => setSubmitting(false)
