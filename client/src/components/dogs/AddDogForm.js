@@ -26,23 +26,19 @@ class AddDogForm extends React.Component {
         // TODO: make sure the file upload change handler actually gets called
         console.log(this.props);
         return (
-            <Formik
-                initialValues={{
-                    dog_name: nameDefaultValue,
-                    uploaded_picture: pictureDefaultValue,
-                }}
-                onSubmit={({ dog_name, uploaded_picture }, { setSubmitting }) => {
-                        // TODO: figure out what to do with the file input
-                        this.props.onSubmit(
-                            {
-                                name: dog_name,
-                                picture: ((!uploaded_picture) || uploaded_picture === '') ? null : uploaded_picture)
-                            },
-                            () => setSubmitting(false)
-                        );
-                }}
+            <Formik initialValues={{ dog_name: nameDefaultValue, uploaded_picture: pictureDefaultValue }}
+                    onSubmit={({ dog_name, uploaded_picture }, { setSubmitting }) => {
+                            // TODO: figure out what to do with the file input
+                            let picture = null;
+                            if (!uploaded_picture || uploaded_picture === '') {
+                                picture = uploaded_picture;
+                            }
+                            this.props.onSubmit({ name: dog_name, picture },
+                                                () => setSubmitting(false)
+                            );
+                    }}
             >
-                {({ isSubmitting, setSubmitting, setFieldValue }) => {
+                {({ isSubmitting, setSubmitting, setFieldValue, values }) => {
                      return (
                          <Container fluid="md" className="p-3 mb-3 border rounded">
                              <FormikForm>
@@ -62,12 +58,12 @@ class AddDogForm extends React.Component {
                                                          this.setState({isUploading: false});
                                                  }}
                                              />
-                                             <Field name="uploaded_picture" type="hidden" />
+                                             <Field name="uploaded_picture" type="hidden"/>
                                          </Form.Group>
                                          <Form.Group as={Col}
                                                      md={12 - imgCols}
                                                      controlId="formGridName">
-                                             <Field name="dog_name" placeholder="Name" />
+                                             <Field name="dog_name" placeholder="Name"/>
                                          </Form.Group>
                                      </Form.Row>
                                      <Button
