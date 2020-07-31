@@ -107,7 +107,7 @@ class ImageUpload extends React.Component {
             body: file,
         })
             .then(response => {
-                console.log(response);
+                console.log(response.text());
                 // TODO: handle failure more gracefully
                 if (!response.ok) {
                     throw new Error('Upload failed');
