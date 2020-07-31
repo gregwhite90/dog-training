@@ -27,6 +27,8 @@ class AuthS3Image extends React.Component {
                 .then(response => response.json())
                 .then(data => data)
                 .catch(error => console.log(error));
+            console.log('Checking for the signed request in AuthS3Image');
+            console.log(data);
             if (data) {
                 // TODO: ensure this exists
                 // TODO: handle failure gracefully
@@ -37,7 +39,7 @@ class AuthS3Image extends React.Component {
     }
 
     render() {
-        return <Image src={this.state.src} {...this.props}/>;
+        return <Image src={this.state.src} {...this.props.toImageChild}/>;
     }
 
 }

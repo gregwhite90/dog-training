@@ -8,7 +8,9 @@ import AuthS3Image from './AuthS3Image';
 function renderImage(props) {
     if (props.node.picture) {
         if (props.node.picture_needs_s3) {
-            return <AuthS3Image className="p-2" picture={props.node.picture} rounded />;
+            return <AuthS3Image
+                       picture={props.node.picture}
+                       toImageChild={{rounded: true, className: "p-2"}} />;
         } else {
             return <Image className="p-2" src={props.node.picture} rounded />;
         }
