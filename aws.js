@@ -1,7 +1,7 @@
 const aws = require('aws-sdk');
 aws.config.region = process.env.AWS_REGION;
 
-function getS3SignedGetURL(key, params = {}) {
+function getS3SignedGetUrl(key, params = {}) {
     const s3 = new aws.S3();
     const s3_params = {
         Bucket: process.env.S3_BUCKET_NAME,
@@ -12,7 +12,7 @@ function getS3SignedGetURL(key, params = {}) {
     return { signedRequest: s3.getSignedUrl('getObject', s3_params) };
 }
 
-function getS3SignedPutURL(key, params = {}) {
+function getS3SignedPutUrl(key, params = {}) {
     const s3 = new aws.S3();
     const s3_params = {
         Bucket: process.env.S3_BUCKET_NAME,
