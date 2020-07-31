@@ -98,7 +98,7 @@ class ImageUpload extends React.Component {
     }
 
     uploadFile(file, signedRequest, hash) {
-        fetch(signedRequest, {
+        return fetch(signedRequest, {
             method: 'PUT',
             headers: {
                 'Content-Type': file.type,
