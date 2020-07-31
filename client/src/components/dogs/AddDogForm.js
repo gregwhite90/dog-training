@@ -28,15 +28,15 @@ class AddDogForm extends React.Component {
         return (
             <Formik
                 initialValues={{
-                    name: nameDefaultValue,
-                    picture: pictureDefaultValue,
+                    dog_name: nameDefaultValue,
+                    uploaded_picture: pictureDefaultValue,
                 }}
-                onSubmit={({ name, picture }, { setSubmitting }) => {
+                onSubmit={({ dog_name, uploaded_picture }, { setSubmitting }) => {
                         // TODO: figure out what to do with the file input
                         this.props.onSubmit(
                             {
-                                name,
-                                picture: (picture === '' ? null : picture)
+                                name: dog_name,
+                                picture: ((!uploaded_picture) || uploaded_picture === '') ? null : uploaded_picture)
                             },
                             () => setSubmitting(false)
                         );
@@ -57,17 +57,17 @@ class AddDogForm extends React.Component {
                                                  }}
                                                  onFinishUploading={(url) => {
                                                          if (url) {
-                                                             setFieldValue('picture', url);
+                                                             setFieldValue('uploaded_picture', url);
                                                          }
                                                          this.setState({isUploading: false});
                                                  }}
                                              />
-                                             <Field name="picture" type="hidden" />
+                                             <Field name="uploaded_picture" type="hidden" />
                                          </Form.Group>
                                          <Form.Group as={Col}
                                                      md={12 - imgCols}
                                                      controlId="formGridName">
-                                             <Field name="name" placeholder="Name" />
+                                             <Field name="dog_name" placeholder="Name" />
                                          </Form.Group>
                                      </Form.Row>
                                      <Button
