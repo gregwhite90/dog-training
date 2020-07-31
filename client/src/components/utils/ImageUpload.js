@@ -122,7 +122,7 @@ class ImageUpload extends React.Component {
     }
 
     async handleFileChange(e) {
-        if (!e.target.files) {
+        if (!e.target.files || e.target.files.length === 0) {
             return;
         }
         let file = e.target.files[0];
