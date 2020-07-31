@@ -27,7 +27,7 @@ class AddDogForm extends React.Component {
         console.log(this.props);
         return (
             <Formik initialValues={{ dog_name: nameDefaultValue, uploaded_picture: pictureDefaultValue }}
-                    onSubmit={({ dog_name, uploaded_picture }, { setSubmitting }) => {
+                    onSubmit={({ dog_name, uploaded_picture }, { setSubmitting, resetForm }) => {
                             // TODO: figure out what to do with the file input
                             console.log()
                             let picture = uploaded_picture;
@@ -35,11 +35,13 @@ class AddDogForm extends React.Component {
                                 picture = null;
                             }
                             this.props.onSubmit({ name: dog_name, picture },
-                                                () => setSubmitting(false)
-                            );
+                                                () => {
+                                                    setSubmitting(false);
+                                                    resetForm();
+                                                });
                     }}
             >
-                {({ isSubmitting, setSubmitting, setFieldValue, values }) => {
+                {({ isSubmitting, setSubmitting, setFieldValue, resetForm, values }) => {
                      return (
                          <Container fluid="md" className="p-3 mb-3 border rounded">
                              <FormikForm>
