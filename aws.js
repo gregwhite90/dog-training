@@ -53,7 +53,8 @@ function signS3PutHandler(req, res) {
 
     // Prefix the path to avoid collisions
     const user_id = encodeURIComponent(req.user.sub);
-    const timestamp = encodeURIComponent(Date.now().toISOString());
+    const date = new Date()
+    const timestamp = encodeURIComponent(date.toISOString());
     const key =`user_uploads/${user_id}/${timestamp}/${file_name}`;
 
     // TODO: check that the user is asking for access to the right image
