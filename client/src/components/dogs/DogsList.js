@@ -9,7 +9,7 @@ function DogsList(props) {
         ? props.viewer.dogs.edges
                .filter(Boolean)
                .map(edge => edge.node)
-               .filter(Boolean);
+               .filter(Boolean)
         : [];
     return (
         <>
