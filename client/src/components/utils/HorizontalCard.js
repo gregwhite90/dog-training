@@ -6,6 +6,8 @@ import Image from 'react-bootstrap/Image';
 import AuthS3Image from './AuthS3Image';
 
 export default function HorizontalCard(props) {
+    console.log('In horizontal card');
+    console.log(props);
     const imgCols = props.imgCols || 3;
     return (
         <Container fluid="md" className="p-3 mb-3 border rounded">
