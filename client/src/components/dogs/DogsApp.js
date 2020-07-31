@@ -17,7 +17,7 @@ function DogsApp(props) {
             <h1>My dogs</h1>
             <DogsList viewer={props.viewer} />
             <h1>Add a dog!</h1>
-            <AddDogForm onSubmit={() => handleAddDogSubmit()} />
+            <AddDogForm onSubmit={({name, picture}, callback) => handleAddDogSubmit({name, picture}, callback)} />
         </>
     );
 }
