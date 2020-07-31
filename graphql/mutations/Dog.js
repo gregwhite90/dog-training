@@ -49,8 +49,8 @@ const addDogMutation = mutationWithClientMutationId({
     mutateAndGetPayload: ({name, picture}, context) => {
         const dog_model = new AuthDog(context);
         const user_model = new AuthUser(context);
-        const dog = dog_model.create_one({name, picture});
-        return {dog, all_dogs: user_model.get_all_dogs_for_viewer()};
+        const dog = dog_model.create_one({name, picture}).then(dog => dog);
+        return {dog, user_model};
     },
 });
 /**
