@@ -55,7 +55,7 @@ class AddDogForm extends React.Component {
                                                      }
                                                      this.setState({isUploading: false});
                                              }}
-                                             toChildImage={{ className: `col-md-${imgCols}`,
+                                             toImageChild={{ className: `col-md-${imgCols}`,
                                                              thumbnail: true,
                                                              fluid: true}}
                                          />
