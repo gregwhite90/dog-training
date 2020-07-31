@@ -5,6 +5,16 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import AuthS3Image from './AuthS3Image';
 
+function renderImage(props) {
+    if (props.node.picture) {
+        if (props.node.picture_needs_s3) {
+            return <AuthS3Image className="p-2" picture={props.node.picture} rounded />;
+        } else {
+            return <Image className="p-2" src={props.node.picture} rounded />;
+        }
+    }
+}
+
 export default function HorizontalCard(props) {
     console.log('In horizontal card');
     console.log(props);
@@ -12,13 +22,7 @@ export default function HorizontalCard(props) {
     return (
         <Container fluid="md" className="p-3 mb-3 border rounded">
             <Row className="no-gutters">
-                <Col md={imgCols}>
-                    {props.node.picture &&
-                     (props.node.picture_needs_s3
-                     ? <AuthS3Image className="p-2" picture={props.node.picture} rounded />
-                     : <Image className="p-2" src={props.node.picture} rounded />
-                     )}
-                </Col>
+                <Col md={imgCols}>{renderImage(props)}</Col>
                 <Col md={12 - props.imgCols}>
                     <h3>{props.node.title}</h3>
                     {props.node.text &&
