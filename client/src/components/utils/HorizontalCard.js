@@ -10,9 +10,9 @@ function renderImage(props) {
         if (props.node.picture_needs_s3) {
             return <AuthS3Image
                        picture={props.node.picture}
-                       toImageChild={{rounded: true, className: "p-2"}} />;
+                       toImageChild={{rounded: true, fluid: true, className: "m-2"}} />;
         } else {
-            return <Image className="p-2" src={props.node.picture} rounded />;
+            return <Image className="m-2" src={props.node.picture} fluid rounded />;
         }
     }
 }
