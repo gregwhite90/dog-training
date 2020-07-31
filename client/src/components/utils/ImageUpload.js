@@ -142,38 +142,7 @@ class ImageUpload extends React.Component {
     }
 
     render() {
-        return (
-            <Container fluid="md">
-                <Container>
-                    <Row>
-                        <Col md={this.props.imgCols}>
-                            {this.state.src &&
-                             this.state.src !== '' &&
-                             this.state.progress === -1 &&
-                             <AuthS3Image
-                                 picture={this.state.src}
-                                 toImageChild={this.props.toImageChild} />
-                            }
-                            <div>
-                                {this.state.progress > -1 &&
-                                 <div>Uploading...</div>}
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container className="mt-3">
-                    <Row>
-                        <Col>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={this.handleFileChange}
-                            />
-                        </Col>
-                    </Row>
-                </Container>
-            </Container>
-        );
+        return <input type="file" accept="image/*" onChange={this.handleFileChange} />;
     }
 }
 

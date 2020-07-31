@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import ImageUpload from 'components/utils/ImageUpload';
+import AuthS3Image from 'components/utils/AuthS3Image';
 
 class AddDogForm extends React.Component {
 
@@ -15,6 +16,7 @@ class AddDogForm extends React.Component {
         super(props);
         this.state = {
             isUploading: false,
+            src: null,
         };
     }
 
@@ -36,8 +38,9 @@ class AddDogForm extends React.Component {
                             }
                             this.props.onSubmit({ name: dog_name, picture },
                                                 () => {
-                                                    setSubmitting(false);
                                                     resetForm();
+                                                    setSubmitting(false);
+                                                    this.setState({src: null});
                                                 });
                     }}
             >
@@ -47,20 +50,31 @@ class AddDogForm extends React.Component {
                              <FormikForm>
                                  <Form.Row>
                                      <Form.Group controlId="formGridPicture">
-                                         <ImageUpload
-                                             onStartUploading={() => {
-                                                     this.setState({isUploading: true});
-                                             }}
-                                             onFinishUploading={(url) => {
-                                                     if (url) {
-                                                         setFieldValue('uploaded_picture', url);
-                                                     }
-                                                     this.setState({isUploading: false});
-                                             }}
-                                             imgCols={imgCols}
-                                             toImageChild={{ thumbnail: true,
-                                                             fluid: true }}
-                                         />
+                                         <Form.Row>
+                                             <Col md={imgCols}>
+                                                 {this.state.isUploading &&
+                                                  (<div>Uploading...</div>)}
+                                                 {this.state.src &&
+                                                  (<AuthS3Image
+                                                       picture={this.state.src}
+                                                       thumbnail
+                                                       fluid
+                                                  />)}
+                                             </Col>
+                                         </Form.Row>
+                                         <Form.Row>
+                                             <ImageUpload
+                                                 onStartUploading={() => {
+                                                         this.setState({isUploading: true});
+                                                 }}
+                                                 onFinishUploading={(url) => {
+                                                         if (url) {
+                                                             setFieldValue('uploaded_picture', url);
+                                                         }
+                                                         this.setState({isUploading: false, src: url});
+                                                 }}
+                                             />
+                                         </Form.Row>
                                          <Field name="uploaded_picture" type="hidden"/>
                                      </Form.Group>
                                  </Form.Row>
