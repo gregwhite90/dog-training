@@ -28,7 +28,7 @@ function signS3GetHandler(req, res) {
     // dog is shared among multiple users for example, they need to see the images
 
     const { file_name } = req.query;
-    const key = decodeURIComponent(file_name);
+    const key = file_name;
 
     // TODO: check that the user is asking for access to the right image
     const { signedRequest } = getS3SignedGetUrl(key);
