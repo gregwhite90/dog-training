@@ -3,6 +3,10 @@ import Image from 'react-bootstrap/Image';
 import { withAuth0 } from '@auth0/auth0-react';
 
 class AuthS3Image extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {src: null};
+    }
 
     componentDidMount() {
         const file_name = encodeURIComponent(this.props.picture);
