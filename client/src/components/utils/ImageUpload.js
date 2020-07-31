@@ -1,4 +1,7 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import AuthS3Image from './AuthS3Image';
 
 import { withAuth0 } from '@auth0/auth0-react';
@@ -140,29 +143,36 @@ class ImageUpload extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    {this.state.src &&
-                     this.state.src !== '' &&
-                     this.state.progress === -1 &&
-                     <AuthS3Image
-                         picture={this.state.src}
-                         toImageChild={this.props.toChildImage} />
-                    }
-                    <div style={{ maxWidth: 144 }}>
-                        {this.state.progress > -1 &&
-                         <div>Uploading...</div>}
-                    </div>
-                </div>
-                <div style={{ marginTop: 10 }}>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={this.handleFileChange}
-                    />
-                </div>
-
-            </div>
+            <Container fluid="md">
+                <Container>
+                    <Row>
+                        <Col md={this.props.imgCols}>
+                            {this.state.src &&
+                             this.state.src !== '' &&
+                             this.state.progress === -1 &&
+                             <AuthS3Image
+                                 picture={this.state.src}
+                                 toImageChild={this.props.toImageChild} />
+                            }
+                            <div>
+                                {this.state.progress > -1 &&
+                                 <div>Uploading...</div>}
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+                <Container className="mt-3">
+                    <Row>
+                        <Col>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={this.handleFileChange}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </Container>
         );
     }
 }

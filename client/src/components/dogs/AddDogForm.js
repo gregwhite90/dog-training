@@ -57,9 +57,9 @@ class AddDogForm extends React.Component {
                                                      }
                                                      this.setState({isUploading: false});
                                              }}
-                                             toImageChild={{ className: `col-md-${imgCols}`,
-                                                             thumbnail: true,
-                                                             fluid: true}}
+                                             imgCols={imgCols}
+                                             toImageChild={{ thumbnail: true,
+                                                             fluid: true }}
                                          />
                                          <Field name="uploaded_picture" type="hidden"/>
                                      </Form.Group>
