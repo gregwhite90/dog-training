@@ -26,33 +26,28 @@ class ImageUpload extends React.Component {
             error: null,
             src: null,
         };
-        this.uppy = Uppy()
+        this.uppy = Uppy({
+            restrictions: {
+                maxNumberOfFiles: 1,
+                allowedFileTypes: ["image/*"]
+            },
+        })
             .use(AwsS3, {
                 getUploadParameters (file) {
-                    return this.md5Checksum(file).then((hash) => {
+                    // TODO: don't try to hash if connecting from remote provider
+                    return this.md5Checksum(file.data).then((hash) => {
                         return this.getSignedRequest(file, hash);
                     });
                 }
             });
-        this.handleUploadingError = this.handleUploadingError.bind(this);
-        this.handleFileChange = this.handleFileChange.bind(this);
         this.getSignedRequest = this.getSignedRequest.bind(this);
-        this.uploadFile = this.uploadFile.bind(this);
     }
 
     componentWillUnmount() {
         this.uppy.close();
     }
 
-    /**
-    handleUploadingError(error) {
-        console.log('Got an error');
-        console.log(error);
-        this.props.onFinishUploading(null);
-        this.setState({ error, progress: -1 });
-        return {error};
-    }
-    */
+    // TODO: call this.props.onFinishUploading? reset state?
 
     // TODO: authorization to get an S3 signed key
     getSignedRequest(file, hash) {
@@ -127,49 +122,6 @@ class ImageUpload extends React.Component {
             loadNext();
         });
     }
-
-    /**
-    uploadFile(file, signedRequest, hash) {
-        return fetch(signedRequest, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': file.type,
-                'Content-MD5': hash,
-            },
-            body: file,
-        })
-            .then(response => {
-                console.log(response.text().then(data => data));
-                // TODO: handle failure more gracefully
-                if (!response.ok) {
-                    throw new Error('Upload failed');
-                }
-            })
-            .catch(error => {
-                return this.handleUploadingError(error);
-            });
-    }
-
-    async handleFileChange(e) {
-        if (!e.target.files || e.target.files.length === 0) {
-            return;
-        }
-        let file = e.target.files[0];
-
-        this.setState({ error: undefined, progress: 0 });
-        this.props.onStartUploading();
-
-        let hash = await this.md5Checksum(file);
-
-        let { signedRequest, key } = await this.getSignedRequest(file, hash);
-        console.log('request signed');
-        console.log(signedRequest);
-        console.log(key);
-        await this.uploadFile(file, signedRequest, hash);
-        this.setState({ src: key, error: undefined, progress: -1 });
-        this.props.onFinishUploading(key);
-    }
-    */
 
     render() {
         return <Dashboard uppy={this.uppy} {...this.props}/>
