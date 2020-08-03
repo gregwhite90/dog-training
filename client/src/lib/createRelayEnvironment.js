@@ -5,6 +5,7 @@ import {
     Network,
     RecordSource,
     Store,
+    Observable,
 } from 'relay-runtime';
 
 export default function createEnvironment(getAccessTokenSilently) {
@@ -12,24 +13,35 @@ export default function createEnvironment(getAccessTokenSilently) {
         operation,
         variables
     ) {
-        return getAccessTokenSilently({
-            audience: 'https://dog-training-staging.herokuapp.com/graphql',
-            scope: 'read:viewer',
-        }).then(token => {
-            console.log(token);
-            // TODO: error-handling code
-            return fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'Application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    query: operation.text,
-                    variables,
-                }),
-            }).then(response => response.json());
+        return Observable.create((sink) => {
+            return getAccessTokenSilently({
+                audience: 'https://dog-training-staging.herokuapp.com/graphql',
+                scope: 'read:viewer',
+            }).then(token => {
+                // TODO: token error-handling code
+                console.log(token);
+                fetch('/graphql', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'Application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        query: operation.text,
+                        variables,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.errors) {
+                            sink.error(data.errors);
+                            return;
+                        }
+                        sink.next(data);
+                        sink.complete();
+                    });
+            });
         });
     }
 

@@ -17,6 +17,9 @@ export default function DogsPage(props) {
                     }
                 }
                 `}
+            cacheConfig={{
+                poll: 10000 // 10 seconds
+            }}
             render={({error, props}) => {
                     if (props && props.viewer) {
                         return <DogsApp viewer={props.viewer} />;
