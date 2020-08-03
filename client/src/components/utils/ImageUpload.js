@@ -8,6 +8,13 @@ import { withAuth0 } from '@auth0/auth0-react';
 
 import * as SparkMD5 from 'spark-md5';
 
+import { Dashboard } from '@uppy/react';
+import '@uppy/core/dist/style.css';
+import '@uppy/dashboard/dist/style.css';
+const Uppy = require('@uppy/core');
+const AwsS3 = require('@uppy/aws-s3');
+
+
 // TODO: probably pass in styling information. Especially sizing
 
 class ImageUpload extends React.Component {
@@ -19,12 +26,25 @@ class ImageUpload extends React.Component {
             error: null,
             src: null,
         };
+        this.uppy = Uppy()
+            .use(AwsS3, {
+                getUploadParameters (file) {
+                    return this.md5Checksum(file).then((hash) => {
+                        return this.getSignedRequest(file, hash);
+                    });
+                }
+            });
         this.handleUploadingError = this.handleUploadingError.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.getSignedRequest = this.getSignedRequest.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
     }
 
+    componentWillUnmount() {
+        this.uppy.close();
+    }
+
+    /**
     handleUploadingError(error) {
         console.log('Got an error');
         console.log(error);
@@ -32,6 +52,7 @@ class ImageUpload extends React.Component {
         this.setState({ error, progress: -1 });
         return {error};
     }
+    */
 
     // TODO: authorization to get an S3 signed key
     getSignedRequest(file, hash) {
@@ -53,9 +74,16 @@ class ImageUpload extends React.Component {
                     },
                 })
                 .then(response => response.json())
-                .then(data => data)
-                .catch(error => {
-                    return this.handleUploadingError(error);
+                .then(data => {
+                    return {
+                        method: data.method,
+                        url: data.url,
+                        fields: data.fields,
+                        headers: {
+                            'Content-Type': file.type,
+                            'Content-MD5': hash,
+                        },
+                    }
                 });
         });
     }
@@ -100,6 +128,7 @@ class ImageUpload extends React.Component {
         });
     }
 
+    /**
     uploadFile(file, signedRequest, hash) {
         return fetch(signedRequest, {
             method: 'PUT',
@@ -140,9 +169,10 @@ class ImageUpload extends React.Component {
         this.setState({ src: key, error: undefined, progress: -1 });
         this.props.onFinishUploading(key);
     }
+    */
 
     render() {
-        return <input type="file" accept="image/*" onChange={this.handleFileChange} />;
+        return <Dashboard uppy={this.uppy} {...this.props}/>
     }
 }
 

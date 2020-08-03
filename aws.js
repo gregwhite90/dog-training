@@ -62,7 +62,7 @@ function signS3PutHandler(req, res) {
     // TODO: error-handling
     if (signedRequest) {
         console.log({signedRequest});
-        res.json({signedRequest, key});
+        res.json({url: signedRequest, method: 'PUT', fields: []});
     }
 }
 
