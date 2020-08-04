@@ -20,7 +20,7 @@ const AwsS3 = require('@uppy/aws-s3');
 /**
  * Based on: https://github.com/satazor/js-spark-md5
  */
-md5Checksum(file, chunk_megabytes = 2) {
+function md5Checksum(file, chunk_megabytes = 2) {
     return new Promise((resolve, reject) => {
         var blobSlice = (File.prototype.slice ||
                          File.prototype.mozSlice ||
