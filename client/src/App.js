@@ -47,7 +47,7 @@ class App extends React.Component {
                                 <Switch>
                                     <Route path="/about" component={About} />
                                     <Route path="/dogs" render={(props) => (
-                                        <DogsRouter {...props} relay={this.props.relay} viewer={this.props.auth0.user}/>
+                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user}/>
                                     )} />
                                     <Route path="/" component={Home} />
                                 </Switch>
