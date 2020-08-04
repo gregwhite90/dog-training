@@ -33,6 +33,9 @@ class DogAdder extends React.Component {
             {name, picture: null},
             this.props.viewer,
             (response, errors) => {
+                console.log('in saveCreation onCompleted');
+                console.log(response);
+                console.log(errors);
                 this.fieldValues.id = response.dogEdge.node.id;
                 this.fieldValues.name = name;
                 this.nextStep();
