@@ -7,6 +7,7 @@ const {
 const {
     mutationWithClientMutationId,
     cursorForObjectInConnection,
+    fromGlobalId,
 } = require('graphql-relay');
 
 const {
@@ -77,7 +78,9 @@ const editDogMutation = mutationWithClientMutationId({
     },
     mutateAndGetPayload: ({id, name, picture}, context) => {
         const dog_model = new AuthDog(context);
-        return dog_model.edit_one({id, name, picture}).then(dog => dog);
+        const { type, dog_id } = fromGlobalId(id);
+        // TODO: confirm type is dog, otherwise handle error
+        return dog_model.edit_one({id: dog_id, name, picture}).then(dog => dog);
     },
 });
 
