@@ -35,8 +35,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
             default:
                 console.log(`Unknown type in node resolver: ${type}`);
                 break;
-            return model.get_one({id});
         }
+        return model.get_one({id});
     },
     // TODO: Believe may be possible to have each type resolve its own type.
     // otherwise, need to put an resolveType here
