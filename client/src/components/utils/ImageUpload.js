@@ -21,6 +21,8 @@ class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
+        this.getSignedRequest = this.getSignedRequest.bind(this);
+        this.md5Checksum = this.md5Checksum.bind(this);
         this.uppy = Uppy({
             restrictions: {
                 maxNumberOfFiles: 1,
@@ -44,7 +46,6 @@ class ImageUpload extends React.Component {
                 this.props.savePicture({picture: file.uploadURL});
             });
         });
-        this.getSignedRequest = this.getSignedRequest.bind(this);
     }
 
     componentWillUnmount() {

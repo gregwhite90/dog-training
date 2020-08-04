@@ -1,6 +1,6 @@
 import React from 'react';
-import Container from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 
 import ImageUpload from '../utils/ImageUpload';
 
