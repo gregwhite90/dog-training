@@ -90,9 +90,14 @@ class Dog {
      */
 
     static async edit_one({id, name, picture}) {
-        const { rows } = await db.query(
+        console.log(`in Dog.edit_one with id ${id}, name ${name}, picture ${picture}`);
+        const { updated } = await db.query(
             'UPDATE dogs SET name=COALESCE($1, name), picture=COALESCE($2, picture) WHERE id=$3 RETURNING *',
             [name, picture, id]
+        );
+        const { rows } = await db.query(
+            'SELECT * FROM dogs WHERE id=$1',
+            [id]
         );
         // TODO: error-handling code
         return rows[0];
