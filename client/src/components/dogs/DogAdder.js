@@ -36,7 +36,7 @@ class DogAdder extends React.Component {
                 console.log('in saveCreation onCompleted');
                 console.log(response);
                 console.log(errors);
-                this.fieldValues.id = response.dogEdge.node.id;
+                this.fieldValues.id = response.addDog.dogEdge.node.id;
                 this.fieldValues.name = name;
                 this.nextStep();
             });
@@ -54,6 +54,7 @@ class DogAdder extends React.Component {
     }
 
     nextStep() {
+        console.log('In next step: ${this.state.step}');
         this.setState({
             step: this.state.step + 1,
         });
@@ -66,7 +67,6 @@ class DogAdder extends React.Component {
                                           saveCreation={this.saveCreation} />;
             case 1:
                 return <DogImageUploader fieldValues={this.fieldValues}
-                                         nextStep={this.nextStep}
                                          savePicture={this.savePicture} />;
             case 2:
                 return <Redirect to={`/dogs/${this.fieldValues.id}`}/>;
