@@ -41,7 +41,7 @@ class ImageUpload extends React.Component {
         this.uppy.on('complete', ({successful, failed}) => {
             successful.forEach((file) => {
                 console.log(`Successful upload to: ${file.uploadURL}`);
-                this.props.savePicture(file.uploadURL);
+                this.props.savePicture({picture: file.uploadURL});
             });
         });
         this.getSignedRequest = this.getSignedRequest.bind(this);

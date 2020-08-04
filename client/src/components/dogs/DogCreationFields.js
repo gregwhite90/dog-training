@@ -1,6 +1,7 @@
 import React from 'react';
-import Container from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 class DogCreationFields extends React.Component {
@@ -21,17 +22,21 @@ class DogCreationFields extends React.Component {
         return (
             <Container>
                 <Row>
-                    <label>Name</label>
-                    <input type="text"
-                           id="name"
-                           placeholder="Name"
-                           defaultValue={this.props.fieldValues.name}
-                    />
+                    <Col>
+                        <label>Name</label>
+                        <input type="text"
+                               id="name"
+                               placeholder="Name"
+                               defaultValue={this.props.fieldValues.name}
+                        />
+                    </Col>
                 </Row>
                 <Row>
-                    <Button variant="primary" onClick={this.saveAndContinue}>
-                        Upload an image!
-                    </Button>
+                    <Col>
+                        <Button variant="primary" onClick={this.saveAndContinue}>
+                            Upload an image!
+                        </Button>
+                    </Col>
                 </Row>
             </Container>
         );

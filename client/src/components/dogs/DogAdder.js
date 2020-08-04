@@ -26,7 +26,7 @@ class DogAdder extends React.Component {
         this.nextStep = this.nextStep.bind(this);
     }
 
-    saveCreation(name) {
+    saveCreation({name}) {
         // TODO: call mutation, pass into id
         AddDogMutation.commit(
             this.props.relay.environment,
@@ -39,7 +39,7 @@ class DogAdder extends React.Component {
             });
     }
 
-    savePicture(picture) {
+    savePicture({picture}) {
         // TODO: create and call mutation
         EditDogMutation.commit(
             this.props.relay.environment,
