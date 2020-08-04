@@ -55,9 +55,9 @@ class DogAdder extends React.Component {
 
     nextStep() {
         console.log('In next step: ${this.state.step}');
-        this.setState({
-            step: this.state.step + 1,
-        });
+        this.setState((state, props) => ({
+            step: state.step + 1,
+        }));
     }
 
     render() {
