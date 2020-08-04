@@ -4,7 +4,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 
 import DogsApp from './DogsApp';
 
-export default function DogsPage(props) {
+export default function DogsPage({relay, match}) {
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     return (
@@ -22,7 +22,7 @@ export default function DogsPage(props) {
             }}
             render={({error, props}) => {
                     if (props && props.viewer) {
-                        return <DogsApp viewer={props.viewer} />;
+                        return <DogsApp viewer={props.viewer} match={match}/>;
                     } else if (error) {
                         console.log(error);
                         return <div>error.message</div>;
