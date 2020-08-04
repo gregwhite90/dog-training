@@ -9,12 +9,18 @@ import DogsPage from './DogsPage';
 
 // TODO: figure out passing relay
 
-export default function DogsRouter({ match }) {
+export default function DogsRouter(props) {
     return (
         <Switch>
-            <Route path={match.url + "/:id"} component={DogDetail} />
-            <Route path={match.url + "/add"} component={DogAdder} />
-            <Route path={match.url + "/"} component={DogsPage} />
+            <Route path={props.match.url + "/:id"} render={(props) => (
+                <DogDetail {...props} relay={props.relay}/>
+            )} />
+            <Route path={props.match.url + "/add"} render={(props) => (
+                <DogAdder {...props} relay={props.relay} viewer={props.viewer}/>
+            )} />
+            <Route path={props.match.url + "/"} render={(props) => (
+                <DogsPage {...props} relay={props.relay} viewer={props.viewer}/>
+            )} />
         </Switch>
     );
 }

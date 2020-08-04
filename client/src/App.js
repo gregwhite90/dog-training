@@ -45,15 +45,11 @@ class App extends React.Component {
                         <Row>
                             <Col>
                                 <Switch>
-                                    <Route path="/about">
-                                        <About />
-                                    </Route>
-                                    <Route path="/dogs">
-                                        <DogsRouter relay={this.state.relay}/>
-                                    </Route>
-                                    <Route path="/">
-                                        <Home />
-                                    </Route>
+                                    <Route path="/about" component={About} />
+                                    <Route path="/dogs" render={(props) => (
+                                        <DogsRouter {...props} relay={this.props.relay} viewer={this.props.auth0.user}/>
+                                    )} />
+                                    <Route path="/" component={Home} />
                                 </Switch>
                             </Col>
                         </Row>
