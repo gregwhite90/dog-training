@@ -80,7 +80,7 @@ class ImageUpload extends React.Component {
 
     componentDidMount() {
         this.uppy.use(AwsS3, {
-            getUploadParameters (file) {
+            getUploadParameters: (file) => {
                 // TODO: don't try to hash if connecting from remote provider
                 return md5Checksum(file.data).then((hash) => {
                     return this.getSignedRequest(
