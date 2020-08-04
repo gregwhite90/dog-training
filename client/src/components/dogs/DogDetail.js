@@ -16,7 +16,7 @@ export default function DogDetail(props) {
                     }
                 }
                 `}
-            variables={{id: props.match.path}}
+            variables={{id: props.match.params.id}}
             render={({error, props}) => {
                     if (props && props.node) {
                         return <DogCard dog={props.node} />;

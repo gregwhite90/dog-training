@@ -12,11 +12,11 @@ import DogsPage from './DogsPage';
 export default function DogsRouter(props) {
     return (
         <Switch>
-            <Route path={props.match.url + "/:id"} render={(p) => (
-                <DogDetail {...p} relay={props.relay}/>
-            )} />
             <Route path={props.match.url + "/add"} render={(p) => (
                 <DogAdder {...p} relay={props.relay} viewer={props.viewer}/>
+            )} />
+            <Route path={props.match.url + "/:id"} render={(p) => (
+                <DogDetail {...p} relay={props.relay}/>
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
                 <DogsPage {...p} relay={props.relay} />
