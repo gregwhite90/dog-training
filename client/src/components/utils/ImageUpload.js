@@ -17,12 +17,52 @@ const AwsS3 = require('@uppy/aws-s3');
 
 // TODO: probably pass in styling information. Especially sizing
 
+/**
+ * Based on: https://github.com/satazor/js-spark-md5
+ */
+md5Checksum(file, chunk_megabytes = 2) {
+    return new Promise((resolve, reject) => {
+        var blobSlice = (File.prototype.slice ||
+                         File.prototype.mozSlice ||
+                         File.prototype.webkitSlice);
+        const chunkSize = chunk_megabytes * 1024 * 1024;
+        const chunks = Math.ceil(file.size / chunkSize);
+        var currentChunk = 0;
+        const spark = new SparkMD5.ArrayBuffer();
+        const fileReader = new FileReader();
+
+        fileReader.onload = function (e) {
+            spark.append(e.target.result); // Append array buffer
+            currentChunk++;
+
+            if (currentChunk < chunks) {
+                loadNext();
+            } else {
+                resolve(btoa(spark.end(true)));  // Compute hash
+            }
+        };
+
+        fileReader.onerror = function (error) {
+            reject(error);
+        };
+
+        function loadNext() {
+            const start = currentChunk * chunkSize;
+            const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+        }
+
+        loadNext();
+    });
+}
+
+
 class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
         this.getSignedRequest = this.getSignedRequest.bind(this);
-        this.md5Checksum = this.md5Checksum.bind(this);
         this.uppy = Uppy({
             restrictions: {
                 maxNumberOfFiles: 1,
@@ -42,7 +82,7 @@ class ImageUpload extends React.Component {
         this.uppy.use(AwsS3, {
             getUploadParameters (file) {
                 // TODO: don't try to hash if connecting from remote provider
-                return this.md5Checksum(file.data).then((hash) => {
+                return md5Checksum(file.data).then((hash) => {
                     return this.getSignedRequest(
                         file, hash, this.props.pathArray
                     ).then(data => data);
@@ -88,46 +128,6 @@ class ImageUpload extends React.Component {
                         },
                     }
                 });
-        });
-    }
-
-    /**
-     * Based on: https://github.com/satazor/js-spark-md5
-     */
-    md5Checksum(file, chunk_megabytes = 2) {
-        return new Promise((resolve, reject) => {
-            var blobSlice = (File.prototype.slice ||
-                             File.prototype.mozSlice ||
-                             File.prototype.webkitSlice);
-            const chunkSize = chunk_megabytes * 1024 * 1024;
-            const chunks = Math.ceil(file.size / chunkSize);
-            var currentChunk = 0;
-            const spark = new SparkMD5.ArrayBuffer();
-            const fileReader = new FileReader();
-
-            fileReader.onload = function (e) {
-                spark.append(e.target.result); // Append array buffer
-                currentChunk++;
-
-                if (currentChunk < chunks) {
-                    loadNext();
-                } else {
-                    resolve(btoa(spark.end(true)));  // Compute hash
-                }
-            };
-
-            fileReader.onerror = function (error) {
-                reject(error);
-            };
-
-            function loadNext() {
-                const start = currentChunk * chunkSize;
-                const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
-
-                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
-            }
-
-            loadNext();
         });
     }
 
