@@ -89,6 +89,7 @@ type DogToUserEdge {
 type Mutation {
   """Create a new dog with the currently logged in user as an 'owner'."""
   addDog(input: AddDogInput!): AddDogPayload
+  editDog(input: EditDogInput!): EditDogPayload
 }
 
 type AddDogPayload {
@@ -101,6 +102,18 @@ input AddDogInput {
   name: String!
 
   """URL of the profile image of this dog."""
+  picture: String
+  clientMutationId: String
+}
+
+type EditDogPayload {
+  dog: Dog!
+  clientMutationId: String
+}
+
+input EditDogInput {
+  id: ID!
+  name: String
   picture: String
   clientMutationId: String
 }

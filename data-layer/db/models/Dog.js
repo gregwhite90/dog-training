@@ -89,6 +89,15 @@ class Dog {
      * Update Dog-only operations
      */
 
+    static async edit_one({id, name, picture}) {
+        const { rows } = await db.query(
+            'UPDATE dogs SET name=COALESCE($1, name), picture=COALESCE($2, picture) WHERE id=$3 RETURNING *',
+            [name, picture, id]
+        );
+        // TODO: error-handling code
+        return rows[0];
+    }
+
     /**
      * Update Dog and other operations
      */

@@ -45,9 +45,10 @@ let tempID = 0;
 function commit(
     environment,
     {name, picture},
-    viewer
+    viewer,
+    onCompleted
 ) {
-    console.log(`Called commit with ${name}, ${picture}`);
+    console.log(`Called AddDog with ${name}, ${picture}`);
     commitMutation(
         environment,
         {
@@ -88,6 +89,7 @@ function commit(
                 // Add to the viewer's dog list
                 sharedUpdater(store, viewer, newEdge);
             },
+            onCompleted,
         }
     );
 }

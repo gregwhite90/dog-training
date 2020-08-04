@@ -81,6 +81,11 @@ class AuthDog extends AuthModel {
         return Promise.all(ids.map(id => User.get_one({id})))
                       .then(raw_users => raw_users.map(User.create_object));
     }
+
+    async edit_one({id, name, picture}) {
+        return Dog.edit_one({id, name, picture})
+                  .then(Dog.create_object)
+    }
 }
 
 module.exports = {

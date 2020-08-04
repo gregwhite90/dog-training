@@ -21,25 +21,27 @@ class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            progress: -1,
-            error: null,
-            src: null,
-        };
         this.uppy = Uppy({
             restrictions: {
                 maxNumberOfFiles: 1,
                 allowedFileTypes: ["image/*"]
             },
+            allowMultipleUploads: false,
         })
             .use(AwsS3, {
                 getUploadParameters (file) {
                     // TODO: don't try to hash if connecting from remote provider
                     return this.md5Checksum(file.data).then((hash) => {
-                        return this.getSignedRequest(file, hash);
+                        return this.getSignedRequest(file, hash).then(data => data);
                     });
                 }
             });
+        this.uppy.on('complete', ({successful, failed}) => {
+            successful.forEach((file) => {
+                console.log(`Successful upload to: ${file.uploadURL}`);
+                this.props.savePicture(file.uploadURL);
+            });
+        });
         this.getSignedRequest = this.getSignedRequest.bind(this);
     }
 

@@ -1,6 +1,7 @@
 const {
     GraphQLNonNull,
     GraphQLString,
+    GraphQLID,
 } = require('graphql');
 
 const {
@@ -53,6 +54,33 @@ const addDogMutation = mutationWithClientMutationId({
         return {dog, user_model};
     },
 });
+
+const editDogMutation = mutationWithClientMutationId({
+    name: 'EditDog',
+    inputFields: {
+        id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+        name: {
+            type: GraphQLString,
+        },
+        picture: {
+            type: GraphQLString,
+        },
+    },
+    outputFields: {
+        // TODO: confirm if want to return additional info
+        dog: {
+            type: new GraphQLNonNull(dogType),
+            resolve: (dog) => dog,
+        },
+    },
+    mutateAndGetPayload: ({id, name, picture}, context) => {
+        const dog_model = new AuthDog(context);
+        return dog_model.edit_one({id, name, picture}).then(dog => dog);
+    },
+});
+
 /**
 const removeDogForViewerMutation = mutationWithClientMutationId({
     name: 'RemoveDogForViewer',
@@ -104,41 +132,12 @@ const removeDogForAllMutation = mutationWithClientMutationId({
     },
 });
 
-const editDogMutation = mutationWithClientMutationId({
-    name: 'EditDog',
-    inputFields: {
-        id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        name: {
-            type: GraphQLString,
-        },
-        picture: {
-            type: GraphQLString,
-        },
-    },
-    outputFields: {
-        // TODO: confirm if want to return additional info
-        deleted_id: {
-            type: GraphQLID,
-            // TODO: actually implement
-            resolve: ({id}, context) => getNode({id, tableName: 'humans'}, context),
-        },
-    },
-    mutateAndGetPayload: ({id}, context) => {
-        // TODO: actually implement
-        const newHuman = createHuman(name, context);
-        return {
-            id: newHuman.id,
-        }
-    },
-});
 */
 module.exports = {
     addDogMutation,
+    editDogMutation,
     /**
     removeDogForViewerMutation,
     removeDogForAllMutation,
-    editDogMutation,
     */
 }
