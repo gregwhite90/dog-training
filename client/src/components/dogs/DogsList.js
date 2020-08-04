@@ -1,5 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import { Link } from 'react-router-dom';
 
 import DogCard from './DogCard';
 
@@ -13,7 +14,13 @@ function DogsList(props) {
         : [];
     return (
         <>
-            {nodes.map(node => <DogCard key={node.id} dog={node} />)}
+            {nodes.map(node => {
+                 return (
+                     <Link to={`${props.match.url}/${node.id}`}>
+                         <DogCard key={node.id} dog={node} />
+                     </Link>
+                 );
+            })}
         </>
     );
 }

@@ -19,7 +19,7 @@ export default function DogDetail(props) {
             variables={{id: props.match.path}}
             render={({error, props}) => {
                     if (props && props.node) {
-                        return <DogCard dog={node} />;
+                        return <DogCard dog={props.node} />;
                     } else if (error) {
                         console.log(error);
                         return <div>error.message</div>;

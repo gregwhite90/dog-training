@@ -12,7 +12,7 @@ class DogCreationFields extends React.Component {
     saveAndContinue(e) {
         e.preventDefault();
         const data = {
-            name: document.getElementById('name').value;
+            name: document.getElementById('name').value,
         };
         this.props.saveCreation(data);
     }
@@ -25,11 +25,11 @@ class DogCreationFields extends React.Component {
                     <input type="text"
                            id="name"
                            placeholder="Name"
-                           defaultValue={props.fieldValues.name}
+                           defaultValue={this.props.fieldValues.name}
                     />
                 </Row>
                 <Row>
-                    <Button variant="primary" onClick={saveAndContinue}>
+                    <Button variant="primary" onClick={this.saveAndContinue}>
                         Upload an image!
                     </Button>
                 </Row>
@@ -37,3 +37,5 @@ class DogCreationFields extends React.Component {
         );
     }
 }
+
+export default DogCreationFields;

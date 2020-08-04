@@ -2,9 +2,10 @@ import React from 'react';
 import {
     Redirect,
 } from 'react-router-dom';
+import { withAuth0 } from '@auth0/auth0-react';
+
 import DogCreationFields from './DogCreationFields';
 import DogImageUploader from './DogImageUploader';
-import DogCreationSuccess from './DogCreationSuccess';
 
 import AddDogMutation from 'relay/mutations/AddDogMutation';
 import EditDogMutation from 'relay/mutations/EditDogMutation';
@@ -46,12 +47,12 @@ class DogAdder extends React.Component {
             (response, errors) => {
                 this.fieldValues.picture = picture;
                 this.nextStep();
-            };
+            });
     }
 
     nextStep() {
         this.setState({
-            step: this.state.step + 1;
+            step: this.state.step + 1,
         });
     }
 
@@ -66,6 +67,10 @@ class DogAdder extends React.Component {
                                          savePicture={this.savePicture} />;
             case 2:
                 return <Redirect to={`/dogs/${this.fieldValues.id}`}/>;
+            default:
+                console.log(`invalid step in DogAdder: ${this.state.step}`);
+                this.setState({step: 0});
+                break;
         }
     }
 }

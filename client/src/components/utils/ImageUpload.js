@@ -32,7 +32,9 @@ class ImageUpload extends React.Component {
                 getUploadParameters (file) {
                     // TODO: don't try to hash if connecting from remote provider
                     return this.md5Checksum(file.data).then((hash) => {
-                        return this.getSignedRequest(file, hash).then(data => data);
+                        return this.getSignedRequest(
+                            file, hash, props.pathArray
+                        ).then(data => data);
                     });
                 }
             });
@@ -52,7 +54,7 @@ class ImageUpload extends React.Component {
     // TODO: call this.props.onFinishUploading? reset state?
 
     // TODO: authorization to get an S3 signed key
-    getSignedRequest(file, hash) {
+    getSignedRequest(file, hash, pathArray) {
         console.log('in getSignedRequest');
         return this.props.auth0.getAccessTokenSilently({
             audience: 'https://dog-training-staging.herokuapp.com/graphql',
@@ -62,13 +64,13 @@ class ImageUpload extends React.Component {
             const file_type = encodeURIComponent(file.type);
 
             return fetch(
-                `https://dog-training-staging.herokuapp.com/sign-s3/put?file_name=${file_name}&file_type=${file_type}&hash=${hash}`,
+                `https://dog-training-staging.herokuapp.com/sign-s3/put?file_name=${file_name}&file_type=${file_type}&hash=${hash}&pathArray=${encodeURIComponent(JSON.stringify(pathArray))}`,
                 {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`,
-                    },
+                    }
                 })
                 .then(response => response.json())
                 .then(data => {
