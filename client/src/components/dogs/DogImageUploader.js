@@ -9,7 +9,7 @@ export default function DogImageUploader(props) {
         <Container>
             <Row>
                 <ImageUpload
-                    savePicture={this.props.savePicture}
+                    savePicture={props.savePicture}
                     pathArray={["dogs", props.fieldValues.id]}/>
             </Row>
         </Container>
