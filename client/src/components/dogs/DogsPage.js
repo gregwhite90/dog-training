@@ -9,7 +9,7 @@ export default function DogsPage({relay, match}) {
     // TODO: route on to more specific routes?
     return (
         <QueryRenderer
-            environment={props.relay.environment}
+            environment={relay.environment}
             query={graphql`
                 query DogsPageQuery {
                     viewer {

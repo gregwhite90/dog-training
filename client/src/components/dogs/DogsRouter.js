@@ -19,7 +19,7 @@ export default function DogsRouter(props) {
                 <DogAdder {...p} relay={props.relay} viewer={props.viewer}/>
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
-                <DogsPage {...p} relay={props.relay} viewer={props.viewer}/>
+                <DogsPage {...p} relay={props.relay} />
             )} />
         </Switch>
     );
