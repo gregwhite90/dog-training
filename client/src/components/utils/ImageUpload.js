@@ -29,22 +29,25 @@ class ImageUpload extends React.Component {
                 allowedFileTypes: ["image/*"]
             },
             allowMultipleUploads: false,
-        })
-            .use(AwsS3, {
-                getUploadParameters (file) {
-                    // TODO: don't try to hash if connecting from remote provider
-                    return this.md5Checksum(file.data).then((hash) => {
-                        return this.getSignedRequest(
-                            file, hash, props.pathArray
-                        ).then(data => data);
-                    });
-                }
-            });
+        });
         this.uppy.on('complete', ({successful, failed}) => {
             successful.forEach((file) => {
                 console.log(`Successful upload to: ${file.uploadURL}`);
-                this.props.savePicture({picture: file.uploadURL});
+                props.savePicture({picture: file.uploadURL});
             });
+        });
+    }
+
+    componentDidMount() {
+        this.uppy.use(AwsS3, {
+            getUploadParameters (file) {
+                // TODO: don't try to hash if connecting from remote provider
+                return this.md5Checksum(file.data).then((hash) => {
+                    return this.getSignedRequest(
+                        file, hash, props.pathArray
+                    ).then(data => data);
+                });
+            }
         });
     }
 
