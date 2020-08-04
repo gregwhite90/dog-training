@@ -62,6 +62,7 @@ class ImageUpload extends React.Component {
 
     constructor(props) {
         super(props);
+        this.picture = null;
         this.getSignedRequest = this.getSignedRequest.bind(this);
         this.uppy = Uppy({
             restrictions: {
@@ -69,12 +70,6 @@ class ImageUpload extends React.Component {
                 allowedFileTypes: ["image/*"]
             },
             allowMultipleUploads: false,
-        });
-        this.uppy.on('complete', ({successful, failed}) => {
-            successful.forEach((file) => {
-                console.log(`Successful upload to: ${file.uploadURL}`);
-                props.savePicture({picture: file.uploadURL});
-            });
         });
     }
 
@@ -85,9 +80,18 @@ class ImageUpload extends React.Component {
                 return md5Checksum(file.data).then((hash) => {
                     return this.getSignedRequest(
                         file, hash, this.props.pathArray
-                    ).then(data => data);
+                    ).then(data => {
+                        this.picture = data.key;
+                        return data;
+                    });
                 });
             }
+        });
+        this.uppy.on('complete', ({successful, failed}) => {
+            successful.forEach((file) => {
+                console.log(`Successful upload to: ${file.uploadURL}`);
+                this.props.savePicture({picture: this.picture});
+            });
         });
     }
 
@@ -122,6 +126,7 @@ class ImageUpload extends React.Component {
                         method: data.method,
                         url: data.url,
                         fields: data.fields,
+                        key: data.key,
                         headers: {
                             'Content-Type': file.type,
                             'Content-MD5': hash,

@@ -46,7 +46,7 @@ class DogAdder extends React.Component {
         // TODO: create and call mutation
         EditDogMutation.commit(
             this.props.relay.environment,
-            {id: this.state.id, picture},
+            {id: this.fieldValues.id, picture},
             (response, errors) => {
                 this.fieldValues.picture = picture;
                 this.nextStep();
