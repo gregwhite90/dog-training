@@ -44,7 +44,7 @@ class ImageUpload extends React.Component {
                 // TODO: don't try to hash if connecting from remote provider
                 return this.md5Checksum(file.data).then((hash) => {
                     return this.getSignedRequest(
-                        file, hash, props.pathArray
+                        file, hash, this.props.pathArray
                     ).then(data => data);
                 });
             }
