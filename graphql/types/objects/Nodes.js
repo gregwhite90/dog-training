@@ -137,7 +137,7 @@ const { connectionType: dogToUserConnection } = connectionDefinitions({
     nodeType: userType,
     resolveNode: (edge, args, context) => {
         const user_model = new AuthUser(context);
-        return user_model.get_one(edge.node.user_id);
+        return user_model.get_one({id: edge.node.user_id});
     },
     edgeFields: () => ({
         user_role: {
@@ -155,8 +155,10 @@ const { connectionType: userToDogConnection, edgeType: userToDogEdge } = connect
     name: 'UserToDog',
     nodeType: dogType,
     resolveNode: (edge, args, context) => {
+        console.log('in user to dog node resolver');
+        console.log(edge);
         const dog_model = new AuthDog(context);
-        return dog_model.get_one(edge.node.dog_id);
+        return dog_model.get_one({id: edge.node.dog_id});
     },
     edgeFields: () => ({
         user_role: {
