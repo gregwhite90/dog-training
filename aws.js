@@ -72,4 +72,5 @@ function signS3PutHandler(req, res) {
 module.exports = {
     signS3PutHandler,
     signS3GetHandler,
+    getS3SignedGetUrl,
 };
