@@ -9,6 +9,7 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 type DogCard_dog$ref = any;
+export type UserDogRole = "OWNER" | "TRAINER" | "VIEWER" | "%future added value";
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type DogsList_viewer$ref: FragmentReference;
 declare export opaque type DogsList_viewer$fragmentType: DogsList_viewer$ref;
@@ -16,10 +17,11 @@ export type DogsList_viewer = {|
   +id: string,
   +dogs: ?{|
     +edges: ?$ReadOnlyArray<?{|
+      +user_role: ?UserDogRole,
       +node: ?{|
         +id: string,
         +$fragmentRefs: DogCard_dog$ref,
-      |}
+      |},
     |}>
   |},
   +$refType: DogsList_viewer$ref,
@@ -75,6 +77,13 @@ return {
           "name": "edges",
           "plural": true,
           "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "user_role",
+              "storageKey": null
+            },
             {
               "alias": null,
               "args": null,
@@ -143,6 +152,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '9c2ec93f7f6dd04df198a4db71481abf';
+(node/*: any*/).hash = '072c37465d6a90910964ff0aee2c3464';
 
 module.exports = node;

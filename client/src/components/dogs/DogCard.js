@@ -10,6 +10,7 @@ function DogCard(props) {
         picture: props.dog.picture,
         picture_needs_s3: true,
         title: props.dog.name,
+        badge: props.role,
     };
     console.log(node);
     return (<HorizontalCard node={node}/>);

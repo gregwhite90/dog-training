@@ -56,6 +56,9 @@ type UserToDogEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+
+  """The role the user plays for the dog."""
+  user_role: UserDogRole
 }
 
 type Dog implements Node {
@@ -84,6 +87,15 @@ type DogToUserEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+
+  """The role the user plays for the dog."""
+  user_role: UserDogRole
+}
+
+enum UserDogRole {
+  OWNER
+  TRAINER
+  VIEWER
 }
 
 type Mutation {

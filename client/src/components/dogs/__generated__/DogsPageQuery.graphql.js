@@ -44,6 +44,7 @@ fragment DogsList_viewer on User {
   id
   dogs(first: 2147483647) {
     edges {
+      user_role
       node {
         id
         ...DogCard_dog
@@ -135,6 +136,13 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "user_role",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "concreteType": "Dog",
                     "kind": "LinkedField",
                     "name": "node",
@@ -218,12 +226,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f0707bd14bb4bfa5736c13dea15c92e9",
+    "cacheID": "59b5c2e48c51d738b5f194d056383c00",
     "id": null,
     "metadata": {},
     "name": "DogsPageQuery",
     "operationKind": "query",
-    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      user_role\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

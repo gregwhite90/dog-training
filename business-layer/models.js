@@ -32,13 +32,11 @@ class AuthUser extends AuthModel {
         if (id !== this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
-        return Dog.get_all_dogs_for_user({id})
-                  .then(dogs => dogs.map(Dog.create_object));
+        return Dog.get_all_dog_ids_and_roles_for_user({id});
     }
 
     async get_all_dogs_for_viewer() {
-        return this.get_all_dogs({id: this.user_id})
-                   .then(dogs => dogs.map(Dog.create_object));
+        return this.get_all_dogs({id: this.user_id});
     }
 }
 
@@ -77,9 +75,7 @@ class AuthDog extends AuthModel {
             user_id: this.user_id,
         });
         // TODO: handle authorization failure
-        const ids = await Dog.get_all_user_ids({id});
-        return Promise.all(ids.map(id => User.get_one({id})))
-                      .then(raw_users => raw_users.map(User.create_object));
+        return Dog.get_all_user_ids_and_roles({id});
     }
 
     async edit_one({id, name, picture}) {

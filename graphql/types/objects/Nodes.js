@@ -73,6 +73,7 @@ const userType = new GraphQLObjectType({
             args: connectionArgs,
             resolve: (user, args, context) => {
                 const user_model = new AuthUser(context);
+                // TODO: turn into getting all dog ids
                 return connectionFromPromisedArray(user_model.get_all_dogs({id: user.id}), args);
             },
         },
@@ -106,6 +107,7 @@ const dogType = new GraphQLObjectType({
             args: connectionArgs,
             resolve: (dog, args, context) => {
                 const dog_model = new AuthDog(context);
+                // TODO: turn into getting all user ids
                 return connectionFromPromisedArray(
                     dog_model.get_all_users({id: dog.id}),
                     args
@@ -116,46 +118,56 @@ const dogType = new GraphQLObjectType({
     }),
 });
 
-/**
+const userDogRoleType = new GraphQLEnumType({
+    name: 'UserDogRole',
+    values: {
+        OWNER: { value: 'OWNER' },
+        TRAINER: { value: 'TRAINER' },
+        VIEWER: { value: 'VIEWER' },
+    }
+});
+
 const userRoleDescAndType = {
     description: 'The role the user plays for the dog.',
     type: userDogRoleType,
 };
 
-const userDogRoleType = new GraphQLEnumType({
-    name: 'UserDogRole',
-    values: {
-        OWNER,
-        TRAINER,
-        VIEWER,
-    }
-});
-*/
-
 const { connectionType: dogToUserConnection } = connectionDefinitions({
     name: 'DogToUser',
     nodeType: userType,
-    /**
+    resolveNode: (edge, args, context) => {
+        const user_model = new AuthUser(context);
+        return user_model.get_one(edge.node.user_id);
+    },
     edgeFields: () => ({
         user_role: {
             ...userRoleDescAndType,
-            resolve: () => null // TODO: implement the function that pulls from the DB
+            resolve: (edge) => {
+                console.log('in dog to user edge resolver');
+                console.log(edge);
+                return edge.node.user_role;
+            },
         },
     }),
-    */
 });
 
 const { connectionType: userToDogConnection, edgeType: userToDogEdge } = connectionDefinitions({
     name: 'UserToDog',
     nodeType: dogType,
-    /**
+    resolveNode: (edge, args, context) => {
+        const dog_model = new AuthDog(context);
+        return dog_model.get_one(edge.node.dog_id);
+    },
     edgeFields: () => ({
         user_role: {
             ...userRoleDescAndType,
-            resolve: () => null // TODO: implement the function that pulls from the DB
+            resolve: (edge) => {
+                console.log('in user to dog edge resolver');
+                console.log(edge);
+                return edge.node.user_role;
+            },
         },
     }),
-    */
 });
 
 module.exports = {

@@ -7,10 +7,10 @@ class Dog {
      * Generate GraphQL-layer-friendly object from raw persistence layer output
      */
 
-    static create_object(raw_user) {
+    static create_object(raw_dog) {
         return {
             _node_type: 'Dog',
-            ...raw_user, // TODO: confirm treatment if name or picture is null
+            ...raw_dog, // TODO: confirm treatment if name or picture is null
         };
     }
 
@@ -48,18 +48,18 @@ class Dog {
      * Read Dog and other operations
      */
 
-    static async get_all_user_ids({id}) {
+    static async get_all_user_ids_and_roles({id}) {
         const { rows } = await db.query(
-            'SELECT user_id FROM user_dogs WHERE dog_id=$1',
+            'SELECT user_id, user_role FROM user_dogs WHERE dog_id=$1',
             [id]
         );
         // TODO: error-handling code?
         return rows;
     }
 
-    static async get_all_dogs_for_user({id}) {
+    static async get_all_dog_ids_and_roles_for_user({id}) {
         const { rows } = await db.query(
-            'SELECT * FROM dogs WHERE id IN (SELECT dog_id AS id FROM user_dogs WHERE user_id=$1)',
+            'SELECT dog_id, user_role FROM user_dogs WHERE user_id=$1',
             [id]
         );
         // TODO: error-handling code?

@@ -5,19 +5,16 @@ import { Link } from 'react-router-dom';
 import DogCard from './DogCard';
 
 function DogsList(props) {
-    const nodes =
+    const edges =
         props && props.viewer && props.viewer.dogs && props.viewer.dogs.edges
-        ? props.viewer.dogs.edges
-               .filter(Boolean)
-               .map(edge => edge.node)
-               .filter(Boolean)
+        ? props.viewer.dogs.edges.filter(Boolean)
         : [];
     return (
         <>
-            {nodes.map(node => {
+            {edges.map(edge => {
                  return (
-                     <Link to={`${props.match.url}/${node.id}`}>
-                         <DogCard key={node.id} dog={node} />
+                     <Link to={`${props.match.url}/${edge.node.id}`}>
+                         <DogCard key={edge.node.id} dog={edge.node} role={edge.user_role}/>
                      </Link>
                  );
             })}
@@ -33,6 +30,7 @@ export default createFragmentContainer(DogsList, {
                 first: 2147483647 # max GraphQLInt
             ) @connection(key: "DogsList_dogs") {
                 edges {
+                    user_role
                     node {
                         id
                         ...DogCard_dog
