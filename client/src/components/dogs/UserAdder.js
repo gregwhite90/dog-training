@@ -44,42 +44,49 @@ class UserAdder extends React.Component {
             <Container>
                 <h3>Invite other people to collaborate training {this.props.dog.name}!</h3>
                 <Container>
-                     <label for="invitee_email">Email address</label>
-                     <input id="invitee_email"
-                            name="invitee_email"
-                            type="email"
-                            placeholder="Email"/>
-                     <ToggleButtonGroup type="radio"
-                                        name="user_role"
-                                        id="user_role"
-                                        defaultValue="OWNER">
-                         <ToggleButton value="OWNER">Owner</ToggleButton>
-                         <ToggleButton value="TRAINER" disabled>Trainer</ToggleButton>
-                         <ToggleButton value="VIEWER" disabled>Viewer</ToggleButton>
-                     </ToggleButtonGroup>
-                     <LoadingButton text="Invite user by email"
-                                    load={() => {
-                                            // todo: fetch network request
-                                            return new Promise((resolve, reject) => {
-                                                resolve(
-                                                    this.setState({
-                                                        results: {
-                                                            invitee_email: document.getElementById("invitee_email").value,
-                                                            user_role: document.getElementById("user_role"),
-                                                            invited_by: this.props.auth0.user,
-                                                            dog_id: this.props.dog.id,
-                                                        }
-                                                    })
-                                                );
-                                            });
-                                    }}
-                     />
-                     {this.state.results &&
-                      (<div>
-                          {JSON.stringify(this.state.results)}
-                      </div>)
-                     }
+                    <Row>
+                        <label for="invitee_email">Email address</label>
+                        <input id="invitee_email"
+                               name="invitee_email"
+                               type="email"
+                               placeholder="Email"/>
+                    </Row>
+                    <Row>
+                        <label for="user_role">Invite user as:</label>
+                        <ToggleButtonGroup type="radio"
+                                           name="user_role"
+                                           id="user_role"
+                                           defaultValue="OWNER">
+                            <ToggleButton value="OWNER">Owner</ToggleButton>
+                            <ToggleButton value="TRAINER" disabled>Trainer</ToggleButton>
+                            <ToggleButton value="VIEWER" disabled>Viewer</ToggleButton>
+                        </ToggleButtonGroup>
+                    </Row>
+                    <Row>
+                        <LoadingButton text="Invite user by email"
+                                       load={() => {
+                                               // todo: fetch network request
+                                               return new Promise((resolve, reject) => {
+                                                   resolve(
+                                                       this.setState({
+                                                           results: {
+                                                               invitee_email: document.getElementById("invitee_email").value,
+                                                               user_role: document.getElementById("user_role").value,
+                                                               invited_by: this.props.auth0.user,
+                                                               dog_id: this.props.dog.id,
+                                                           }
+                                                       })
+                                                   );
+                                               });
+                                       }}
+                        />
+                    </Row>
                 </Container>
+                {this.state.results &&
+                 (<Container>
+                     {JSON.stringify(this.state.results)}
+                 </Container>)
+                }
             </Container>
         );
     }
