@@ -95,12 +95,11 @@ const userType = new GraphQLObjectType({
         pending_invitations_received: {
             type: pendingInvitationConnection,
             args: connectionArgs,
-            // TODO: don't use the context for the user's email?
-            resolve: (_, args, context) => {
+            resolve: (user, args, context) => {
                 console.log(`In pending invitations received resolver with email ${context.user.email}`);
                 const pending_invitation_model = new AuthPendingInvitation(context);
                 return connectionFromPromisedArray(
-                    pending_invitation_model.get_all_received({email: context.user.email}), args
+                    pending_invitation_model.get_all_received({id: user.id}), args
                 );
             }
         },

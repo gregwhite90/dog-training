@@ -48,6 +48,10 @@ class AuthUser extends AuthModel {
                        }
                    });
     }
+
+    async get_email({id}) {
+        return User.get_email({id});
+    }
 }
 
 class AuthDog extends AuthModel {
@@ -97,7 +101,7 @@ class AuthDog extends AuthModel {
 class AuthPendingInvitation extends AuthModel {
     constructor(context) {
         super(context);
-        this.user_email = context.user.email;
+        this.context = context;
         console.log(`creating auth pending invitation with id ${this.user_id}, email ${this.user_email}`);
     }
 
@@ -115,7 +119,10 @@ class AuthPendingInvitation extends AuthModel {
         return PendingInvitation.get_sent_by_id({id});
     }
 
-    async get_all_received({email}) {
+    async get_all_received({id}) {
+        const user_model = new AuthUser(context);
+        const { email, email_verified } = await user_model.get_email({id});
+        // TODO: use email_verified
         return PendingInvitation.get_received_by_email({email});
     }
 
