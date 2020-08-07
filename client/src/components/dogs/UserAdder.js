@@ -68,11 +68,26 @@ class UserAdder extends React.Component {
                         <Form.Label>
                             Invite user as:
                         </Form.Label>
-                        <Form.Control controlId="invitationRole"  name="user_role" onChange={this.handleChange}>
-                            <Form.Check type="radio" label="Owner" value="OWNER" selected />
-                            <Form.Check type="radio" label="Trainer" value="TRAINER" disabled />
-                            <Form.Check type="radio" label="Viewer" value="VIEWER" disabled />
-                        </Form.Control>
+                        <Form.Group controlId="invitationRole">
+                            <Form.Check type="radio"
+                                        label="Owner"
+                                        value="OWNER"
+                                        name="user_role"
+                                        onChange={this.handleChange}
+                                        selected />
+                            <Form.Check type="radio"
+                                        label="Trainer"
+                                        value="TRAINER"
+                                        name="user_role"
+                                        onChange={this.handleChange}
+                                        disabled />
+                            <Form.Check type="radio"
+                                        label="Viewer"
+                                        value="VIEWER"
+                                        name="user_role"
+                                        onChange={this.handleChange}
+                                        disabled />
+                        </Form.Group>
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Invite user by email
