@@ -23,6 +23,8 @@ type User implements Node {
   """URL of the profile image of this user."""
   picture: String
   dogs(after: String, first: Int, before: String, last: Int): UserToDogConnection
+  pending_invitations_sent(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
+  pending_invitations_received(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
 }
 
 """A connection to a list of items."""
@@ -96,6 +98,32 @@ enum UserDogRole {
   OWNER
   TRAINER
   VIEWER
+}
+
+"""A connection to a list of items."""
+type PendingInvitationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PendingInvitationEdge]
+}
+
+"""An edge in a connection."""
+type PendingInvitationEdge {
+  """The item at the end of the edge"""
+  node: PendingInvitation
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type PendingInvitation implements Node {
+  """The ID of an object"""
+  id: ID!
+  invitee_email: String!
+  invited_by: User!
+  user_role: UserDogRole!
 }
 
 type Mutation {

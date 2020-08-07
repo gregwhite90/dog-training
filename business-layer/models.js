@@ -1,5 +1,6 @@
 const { User } = require('../data-layer/auth0/models/User');
 const { Dog } = require('../data-layer/db/models/Dog');
+const { PendingInvitation } = require('../data-layer/db/models/PendingInvitation');
 
 class AuthModel {
     constructor(context) {
@@ -37,6 +38,15 @@ class AuthUser extends AuthModel {
 
     async get_all_dogs_for_viewer() {
         return this.get_all_dogs({id: this.user_id});
+    }
+
+    async get_all_users_by_email({email}) {
+        return User.get_all_by_email({email})
+                   .then(users => {
+                       if (users.length === 1 && users[0].email_verified) {
+                           // Found the user
+                       }
+                   });
     }
 }
 
@@ -84,7 +94,42 @@ class AuthDog extends AuthModel {
     }
 }
 
+class AuthPendingInvitation extends AuthModel {
+    constructor(context) {
+        super(context);
+        this.user_email = context.user.email;
+        console.log('creating auth pending invitation with id ${this.user_id}, email ${this.user_email}');
+    }
+
+    // TOOD: authorization checks
+
+    async create_one({invitee_email, invited_by, dog_id, user_role}) {
+        return PendingInvitation.create_one({invitee_email, invited_by, dog_id, user_role});
+    }
+
+    async get_one({id}) {
+        return PendingInvitation.get_one({id});
+    }
+
+    async get_all_sent({id}) {
+        return PendingInvitation.get_sent_by_id({id});
+    }
+
+    async get_all_received({email}) {
+        return PendingInvitation.get_received_by_email({email});
+    }
+
+    async get_all_sent_viewer() {
+        return this.get_all_sent({id: this.user_id})
+    }
+
+    async get_all_received_viewer() {
+        return this.get_all_received({email: this.user_email});
+    }
+}
+
 module.exports = {
     AuthUser,
     AuthDog,
+    AuthPendingInvitation,
 };

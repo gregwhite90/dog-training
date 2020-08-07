@@ -18,6 +18,7 @@ const {
 const {
     AuthUser,
     AuthDog,
+    AuthPendingInvitation,
 } = require('../../../business-layer/models');
 
 const { nodeInterface, nodeField } = nodeDefinitions(
@@ -31,6 +32,9 @@ const { nodeInterface, nodeField } = nodeDefinitions(
                 break;
             case 'Dog':
                 model = new AuthDog(context);
+                break;
+            case 'PendingInvitation':
+                model = new AuthPendingInvitation(context);
                 break;
             default:
                 console.log(`Unknown type in node resolver: ${type}`);
@@ -46,6 +50,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
                 return userType;
             case 'Dog':
                 return dogType;
+            case 'PendingInvitation':
+                return pendingInvitationType;
             default:
                 console.log(`Unknown obj in obj -> type node resolver: ${obj}`);
                 break;
@@ -73,9 +79,29 @@ const userType = new GraphQLObjectType({
             args: connectionArgs,
             resolve: (user, args, context) => {
                 const user_model = new AuthUser(context);
-                // TODO: turn into getting all dog ids
                 return connectionFromPromisedArray(user_model.get_all_dogs({id: user.id}), args);
             },
+        },
+        pending_invitations_sent: {
+            type: pendingInvitationConnection,
+            args: connectionArgs,
+            resolve: (user, args, context) => {
+                const pending_invitation_model = new AuthPendingInvitation(context);
+                return connectionFromPromisedArray(
+                    pending_invitation_model.get_all_sent({id: user.id}), args
+                );
+            },
+        },
+        pending_invitations_received: {
+            type: pendingInvitationConnection,
+            args: connectionArgs,
+            // TODO: don't use the context for the user's email?
+            resolve: (_, args, context) => {
+                const pending_invitation_model = new AuthPendingInvitation(context);
+                return connectionFromPromisedArray(
+                    pending_invitation_model.get_all_received({email: context.user.email}), args
+                );
+            }
         },
         /**
         training_sessions: {
@@ -172,10 +198,45 @@ const { connectionType: userToDogConnection, edgeType: userToDogEdge } = connect
     }),
 });
 
+const pendingInvitationType = new GraphQLObjectType({
+    name: 'PendingInvitation',
+    interfaces: [nodeInterface],
+    fields: () => ({
+        id: globalIdField(),
+        invitee_email: {
+            type: new GraphQLNonNull(GraphQLString),
+        },
+        invited_by: {
+            type: new GraphQLNonNull(userType),
+            resolve: (pending_invitation, args, context) => {
+                const user_model = new AuthUser(context);
+                return user_model.get_one({id: pending_invitation.invited_by});
+            }
+        },
+        user_role: {
+            type: new GraphQLNonNull(userDogRoleType),
+        },
+    }),
+});
+
+const { connectionType: pendingInvitationConnection,
+        edgeType: pendingInvitationEdge
+} = connectionDefinitions({
+    name: 'PendingInvitation',
+    nodeType: pendingInvitationType,
+    resolveNode: (edge, args, context) => {
+        const pending_invitation_model = new AuthPendingInvitation(context);
+        // TODO: figure out return value
+        return pending_invitation_model.get_one({id: edge.node.id});
+    },
+    // TODO: decide if anything should go on the edge.
+});
+
 module.exports = {
     dogType,
     dogTypeOwnedScalarFields,
     userType,
     nodeField,
     userToDogEdge,
+    pendingInvitationType,
 };

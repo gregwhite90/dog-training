@@ -4,7 +4,7 @@ const auth0 = new ManagementClient({
     domain: process.env.AUTH0_DOMAIN,
     clientId: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    scope: 'read:users',
+    scope: 'read:users read:user_idp_tokens',
 });
 
 class User {
@@ -29,6 +29,14 @@ class User {
 
     static async get_one({id}) {
         return auth0.getUser({id});
+    }
+
+    static async get_all_by_email({email}) {
+        const params = {
+            search_engine: 'v3',
+            q: `email:"${email}"`,
+        };
+        return auth0.getUsers(params);
     }
 }
 

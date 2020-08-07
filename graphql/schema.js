@@ -24,6 +24,10 @@ const {
     removeDogForAllMutation,
     */
 } = require('./mutations/Dog');
+
+const {
+    inviteUserByEmail,
+} = require('./mutations/User');
 /**
 const {
     addBehaviorMutation,
