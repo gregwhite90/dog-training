@@ -120,7 +120,7 @@ class AuthPendingInvitation extends AuthModel {
     }
 
     async get_all_received({id}) {
-        const user_model = new AuthUser(context);
+        const user_model = new AuthUser(this.context);
         const { email, email_verified } = await user_model.get_email({id});
         // TODO: use email_verified
         return PendingInvitation.get_received_by_email({email});
