@@ -98,7 +98,7 @@ class AuthPendingInvitation extends AuthModel {
     constructor(context) {
         super(context);
         this.user_email = context.user.email;
-        console.log('creating auth pending invitation with id ${this.user_id}, email ${this.user_email}');
+        console.log(`creating auth pending invitation with id ${this.user_id}, email ${this.user_email}`);
     }
 
     // TOOD: authorization checks
