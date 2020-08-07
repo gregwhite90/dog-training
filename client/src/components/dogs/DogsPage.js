@@ -14,6 +14,7 @@ export default function DogsPage({relay, match}) {
                 query DogsPageQuery {
                     viewer {
                         ...DogsApp_viewer
+                        ...PendingInvitations_viewer
                     }
                 }
                 `}

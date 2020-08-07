@@ -124,6 +124,7 @@ type PendingInvitation implements Node {
   invitee_email: String!
   invited_by: User!
   user_role: UserDogRole!
+  dog: Dog
 }
 
 type Mutation {

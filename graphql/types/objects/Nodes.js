@@ -216,6 +216,13 @@ const pendingInvitationType = new GraphQLObjectType({
         user_role: {
             type: new GraphQLNonNull(userDogRoleType),
         },
+        dog: {
+            type: dogType,
+            resolve: (pending_invitation, args, context) => {
+                const dog_model = new AuthDog(context);
+                return dog_model.get_one({id: pending_invitation.dog_id});
+            }
+        }
     }),
 });
 

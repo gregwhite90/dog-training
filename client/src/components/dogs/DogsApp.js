@@ -8,6 +8,7 @@ import DogsList from './DogsList';
 function DogsApp(props) {
     return (
         <>
+            <h3>My dogs</h3>
             <DogsList viewer={props.viewer} match={props.match}/>
             <Link to={props.match.url + "/add"}>
                 <Button variant="primary">Add a dog!</Button>
