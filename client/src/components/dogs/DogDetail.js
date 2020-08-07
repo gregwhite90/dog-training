@@ -1,7 +1,10 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 
+import Container from 'react-bootstrap/Container';
+
 import DogCard from './DogCard';
+import UserAdder from './UserAdder';
 
 // TODO: authorization check
 
@@ -19,7 +22,12 @@ export default function DogDetail(props) {
             variables={{id: props.match.params.id}}
             render={({error, props}) => {
                     if (props && props.node) {
-                        return <DogCard dog={props.node} />;
+                        return (
+                            <Container>
+                                <DogCard dog={props.node} />
+                                <UserAdder dog={props.node}/>
+                            </Container>
+                        );
                     } else if (error) {
                         console.log(error);
                         return <div>error.message</div>;
