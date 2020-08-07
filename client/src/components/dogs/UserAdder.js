@@ -38,6 +38,8 @@ class UserAdder extends React.Component {
             invited_by: props.auth0.user.sub,
             dog_id: props.dog.id,
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
@@ -74,7 +76,7 @@ class UserAdder extends React.Component {
                                         value="OWNER"
                                         name="user_role"
                                         onChange={this.handleChange}
-                                        selected />
+                                        checked />
                             <Form.Check type="radio"
                                         label="Trainer"
                                         value="TRAINER"
