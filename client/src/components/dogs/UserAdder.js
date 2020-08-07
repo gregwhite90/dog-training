@@ -60,14 +60,18 @@ class UserAdder extends React.Component {
                      <LoadingButton text="Invite user by email"
                                     load={() => {
                                             // todo: fetch network request
-                                            this.setState({
-                                                results: {
-                                                    invitee_email: document.getElementById("invitee_email").value,
-                                                    user_role: document.getElementById("user_role"),
-                                                    invited_by: this.props.auth0.user,
-                                                    dog_id: this.props.dog.id,
-                                                }
-                                            })
+                                            return new Promise((resolve, reject) => {
+                                                resolve(
+                                                    this.setState({
+                                                        results: {
+                                                            invitee_email: document.getElementById("invitee_email").value,
+                                                            user_role: document.getElementById("user_role"),
+                                                            invited_by: this.props.auth0.user,
+                                                            dog_id: this.props.dog.id,
+                                                        }
+                                                    })
+                                                );
+                                            });
                                     }}
                      />
                      {this.state.results &&
