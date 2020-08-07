@@ -1,13 +1,10 @@
 import React from 'react';
+import { createFragmentContainer, graphql } from 'react-relay';
 import { withAuth0 } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-
-import LoadingButton from '../utils/LoadingButton';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 // User experience:
 // Enter an email
@@ -35,56 +32,55 @@ class UserAdder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: null,
+            display: false,
+            invitee_email: null,
+            user_role: "OWNER",
+            invited_by: props.auth0.user.sub,
+            dog_id: props.dog.id,
         };
+    }
+
+    handleChange(event) {
+        this.setState({[event.target.name]: event.target.value});
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        this.setState({display: true});
     }
 
     render() {
         return (
             <Container>
                 <h3>Invite other people to collaborate training {this.props.dog.name}!</h3>
-                <Container>
-                    <Row>
-                        <label for="invitee_email">Email address</label>
-                        <input id="invitee_email"
-                               name="invitee_email"
-                               type="email"
-                               placeholder="Email"/>
-                    </Row>
-                    <Row>
-                        <label for="user_role">Invite user as:</label>
-                        <ToggleButtonGroup type="radio"
-                                           name="user_role"
-                                           id="user_role"
-                                           defaultValue="OWNER">
-                            <ToggleButton value="OWNER">Owner</ToggleButton>
-                            <ToggleButton value="TRAINER" disabled>Trainer</ToggleButton>
-                            <ToggleButton value="VIEWER" disabled>Viewer</ToggleButton>
-                        </ToggleButtonGroup>
-                    </Row>
-                    <Row>
-                        <LoadingButton text="Invite user by email"
-                                       load={() => {
-                                               // todo: fetch network request
-                                               return new Promise((resolve, reject) => {
-                                                   resolve(
-                                                       this.setState({
-                                                           results: {
-                                                               invitee_email: document.getElementById("invitee_email").value,
-                                                               user_role: document.getElementById("user_role").value,
-                                                               invited_by: this.props.auth0.user,
-                                                               dog_id: this.props.dog.id,
-                                                           }
-                                                       })
-                                                   );
-                                               });
-                                       }}
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="invitationEmail">
+                        <Form.Label>
+                            Email address to invite:
+                        </Form.Label>
+                        <Form.Control type="email"
+                                      name="invitee_email"
+                                      placeholder="Email"
+                                      onChange={this.handleChange}
                         />
-                    </Row>
-                </Container>
-                {this.state.results &&
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>
+                            Invite user as:
+                        </Form.Label>
+                        <Form.Control controlId="invitationRole"  name="user_role" onChange={this.handleChange}>
+                            <Form.Check type="radio" label="Owner" value="OWNER" selected />
+                            <Form.Check type="radio" label="Trainer" value="TRAINER" disabled />
+                            <Form.Check type="radio" label="Viewer" value="VIEWER" disabled />
+                        </Form.Control>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Invite user by email
+                    </Button>
+                </Form>
+                {this.state.display &&
                  (<Container>
-                     {JSON.stringify(this.state.results)}
+                     {JSON.stringify(this.state)}
                  </Container>)
                 }
             </Container>
@@ -92,4 +88,12 @@ class UserAdder extends React.Component {
     }
 }
 
-export default withAuth0(UserAdder);
+export default createFragmentContainer(withAuth0(UserAdder), {
+    dog: graphql`
+        fragment UserAdder_dog on Dog {
+            id
+            name
+            picture
+        }
+    `,
+});

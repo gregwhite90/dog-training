@@ -9,12 +9,13 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type DogCard_dog$ref = any;
+type UserAdder_dog$ref = any;
 export type DogDetailQueryVariables = {|
   id: string
 |};
 export type DogDetailQueryResponse = {|
   +node: ?{|
-    +$fragmentRefs: DogCard_dog$ref
+    +$fragmentRefs: DogCard_dog$ref & UserAdder_dog$ref
   |}
 |};
 export type DogDetailQuery = {|
@@ -31,11 +32,18 @@ query DogDetailQuery(
   node(id: $id) {
     __typename
     ...DogCard_dog
+    ...UserAdder_dog
     id
   }
 }
 
 fragment DogCard_dog on Dog {
+  name
+  picture
+}
+
+fragment UserAdder_dog on Dog {
+  id
   name
   picture
 }
@@ -75,6 +83,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "DogCard_dog"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "UserAdder_dog"
           }
         ],
         "storageKey": null
@@ -138,16 +151,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ec9e91a8f1e4d7f7c95f7f4990dc92aa",
+    "cacheID": "2b88dd25c19a0ce4e54c922e72a88c41",
     "id": null,
     "metadata": {},
     "name": "DogDetailQuery",
     "operationKind": "query",
-    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n"
+    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...UserAdder_dog\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment UserAdder_dog on Dog {\n  id\n  name\n  picture\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '2f649c93454e029c9db1fbc562881d21';
+(node/*: any*/).hash = '1432501c77c579b71b77a3ba68f5a43e';
 
 module.exports = node;

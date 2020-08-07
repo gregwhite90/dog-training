@@ -16,6 +16,7 @@ export default function DogDetail(props) {
                 query DogDetailQuery($id: ID!) {
                     node(id: $id) {
                         ...DogCard_dog
+                        ...UserAdder_dog
                     }
                 }
                 `}
@@ -25,7 +26,7 @@ export default function DogDetail(props) {
                         return (
                             <Container>
                                 <DogCard dog={props.node} />
-                                <UserAdder dog={props.node}/>
+                                <UserAdder dog={props.node} />
                             </Container>
                         );
                     } else if (error) {
