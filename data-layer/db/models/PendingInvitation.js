@@ -89,7 +89,7 @@ class PendingInvitation {
 
             // Find the pending_transactions
             const find_res = await client.query(
-                'SELECT * FROM pending_transactions WHERE id=$1',
+                'SELECT * FROM pending_invitations WHERE id=$1',
                 [invitation_id]
             );
 
@@ -103,7 +103,7 @@ class PendingInvitation {
 
             // Delete from pending_transactions
             const delete_res = await client.query(
-                'DELETE FROM pending_transactions WHERE id=$1',
+                'DELETE FROM pending_invitations WHERE id=$1',
                 [invitation_id]
             );
 
