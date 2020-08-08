@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
 
 import DogsApp from './DogsApp';
+import PendingInvitations from './PendingInvitations';
 
 export default function DogsPage({relay, match}) {
     // TODO: authenticate if a user tries to access route without being logged in.
@@ -23,7 +24,12 @@ export default function DogsPage({relay, match}) {
             }}
             render={({error, props}) => {
                     if (props && props.viewer) {
-                        return <DogsApp viewer={props.viewer} match={match}/>;
+                        return (
+                            <>
+                                <DogsApp viewer={props.viewer} match={match}/>
+                                <PendingInvitations viewer={props.viewer} />
+                            </>
+                        );
                     } else if (error) {
                         console.log(error);
                         return <div>error.message</div>;

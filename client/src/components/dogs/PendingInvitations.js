@@ -20,7 +20,7 @@ function PendingInvitations(props) {
 }
 
 // TODO: use nested fragments
-export default createFragmentContainer(DogsApp, {
+export default createFragmentContainer(PendingInvitations, {
     viewer: graphql`
         fragment PendingInvitations_viewer on User {
             id
