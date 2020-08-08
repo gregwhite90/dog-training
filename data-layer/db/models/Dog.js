@@ -1,4 +1,5 @@
 const db = require('../pool');
+const { User } = require('../../auth0/models/User');
 
 class Dog {
 
@@ -20,13 +21,24 @@ class Dog {
      */
 
     static async check_authorization_for_dog({dog_id, user_id}) {
-        const { rows } = await db.query(
+        const { ur_rows } = await db.query(
             'SELECT user_role FROM user_dogs WHERE dog_id=$1 AND user_id=$2',
             [dog_id, user_id]
         );
         // TODO: could add check for the user role type to be future
         // proof for the enum expanding (or to add to the context)
-        return rows.length === 1;
+        if (ur_rows.length === 1) {
+            return true;
+        }
+
+        const { email, email_verified } = await User.get_email({id: user_id});
+
+        const { pi_rows } = await db.query(
+            'SELECT * FROM pending_invitations WHERE dog_id=$1 and invitee_email=lower($2)',
+            [dog_id, email]
+        );
+
+        return pi_rows.length >= 1;
     }
 
 
