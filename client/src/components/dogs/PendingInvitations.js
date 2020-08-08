@@ -1,6 +1,8 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
 
+import InvitationAccepter from './InvitationAccepter';
+
 function PendingInvitations(props) {
     return (
         <>
@@ -10,7 +12,7 @@ function PendingInvitations(props) {
                       .map(edge => edge.node)
                       .map(node => {
                           return(
-                              <li>Invitation to collaborate training {node.dog.name} as {node.user_role} with {node.invited_by.name} received at {node.invitee_email}.</li>
+                              <li key={node.id}>Invitation to collaborate training {node.dog.name} as {node.user_role} with {node.invited_by.name} received at {node.invitee_email}.<InvitationAccepter relay={props.relay} invitation_id={node.id} /></li>
                           );
                       })
                 }

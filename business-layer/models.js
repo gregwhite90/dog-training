@@ -133,6 +133,10 @@ class AuthPendingInvitation extends AuthModel {
     async get_all_received_viewer() {
         return this.get_all_received({email: this.user_email});
     }
+
+    async accept_invitation({invitation_id, user_id}) {
+        return PendingInvitation.accept_invitation({invitation_id, user_id});
+    }
 }
 
 module.exports = {

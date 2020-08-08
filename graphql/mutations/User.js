@@ -10,6 +10,7 @@ const {
 
 const {
     userType,
+    userToDogEdge,
     userRoleDescAndType,
 } = require('../types/objects/Nodes');
 
@@ -18,7 +19,7 @@ const {
     AuthPendingInvitation,
 } = require('../../business-layer/models');
 
-const inviteUserByEmail = mutationWithClientMutationId({
+const inviteUserByEmailMutation = mutationWithClientMutationId({
     name: 'InviteUserByEmail',
     description: `Invite an email address to collaborate training a dog`,
     inputFields: {
@@ -54,6 +55,51 @@ const inviteUserByEmail = mutationWithClientMutationId({
     },
 });
 
+const acceptInvitationMutation = mutationWithClientMutationId({
+    name: 'AcceptInvitation',
+    description: `Accept an invitation to collaborate training a dog`,
+    inputFields: {
+        invitation_id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+        user_id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+    },
+    outputFields: {
+        dogEdge: {
+            type: new GraphQLNonNull(userToDogEdge),
+            resolve: ({dog, user_model}) => {
+                return user_model.get_all_dogs_for_viewer().then(dogs => {
+                    return {
+                        cursor: cursorForObjectInConnection(dogs, dog),
+                        node: dog
+                    };
+                });
+            },
+        },
+        viewer: {
+            type: new GraphQLNonNull(userType),
+            resolve: ({user_model}) => {
+                return user_model.get_viewer();
+            },
+        }
+    },
+    mutateAndGetPayload: ({invitation_id, user_id}, context) => {
+        // TODO: check that the user_id and email match?
+        const pending_invitation_model = new AuthPendingInvitation(context);
+        return pending_invitation_model
+            .accept_invitation({invitation_id, user_id})
+            .then(dog_id => {
+                const dog_model = new AuthDog(context);
+                const dog = dog_model.get_one({id: dog_id}).then(dog => dog);
+                const user_model = new AuthUser(context);
+                return {dog, user_model};
+            });
+    },
+});
+
 module.exports = {
-    inviteUserByEmail,
+    inviteUserByEmailMutation,
+    acceptInvitationMutation,
 }

@@ -83,6 +83,7 @@ class PendingInvitation {
 
     static async accept_invitation({invitation_id, user_id}) {
         const client = await db.connect();
+        let dog_id;
         try {
             await client.query('BEGIN');
 
@@ -91,6 +92,8 @@ class PendingInvitation {
                 'SELECT * FROM pending_transactions WHERE id=$1',
                 [invitation_id]
             );
+
+            dog_id = find_res.rows[0].dog_id;
 
             // Add to user_dogs
             const add_res = await client.query(
@@ -113,7 +116,7 @@ class PendingInvitation {
         }
 
         // TODO: figure out return value
-
+        return dog_id;
     }
 
     /**

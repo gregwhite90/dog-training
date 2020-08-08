@@ -26,7 +26,8 @@ const {
 } = require('./mutations/Dog');
 
 const {
-    inviteUserByEmail,
+    inviteUserByEmailMutation,
+    acceptInvitationMutation,
 } = require('./mutations/User');
 /**
 const {
@@ -67,6 +68,8 @@ const mutationType = new GraphQLObjectType({
         /* Dog-focused mutations */
         addDog: addDogMutation,
         editDog: editDogMutation,
+        inviteUserByEmail: inviteUserByEmailMutation,
+        acceptInvitation: acceptInvitationMutation,
         /**
         removeDogForViewer: removeDogForViewerMutation,
         removeDogForAll: removeDogForAllMutation,

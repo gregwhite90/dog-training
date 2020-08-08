@@ -27,7 +27,7 @@ export default function DogsPage({relay, match}) {
                         return (
                             <>
                                 <DogsApp viewer={props.viewer} match={match}/>
-                                <PendingInvitations viewer={props.viewer} />
+                                <PendingInvitations relay={relay} viewer={props.viewer} />
                             </>
                         );
                     } else if (error) {

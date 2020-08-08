@@ -131,6 +131,12 @@ type Mutation {
   """Create a new dog with the currently logged in user as an 'owner'."""
   addDog(input: AddDogInput!): AddDogPayload
   editDog(input: EditDogInput!): EditDogPayload
+
+  """Invite an email address to collaborate training a dog"""
+  inviteUserByEmail(input: InviteUserByEmailInput!): InviteUserByEmailPayload
+
+  """Accept an invitation to collaborate training a dog"""
+  acceptInvitation(input: AcceptInvitationInput!): AcceptInvitationPayload
 }
 
 type AddDogPayload {
@@ -156,5 +162,32 @@ input EditDogInput {
   id: ID!
   name: String
   picture: String
+  clientMutationId: String
+}
+
+type InviteUserByEmailPayload {
+  viewer: User!
+  clientMutationId: String
+}
+
+input InviteUserByEmailInput {
+  """The email address of the user to invite"""
+  invitee_email: String!
+
+  """The ID of the dog to invite the user to collaborate to train"""
+  dog_id: ID!
+  user_role: undefined
+  clientMutationId: String
+}
+
+type AcceptInvitationPayload {
+  dogEdge: UserToDogEdge!
+  viewer: User!
+  clientMutationId: String
+}
+
+input AcceptInvitationInput {
+  invitation_id: ID!
+  user_id: ID!
   clientMutationId: String
 }
