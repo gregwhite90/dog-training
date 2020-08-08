@@ -8,10 +8,10 @@ import UserAdder from './UserAdder';
 
 // TODO: authorization check
 
-export default function DogDetail(props) {
+export default function DogDetail({relay, match}) {
     return (
         <QueryRenderer
-            environment={props.relay.environment}
+            environment={relay.environment}
             query={graphql`
                 query DogDetailQuery($id: ID!) {
                     node(id: $id) {
@@ -20,13 +20,13 @@ export default function DogDetail(props) {
                     }
                 }
                 `}
-            variables={{id: props.match.params.id}}
+            variables={{id: match.params.id}}
             render={({error, props}) => {
                     if (props && props.node) {
                         return (
                             <Container>
                                 <DogCard dog={props.node} />
-                                <UserAdder dog={props.node} />
+                                <UserAdder dog={props.node} relay={relay}/>
                             </Container>
                         );
                     } else if (error) {

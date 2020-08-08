@@ -6,6 +6,8 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import InviteUserByEmailMutation from 'relay/mutations/InviteUserByEmailMutation';
+
 // User experience:
 // Enter an email
 // Hit Auth0 API to search users by email
@@ -31,13 +33,13 @@ import Button from 'react-bootstrap/Button';
 class UserAdder extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            display: false,
+        this.defaultState = {
             invitee_email: null,
             user_role: "OWNER",
             invited_by: props.auth0.user.sub,
             dog_id: props.dog.id,
         };
+        this.state = this.defaultState;
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -48,7 +50,15 @@ class UserAdder extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setState({display: true});
+        InviteUserByEmailMutation.commit(
+            this.props.relay.environment,
+            {
+                invitee_email: this.state.invitee_email,
+                dog_id: this.state.dog_id,
+                user_role: this.state.user_role,
+            }
+        );
+        this.setState(this.defaultState);
     }
 
     render() {
@@ -91,15 +101,12 @@ class UserAdder extends React.Component {
                                         disabled />
                         </Form.Group>
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary"
+                            type="submit"
+                            disabled={!this.state.invitee_email}>
                         Invite user by email
                     </Button>
                 </Form>
-                {this.state.display &&
-                 (<Container>
-                     {JSON.stringify(this.state)}
-                 </Container>)
-                }
             </Container>
         );
     }

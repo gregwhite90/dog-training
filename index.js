@@ -8,7 +8,8 @@ const {
     checkJwt,
     checkScopes,
 }= require('./validate');
-const { signS3PutHandler, signS3GetHandler, getS3SignedGetUrl } = require('./aws');
+const { signS3PutHandler, signS3GetHandler } = require('./aws');
+const { sendInvitation } = require('./sendgrid');
 
 const app = express();
 
@@ -37,25 +38,7 @@ app.get('/login', (req, res) => res.redirect(`https://${process.env.AUTH0_DOMAIN
 
 app.post('/invite', checkJwt, bodyParser, (req, res) => {
     const { user, dog, invitee } = req.body;
-    dog.picture = getS3SignedGetUrl(dog.picture, {Expires: 60 * 60 * 24 * 7});
-    // body of request needs to be:
-    // user {name, picture?}
-    // dog {name, picture}
-    // invitee
-    // Then request picture URL, update picture, send off to sendgrid template
-    // Recommended to async call this from the client with a fetch
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-        to: invitee,
-        from: process.env.SENDGRID_SENDER,
-        templateId: process.env.SENDGRID_TEMPLATE_ID,
-        dynamicTemplateData: {
-            user,
-            dog,
-        }
-    };
-    sgMail.send(msg);
+    sendInvitation({user, dog, invitee});
 });
 
 app.listen(process.env.PORT || 5000);

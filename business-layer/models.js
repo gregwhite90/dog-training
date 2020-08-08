@@ -37,13 +37,8 @@ class AuthUser extends AuthModel {
         return this.get_all_dogs({id: this.user_id});
     }
 
-    async get_all_users_by_email({email}) {
-        return User.get_all_by_email({email})
-                   .then(users => {
-                       if (users.length === 1 && users[0].email_verified) {
-                           // Found the user
-                       }
-                   });
+    async get_all_by_email({email}) {
+        return User.get_all_by_email({email});
     }
 
     async get_email({id}) {

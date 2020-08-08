@@ -21,6 +21,8 @@ const {
     AuthPendingInvitation,
 } = require('../../business-layer/models');
 
+const { sendInvitation } = require('../../sendgrid');
+
 const inviteUserByEmailMutation = mutationWithClientMutationId({
     name: 'InviteUserByEmail',
     description: `Invite an email address to collaborate training a dog`,
@@ -47,13 +49,32 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
         }
     },
     mutateAndGetPayload: ({invitee_email, dog_id, user_role}, context) => {
+        const user_model = new AuthUser(context);
+        const dog_model = new AuthDog(context);
+        const dogTypeAndId = fromGlobalId(dog_id);
+        // TODO: could check for email_verified
+        user_model
+            .get_all_by_email({email: invitee_email})
+            .then(users => users.length >= 1)
+            .then(user_email_exists => {
+                if (!user_email_exists) {
+                    // Send an email invite
+                    // TODO: clean up this horrific nesting?
+                    user_model.get_viewer()
+                              .then(user => {
+                                  dog_model.get_one({id: dogTypeAndId.id})
+                                           .then(dog => {
+                                               sendInvitation({user, dog, invitee: invitee_email});
+                                           });
+                              });
+                }
+            });
+        // TODO: check for dog type
+        // TODO: decide about return value
         const pending_invitation_model = new AuthPendingInvitation(context);
-        // TODO: implement actual mutation
-        // TODO: make sure to use the dog_id correctly
-        return pendingInvitation_model
-            .create_one({invitee_email, dog_id, user_role})
+        return pending_invitation_model
+            .create_one({invitee_email, dog_id: dogTypeAndId.id, user_role})
             .then(_ => {
-                const user_model = new AuthUser(context);
                 return {user_model};
             });
     },
