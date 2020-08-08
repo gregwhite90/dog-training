@@ -8,7 +8,8 @@ import Button from 'react-bootstrap/Button';
 import AcceptInvitationMutation from 'relay/mutations/AcceptInvitationMutation';
 
 export default function InvitationAccepter(props) {
-    const { user } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
+    console.log(`In InvitationAccepter with user: ${JSON.stringify(user)}`);
 
     return (
         <Button onClick={() => {
@@ -17,6 +18,7 @@ export default function InvitationAccepter(props) {
                     {invitation_id: props.invitation_id, user_id: user.user_id},
                 );
         }}>
+            Accept invitation!
         </Button>
     );
 }
