@@ -6,6 +6,7 @@ const {
 
 const {
     mutationWithClientMutationId,
+    fromGlobalId,
 } = require('graphql-relay');
 
 const {
@@ -48,6 +49,7 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
     mutateAndGetPayload: ({invitee_email, dog_id, user_role}, context) => {
         const pending_invitation_model = new AuthPendingInvitation(context);
         // TODO: implement actual mutation
+        // TODO: make sure to use the dog_id correctly
         return pendingInvitation_model
             .create_one({invitee_email, dog_id, user_role})
             .then(_ => {
@@ -90,8 +92,10 @@ const acceptInvitationMutation = mutationWithClientMutationId({
     mutateAndGetPayload: ({invitation_id, user_id}, context) => {
         // TODO: check that the user_id and email match?
         const pending_invitation_model = new AuthPendingInvitation(context);
+        const typeAndId = fromGlobalId(invitation_id);
+        // TODO: check that type is PendingInvitation?
         return pending_invitation_model
-            .accept_invitation({invitation_id, user_id})
+            .accept_invitation({invitation_id: typeAndId.id, user_id})
             .then(dog_id => {
                 const dog_model = new AuthDog(context);
                 const dog = dog_model.get_one({id: dog_id}).then(dog => dog);
