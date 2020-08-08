@@ -18,6 +18,7 @@ const {
 
 const {
     AuthUser,
+    AuthDog,
     AuthPendingInvitation,
 } = require('../../business-layer/models');
 
