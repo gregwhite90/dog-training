@@ -99,8 +99,12 @@ class AuthPendingInvitation extends AuthModel {
 
     // TOOD: authorization checks
 
-    async create_one({invitee_email, invited_by, dog_id, user_role}) {
-        return PendingInvitation.create_one({invitee_email, invited_by, dog_id, user_role});
+    async create_one({invitee_email, dog_id, user_role}) {
+        return PendingInvitation.create_one({
+            invitee_email,
+            invited_by: this.user_id,
+            dog_id,
+            user_role});
     }
 
     async get_one({id}) {
