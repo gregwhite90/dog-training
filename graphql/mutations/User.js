@@ -12,6 +12,7 @@ const {
     userType,
     userToDogEdge,
     userRoleDescAndType,
+    userDogRoleType,
 } = require('../types/objects/Nodes');
 
 const {
@@ -32,7 +33,8 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
             description: 'The ID of the dog to invite the user to collaborate to train',
         },
         user_role: {
-            ...userRoleDescAndType,
+            type: new GraphQLNonNull(userDogRoleType),
+            description: userRoleDescAndType.description,
         },
     },
     outputFields: {

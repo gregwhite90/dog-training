@@ -246,4 +246,6 @@ module.exports = {
     nodeField,
     userToDogEdge,
     pendingInvitationType,
+    userDogRoleType,
+    userRoleDescAndType,
 };
