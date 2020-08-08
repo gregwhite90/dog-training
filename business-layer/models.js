@@ -18,9 +18,6 @@ class AuthUser extends AuthModel {
     // TODO: wrap the User methods that require authentication and authorization
     async get_one({id}) {
         // TODO: confirm error handling strategy
-        if (id !== this.user_id) {
-            throw new Error('Attempted unauthorized access.');
-        }
         return User.get_one({id})
                    .then(User.create_object);
     }
