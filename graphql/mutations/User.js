@@ -49,35 +49,26 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
             },
         }
     },
-    mutateAndGetPayload: ({invitee_email, dog_id, user_role}, context) => {
+    mutateAndGetPayload: async ({invitee_email, dog_id, user_role}, context) => {
         const user_model = new AuthUser(context);
         const dog_model = new AuthDog(context);
         const dogTypeAndId = fromGlobalId(dog_id);
         // TODO: could check for email_verified
-        user_model
-            .get_all_by_email({email: invitee_email})
-            .then(users => users.length >= 1)
-            .then(user_email_exists => {
-                if (!user_email_exists) {
-                    // Send an email invite
-                    // TODO: clean up this horrific nesting?
-                    user_model.get_viewer()
-                              .then(user => {
-                                  dog_model.get_one({id: dogTypeAndId.id})
-                                           .then(dog => {
-                                               sendInvitation({user, dog, invitee: invitee_email});
-                                           });
-                              });
-                }
-            });
+        const users = await user_model.get_all_by_email({email: invitee_email});
+        const user_email_exists = users.length >= 1;
+        if (!user_email_exists) {
+            // Send an email invite
+            // TODO: clean up this horrific nesting?
+            const user = await user_model.get_viewer();
+            const dog = await dog_model.get_one({id: dogTypeAndId.id});
+            // TODO: send asynchronously without awaiting?
+            await sendInvitation({user, dog, invitee: invitee_email});
+        }
         // TODO: check for dog type
         // TODO: decide about return value
         const pending_invitation_model = new AuthPendingInvitation(context);
-        return pending_invitation_model
-            .create_one({invitee_email, dog_id: dogTypeAndId.id, user_role})
-            .then(_ => {
-                return {user_model};
-            });
+        await pending_invitation_model.create_one({invitee_email, dog_id: dogTypeAndId.id, user_role});
+        return {user_model};
     },
 });
 
