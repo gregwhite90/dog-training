@@ -14,7 +14,7 @@ async function sendInvitation({user, dog, invitee}) {
         to: invitee,
         from: process.env.SENDGRID_SENDER,
         asm: {
-            group_id: process.env.SENDGRID_UNSUBSCRIBE_GROUP_ID,
+            group_id: parseInt(process.env.SENDGRID_UNSUBSCRIBE_GROUP_ID),
         },
         templateId: process.env.SENDGRID_TEMPLATE_ID,
         dynamicTemplateData: {
