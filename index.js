@@ -34,8 +34,6 @@ app.use('/graphql',
 app.get('/sign-s3/put', checkJwt, checkScopes(['write:assets']), signS3PutHandler);
 app.get('/sign-s3/get', checkJwt, checkScopes(['read:assets']), signS3GetHandler);
 
-app.get('/login', (req, res) => res.redirect(`https://${process.env.AUTH0_DOMAIN}/authorize`));
-
 app.post('/invite', checkJwt, bodyParser, (req, res) => {
     const { user, dog, invitee } = req.body;
     sendInvitation({user, dog, invitee});

@@ -45,6 +45,9 @@ class App extends React.Component {
                         <Row>
                             <Col>
                                 <Switch>
+                                    <Route path="/login" render={(props) => {
+                                            this.props.auth0.loginWithRedirect();
+                                    }} />
                                     <Route path="/about" component={About} />
                                     <Route path="/dogs" render={(props) => (
                                         <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user}/>
