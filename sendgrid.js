@@ -22,7 +22,7 @@ async function sendInvitation({user, dog, invitee}) {
             dog,
         }
     };
-    return await sgMail.send(msg);
+    sgMail.send(msg);
 }
 
 module.exports = {
