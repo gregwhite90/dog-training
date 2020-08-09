@@ -62,7 +62,7 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
             const user = await user_model.get_viewer();
             const dog = await dog_model.get_one({id: dogTypeAndId.id});
             // TODO: send asynchronously without awaiting?
-            sendInvitation({user, dog, invitee: invitee_email});
+            await sendInvitation({user, dog, invitee: invitee_email});
         }
         // TODO: check for dog type
         // TODO: decide about return value
