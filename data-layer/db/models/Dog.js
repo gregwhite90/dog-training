@@ -1,4 +1,5 @@
 const db = require('../pool');
+const { User } = require('../../auth0/models/User');
 
 class Dog {
 
@@ -7,10 +8,10 @@ class Dog {
      * Generate GraphQL-layer-friendly object from raw persistence layer output
      */
 
-    static create_object(raw_user) {
+    static create_object(raw_dog) {
         return {
             _node_type: 'Dog',
-            ...raw_user, // TODO: confirm treatment if name or picture is null
+            ...raw_dog, // TODO: confirm treatment if name or picture is null
         };
     }
 
@@ -20,13 +21,24 @@ class Dog {
      */
 
     static async check_authorization_for_dog({dog_id, user_id}) {
-        const { rows } = await db.query(
+        const ur_res = await db.query(
             'SELECT user_role FROM user_dogs WHERE dog_id=$1 AND user_id=$2',
             [dog_id, user_id]
         );
         // TODO: could add check for the user role type to be future
         // proof for the enum expanding (or to add to the context)
-        return rows.length === 1;
+        if (ur_res.rows.length === 1) {
+            return true;
+        }
+
+        const { email, email_verified } = await User.get_email({id: user_id});
+
+        const pi_res = await db.query(
+            'SELECT * FROM pending_invitations WHERE dog_id=$1 and invitee_email=lower($2)',
+            [dog_id, email]
+        );
+
+        return pi_res.rows.length >= 1;
     }
 
 
@@ -48,18 +60,18 @@ class Dog {
      * Read Dog and other operations
      */
 
-    static async get_all_user_ids({id}) {
+    static async get_all_user_ids_and_roles({id}) {
         const { rows } = await db.query(
-            'SELECT user_id FROM user_dogs WHERE dog_id=$1',
+            'SELECT user_id, user_role FROM user_dogs WHERE dog_id=$1',
             [id]
         );
         // TODO: error-handling code?
         return rows;
     }
 
-    static async get_all_dogs_for_user({id}) {
+    static async get_all_dog_ids_and_roles_for_user({id}) {
         const { rows } = await db.query(
-            'SELECT * FROM dogs WHERE id IN (SELECT dog_id AS id FROM user_dogs WHERE user_id=$1)',
+            'SELECT dog_id, user_role FROM user_dogs WHERE user_id=$1',
             [id]
         );
         // TODO: error-handling code?
@@ -88,6 +100,20 @@ class Dog {
     /**
      * Update Dog-only operations
      */
+
+    static async edit_one({id, name, picture}) {
+        console.log(`in Dog.edit_one with id ${id}, name ${name}, picture ${picture}`);
+        const { updated } = await db.query(
+            'UPDATE dogs SET name=COALESCE($1, name), picture=COALESCE($2, picture) WHERE id=$3 RETURNING *',
+            [name, picture, id]
+        );
+        const { rows } = await db.query(
+            'SELECT * FROM dogs WHERE id=$1',
+            [id]
+        );
+        // TODO: error-handling code
+        return rows[0];
+    }
 
     /**
      * Update Dog and other operations

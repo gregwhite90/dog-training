@@ -45,6 +45,9 @@ function signS3PutHandler(req, res) {
     // dog is shared among multiple users for example, they need to see the images
 
     const { file_name, file_type, hash } = req.query;
+    let { pathArray } = req.query;
+    pathArray = JSON.parse(decodeURIComponent(pathArray));
+
     const params = {
         'ContentType': decodeURIComponent(file_type),
         'ContentMD5': hash,
@@ -54,7 +57,7 @@ function signS3PutHandler(req, res) {
     const user_id = encodeURIComponent(req.user.sub);
     const date = new Date()
     const timestamp = encodeURIComponent(date.toISOString());
-    const key =`user_uploads/${user_id}/${timestamp}/${file_name}`;
+    const key =`user_uploads/${pathArray.join('/')}/${timestamp}/${file_name}`;
 
     // TODO: check that the user is asking for access to the right image
     const { signedRequest } = getS3SignedPutUrl(key, params);
@@ -62,11 +65,12 @@ function signS3PutHandler(req, res) {
     // TODO: error-handling
     if (signedRequest) {
         console.log({signedRequest});
-        res.json({signedRequest, key});
+        res.json({url: signedRequest, method: 'PUT', fields: [], key});
     }
 }
 
 module.exports = {
     signS3PutHandler,
     signS3GetHandler,
+    getS3SignedGetUrl,
 };

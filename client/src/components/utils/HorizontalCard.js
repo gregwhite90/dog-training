@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
+import Badge from 'react-bootstrap/Badge';
 import AuthS3Image from './AuthS3Image';
 
 function renderImage(props) {
@@ -26,7 +27,7 @@ export default function HorizontalCard(props) {
             <Row>
                 <Col md={imgCols}>{renderImage(props)}</Col>
                 <Col md={12 - props.imgCols}>
-                    <h3>{props.node.title}</h3>
+                    <h3>{props.node.title} <Badge variant="secondary">{props.node.badge}</Badge></h3>
                     {props.node.text &&
                      (<p>
                          {props.node.text}

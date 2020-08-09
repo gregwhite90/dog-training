@@ -9,10 +9,11 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type DogsApp_viewer$ref = any;
+type PendingInvitations_viewer$ref = any;
 export type DogsPageQueryVariables = {||};
 export type DogsPageQueryResponse = {|
   +viewer: ?{|
-    +$fragmentRefs: DogsApp_viewer$ref
+    +$fragmentRefs: DogsApp_viewer$ref & PendingInvitations_viewer$ref
   |}
 |};
 export type DogsPageQuery = {|
@@ -26,6 +27,7 @@ export type DogsPageQuery = {|
 query DogsPageQuery {
   viewer {
     ...DogsApp_viewer
+    ...PendingInvitations_viewer
     id
   }
 }
@@ -44,6 +46,7 @@ fragment DogsList_viewer on User {
   id
   dogs(first: 2147483647) {
     edges {
+      user_role
       node {
         id
         ...DogCard_dog
@@ -54,6 +57,28 @@ fragment DogsList_viewer on User {
     pageInfo {
       endCursor
       hasNextPage
+    }
+  }
+}
+
+fragment PendingInvitations_viewer on User {
+  id
+  pending_invitations_received {
+    edges {
+      node {
+        id
+        invitee_email
+        user_role
+        dog {
+          name
+          picture
+          id
+        }
+        invited_by {
+          name
+          id
+        }
+      }
     }
   }
 }
@@ -73,7 +98,28 @@ v1 = [
     "name": "first",
     "value": 2147483647
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "user_role",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "picture",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -93,6 +139,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "DogsApp_viewer"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "PendingInvitations_viewer"
           }
         ],
         "storageKey": null
@@ -132,6 +183,7 @@ return {
                 "name": "edges",
                 "plural": true,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -141,20 +193,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v0/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "name",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "picture",
-                        "storageKey": null
-                      },
+                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -211,6 +251,75 @@ return {
             "key": "DogsList_dogs",
             "kind": "LinkedHandle",
             "name": "dogs"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "PendingInvitationConnection",
+            "kind": "LinkedField",
+            "name": "pending_invitations_received",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PendingInvitationEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "PendingInvitation",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v0/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "invitee_email",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Dog",
+                        "kind": "LinkedField",
+                        "name": "dog",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v4/*: any*/),
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "User",
+                        "kind": "LinkedField",
+                        "name": "invited_by",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -218,16 +327,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f0707bd14bb4bfa5736c13dea15c92e9",
+    "cacheID": "ef11a90d2726af596eb547af7bc0250f",
     "id": null,
     "metadata": {},
     "name": "DogsPageQuery",
     "operationKind": "query",
-    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      user_role\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ce6f7dbe1002ccfb66ed56261aabaf0d';
+(node/*: any*/).hash = 'a32c88e18e259ba323fc1d9c9463d18e';
 
 module.exports = node;

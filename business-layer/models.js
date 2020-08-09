@@ -1,5 +1,6 @@
 const { User } = require('../data-layer/auth0/models/User');
 const { Dog } = require('../data-layer/db/models/Dog');
+const { PendingInvitation } = require('../data-layer/db/models/PendingInvitation');
 
 class AuthModel {
     constructor(context) {
@@ -17,9 +18,6 @@ class AuthUser extends AuthModel {
     // TODO: wrap the User methods that require authentication and authorization
     async get_one({id}) {
         // TODO: confirm error handling strategy
-        if (id !== this.user_id) {
-            throw new Error('Attempted unauthorized access.');
-        }
         return User.get_one({id})
                    .then(User.create_object);
     }
@@ -32,13 +30,19 @@ class AuthUser extends AuthModel {
         if (id !== this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
-        return Dog.get_all_dogs_for_user({id})
-                  .then(dogs => dogs.map(Dog.create_object));
+        return Dog.get_all_dog_ids_and_roles_for_user({id});
     }
 
     async get_all_dogs_for_viewer() {
-        return this.get_all_dogs({id: this.user_id})
-                   .then(dogs => dogs.map(Dog.create_object));
+        return this.get_all_dogs({id: this.user_id});
+    }
+
+    async get_all_by_email({email}) {
+        return User.get_all_by_email({email});
+    }
+
+    async get_email({id}) {
+        return User.get_email({id});
     }
 }
 
@@ -77,13 +81,62 @@ class AuthDog extends AuthModel {
             user_id: this.user_id,
         });
         // TODO: handle authorization failure
-        const ids = await Dog.get_all_user_ids({id});
-        return Promise.all(ids.map(id => User.get_one({id})))
-                      .then(raw_users => raw_users.map(User.create_object));
+        return Dog.get_all_user_ids_and_roles({id});
+    }
+
+    async edit_one({id, name, picture}) {
+        return Dog.edit_one({id, name, picture})
+                  .then(Dog.create_object)
+    }
+}
+
+class AuthPendingInvitation extends AuthModel {
+    constructor(context) {
+        super(context);
+        this.context = context;
+        console.log(`creating auth pending invitation with id ${this.user_id}, email ${this.user_email}`);
+    }
+
+    // TOOD: authorization checks
+
+    async create_one({invitee_email, dog_id, user_role}) {
+        return PendingInvitation.create_one({
+            invitee_email,
+            invited_by: this.user_id,
+            dog_id,
+            user_role});
+    }
+
+    async get_one({id}) {
+        return PendingInvitation.get_one({id});
+    }
+
+    async get_all_sent({id}) {
+        return PendingInvitation.get_sent_by_id({id});
+    }
+
+    async get_all_received({id}) {
+        const user_model = new AuthUser(this.context);
+        const { email, email_verified } = await user_model.get_email({id});
+        // TODO: use email_verified
+        return PendingInvitation.get_received_by_email({email});
+    }
+
+    async get_all_sent_viewer() {
+        return this.get_all_sent({id: this.user_id})
+    }
+
+    async get_all_received_viewer() {
+        return this.get_all_received({email: this.user_email});
+    }
+
+    async accept_invitation({invitation_id, user_id}) {
+        return PendingInvitation.accept_invitation({invitation_id, user_id});
     }
 }
 
 module.exports = {
     AuthUser,
     AuthDog,
+    AuthPendingInvitation,
 };

@@ -16,7 +16,8 @@ import createEnvironment from './lib/createRelayEnvironment';
 import Navigation from 'components/nav/Navigation';
 import Home from 'components/pages/Home';
 import About from 'components/pages/About';
-import DogsPage from 'components/dogs/DogsPage';
+
+import DogsRouter from 'components/dogs/DogsRouter';
 
 import './App.scss';
 
@@ -44,15 +45,14 @@ class App extends React.Component {
                         <Row>
                             <Col>
                                 <Switch>
-                                    <Route path="/about">
-                                        <About />
-                                    </Route>
-                                    <Route path="/dogs">
-                                        <DogsPage relay={this.state.relay}/>
-                                    </Route>
-                                    <Route path="/">
-                                        <Home />
-                                    </Route>
+                                    <Route path="/login" render={(props) => {
+                                            this.props.auth0.loginWithRedirect();
+                                    }} />
+                                    <Route path="/about" component={About} />
+                                    <Route path="/dogs" render={(props) => (
+                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user}/>
+                                    )} />
+                                    <Route path="/" component={Home} />
                                 </Switch>
                             </Col>
                         </Row>

@@ -1,23 +1,18 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 import DogsList from './DogsList';
-import AddDogForm from './AddDogForm';
-import AddDogMutation from 'relay/mutations/AddDogMutation';
 
 function DogsApp(props) {
-    const handleAddDogSubmit = ({name, picture}, callback) => {
-        AddDogMutation.commit(props.relay.environment, {name, picture}, props.viewer);
-        callback();
-        return;
-    };
-
     return (
         <>
-            <h1>My dogs</h1>
-            <DogsList viewer={props.viewer} />
-            <h1>Add a dog!</h1>
-            <AddDogForm onSubmit={({name, picture}, callback) => handleAddDogSubmit({name, picture}, callback)} />
+            <h3>My dogs</h3>
+            <DogsList viewer={props.viewer} match={props.match}/>
+            <Link to={props.match.url + "/add"}>
+                <Button variant="primary">Add a dog!</Button>
+            </Link>
         </>
     );
 }

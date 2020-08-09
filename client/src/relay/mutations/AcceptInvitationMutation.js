@@ -6,8 +6,8 @@ import { ConnectionHandler } from 'relay-runtime';
  */
 
 const mutation = graphql`
-    mutation AddDogMutation($input: AddDogInput!) {
-        addDog(input: $input) {
+    mutation AcceptInvitationMutation($input: AcceptInvitationInput!) {
+        acceptInvitation(input: $input) {
             dogEdge {
                 node {
                     id
@@ -24,19 +24,16 @@ const mutation = graphql`
 
 function commit(
     environment,
-    {name, picture},
-    viewer,
-    onCompleted
+    {invitation_id, user_id},
 ) {
-    console.log(`Called AddDog with ${name}, ${picture}`);
+    console.log(`Called AcceptInvitation with ${invitation_id}, ${user_id}`);
     commitMutation(
         environment,
         {
             mutation,
             variables: {
-                input: { name, picture },
+                input: { invitation_id, user_id },
             },
-            onCompleted,
         }
     );
 }

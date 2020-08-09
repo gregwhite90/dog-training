@@ -18,12 +18,17 @@ const { AuthUser } = require('../business-layer/models');
  */
 const {
     addDogMutation,
+    editDogMutation,
     /**
     removeDogForViewerMutation,
     removeDogForAllMutation,
-    editDogMutation,
     */
 } = require('./mutations/Dog');
+
+const {
+    inviteUserByEmailMutation,
+    acceptInvitationMutation,
+} = require('./mutations/User');
 /**
 const {
     addBehaviorMutation,
@@ -62,10 +67,12 @@ const mutationType = new GraphQLObjectType({
     fields: () => ({
         /* Dog-focused mutations */
         addDog: addDogMutation,
+        editDog: editDogMutation,
+        inviteUserByEmail: inviteUserByEmailMutation,
+        acceptInvitation: acceptInvitationMutation,
         /**
         removeDogForViewer: removeDogForViewerMutation,
         removeDogForAll: removeDogForAllMutation,
-        editDog: editDogMutation,
         /* Behavior-focused mutations *
         addBehavior: addBehaviorMutation,
         removeBehavior: removeBehaviorMutation,
