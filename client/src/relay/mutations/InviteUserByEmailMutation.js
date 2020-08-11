@@ -27,8 +27,8 @@ function commit(
             variables: {
                 input: { invitee_email, dog_id, user_role },
             },
-        },
-        onCompleted
+            onCompleted
+        }
     );
 }
 

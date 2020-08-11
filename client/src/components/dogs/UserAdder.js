@@ -102,7 +102,7 @@ function UserAdder(props) {
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.invitee_email && !errors.invitee_email}
-                                    isInvalid={!!errors.invitee_email}
+                                    isInvalid={touched.invitee_email && !!errors.invitee_email}
                                 />
                                 <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">{errors.invitee_email}</Form.Control.Feedback>
