@@ -1,8 +1,8 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { withAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 
-import { Formik, ErrorMessage, Field, Form as FormikForm } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import Container from 'react-bootstrap/Container';
@@ -36,114 +36,113 @@ import InviteUserByEmailMutation from 'relay/mutations/InviteUserByEmailMutation
 
 // TODO: can make this a function component
 
-class UserAdder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.defaultState = {
-            invitee_email: null,
-            user_role: "OWNER",
-            invited_by: props.auth0.user.sub,
-            dog_id: props.dog.id,
-        };
-        this.state = this.defaultState;
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+function UserAdder(props) {
 
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
-    }
+    const { user, isAuthenticated } = useAuth0();
 
-    handleSubmit(event) {
-        event.preventDefault();
-        InviteUserByEmailMutation.commit(
-            this.props.relay.environment,
-            {
-                invitee_email: this.state.invitee_email,
-                dog_id: this.state.dog_id,
-                user_role: this.state.user_role,
-            }
-        );
-        this.setState(this.defaultState);
-    }
+    // TODO: programmatically fill in the values for the enum
 
-    render() {
-        // TODO: programmatically fill in the values for the enum
+    const validationSchema = yup.object().shape({
+        invitee_email: yup.string()
+                          .email("Must be a valid email address")
+                          .required("Email address to invite to collaborate is required"),
+        user_role: yup.string()
+                      .matches(/(OWNER|TRAINER|VIEWER)/, "Role of user is not valid")
+                      .required("Role of invited user is required"),
+    });
 
-        const validationSchema = yup.object().shape({
-            invitee_email: yup.string()
-                              .email("Must be a valid email address")
-                              .required("Email address to invite to collaborate is required"),
-            user_role: yup.string()
-                          .matches(/(OWNER|TRAINER|VIEWER)/, "Role of user is not valid")
-                          .required("Role of invited user is required"),
-        });
+    // TODO: add styling to the error message
+    // TODO: use ErrorMessage instead
 
-        // TODO: add styling to the error message
-        // TODO: use ErrorMessage instead
-
-        return (
-            <Container>
-                <h3>Invite other people to collaborate training {this.props.dog.name}!</h3>
-                <Formik
-                    initialValues={{
-                        invitee_email: "",
-                        user_role: "OWNER",
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={(values, {setSubmitting, resetForm}) => {
-                            setSubmitting(true);
-                            InviteUserByEmailMutation.commit(
-                                this.props.relay.environment,
-                                {
-                                    invitee_email: values.invitee_email,
-                                    dog_id: this.props.dog_id,
-                                    user_role: values.user_role,
-                                },
-                                () => {
-                                    resetForm();
-                                    setSubmitting(false);
-                                }
-                            );
-                    }}
-                >
-                    {( { isSubmitting } ) => (
-                            <FormikForm>
-                                <Form.Group controlId="formInvitationEmail">
-                                    <Form.Label>
-                                        Email address to invite:
-                                    </Form.Label>
-                                    <Field type="email"
-                                           name="invitee_email"
-                                           placeholder="Email"
-                                    />
-                                    <ErrorMessage name="invitee_email" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>
-                                        Invite user as:
-                                    </Form.Label>
-                                    <Field as="select" name="user_role">
-                                        <option value="OWNER">Owner</option>
-                                        <option value="TRAINER" disabled>Trainer</option>
-                                        <option value="VIEWER" disabled>Viewer</option>
-                                    </Field>
-                                    <ErrorMessage name="user_role" />
-                                </Form.Group>
-                                <Button variant="primary"
-                                        type="submit"
-                                        disabled={isSubmitting}>
-                                    Invite user by email
-                                </Button>
-                            </FormikForm>
-                        )}
-                </Formik>
-            </Container>
-        );
-    }
+    return (
+        <Container>
+            <h3>Invite other people to collaborate training {props.dog.name}!</h3>
+            <Formik
+                initialValues={{
+                    invitee_email: "",
+                    user_role: "OWNER",
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, {setSubmitting, resetForm}) => {
+                        setSubmitting(true);
+                        InviteUserByEmailMutation.commit(
+                            props.relay.environment,
+                            {
+                                invitee_email: values.invitee_email,
+                                dog_id: props.dog.id,
+                                user_role: values.user_role,
+                            },
+                            () => {
+                                resetForm();
+                                setSubmitting(false);
+                            }
+                        );
+                }}
+            >
+                {( { values,
+                     handleBlur,
+                     handleChange,
+                     handleSubmit,
+                     errors,
+                     touched,
+                     isValid,
+                     isInvalid,
+                     isSubmitting } ) => (
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Row>
+                            <Form.Group controlId="formInvitationEmail">
+                                <Form.Label>
+                                    Email address to invite:
+                                </Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="invitee_email"
+                                    placeholder="Email"
+                                    value={values.invitee_email}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    isValid={touched.invitee_email && !errors.invitee_email}
+                                    isInvalid={!!errors.invitee_email}
+                                />
+                                <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">{errors.invitee_email}</Form.Control.Feedback>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group>
+                                <Form.Label>
+                                    Invite user as:
+                                </Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="user_role"
+                                    value={values.user_role}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors.user_role}
+                                >
+                                    <option value="OWNER">Owner</option>
+                                    <option value="TRAINER" disabled>Trainer</option>
+                                    <option value="VIEWER" disabled>Viewer</option>
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">{errors.user_role}</Form.Control.Feedback>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            <Button variant="primary"
+                                    type="submit"
+                                    disabled={isSubmitting}>
+                                Invite user by email
+                            </Button>
+                        </Form.Row>
+                    </Form>
+                )}
+            </Formik>
+        </Container>
+    );
 }
 
-export default createFragmentContainer(withAuth0(UserAdder), {
+export default createFragmentContainer(UserAdder, {
     dog: graphql`
         fragment UserAdder_dog on Dog {
             id
