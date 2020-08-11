@@ -17,6 +17,7 @@ const mutation = graphql`
 function commit(
     environment,
     {invitee_email, dog_id, user_role},
+    onCompleted
 ) {
     console.log(`Called InviteUserByEmail with ${invitee_email}, ${dog_id}, ${user_role}`);
     commitMutation(
@@ -26,7 +27,8 @@ function commit(
             variables: {
                 input: { invitee_email, dog_id, user_role },
             },
-        }
+        },
+        onCompleted
     );
 }
 
