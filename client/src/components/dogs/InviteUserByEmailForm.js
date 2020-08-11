@@ -34,9 +34,7 @@ import InviteUserByEmailMutation from 'relay/mutations/InviteUserByEmailMutation
 // TODO: add an invite by email mutation
 // TODO: add a confirm invitation mutation
 
-// TODO: can make this a function component
-
-function UserAdder(props) {
+function InviteUserByEmailForm(props) {
 
     const { user, isAuthenticated } = useAuth0();
 
@@ -142,9 +140,9 @@ function UserAdder(props) {
     );
 }
 
-export default createFragmentContainer(UserAdder, {
+export default createFragmentContainer(InviteUserByEmailForm, {
     dog: graphql`
-        fragment UserAdder_dog on Dog {
+        fragment InviteUserByEmailForm_dog on Dog {
             id
             name
             picture

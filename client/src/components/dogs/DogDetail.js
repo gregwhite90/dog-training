@@ -4,7 +4,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 import Container from 'react-bootstrap/Container';
 
 import DogCard from './DogCard';
-import UserAdder from './UserAdder';
+import InviteUserByEmailForm from './InviteUserByEmailForm';
 
 // TODO: authorization check
 
@@ -16,7 +16,7 @@ export default function DogDetail({relay, match}) {
                 query DogDetailQuery($id: ID!) {
                     node(id: $id) {
                         ...DogCard_dog
-                        ...UserAdder_dog
+                        ...InviteUserByEmailForm_dog
                     }
                 }
                 `}
@@ -26,7 +26,7 @@ export default function DogDetail({relay, match}) {
                         return (
                             <Container>
                                 <DogCard dog={props.node} />
-                                <UserAdder dog={props.node} relay={relay}/>
+                                <InviteUserByEmailForm dog={props.node} relay={relay} />
                             </Container>
                         );
                     } else if (error) {
