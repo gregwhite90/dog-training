@@ -29,12 +29,11 @@ const {
     inviteUserByEmailMutation,
     acceptInvitationMutation,
 } = require('./mutations/User');
-/**
-const {
-    addBehaviorMutation,
-    removeBehaviorMutation,
-} = require('./mutations/Behavior');
 
+const {
+    createBehaviorMutation,
+} = require('./mutations/Behavior');
+/**
 const {
     addTrainingStageMutation,
     removeTrainingStageMutation,
@@ -73,8 +72,9 @@ const mutationType = new GraphQLObjectType({
         /**
         removeDogForViewer: removeDogForViewerMutation,
         removeDogForAll: removeDogForAllMutation,
-        /* Behavior-focused mutations *
-        addBehavior: addBehaviorMutation,
+        /* Behavior-focused mutations */
+        createBehavior: createBehaviorMutation,
+        /*
         removeBehavior: removeBehaviorMutation,
         /* Training stage-focused mutations *
         addTrainingStage: addTrainingStageMutation,

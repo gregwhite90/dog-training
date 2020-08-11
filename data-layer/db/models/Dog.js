@@ -69,12 +69,21 @@ class Dog {
         return rows;
     }
 
+    // TODO: move to user model?
     static async get_all_dog_ids_and_roles_for_user({id}) {
         const { rows } = await db.query(
             'SELECT dog_id, user_role FROM user_dogs WHERE user_id=$1',
             [id]
         );
         // TODO: error-handling code?
+        return rows;
+    }
+
+    static async get_all_behavior_ids({id}) {
+        const { rows } = await db.query(
+            'SELECT id FROM behaviors WHERE dog_id=$1',
+            [id]
+        );
         return rows;
     }
 

@@ -4,6 +4,7 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLEnumType,
+    GraphQLBoolean,
 } = require('graphql');
 
 const {
@@ -19,6 +20,7 @@ const {
     AuthUser,
     AuthDog,
     AuthPendingInvitation,
+    AuthBehavior,
 } = require('../../../business-layer/models');
 
 const { nodeInterface, nodeField } = nodeDefinitions(
@@ -36,6 +38,9 @@ const { nodeInterface, nodeField } = nodeDefinitions(
             case 'PendingInvitation':
                 model = new AuthPendingInvitation(context);
                 break;
+            case 'Behavior':
+                model = new AuthBehavior(context);
+                break;
             default:
                 console.log(`Unknown type in node resolver: ${type}`);
                 break;
@@ -52,6 +57,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
                 return dogType;
             case 'PendingInvitation':
                 return pendingInvitationType;
+            case 'Behavior':
+                return behaviorType;
             default:
                 console.log(`Unknown obj in obj -> type node resolver: ${obj}`);
                 break;
@@ -136,6 +143,18 @@ const dogType = new GraphQLObjectType({
                 // TODO: turn into getting all user ids
                 return connectionFromPromisedArray(
                     dog_model.get_all_users({id: dog.id}),
+                    args
+                );
+            },
+        },
+        behaviors: {
+            type: behaviorConnection,
+            args: connectionArgs,
+            resolve: (dog, args, context) => {
+                const dog_model = new AuthDog(context);
+                // TODO: confirm that IDs vs objects works correctly
+                return connectionFromPromisedArray(
+                    dog_model.get_all_behavior_ids({id: dog.id}),
                     args
                 );
             },
@@ -239,6 +258,69 @@ const { connectionType: pendingInvitationConnection,
     // TODO: decide if anything should go on the edge.
 });
 
+const behaviorTypeOwnedScalarFields = {
+    name: {
+        type: new GraphQLNonNull(GraphQLString),
+    },
+    explanation: {
+        type: GraphQLString,
+        description: 'Explanation of the desired behavior in clear, plain language.'
+    },
+    lure_description: {
+        type: GraphQLString,
+        description: 'Description of the lure used in training.'
+    },
+    shape_description: {
+        type: GraphQLString,
+        description: 'Description of the shape used in training.'
+    },
+    verbal_command: {
+        type: GraphQLString,
+        description: 'The verbal command used to cue this behavior.'
+    },
+    hand_signal: {
+        type: GraphQLString,
+        description: 'The hand signal used to cue this behavior.'
+    },
+    has_duration: {
+        type: new GraphQLNonNull(GraphQLBoolean),
+        description: 'Description of the shape used in training.'
+    },
+    release_command: {
+        type: GraphQLString,
+        description: 'The verbal command used to release this behavior.'
+    },
+};
+
+const behaviorType = new GraphQLObjectType({
+    name: 'Behavior',
+    interfaces: [nodeInterface],
+    fields: () => ({
+        id: globalIdField(),
+        dog: {
+            type: dogType,
+            resolve: (behavior, args, context) => {
+                const dog_model = new AuthDog(context);
+                return dog_model.get_one({id: behavior.dog_id});
+            }
+        },
+        ... behaviorTypeOwnedScalarFields,
+    }),
+});
+
+const { connectionType: behaviorConnection,
+        edgeType: behaviorEdge
+} = connectionDefinitions({
+    name: 'Behavior',
+    nodeType: behaviorType,
+    resolveNode: (edge, args, context) => {
+        const behavior_model = new AuthBehavior(context);
+        // TODO: figure out return value
+        return behavior_model.get_one({id: edge.node.id});
+    },
+    // TODO: decide if anything should go on the edge.
+});
+
 module.exports = {
     dogType,
     dogTypeOwnedScalarFields,
@@ -248,4 +330,7 @@ module.exports = {
     pendingInvitationType,
     userDogRoleType,
     userRoleDescAndType,
+    behaviorType,
+    behaviorEdge,
+    behaviorTypeOwnedScalarFields,
 };

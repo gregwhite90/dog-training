@@ -67,6 +67,7 @@ type Dog implements Node {
   """The ID of an object"""
   id: ID!
   users(after: String, first: Int, before: String, last: Int): DogToUserConnection
+  behaviors(after: String, first: Int, before: String, last: Int): BehaviorConnection
   name: String!
 
   """URL of the profile image of this dog."""
@@ -98,6 +99,52 @@ enum UserDogRole {
   OWNER
   TRAINER
   VIEWER
+}
+
+"""A connection to a list of items."""
+type BehaviorConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BehaviorEdge]
+}
+
+"""An edge in a connection."""
+type BehaviorEdge {
+  """The item at the end of the edge"""
+  node: Behavior
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Behavior implements Node {
+  """The ID of an object"""
+  id: ID!
+  dog: Dog
+  name: String!
+
+  """Explanation of the desired behavior in clear, plain language."""
+  explanation: String
+
+  """Description of the lure used in training."""
+  lure_description: String
+
+  """Description of the shape used in training."""
+  shape_description: String
+
+  """The verbal command used to cue this behavior."""
+  verbal_command: String
+
+  """The hand signal used to cue this behavior."""
+  hand_signal: String
+
+  """Description of the shape used in training."""
+  has_duration: Boolean!
+
+  """The verbal command used to release this behavior."""
+  release_command: String
 }
 
 """A connection to a list of items."""
@@ -137,6 +184,9 @@ type Mutation {
 
   """Accept an invitation to collaborate training a dog"""
   acceptInvitation(input: AcceptInvitationInput!): AcceptInvitationPayload
+
+  """Create a new desired behavior for the specified dog"""
+  createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
 }
 
 type AddDogPayload {
@@ -191,5 +241,36 @@ type AcceptInvitationPayload {
 input AcceptInvitationInput {
   invitation_id: ID!
   user_id: ID!
+  clientMutationId: String
+}
+
+type CreateBehaviorPayload {
+  behaviorEdge: BehaviorEdge!
+  clientMutationId: String
+}
+
+input CreateBehaviorInput {
+  name: String!
+
+  """Explanation of the desired behavior in clear, plain language."""
+  explanation: String
+
+  """Description of the lure used in training."""
+  lure_description: String
+
+  """Description of the shape used in training."""
+  shape_description: String
+
+  """The verbal command used to cue this behavior."""
+  verbal_command: String
+
+  """The hand signal used to cue this behavior."""
+  hand_signal: String
+
+  """Description of the shape used in training."""
+  has_duration: Boolean!
+
+  """The verbal command used to release this behavior."""
+  release_command: String
   clientMutationId: String
 }

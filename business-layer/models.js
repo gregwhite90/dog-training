@@ -1,6 +1,7 @@
 const { User } = require('../data-layer/auth0/models/User');
 const { Dog } = require('../data-layer/db/models/Dog');
 const { PendingInvitation } = require('../data-layer/db/models/PendingInvitation');
+const { Behavior } = require('../data-layer/db/models/Behavior');
 
 class AuthModel {
     constructor(context) {
@@ -88,6 +89,10 @@ class AuthDog extends AuthModel {
         return Dog.edit_one({id, name, picture})
                   .then(Dog.create_object)
     }
+
+    async get_all_behavior_ids({id}) {
+        return Dog.get_all_behavior_ids({id});
+    }
 }
 
 class AuthPendingInvitation extends AuthModel {
@@ -135,8 +140,28 @@ class AuthPendingInvitation extends AuthModel {
     }
 }
 
+class AuthBehavior extends AuthModel {
+    constructor(context) {
+        super(context);
+        console.log('creating auth behavior');
+        // TODO: propagate the error if necessary.
+    }
+
+    async create_one(input) {
+        return Behavior.create_one(input);
+    }
+
+    // TODO: authentication and authorization strategy
+    async get_one({id}) {
+        // TODO: confirm error handling strategy
+        return Behavior.get_one({id})
+                       .then(Behavior.create_object);
+    }
+}
+
 module.exports = {
     AuthUser,
     AuthDog,
     AuthPendingInvitation,
+    AuthBehavior,
 };
