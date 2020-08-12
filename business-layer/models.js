@@ -148,7 +148,7 @@ class AuthBehavior extends AuthModel {
     }
 
     async create_one(input) {
-        return Behavior.create_one(input);
+        return Behavior.create_one(input).then(Behavior.create_object);
     }
 
     // TODO: authentication and authorization strategy
