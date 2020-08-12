@@ -304,7 +304,7 @@ const behaviorType = new GraphQLObjectType({
                 return dog_model.get_one({id: behavior.dog_id});
             }
         },
-        ... behaviorTypeOwnedScalarFields,
+        ...behaviorTypeOwnedScalarFields,
     }),
 });
 

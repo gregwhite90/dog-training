@@ -9,6 +9,8 @@ class Behavior {
 
     // TODO: abstract out boilerplate shared code?
     static create_object(raw_behavior) {
+        console.log(`Creating object from raw behavior`);
+        console.log(raw_behavior);
         return {
             _node_type: 'Behavior',
             ...raw_behavior, // TODO: confirm treatment of nulls

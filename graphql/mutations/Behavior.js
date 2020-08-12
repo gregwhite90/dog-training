@@ -35,6 +35,8 @@ const createBehaviorMutation = mutationWithClientMutationId({
         behaviorEdge: {
             type: new GraphQLNonNull(behaviorEdge),
             resolve: ({behavior, dog_model}) => { // TODO: figure out resolver
+                console.log('In behavior edge resolver');
+                console.log(behavior);
                 return dog_model.get_all_behavior_ids({id: behavior.dog_id}).then(behaviors => {
                     return {
                         cursor: cursorForObjectInConnection(behaviors, behavior),
