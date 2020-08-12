@@ -9,6 +9,7 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 export type CreateBehaviorInput = {|
+  dog_id: string,
   name: string,
   explanation?: ?string,
   lure_description?: ?string,

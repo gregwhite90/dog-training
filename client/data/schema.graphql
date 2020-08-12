@@ -250,6 +250,7 @@ type CreateBehaviorPayload {
 }
 
 input CreateBehaviorInput {
+  dog_id: ID!
   name: String!
 
   """Explanation of the desired behavior in clear, plain language."""
