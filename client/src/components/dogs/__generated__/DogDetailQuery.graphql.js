@@ -8,6 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+type CreateBehaviorForm_dog$ref = any;
 type DogCard_dog$ref = any;
 type InviteUserByEmailForm_dog$ref = any;
 export type DogDetailQueryVariables = {|
@@ -15,7 +16,7 @@ export type DogDetailQueryVariables = {|
 |};
 export type DogDetailQueryResponse = {|
   +node: ?{|
-    +$fragmentRefs: DogCard_dog$ref & InviteUserByEmailForm_dog$ref
+    +$fragmentRefs: DogCard_dog$ref & InviteUserByEmailForm_dog$ref & CreateBehaviorForm_dog$ref
   |}
 |};
 export type DogDetailQuery = {|
@@ -33,8 +34,14 @@ query DogDetailQuery(
     __typename
     ...DogCard_dog
     ...InviteUserByEmailForm_dog
+    ...CreateBehaviorForm_dog
     id
   }
+}
+
+fragment CreateBehaviorForm_dog on Dog {
+  id
+  name
 }
 
 fragment DogCard_dog on Dog {
@@ -88,6 +95,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "InviteUserByEmailForm_dog"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "CreateBehaviorForm_dog"
           }
         ],
         "storageKey": null
@@ -151,16 +163,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1b7570a3fc18e07d545731697ceaf790",
+    "cacheID": "4405683c4f455396fe7e672b51809025",
     "id": null,
     "metadata": {},
     "name": "DogDetailQuery",
     "operationKind": "query",
-    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...InviteUserByEmailForm_dog\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
+    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...InviteUserByEmailForm_dog\n    ...CreateBehaviorForm_dog\n    id\n  }\n}\n\nfragment CreateBehaviorForm_dog on Dog {\n  id\n  name\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '75d010f6aac215f434d6ea002ff044bd';
+(node/*: any*/).hash = 'f203016ce3db40500fce03a3b663bea3';
 
 module.exports = node;
