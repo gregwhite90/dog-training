@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-    BrowserRouter,
+    Router,
     Switch,
     Route,
 } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
@@ -19,7 +20,11 @@ import About from 'components/pages/About';
 
 import DogsRouter from 'components/dogs/DogsRouter';
 
+import { ProtectedRoute } from 'components/utils/ProtectedRoute';
+
 import './App.scss';
+
+export const history = createBrowserHistory();
 
 class App extends React.Component {
     constructor(props) {
@@ -38,7 +43,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <BrowserRouter>
+            <Router history={history}>
                 <div className="App">
                     <Navigation />
                     <Container fluid>
@@ -49,8 +54,8 @@ class App extends React.Component {
                                             this.props.auth0.loginWithRedirect();
                                     }} />
                                     <Route path="/about" component={About} />
-                                    <Route path="/dogs" render={(props) => (
-                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user}/>
+                                    <ProtectedRoute path="/dogs" render={(props) => (
+                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
                                     )} />
                                     <Route path="/" component={Home} />
                                 </Switch>
@@ -58,7 +63,7 @@ class App extends React.Component {
                         </Row>
                     </Container>
                 </div>
-            </BrowserRouter>
+            </Router>
         );
     }
 }
