@@ -148,6 +148,8 @@ class AuthBehavior extends AuthModel {
     }
 
     async create_one(input) {
+        console.log(`Creating behavior`);
+        console.log(input);
         return Behavior.create_one(input).then(Behavior.create_object);
     }
 
