@@ -22,47 +22,22 @@ function CreateBehaviorForm(props) {
     // TODO: decide which are required
     // TODO: only allow one of shape vs. lure?
 
-    const nullable_string = yup.string()
-                               .nullable()
-                               .default(null)
-                               .transform((value, originalValue) => {
-                                   return value ? originalValue : null;
-                               })
+    const nullable_string = () => yup.string()
+                                     .nullable()
+                                     .transform((value, originalValue) => {
+                                         return value ? originalValue : null;
+                                     });
 
     const validationSchema = yup.object().shape({
         name: yup.string()
                  .required("A name for this desired behavior is required"),
-        explanation: yup.string()
-                        .nullable()
-                        .transform((value, originalValue) => {
-                            return value ? originalValue : null;
-                        }),
-        lure_description: yup.string()
-                             .nullable()
-                             .transform((value, originalValue) => {
-                                 return value ? originalValue : null;
-                             }),
-        shape_description: yup.string()
-                              .nullable()
-                              .transform((value, originalValue) => {
-                                  return value ? originalValue : null;
-                              }),
-        verbal_command: yup.string()
-                           .nullable()
-                           .transform((value, originalValue) => {
-                               return value ? originalValue : null;
-                           }),
-        hand_signal: yup.string()
-                        .nullable()
-                        .transform((value, originalValue) => {
-                            return value ? originalValue : null;
-                        }),
+        explanation: nullable_string(),
+        lure_description: nullable_string(),
+        shape_description: nullable_string(),
+        verbal_command: nullable_string(),
+        hand_signal: nullable_string(),
         has_duration: yup.bool(),
-        release_command: yup.string()
-                            .nullable()
-                            .transform((value, originalValue) => {
-                                return value ? originalValue : null;
-                            }),
+        release_command: nullable_string(),
     });
 
     // TODO: add styling to the error message
@@ -89,13 +64,7 @@ function CreateBehaviorForm(props) {
                             props.relay.environment,
                             {
                                 dog_id: props.dog.id,
-                                explanation: validationSchema.explanation.cast(values.explanation),
-                                lure_description: validationSchema.lure_description.cast(values.lure_description),
-                                shape_description: validationSchema.shape_description.cast(values.shape_description),
-                                verbal_command: validationSchema.verbal_command.cast(values.verbal_command),
-                                hand_signal: validationSchema.hand_signal.cast(values.hand_signal),
-                                release_command: validationSchema.release_command.cast(values.release_command),
-                                ...values,
+                                ...validationSchema.cast(values),
                             },
                             () => {
                                 resetForm();
