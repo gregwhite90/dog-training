@@ -46,7 +46,7 @@ const createBehaviorMutation = mutationWithClientMutationId({
             },
         },
     },
-    mutateAndGetPayload: ({
+    mutateAndGetPayload: async ({
         dog_id,
         name,
         explanation,
@@ -60,7 +60,7 @@ const createBehaviorMutation = mutationWithClientMutationId({
         const dog_type_and_id = fromGlobalId(dog_id);
         const behavior_model = new AuthBehavior(context);
         const dog_model = new AuthDog(context);
-        const behavior = behavior_model.create_one({
+        const behavior = await behavior_model.create_one({
             dog_id: dog_type_and_id.id,
             name,
             explanation,
