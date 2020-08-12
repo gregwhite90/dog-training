@@ -37,28 +37,28 @@ function CreateBehaviorForm(props) {
                         .transform((value, originalValue) => {
                             return value ? originalValue : null;
                         }),
-        lure_description: yup.string(),
-                            .nullable()
-                            .transform((value, originalValue) => {
-                                return value ? originalValue : null;
-                            }),
-        shape_description: yup.string(),
-                            .nullable()
-                            .transform((value, originalValue) => {
-                                return value ? originalValue : null;
-                            }),
-        verbal_command: yup.string(),
-                            .nullable()
-                            .transform((value, originalValue) => {
-                                return value ? originalValue : null;
-                            }),
-        hand_signal: yup.string(),
-                            .nullable()
-                            .transform((value, originalValue) => {
-                                return value ? originalValue : null;
-                            }),
+        lure_description: yup.string()
+                             .nullable()
+                             .transform((value, originalValue) => {
+                                 return value ? originalValue : null;
+                             }),
+        shape_description: yup.string()
+                              .nullable()
+                              .transform((value, originalValue) => {
+                                  return value ? originalValue : null;
+                              }),
+        verbal_command: yup.string()
+                           .nullable()
+                           .transform((value, originalValue) => {
+                               return value ? originalValue : null;
+                           }),
+        hand_signal: yup.string()
+                        .nullable()
+                        .transform((value, originalValue) => {
+                            return value ? originalValue : null;
+                        }),
         has_duration: yup.bool(),
-        release_command: yup.string(),
+        release_command: yup.string()
                             .nullable()
                             .transform((value, originalValue) => {
                                 return value ? originalValue : null;
