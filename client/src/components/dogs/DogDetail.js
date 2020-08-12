@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 
 import DogCard from './DogCard';
 import InviteUserByEmailForm from './InviteUserByEmailForm';
+import CreateBehaviorForm from './CreateBehaviorForm';
 
 // TODO: authorization check
 
@@ -17,6 +18,7 @@ export default function DogDetail({relay, match}) {
                     node(id: $id) {
                         ...DogCard_dog
                         ...InviteUserByEmailForm_dog
+                        ...CreateBehaviorForm_dog
                     }
                 }
                 `}
@@ -27,6 +29,7 @@ export default function DogDetail({relay, match}) {
                             <Container>
                                 <DogCard dog={props.node} />
                                 <InviteUserByEmailForm dog={props.node} relay={relay} />
+                                <CreateBehaviorForm dog={props.node} relay={relay} />
                             </Container>
                         );
                     } else if (error) {
