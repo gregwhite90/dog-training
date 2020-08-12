@@ -25,6 +25,9 @@ const createBehaviorMutation = mutationWithClientMutationId({
     name: 'CreateBehavior',
     description: `Create a new desired behavior for the specified dog`,
     inputFields: {
+        dog_id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
         ...behaviorTypeOwnedScalarFields, // TODO: figure out the input types (scalar owned fields)
     },
     outputFields: {
