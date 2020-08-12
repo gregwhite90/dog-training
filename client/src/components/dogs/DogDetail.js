@@ -28,8 +28,8 @@ export default function DogDetail({relay, match}) {
                         return (
                             <Container>
                                 <DogCard dog={props.node} />
-                                <InviteUserByEmailForm dog={props.node} relay={relay} />
                                 <CreateBehaviorForm dog={props.node} relay={relay} />
+                                <InviteUserByEmailForm dog={props.node} relay={relay} />
                             </Container>
                         );
                     } else if (error) {

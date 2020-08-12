@@ -13,6 +13,9 @@ import CreateBehaviorMutation from 'relay/mutations/CreateBehaviorMutation';
 
 function CreateBehaviorForm(props) {
 
+    console.log(`In CreateBehaviorForm`);
+    console.log(props);
+
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
 

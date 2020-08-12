@@ -36,6 +36,9 @@ import InviteUserByEmailMutation from 'relay/mutations/InviteUserByEmailMutation
 
 function InviteUserByEmailForm(props) {
 
+    console.log(`In InviteUserByEmailForm`);
+    console.log(props);
+
     const { user, isAuthenticated } = useAuth0();
 
     // TODO: programmatically fill in the values for the enum
