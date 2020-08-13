@@ -1,43 +1,38 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
+export type CreateBehaviorInput = {
+    dog_id: string;
+    name: string;
+    explanation?: string | null;
+    lure_description?: string | null;
+    shape_description?: string | null;
+    verbal_command?: string | null;
+    hand_signal?: string | null;
+    has_duration: boolean;
+    release_command?: string | null;
+    clientMutationId?: string | null;
+};
+export type CreateBehaviorMutationVariables = {
+    input: CreateBehaviorInput;
+};
+export type CreateBehaviorMutationResponse = {
+    readonly createBehavior: {
+        readonly behaviorEdge: {
+            readonly node: {
+                readonly id: string;
+                readonly name: string;
+            } | null;
+        };
+    } | null;
+};
+export type CreateBehaviorMutation = {
+    readonly response: CreateBehaviorMutationResponse;
+    readonly variables: CreateBehaviorMutationVariables;
+};
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type CreateBehaviorInput = {|
-  dog_id: string,
-  name: string,
-  explanation?: ?string,
-  lure_description?: ?string,
-  shape_description?: ?string,
-  verbal_command?: ?string,
-  hand_signal?: ?string,
-  has_duration: boolean,
-  release_command?: ?string,
-  clientMutationId?: ?string,
-|};
-export type CreateBehaviorMutationVariables = {|
-  input: CreateBehaviorInput
-|};
-export type CreateBehaviorMutationResponse = {|
-  +createBehavior: ?{|
-    +behaviorEdge: {|
-      +node: ?{|
-        +id: string,
-        +name: string,
-      |}
-    |}
-  |}
-|};
-export type CreateBehaviorMutation = {|
-  variables: CreateBehaviorMutationVariables,
-  response: CreateBehaviorMutationResponse,
-|};
-*/
 
 
 /*
@@ -55,7 +50,7 @@ mutation CreateBehaviorMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -145,7 +140,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'c8b788eeff3edb66d890ea6ee064b051';
-
-module.exports = node;
+(node as any).hash = 'c8b788eeff3edb66d890ea6ee064b051';
+export default node;

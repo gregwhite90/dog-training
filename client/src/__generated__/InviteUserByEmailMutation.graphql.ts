@@ -1,35 +1,30 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
+import { ConcreteRequest } from "relay-runtime";
 export type UserDogRole = "OWNER" | "TRAINER" | "VIEWER" | "%future added value";
-export type InviteUserByEmailInput = {|
-  invitee_email: string,
-  dog_id: string,
-  user_role: UserDogRole,
-  clientMutationId?: ?string,
-|};
-export type InviteUserByEmailMutationVariables = {|
-  input: InviteUserByEmailInput
-|};
-export type InviteUserByEmailMutationResponse = {|
-  +inviteUserByEmail: ?{|
-    +viewer: {|
-      +id: string
-    |}
-  |}
-|};
-export type InviteUserByEmailMutation = {|
-  variables: InviteUserByEmailMutationVariables,
-  response: InviteUserByEmailMutationResponse,
-|};
-*/
+export type InviteUserByEmailInput = {
+    invitee_email: string;
+    dog_id: string;
+    user_role: UserDogRole;
+    clientMutationId?: string | null;
+};
+export type InviteUserByEmailMutationVariables = {
+    input: InviteUserByEmailInput;
+};
+export type InviteUserByEmailMutationResponse = {
+    readonly inviteUserByEmail: {
+        readonly viewer: {
+            readonly id: string;
+        };
+    } | null;
+};
+export type InviteUserByEmailMutation = {
+    readonly response: InviteUserByEmailMutationResponse;
+    readonly variables: InviteUserByEmailMutationVariables;
+};
+
 
 
 /*
@@ -44,7 +39,7 @@ mutation InviteUserByEmailMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -116,7 +111,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'c901646274d3189a8d71c8c1aff710b1';
-
-module.exports = node;
+(node as any).hash = 'c901646274d3189a8d71c8c1aff710b1';
+export default node;

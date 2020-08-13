@@ -1,48 +1,40 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ReaderFragment } from 'relay-runtime';
+import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type UserDogRole = "OWNER" | "TRAINER" | "VIEWER" | "%future added value";
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type PendingInvitations_viewer$ref: FragmentReference;
-declare export opaque type PendingInvitations_viewer$fragmentType: PendingInvitations_viewer$ref;
-export type PendingInvitations_viewer = {|
-  +id: string,
-  +pending_invitations_received: ?{|
-    +edges: ?$ReadOnlyArray<?{|
-      +node: ?{|
-        +id: string,
-        +invitee_email: string,
-        +user_role: UserDogRole,
-        +dog: ?{|
-          +name: string,
-          +picture: ?string,
-          +id: string,
-        |},
-        +invited_by: {|
-          +name: string
-        |},
-      |}
-    |}>
-  |},
-  +$refType: PendingInvitations_viewer$ref,
-|};
+export type PendingInvitations_viewer = {
+    readonly id: string;
+    readonly pending_invitations_received: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+                readonly invitee_email: string;
+                readonly user_role: UserDogRole;
+                readonly dog: {
+                    readonly name: string;
+                    readonly picture: string | null;
+                    readonly id: string;
+                } | null;
+                readonly invited_by: {
+                    readonly name: string;
+                };
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly " $refType": "PendingInvitations_viewer";
+};
 export type PendingInvitations_viewer$data = PendingInvitations_viewer;
 export type PendingInvitations_viewer$key = {
-  +$data?: PendingInvitations_viewer$data,
-  +$fragmentRefs: PendingInvitations_viewer$ref,
-  ...
+    readonly " $data"?: PendingInvitations_viewer$data;
+    readonly " $fragmentRefs": FragmentRefs<"PendingInvitations_viewer">;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = (function(){
+
+const node: ReaderFragment = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -149,7 +141,5 @@ return {
   "abstractKey": null
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'fadd1161963185e8bd3d5b9bf6596810';
-
-module.exports = node;
+(node as any).hash = 'fadd1161963185e8bd3d5b9bf6596810';
+export default node;

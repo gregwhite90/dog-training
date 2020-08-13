@@ -1,26 +1,20 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
+export type DogsPageQueryVariables = {};
+export type DogsPageQueryResponse = {
+    readonly viewer: {
+        readonly " $fragmentRefs": FragmentRefs<"DogsApp_viewer" | "PendingInvitations_viewer">;
+    } | null;
+};
+export type DogsPageQuery = {
+    readonly response: DogsPageQueryResponse;
+    readonly variables: DogsPageQueryVariables;
+};
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type DogsApp_viewer$ref = any;
-type PendingInvitations_viewer$ref = any;
-export type DogsPageQueryVariables = {||};
-export type DogsPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: DogsApp_viewer$ref & PendingInvitations_viewer$ref
-  |}
-|};
-export type DogsPageQuery = {|
-  variables: DogsPageQueryVariables,
-  response: DogsPageQueryResponse,
-|};
-*/
 
 
 /*
@@ -84,7 +78,7 @@ fragment PendingInvitations_viewer on User {
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -336,7 +330,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'a32c88e18e259ba323fc1d9c9463d18e';
-
-module.exports = node;
+(node as any).hash = 'a32c88e18e259ba323fc1d9c9463d18e';
+export default node;

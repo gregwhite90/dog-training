@@ -1,29 +1,22 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
+export type DogDetailQueryVariables = {
+    id: string;
+};
+export type DogDetailQueryResponse = {
+    readonly node: {
+        readonly " $fragmentRefs": FragmentRefs<"DogCard_dog" | "InviteUserByEmailForm_dog" | "CreateBehaviorForm_dog">;
+    } | null;
+};
+export type DogDetailQuery = {
+    readonly response: DogDetailQueryResponse;
+    readonly variables: DogDetailQueryVariables;
+};
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type CreateBehaviorForm_dog$ref = any;
-type DogCard_dog$ref = any;
-type InviteUserByEmailForm_dog$ref = any;
-export type DogDetailQueryVariables = {|
-  id: string
-|};
-export type DogDetailQueryResponse = {|
-  +node: ?{|
-    +$fragmentRefs: DogCard_dog$ref & InviteUserByEmailForm_dog$ref & CreateBehaviorForm_dog$ref
-  |}
-|};
-export type DogDetailQuery = {|
-  variables: DogDetailQueryVariables,
-  response: DogDetailQueryResponse,
-|};
-*/
 
 
 /*
@@ -56,7 +49,7 @@ fragment InviteUserByEmailForm_dog on Dog {
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -172,7 +165,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'f203016ce3db40500fce03a3b663bea3';
-
-module.exports = node;
+(node as any).hash = 'f203016ce3db40500fce03a3b663bea3';
+export default node;

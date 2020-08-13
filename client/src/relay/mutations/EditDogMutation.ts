@@ -1,4 +1,6 @@
 import { graphql, commitMutation } from 'react-relay';
+import type { IEnvironment, PayloadError } from 'relay-runtime';
+import type { EditDogInput } from 'generated/graphql';
 
 /**
  * Based on: https://relay.dev/docs/en/mutations#commitmutation
@@ -17,21 +19,21 @@ const mutation = graphql`
 `;
 
 function commit(
-    environment,
-    {id, name, picture},
-    onCompleted
+    environment: IEnvironment,
+    input: EditDogInput,
+    onCompleted: (response?: Object, errors?: ReadonlyArray<PayloadError> | null) => void
 ) {
-    console.log(`Called EditDog with ${id}, ${name}, ${picture}`);
+    console.log(`Called EditDog with ${input.id}, ${input.name}, ${input.picture}`);
     commitMutation(
         environment,
         {
             mutation,
             variables: {
-                input: { id, name, picture },
+                input,
             },
             onCompleted,
         }
     );
 }
 
-export default {commit};
+export default { commit };

@@ -31,7 +31,6 @@ class DogAdder extends React.Component {
         AddDogMutation.commit(
             this.props.relay.environment,
             {name, picture: null},
-            this.props.viewer,
             (response, errors) => {
                 console.log('in saveCreation onCompleted');
                 console.log(response);

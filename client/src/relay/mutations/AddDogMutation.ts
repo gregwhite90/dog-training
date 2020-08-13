@@ -1,13 +1,13 @@
 import { graphql, commitMutation } from 'react-relay';
-import { ConnectionHandler } from 'relay-runtime';
-
+import type { IEnvironment, PayloadError } from 'relay-runtime';
+import type { AddDogInput } from 'generated/graphql';
 /**
  * Based on: https://relay.dev/docs/en/mutations#commitmutation
  */
 
 const mutation = graphql`
-    mutation AcceptInvitationMutation($input: AcceptInvitationInput!) {
-        acceptInvitation(input: $input) {
+    mutation AddDogMutation($input: AddDogInput!) {
+        addDog(input: $input) {
             dogEdge {
                 node {
                     id
@@ -23,19 +23,21 @@ const mutation = graphql`
 `;
 
 function commit(
-    environment,
-    {invitation_id, user_id},
+    environment: IEnvironment,
+    input: AddDogInput,
+    onCompleted: (response?: Object, errors?: ReadonlyArray<PayloadError> | null) => void
 ) {
-    console.log(`Called AcceptInvitation with ${invitation_id}, ${user_id}`);
+    console.log(`Called AddDog with ${input.name}, ${input.picture}`);
     commitMutation(
         environment,
         {
             mutation,
             variables: {
-                input: { invitation_id, user_id },
+                input,
             },
+            onCompleted,
         }
     );
 }
 
-export default {commit};
+export default { commit };

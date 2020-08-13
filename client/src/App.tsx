@@ -24,12 +24,21 @@ import { ProtectedRoute } from 'components/utils/ProtectedRoute';
 
 import './App.scss';
 
+import type { IEnvironment } from 'relay-runtime';
+
 export const history = createBrowserHistory();
 
-class App extends React.Component {
-    constructor(props) {
+export type RelayProps = {
+    relay: {
+        environment: IEnvironment,
+    }
+};
+
+// TODO: fix the any Props and State type delcarations and constructor
+class App extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
-        this.state = { relay: { environment: null }};
+        this.state = { relay: { environment: null } };
     }
 
     componentDidMount() {
@@ -50,11 +59,11 @@ class App extends React.Component {
                         <Row>
                             <Col>
                                 <Switch>
-                                    <Route path="/login" render={(props) => {
-                                            this.props.auth0.loginWithRedirect();
-                                    }} />
+                                    <Route path="/login" render={(_: any) => (
+                                        this.props.auth0.loginWithRedirect()
+                                    )} />
                                     <Route path="/about" component={About} />
-                                    <ProtectedRoute path="/dogs" render={(props) => (
+                                    <ProtectedRoute path="/dogs" render={(props: any) => (
                                         <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
                                     )} />
                                     <Route path="/" component={Home} />

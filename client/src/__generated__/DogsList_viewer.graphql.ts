@@ -1,41 +1,32 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ReaderFragment } from 'relay-runtime';
-type DogCard_dog$ref = any;
+import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type UserDogRole = "OWNER" | "TRAINER" | "VIEWER" | "%future added value";
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type DogsList_viewer$ref: FragmentReference;
-declare export opaque type DogsList_viewer$fragmentType: DogsList_viewer$ref;
-export type DogsList_viewer = {|
-  +id: string,
-  +dogs: ?{|
-    +edges: ?$ReadOnlyArray<?{|
-      +user_role: ?UserDogRole,
-      +node: ?{|
-        +id: string,
-        +$fragmentRefs: DogCard_dog$ref,
-      |},
-    |}>
-  |},
-  +$refType: DogsList_viewer$ref,
-|};
+export type DogsList_viewer = {
+    readonly id: string;
+    readonly dogs: {
+        readonly edges: ReadonlyArray<{
+            readonly user_role: UserDogRole | null;
+            readonly node: {
+                readonly id: string;
+                readonly " $fragmentRefs": FragmentRefs<"DogCard_dog">;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly " $refType": "DogsList_viewer";
+};
 export type DogsList_viewer$data = DogsList_viewer;
 export type DogsList_viewer$key = {
-  +$data?: DogsList_viewer$data,
-  +$fragmentRefs: DogsList_viewer$ref,
-  ...
+    readonly " $data"?: DogsList_viewer$data;
+    readonly " $fragmentRefs": FragmentRefs<"DogsList_viewer">;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = (function(){
+
+const node: ReaderFragment = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -151,7 +142,5 @@ return {
   "abstractKey": null
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '072c37465d6a90910964ff0aee2c3464';
-
-module.exports = node;
+(node as any).hash = '072c37465d6a90910964ff0aee2c3464';
+export default node;

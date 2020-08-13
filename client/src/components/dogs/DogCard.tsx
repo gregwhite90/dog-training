@@ -3,7 +3,15 @@ import { createFragmentContainer, graphql } from 'react-relay';
 
 import HorizontalCard from 'components/utils/HorizontalCard';
 
-function DogCard(props) {
+import type { DogCard_dog } from '__generated__/DogCard_dog.graphql';
+import type { UserDogRole } from 'generated/graphql';
+
+interface DogCardProps {
+    dog: DogCard_dog,
+    role?: UserDogRole,
+};
+
+const DogCard: React.FC<DogCardProps> = (props) => {
     console.log('in dog card');
     console.log(props);
     const node = {
@@ -13,7 +21,7 @@ function DogCard(props) {
         badge: props.role,
     };
     console.log(node);
-    return (<HorizontalCard node={node}/>);
+    return (<HorizontalCard node={node} />);
 }
 
 export default createFragmentContainer(DogCard, {

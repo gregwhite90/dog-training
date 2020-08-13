@@ -4,19 +4,29 @@ import { Link } from 'react-router-dom';
 
 import DogCard from './DogCard';
 
-function DogsList(props) {
+import type { match } from 'react-router-dom';
+import type { DogsList_viewer } from '__generated__/DogsList_viewer.graphql';
+import type { UserDogRole } from 'generated/graphql';
+
+// TODO: import "match params" (empty object because hardcoded route) from parent component?
+interface DogsListProps {
+    viewer: DogsList_viewer,
+    match: match<{}>,
+}
+
+const DogsList: React.FC<DogsListProps> = (props) => {
     const edges =
         props && props.viewer && props.viewer.dogs && props.viewer.dogs.edges
-        ? props.viewer.dogs.edges.filter(Boolean)
-        : [];
+            ? props.viewer.dogs.edges.filter(Boolean)
+            : [];
     return (
         <>
             {edges.map(edge => {
-                 return (
-                     <Link to={`${props.match.url}/${edge.node.id}`}>
-                         <DogCard key={edge.node.id} dog={edge.node} role={edge.user_role}/>
-                     </Link>
-                 );
+                return (
+                    <Link to={`${props.match.url}/${edge!.node!.id}`}>
+                        <DogCard key={edge!.node!.id} dog={edge!.node!} role={edge!.user_role as UserDogRole} />
+                    </Link>
+                );
             })}
         </>
     );

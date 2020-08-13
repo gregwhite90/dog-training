@@ -1,36 +1,31 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
+export type EditDogInput = {
+    id: string;
+    name?: string | null;
+    picture?: string | null;
+    clientMutationId?: string | null;
+};
+export type EditDogMutationVariables = {
+    input: EditDogInput;
+};
+export type EditDogMutationResponse = {
+    readonly editDog: {
+        readonly dog: {
+            readonly id: string;
+            readonly name: string;
+            readonly picture: string | null;
+        };
+    } | null;
+};
+export type EditDogMutation = {
+    readonly response: EditDogMutationResponse;
+    readonly variables: EditDogMutationVariables;
+};
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type EditDogInput = {|
-  id: string,
-  name?: ?string,
-  picture?: ?string,
-  clientMutationId?: ?string,
-|};
-export type EditDogMutationVariables = {|
-  input: EditDogInput
-|};
-export type EditDogMutationResponse = {|
-  +editDog: ?{|
-    +dog: {|
-      +id: string,
-      +name: string,
-      +picture: ?string,
-    |}
-  |}
-|};
-export type EditDogMutation = {|
-  variables: EditDogMutationVariables,
-  response: EditDogMutationResponse,
-|};
-*/
 
 
 /*
@@ -47,7 +42,7 @@ mutation EditDogMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -133,7 +128,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'a7dfb0cb4fc33f61f8bc565486211986';
-
-module.exports = node;
+(node as any).hash = 'a7dfb0cb4fc33f61f8bc565486211986';
+export default node;

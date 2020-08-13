@@ -1,40 +1,35 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
+export type AcceptInvitationInput = {
+    invitation_id: string;
+    user_id: string;
+    clientMutationId?: string | null;
+};
+export type AcceptInvitationMutationVariables = {
+    input: AcceptInvitationInput;
+};
+export type AcceptInvitationMutationResponse = {
+    readonly acceptInvitation: {
+        readonly dogEdge: {
+            readonly node: {
+                readonly id: string;
+                readonly name: string;
+                readonly picture: string | null;
+            } | null;
+        };
+        readonly viewer: {
+            readonly id: string;
+        };
+    } | null;
+};
+export type AcceptInvitationMutation = {
+    readonly response: AcceptInvitationMutationResponse;
+    readonly variables: AcceptInvitationMutationVariables;
+};
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type AcceptInvitationInput = {|
-  invitation_id: string,
-  user_id: string,
-  clientMutationId?: ?string,
-|};
-export type AcceptInvitationMutationVariables = {|
-  input: AcceptInvitationInput
-|};
-export type AcceptInvitationMutationResponse = {|
-  +acceptInvitation: ?{|
-    +dogEdge: {|
-      +node: ?{|
-        +id: string,
-        +name: string,
-        +picture: ?string,
-      |}
-    |},
-    +viewer: {|
-      +id: string
-    |},
-  |}
-|};
-export type AcceptInvitationMutation = {|
-  variables: AcceptInvitationMutationVariables,
-  response: AcceptInvitationMutationResponse,
-|};
-*/
 
 
 /*
@@ -56,7 +51,7 @@ mutation AcceptInvitationMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -166,7 +161,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'eadec0adde30feca411b4b58fa5b385f';
-
-module.exports = node;
+(node as any).hash = 'eadec0adde30feca411b4b58fa5b385f';
+export default node;
