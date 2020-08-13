@@ -1,9 +1,6 @@
-import { graphql, commitMutation } from 'react-relay';
-import type { IEnvironment } from 'relay-runtime';
+import { graphql } from 'react-relay';
+import createCommit from './CommonMutation';
 import type { AcceptInvitationInput } from 'generated/graphql';
-/**
- * Based on: https://relay.dev/docs/en/mutations#commitmutation
- */
 
 const mutation = graphql`
     mutation AcceptInvitationMutation($input: AcceptInvitationInput!) {
@@ -22,20 +19,6 @@ const mutation = graphql`
     }
 `;
 
-function commit(
-    environment: IEnvironment,
-    input: AcceptInvitationInput,
-) {
-    console.log(`Called AcceptInvitation with ${input.invitation_id}, ${input.user_id}`);
-    commitMutation(
-        environment,
-        {
-            mutation,
-            variables: {
-                input
-            },
-        }
-    );
-}
+const commit = createCommit<AcceptInvitationInput>(mutation);
 
 export default { commit };
