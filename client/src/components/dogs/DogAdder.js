@@ -35,7 +35,7 @@ class DogAdder extends React.Component {
                 console.log('in saveCreation onCompleted');
                 console.log(response);
                 console.log(errors);
-                this.fieldValues.id = response.addDog.dogEdge.node.id;
+                this.fieldValues.id = response.createDog.dogEdge.node.id;
                 this.fieldValues.name = name;
                 onCommitted();
                 this.nextStep();
