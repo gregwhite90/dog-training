@@ -62,7 +62,7 @@ class Dog {
 
     static async get_all_user_ids_and_roles({id}) {
         const { rows } = await db.query(
-            'SELECT user_id, user_role FROM user_dogs WHERE dog_id=$1',
+            'SELECT user_id AS id, user_role FROM user_dogs WHERE dog_id=$1',
             [id]
         );
         // TODO: error-handling code?
@@ -72,7 +72,7 @@ class Dog {
     // TODO: move to user model?
     static async get_all_dog_ids_and_roles_for_user({id}) {
         const { rows } = await db.query(
-            'SELECT dog_id, user_role FROM user_dogs WHERE user_id=$1',
+            'SELECT dog_id AS id, user_role FROM user_dogs WHERE user_id=$1',
             [id]
         );
         // TODO: error-handling code?
