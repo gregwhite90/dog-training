@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Redirect,
 } from 'react-router-dom';
-import { withAuth0 } from '@auth0/auth0-react';
+import { withAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
 import DogCreationFields from './DogCreationFields';
 import DogImageUploader from './DogImageUploader';
@@ -77,4 +77,6 @@ class DogAdder extends React.Component {
     }
 }
 
-export default withAuth0(DogAdder);
+export default withAuthenticationRequired(withAuth0(DogAdder), {
+    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+});

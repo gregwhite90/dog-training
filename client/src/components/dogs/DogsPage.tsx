@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
 
 import DogsApp from './DogsApp';
@@ -53,4 +53,6 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
     );
 }
 
-export default DogsPage;
+export default withAuthenticationRequired(DogsPage, {
+    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+});

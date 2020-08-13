@@ -20,8 +20,6 @@ import About from 'components/pages/About';
 
 import DogsRouter from 'components/dogs/DogsRouter';
 
-import { ProtectedRoute } from 'components/utils/ProtectedRoute';
-
 import './App.scss';
 
 import type { IEnvironment } from 'relay-runtime';
@@ -63,7 +61,7 @@ class App extends React.Component<any, any> {
                                         this.props.auth0.loginWithRedirect()
                                     )} />
                                     <Route path="/about" component={About} />
-                                    <ProtectedRoute path="/dogs" render={(props: any) => (
+                                    <Route path="/dogs" render={(props: any) => (
                                         <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
                                     )} />
                                     <Route path="/" component={Home} />

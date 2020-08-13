@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
@@ -58,4 +59,6 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
     );
 }
 
-export default DogDetail;
+export default withAuthenticationRequired(DogDetail, {
+    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+});
