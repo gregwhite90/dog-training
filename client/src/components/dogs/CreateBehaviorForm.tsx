@@ -100,7 +100,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                 <Form.Group controlId="formBehaviorName">
                                     <Form.Label>
                                         Name of the desired behavior:
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         type="text"
                                         name="name"
@@ -113,7 +113,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks good!
-                                </Form.Control.Feedback>
+                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.name}
                                     </Form.Control.Feedback>
@@ -123,7 +123,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                 <Form.Group controlId="formBehaviorExplanation">
                                     <Form.Label>
                                         Explanation of the behavior (the more detailed the better!):
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={2}
@@ -137,7 +137,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks good!
-                                </Form.Control.Feedback>
+                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.explanation}
                                     </Form.Control.Feedback>
@@ -147,7 +147,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                 <Form.Group controlId="formBehaviorLureDescription">
                                     <Form.Label>
                                         Description of the lure to be used in training (physical incentive for your dog to perform the behavior):
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={2}
@@ -161,7 +161,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks good!
-                                </Form.Control.Feedback>
+                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.lure_description}
                                     </Form.Control.Feedback>
@@ -171,7 +171,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                 <Form.Group controlId="formBehaviorShapeDescription">
                                     <Form.Label>
                                         Description of the shaping to be used in training (non-physical encouragement for successively closer steps like a game of hot-cold, primarily for when physical lure is impractical):
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={2}
@@ -185,7 +185,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks good!
-                                </Form.Control.Feedback>
+                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.shape_description}
                                     </Form.Control.Feedback>
@@ -279,10 +279,10 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                             )}
                             <Form.Row>
                                 <Button variant="primary"
-                                    type="submit"
-                                    disabled={isSubmitting}>
+                                        type="submit"
+                                        disabled={isSubmitting}>
                                     Add desired behavior
-                            </Button>
+                                </Button>
                             </Form.Row>
                         </FormikForm>
                     )}

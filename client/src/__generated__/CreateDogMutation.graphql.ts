@@ -3,16 +3,16 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
-export type AddDogInput = {
+export type CreateDogInput = {
     name: string;
     picture?: string | null;
     clientMutationId?: string | null;
 };
-export type AddDogMutationVariables = {
-    input: AddDogInput;
+export type CreateDogMutationVariables = {
+    input: CreateDogInput;
 };
-export type AddDogMutationResponse = {
-    readonly addDog: {
+export type CreateDogMutationResponse = {
+    readonly createDog: {
         readonly dogEdge: {
             readonly node: {
                 readonly id: string;
@@ -25,18 +25,18 @@ export type AddDogMutationResponse = {
         };
     } | null;
 };
-export type AddDogMutation = {
-    readonly response: AddDogMutationResponse;
-    readonly variables: AddDogMutationVariables;
+export type CreateDogMutation = {
+    readonly response: CreateDogMutationResponse;
+    readonly variables: CreateDogMutationVariables;
 };
 
 
 
 /*
-mutation AddDogMutation(
-  $input: AddDogInput!
+mutation CreateDogMutation(
+  $input: CreateDogInput!
 ) {
-  addDog(input: $input) {
+  createDog(input: $input) {
     dogEdge {
       node {
         id
@@ -76,9 +76,9 @@ v2 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "AddDogPayload",
+    "concreteType": "CreateDogPayload",
     "kind": "LinkedField",
-    "name": "addDog",
+    "name": "createDog",
     "plural": false,
     "selections": [
       {
@@ -139,7 +139,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "AddDogMutation",
+    "name": "CreateDogMutation",
     "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -148,18 +148,18 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AddDogMutation",
+    "name": "CreateDogMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "630c2fc875e9597c41686a3206448ee9",
+    "cacheID": "a4a8a5c35614e75040c73a06ca4f32df",
     "id": null,
     "metadata": {},
-    "name": "AddDogMutation",
+    "name": "CreateDogMutation",
     "operationKind": "mutation",
-    "text": "mutation AddDogMutation(\n  $input: AddDogInput!\n) {\n  addDog(input: $input) {\n    dogEdge {\n      node {\n        id\n        name\n        picture\n      }\n    }\n    viewer {\n      id\n    }\n  }\n}\n"
+    "text": "mutation CreateDogMutation(\n  $input: CreateDogInput!\n) {\n  createDog(input: $input) {\n    dogEdge {\n      node {\n        id\n        name\n        picture\n      }\n    }\n    viewer {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '598c53efed28337680ae793fc6f02ac6';
+(node as any).hash = 'bb8feef4cc659b56bb74e3ccf1815136';
 export default node;

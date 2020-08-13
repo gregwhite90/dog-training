@@ -221,7 +221,7 @@ export type PendingInvitation = Node & {
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create a new dog with the currently logged in user as an 'owner'. */
-  addDog?: Maybe<AddDogPayload>;
+  createDog?: Maybe<CreateDogPayload>;
   editDog?: Maybe<EditDogPayload>;
   /** Invite an email address to collaborate training a dog */
   inviteUserByEmail?: Maybe<InviteUserByEmailPayload>;
@@ -232,8 +232,8 @@ export type Mutation = {
 };
 
 
-export type MutationAddDogArgs = {
-  input: AddDogInput;
+export type MutationCreateDogArgs = {
+  input: CreateDogInput;
 };
 
 
@@ -256,14 +256,14 @@ export type MutationCreateBehaviorArgs = {
   input: CreateBehaviorInput;
 };
 
-export type AddDogPayload = {
-  __typename?: 'AddDogPayload';
+export type CreateDogPayload = {
+  __typename?: 'CreateDogPayload';
   dogEdge: UserToDogEdge;
   viewer: User;
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
-export type AddDogInput = {
+export type CreateDogInput = {
   name: Scalars['String'];
   /** URL of the profile image of this dog. */
   picture?: Maybe<Scalars['String']>;

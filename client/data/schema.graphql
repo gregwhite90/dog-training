@@ -176,7 +176,7 @@ type PendingInvitation implements Node {
 
 type Mutation {
   """Create a new dog with the currently logged in user as an 'owner'."""
-  addDog(input: AddDogInput!): AddDogPayload
+  createDog(input: CreateDogInput!): CreateDogPayload
   editDog(input: EditDogInput!): EditDogPayload
 
   """Invite an email address to collaborate training a dog"""
@@ -189,13 +189,13 @@ type Mutation {
   createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
 }
 
-type AddDogPayload {
+type CreateDogPayload {
   dogEdge: UserToDogEdge!
   viewer: User!
   clientMutationId: String
 }
 
-input AddDogInput {
+input CreateDogInput {
   name: String!
 
   """URL of the profile image of this dog."""

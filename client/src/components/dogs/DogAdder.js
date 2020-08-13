@@ -4,10 +4,10 @@ import {
 } from 'react-router-dom';
 import { withAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
-import DogCreationFields from './DogCreationFields';
+import CreateDogForm from './CreateDogForm';
 import DogImageUploader from './DogImageUploader';
 
-import AddDogMutation from 'relay/mutations/AddDogMutation';
+import CreateDogMutation from 'relay/mutations/CreateDogMutation';
 import EditDogMutation from 'relay/mutations/EditDogMutation';
 
 class DogAdder extends React.Component {
@@ -26,9 +26,9 @@ class DogAdder extends React.Component {
         this.nextStep = this.nextStep.bind(this);
     }
 
-    saveCreation({name}) {
+    saveCreation({name}, onCommitted) {
         // TODO: call mutation, pass into id
-        AddDogMutation.commit(
+        CreateDogMutation.commit(
             this.props.relay.environment,
             {name, picture: null},
             (response, errors) => {
@@ -37,6 +37,7 @@ class DogAdder extends React.Component {
                 console.log(errors);
                 this.fieldValues.id = response.addDog.dogEdge.node.id;
                 this.fieldValues.name = name;
+                onCommitted();
                 this.nextStep();
             });
     }
@@ -62,8 +63,8 @@ class DogAdder extends React.Component {
     render() {
         switch (this.state.step) {
             case 0:
-                return <DogCreationFields fieldValues={this.fieldValues}
-                                          saveCreation={this.saveCreation} />;
+                return <CreateDogForm fieldValues={this.fieldValues}
+                                      saveCreation={this.saveCreation} />;
             case 1:
                 return <DogImageUploader fieldValues={this.fieldValues}
                                          savePicture={this.savePicture} />;

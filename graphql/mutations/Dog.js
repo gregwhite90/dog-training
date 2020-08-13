@@ -22,8 +22,8 @@ const {
     AuthUser,
 } = require('../../business-layer/models');
 
-const addDogMutation = mutationWithClientMutationId({
-    name: 'AddDog',
+const createDogMutation = mutationWithClientMutationId({
+    name: 'CreateDog',
     description: `Create a new dog with the currently logged in user as an 'owner'.`,
     inputFields: {
         ...dogTypeOwnedScalarFields,
@@ -137,7 +137,7 @@ const removeDogForAllMutation = mutationWithClientMutationId({
 
 */
 module.exports = {
-    addDogMutation,
+    createDogMutation,
     editDogMutation,
     /**
     removeDogForViewerMutation,

@@ -17,7 +17,7 @@ const { AuthUser } = require('../business-layer/models');
  * Definitions for all mutations at the root.
  */
 const {
-    addDogMutation,
+    createDogMutation,
     editDogMutation,
     /**
     removeDogForViewerMutation,
@@ -65,7 +65,7 @@ const mutationType = new GraphQLObjectType({
     name: 'Mutation',
     fields: () => ({
         /* Dog-focused mutations */
-        addDog: addDogMutation,
+        createDog: createDogMutation,
         editDog: editDogMutation,
         inviteUserByEmail: inviteUserByEmailMutation,
         acceptInvitation: acceptInvitationMutation,
