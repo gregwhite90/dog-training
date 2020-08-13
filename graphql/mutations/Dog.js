@@ -48,10 +48,10 @@ const createDogMutation = mutationWithClientMutationId({
             },
         }
     },
-    mutateAndGetPayload: ({name, picture}, context) => {
+    mutateAndGetPayload: async ({name, picture}, context) => {
         const dog_model = new AuthDog(context);
         const user_model = new AuthUser(context);
-        const dog = dog_model.create_one({name, picture}).then(dog => dog);
+        const dog = await dog_model.create_one({name, picture}).then(dog => dog);
         return {dog, user_model};
     },
 });
