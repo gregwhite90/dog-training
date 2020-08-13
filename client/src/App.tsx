@@ -19,6 +19,7 @@ import Home from 'components/pages/Home';
 import About from 'components/pages/About';
 
 import DogsRouter from 'components/dogs/DogsRouter';
+import BehaviorsRouter from 'components/behaviors/BehaviorsRouter';
 
 import './App.scss';
 
@@ -63,6 +64,9 @@ class App extends React.Component<any, any> {
                                     <Route path="/about" component={About} />
                                     <Route path="/dogs" render={(props: any) => (
                                         <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
+                                    )} />
+                                    <Route path="/behaviors" render={(props: any) => (
+                                        <BehaviorsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
                                     )} />
                                     <Route path="/" component={Home} />
                                 </Switch>

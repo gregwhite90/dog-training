@@ -338,6 +338,24 @@ export type CreateBehaviorInput = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
+export type BehaviorCard_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'name' | 'explanation'>
+);
+
+export type BehaviorDetailQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BehaviorDetailQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | (
+    { __typename?: 'Behavior' }
+    & BehaviorCard_BehaviorFragment
+  ) | { __typename?: 'PendingInvitation' }> }
+);
+
 export type CreateBehaviorForm_DogFragment = (
   { __typename?: 'Dog' }
   & Pick<Dog, 'id' | 'name'>
