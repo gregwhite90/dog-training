@@ -361,6 +361,41 @@ export type CreateBehaviorForm_DogFragment = (
   & Pick<Dog, 'id' | 'name'>
 );
 
+export type DogBehaviorsApp_DogFragment = (
+  { __typename?: 'Dog' }
+  & Pick<Dog, 'id' | 'name'>
+  & DogBehaviorsList_DogFragment
+);
+
+export type DogBehaviorsList_DogFragment = (
+  { __typename?: 'Dog' }
+  & Pick<Dog, 'id'>
+  & { behaviors?: Maybe<(
+    { __typename?: 'BehaviorConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'BehaviorEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Behavior' }
+        & Pick<Behavior, 'id'>
+        & BehaviorCard_BehaviorFragment
+      )> }
+    )>>> }
+  )> }
+);
+
+export type DogBehaviorsPageQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DogBehaviorsPageQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | (
+    { __typename?: 'Dog' }
+    & DogBehaviorsApp_DogFragment
+  ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
+);
+
 export type DogCard_DogFragment = (
   { __typename?: 'Dog' }
   & Pick<Dog, 'name' | 'picture'>
