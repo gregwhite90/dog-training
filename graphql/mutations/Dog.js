@@ -33,6 +33,8 @@ const createDogMutation = mutationWithClientMutationId({
         dogEdge: {
             type: new GraphQLNonNull(userToDogEdge),
             resolve: ({dog, user_model}) => {
+                console.log('In dog edge resolver');
+                console.log(dog);
                 return user_model.get_all_dogs_for_viewer().then(dogs => {
                     return {
                         cursor: cursorForObjectInConnection(dogs, dog),
