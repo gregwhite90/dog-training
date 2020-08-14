@@ -13,17 +13,16 @@ import type { DogBehaviorCreatorQuery } from '__generated__/DogBehaviorCreatorQu
 import type { RouteComponentProps } from 'react-router-dom';
 import type { IEnvironment } from 'relay-runtime';
 
-interface MatchParams {
-    id: string,
-}
+interface MatchParams { }
 
 interface DogBehaviorCreatorProps extends RouteComponentProps<MatchParams> {
     relay: {
         environment: IEnvironment,
     },
+    dog_id: string,
 }
 
-const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, match }) => {
+const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }) => {
     return (
         <QueryRenderer<DogBehaviorCreatorQuery>
             environment={relay.environment}
@@ -34,7 +33,7 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, match })
                     }
                 }
                 `}
-            variables={{ id: match.params.id }}
+            variables={{ id: dog_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (

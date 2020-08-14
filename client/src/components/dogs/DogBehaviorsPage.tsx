@@ -14,17 +14,16 @@ import type { DogBehaviorsPageQuery } from '__generated__/DogBehaviorsPageQuery.
 import type { RouteComponentProps } from 'react-router-dom';
 import type { IEnvironment } from 'relay-runtime';
 
-interface MatchParams {
-    id: string,
-}
+interface MatchParams { }
 
 interface DogBehaviorsPageProps extends RouteComponentProps<MatchParams> {
     relay: {
         environment: IEnvironment,
     },
+    dog_id: string,
 }
 
-const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match }) => {
+const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_id }) => {
     return (
         <QueryRenderer<DogBehaviorsPageQuery>
             environment={relay.environment}
@@ -35,7 +34,7 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match }) => 
                     }
                 }
                 `}
-            variables={{ id: match.params.id }}
+            variables={{ id: dog_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (

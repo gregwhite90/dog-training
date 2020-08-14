@@ -13,10 +13,10 @@ function DogBehaviorsRouter(props) {
     return (
         <Switch>
             <Route path={props.match.url + "/add"} render={(p) => (
-                <DogBehaviorCreator {...p} relay={props.relay} />
+                <DogBehaviorCreator {...p} dog_id={props.dog_id} relay={props.relay} />
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
-                <DogBehaviorsPage {...p} relay={props.relay} />
+                <DogBehaviorsPage {...p} dog_id={props.dog_id} relay={props.relay} />
             )} />
         </Switch>
     );
