@@ -33,6 +33,11 @@ query DogBehaviorsPageQuery(
 fragment BehaviorCard_behavior on Behavior {
   name
   explanation
+  lure_description
+  shape_description
+  verbal_command
+  hand_signal
+  release_command
 }
 
 fragment DogBehaviorsApp_dog on Dog {
@@ -183,6 +188,41 @@ return {
                             "name": "explanation",
                             "storageKey": null
                           },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "lure_description",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "shape_description",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "verbal_command",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "hand_signal",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "release_command",
+                            "storageKey": null
+                          },
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -244,12 +284,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c9ccfb70fa3350b677bb076f3a1f7c7a",
+    "cacheID": "e35cfa3273f4a82b3674e4096e14b212",
     "id": null,
     "metadata": {},
     "name": "DogBehaviorsPageQuery",
     "operationKind": "query",
-    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  id\n  name\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  id\n  name\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

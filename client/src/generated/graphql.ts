@@ -340,7 +340,7 @@ export type CreateBehaviorInput = {
 
 export type BehaviorCard_BehaviorFragment = (
   { __typename?: 'Behavior' }
-  & Pick<Behavior, 'name' | 'explanation'>
+  & Pick<Behavior, 'name' | 'explanation' | 'lure_description' | 'shape_description' | 'verbal_command' | 'hand_signal' | 'release_command'>
 );
 
 export type BehaviorDetailQueryQueryVariables = Exact<{

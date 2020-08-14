@@ -33,6 +33,11 @@ query BehaviorDetailQuery(
 fragment BehaviorCard_behavior on Behavior {
   name
   explanation
+  lure_description
+  shape_description
+  verbal_command
+  hand_signal
+  release_command
 }
 */
 
@@ -122,6 +127,41 @@ return {
                 "kind": "ScalarField",
                 "name": "explanation",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lure_description",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "shape_description",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "verbal_command",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hand_signal",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "release_command",
+                "storageKey": null
               }
             ],
             "type": "Behavior",
@@ -133,12 +173,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0e3577d2d02cfa159fa055dddfcfa96a",
+    "cacheID": "c0735c4cfbd6cf4d263fb7764d9161ea",
     "id": null,
     "metadata": {},
     "name": "BehaviorDetailQuery",
     "operationKind": "query",
-    "text": "query BehaviorDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorCard_behavior\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n}\n"
+    "text": "query BehaviorDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorCard_behavior\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n"
   }
 };
 })();
