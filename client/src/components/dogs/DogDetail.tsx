@@ -16,17 +16,16 @@ import type { DogDetailQuery } from '__generated__/DogDetailQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { IEnvironment } from 'relay-runtime';
 
-interface MatchParams {
-    id: string,
-}
+interface MatchParams { }
 
 interface DogDetailProps extends RouteComponentProps<MatchParams> {
     relay: {
         environment: IEnvironment,
     },
+    dog_id: string,
 }
 
-const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
+const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
     return (
         <QueryRenderer<DogDetailQuery>
             environment={relay.environment}
@@ -38,7 +37,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
                     }
                 }
                 `}
-            variables={{ id: match.params.id }}
+            variables={{ id: dog_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
