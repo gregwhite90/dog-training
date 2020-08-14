@@ -361,6 +361,19 @@ export type CreateBehaviorForm_DogFragment = (
   & Pick<Dog, 'id' | 'name'>
 );
 
+export type DogBehaviorCreatorQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DogBehaviorCreatorQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | (
+    { __typename?: 'Dog' }
+    & CreateBehaviorForm_DogFragment
+  ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
+);
+
 export type DogBehaviorsApp_DogFragment = (
   { __typename?: 'Dog' }
   & Pick<Dog, 'id' | 'name'>
@@ -412,7 +425,6 @@ export type DogDetailQueryQuery = (
     { __typename?: 'Dog' }
     & DogCard_DogFragment
     & InviteUserByEmailForm_DogFragment
-    & CreateBehaviorForm_DogFragment
   ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
 );
 

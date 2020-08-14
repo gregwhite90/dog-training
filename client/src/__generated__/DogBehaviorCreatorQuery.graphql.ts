@@ -4,42 +4,35 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type DogDetailQueryVariables = {
+export type DogBehaviorCreatorQueryVariables = {
     id: string;
 };
-export type DogDetailQueryResponse = {
+export type DogBehaviorCreatorQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"DogCard_dog" | "InviteUserByEmailForm_dog">;
+        readonly " $fragmentRefs": FragmentRefs<"CreateBehaviorForm_dog">;
     } | null;
 };
-export type DogDetailQuery = {
-    readonly response: DogDetailQueryResponse;
-    readonly variables: DogDetailQueryVariables;
+export type DogBehaviorCreatorQuery = {
+    readonly response: DogBehaviorCreatorQueryResponse;
+    readonly variables: DogBehaviorCreatorQueryVariables;
 };
 
 
 
 /*
-query DogDetailQuery(
+query DogBehaviorCreatorQuery(
   $id: ID!
 ) {
   node(id: $id) {
     __typename
-    ...DogCard_dog
-    ...InviteUserByEmailForm_dog
+    ...CreateBehaviorForm_dog
     id
   }
 }
 
-fragment DogCard_dog on Dog {
-  name
-  picture
-}
-
-fragment InviteUserByEmailForm_dog on Dog {
+fragment CreateBehaviorForm_dog on Dog {
   id
   name
-  picture
 }
 */
 
@@ -63,7 +56,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "DogDetailQuery",
+    "name": "DogBehaviorCreatorQuery",
     "selections": [
       {
         "alias": null,
@@ -76,12 +69,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "DogCard_dog"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "InviteUserByEmailForm_dog"
+            "name": "CreateBehaviorForm_dog"
           }
         ],
         "storageKey": null
@@ -94,7 +82,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "DogDetailQuery",
+    "name": "DogBehaviorCreatorQuery",
     "selections": [
       {
         "alias": null,
@@ -127,13 +115,6 @@ return {
                 "kind": "ScalarField",
                 "name": "name",
                 "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "picture",
-                "storageKey": null
               }
             ],
             "type": "Dog",
@@ -145,14 +126,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1b7570a3fc18e07d545731697ceaf790",
+    "cacheID": "168672fd60e821312f948e5281657e52",
     "id": null,
     "metadata": {},
-    "name": "DogDetailQuery",
+    "name": "DogBehaviorCreatorQuery",
     "operationKind": "query",
-    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...InviteUserByEmailForm_dog\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
+    "text": "query DogBehaviorCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...CreateBehaviorForm_dog\n    id\n  }\n}\n\nfragment CreateBehaviorForm_dog on Dog {\n  id\n  name\n}\n"
   }
 };
 })();
-(node as any).hash = '75d010f6aac215f434d6ea002ff044bd';
+(node as any).hash = '8976f60bd728c0e4a25b4af44653d48f';
 export default node;

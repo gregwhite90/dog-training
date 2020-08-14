@@ -1,18 +1,15 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 
-import DogCard from './DogCard';
-import InviteUserByEmailForm from './InviteUserByEmailForm';
+import CreateBehaviorForm from './CreateBehaviorForm';
 
 // TODO: authorization check
 
 // TODO: fix any types
-import type { DogDetailQuery } from '__generated__/DogDetailQuery.graphql';
+import type { DogBehaviorCreatorQuery } from '__generated__/DogBehaviorCreatorQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { IEnvironment } from 'relay-runtime';
 
@@ -20,21 +17,20 @@ interface MatchParams {
     id: string,
 }
 
-interface DogDetailProps extends RouteComponentProps<MatchParams> {
+interface DogBehaviorCreatorProps extends RouteComponentProps<MatchParams> {
     relay: {
         environment: IEnvironment,
     },
 }
 
-const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
+const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, match }) => {
     return (
-        <QueryRenderer<DogDetailQuery>
+        <QueryRenderer<DogBehaviorCreatorQuery>
             environment={relay.environment}
             query={graphql`
-                query DogDetailQuery($id: ID!) {
+                query DogBehaviorCreatorQuery($id: ID!) {
                     node(id: $id) {
-                        ...DogCard_dog
-                        ...InviteUserByEmailForm_dog
+                        ...CreateBehaviorForm_dog
                     }
                 }
                 `}
@@ -43,14 +39,8 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
                 if (props && props.node) {
                     return (
                         <Container>
-                            <DogCard dog={props.node} />
-                            <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
-                            <Link to={`${match.url}/behaviors`}>
-                                <Button variant="primary">
-                                    View desired behaviors
-                                </Button>
-                            </Link>
-                        </Container >
+                            <CreateBehaviorForm dog={props.node} relay_environment={relay.environment} />
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
@@ -63,6 +53,6 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match }) => {
     );
 }
 
-export default withAuthenticationRequired(DogDetail, {
+export default withAuthenticationRequired(DogBehaviorCreator, {
     onRedirecting: () => (<div>Redirecting you to the login page...</div>)
 });
