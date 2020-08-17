@@ -20,18 +20,11 @@ import About from 'components/pages/About';
 
 import DogsRouter from 'components/dogs/DogsRouter';
 import BehaviorsRouter from 'components/behaviors/BehaviorsRouter';
+import TrainingStagesRouter from 'components/training_stages/TrainingStagesRouter';
 
 import './App.scss';
 
-import type { IEnvironment } from 'relay-runtime';
-
 export const history = createBrowserHistory();
-
-export type RelayProps = {
-    relay: {
-        environment: IEnvironment,
-    }
-};
 
 // TODO: fix the any Props and State type delcarations and constructor
 class App extends React.Component<any, any> {
@@ -66,7 +59,10 @@ class App extends React.Component<any, any> {
                                         <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
                                     )} />
                                     <Route path="/behaviors" render={(props: any) => (
-                                        <BehaviorsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
+                                        <BehaviorsRouter {...props} relay={this.state.relay} />
+                                    )} />
+                                    <Route path="/training_stages" render={(props: any) => (
+                                        <TrainingStagesRouter {...props} relay={this.state.relay} />
                                     )} />
                                     <Route path="/" component={Home} />
                                 </Switch>

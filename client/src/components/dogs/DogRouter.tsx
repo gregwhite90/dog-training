@@ -7,15 +7,23 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import DogDetail from './DogDetail';
 import DogBehaviorsRouter from './DogBehaviorsRouter';
 
-// TODO: figure out passing relay
+import type { RouteComponentProps } from 'react-router-dom';
+import type { RelayProp } from 'react-relay';
 
-function DogRouter(props) {
-    console.log('in dog router');
-    console.log(props);
+interface MatchParams {
+    id: string,
+}
+
+// TODO: fix viewer any type
+interface DogRouterProps extends RouteComponentProps<MatchParams> {
+    relay: RelayProp,
+}
+
+const DogRouter: React.FC<DogRouterProps> = (props) => {
     return (
         <Switch>
             <Route path={props.match.url + "/behaviors"} render={(p) => (
-                <DogBehaviorsRouter {...p} dog_id={props.match.params.id} relay={props.relay}/>
+                <DogBehaviorsRouter {...p} dog_id={props.match.params.id} relay={props.relay} />
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
                 <DogDetail {...p} dog_id={props.match.params.id} relay={props.relay} />

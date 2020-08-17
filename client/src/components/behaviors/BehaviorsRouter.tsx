@@ -4,15 +4,22 @@ import {
     Route,
 } from 'react-router-dom';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import BehaviorDetail from './BehaviorDetail';
+import BehaviorRouter from './BehaviorRouter';
 
-// TODO: figure out passing relay
+import type { RouteComponentProps } from 'react-router-dom';
+import type { RelayProp } from 'react-relay';
 
-function BehaviorsRouter(props) {
+interface MatchParams { }
+
+interface BehaviorsRouterProps extends RouteComponentProps<MatchParams> {
+    relay: RelayProp,
+}
+
+const BehaviorsRouter: React.FC<BehaviorsRouterProps> = (props) => {
     return (
         <Switch>
             <Route path={props.match.url + "/:id"} render={(p) => (
-                <BehaviorDetail {...p} relay={props.relay} />
+                <BehaviorRouter {...p} relay={props.relay} />
             )} />
         </Switch>
     );

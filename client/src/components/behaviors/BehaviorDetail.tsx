@@ -15,17 +15,16 @@ import type { BehaviorDetailQuery } from '__generated__/BehaviorDetailQuery.grap
 import type { RouteComponentProps } from 'react-router-dom';
 import type { IEnvironment } from 'relay-runtime';
 
-interface MatchParams {
-    id: string,
-}
+interface MatchParams { }
 
 interface BehaviorDetailProps extends RouteComponentProps<MatchParams> {
     relay: {
         environment: IEnvironment,
     },
+    behavior_id: string,
 }
 
-const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match }) => {
+const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) => {
     return (
         <QueryRenderer<BehaviorDetailQuery>
             environment={relay.environment}
@@ -36,7 +35,7 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match }) => {
                     }
                 }
                 `}
-            variables={{ id: match.params.id }}
+            variables={{ id: behavior_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (

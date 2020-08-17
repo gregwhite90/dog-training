@@ -7,9 +7,17 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import DogBehaviorsPage from './DogBehaviorsPage';
 import DogBehaviorCreator from './DogBehaviorCreator';
 
-// TODO: figure out passing relay
+import type { RouteComponentProps } from 'react-router-dom';
+import type { RelayProp } from 'react-relay';
 
-function DogBehaviorsRouter(props) {
+interface MatchParams { }
+
+interface DogBehaviorsRouterProps extends RouteComponentProps<MatchParams> {
+    relay: RelayProp,
+    dog_id: string,
+}
+
+const DogBehaviorsRouter: React.FC<DogBehaviorsRouterProps> = (props) => {
     return (
         <Switch>
             <Route path={props.match.url + "/add"} render={(p) => (

@@ -36,14 +36,6 @@ const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
                             </tr>
                         )
                     }
-                    {props.behavior.hand_signal &&
-                        (
-                            <tr>
-                                <td>Hand signal</td>
-                                <td>{props.behavior.hand_signal}</td>
-                            </tr>
-                        )
-                    }
                     {props.behavior.release_command &&
                         (
                             <tr>
