@@ -59,9 +59,8 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
         const user_email_exists = users.length >= 1;
         if (!user_email_exists) {
             // Send an email invite
-            // TODO: decide if want to use parseint here?
             const user = await user_model.get_viewer();
-            const dog = await dog_model.get_one({ id: parseInt(dogTypeAndId.id) });
+            const dog = await dog_model.get_one({ id: dogTypeAndId.id });
             // TODO: send asynchronously without awaiting?
             await sendInvitation({ user, dog, invitee: invitee_email });
         }

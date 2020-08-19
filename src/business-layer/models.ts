@@ -93,14 +93,16 @@ class AuthDog extends AuthModel {
         // TODO: figure out return value
     }
 
-    async get_one(where: dogsWhereUniqueInput): Promise<dogs | null> {
+    async get_one({ id }: { id: string }): Promise<dogs | null> {
         const auth = await Dog.check_authorization_for_dog({
-            dog_id: where.id,
+            dog_id: id,
             user_id: this.user_id,
         });
         // TODO: handle authorization failure
         return this.prisma.dogs.findOne({
-            where,
+            where: {
+                id: parseInt(id),
+            }
         }).then(dog => {
             // TODO: handle null dog
             return dog ? this.to_GraphQL_object(dog) : null;
