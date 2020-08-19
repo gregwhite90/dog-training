@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model behaviors {
+  id                Int               @default(autoincrement()) @id
+  dog_id            Int
+  name              String
+  explanation       String?
+  demo_media        String?
+  lure_description  String?
+  lure_demo_media   String?
+  shape_description String?
+  verbal_command    String?
+  hand_signal       String?
+  hand_demo_media   String?
+  has_duration      Boolean?
+  release_command   String?
+  dogs              dogs              @relation(fields: [dog_id], references: [id])
+  training_stages   training_stages[]
+}
+
+model dogs {
+  id                  Int                   @default(autoincrement()) @id
+  name                String
+  picture             String?
+  behaviors           behaviors[]
+  pending_invitations pending_invitations[]
+  training_sessions   training_sessions[]
+  user_dogs           user_dogs[]
+}
+
+model pending_invitations {
+  id            Int           @default(autoincrement()) @id
+  invitee_email String
+  invited_by    String
+  dog_id        Int
+  user_role     user_dog_role
+  dogs          dogs          @relation(fields: [dog_id], references: [id])
+}
+
+// The underlying table does not contain a valid unique identifier and can therefore currently not be handled.
+// model training_progress {
+  // training_session_id Int
+  // training_stage_id   Int
+  // successes           Int?
+  // attempts            Int?
+  // distance            qualitative_level?
+  // duration            qualitative_level?
+  // distractions        qualitative_level?
+  // training_sessions   training_sessions  @relation(fields: [training_session_id], references: [id])
+  // training_stages     training_stages    @relation(fields: [training_stage_id], references: [id])
+// }
+
+model training_sessions {
+  id                     Int                      @default(autoincrement()) @id
+  dog_id                 Int
+  minutes_long           Int?
+  start_timestamp        DateTime?
+  dogs                   dogs                     @relation(fields: [dog_id], references: [id])
+  // training_progress   training_progress[]
+  user_training_sessions user_training_sessions[]
+}
+
+model training_stages {
+  id                   Int                 @default(autoincrement()) @id
+  behavior_id          Int
+  seq                  Int
+  lure                 Boolean
+  shape                Boolean
+  verbal               Boolean
+  hand                 Boolean
+  reward_frequency     frequency
+  behaviors            behaviors           @relation(fields: [behavior_id], references: [id])
+  // training_progress training_progress[]
+
+  @@unique([behavior_id, seq], name: "unique_seq")
+}
+
+model user_dogs {
+  user_id   String
+  dog_id    Int
+  user_role user_dog_role?
+  dogs      dogs           @relation(fields: [dog_id], references: [id])
+
+  @@unique([user_id, dog_id], name: "one_role")
+}
+
+model user_training_sessions {
+  user_id             String
+  training_session_id Int
+  user_role           user_training_session_role
+  training_sessions   training_sessions          @relation(fields: [training_session_id], references: [id])
+
+  @@unique([user_id, training_session_id], name: "session_only_once")
+}
+
+enum frequency {
+  CONTINUOUS
+  INTERMITTENT
+}
+
+enum qualitative_level {
+  HIGH
+  LOW
+  MEDIUM
+}
+
+enum user_dog_role {
+  OWNER
+  TRAINER
+  VIEWER
+}
+
+enum user_training_session_role {
+  MAINTAINER
+  PARTICIPANT
+}

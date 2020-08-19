@@ -14,7 +14,7 @@ export default function InvitationAccepter(props) {
     return (
         <Button onClick={() => {
                 AcceptInvitationMutation.commit(
-                    props.relay.environment,
+                    props.relay_environment,
                     {invitation_id: props.invitation_id, user_id: user.sub},
                 );
         }}>
