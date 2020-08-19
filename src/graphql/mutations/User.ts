@@ -41,6 +41,10 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
             type: new GraphQLNonNull(userDogRoleType),
             description: userRoleDescAndType.description,
         },
+        invited_by: {
+            type: new GraphQLNonNull(GraphQLID),
+            description: 'The ID of the user inviting the other user to collaborate',
+        },
     },
     outputFields: {
         viewer: {
@@ -50,7 +54,7 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
             },
         }
     },
-    mutateAndGetPayload: async ({ invitee_email, dog_id, user_role }, context) => {
+    mutateAndGetPayload: async ({ invitee_email, dog_id, user_role, invited_by }, context) => {
         const user_model = new AuthUser(context);
         const dog_model = new AuthDog(context);
         const dogTypeAndId = fromGlobalId(dog_id);
@@ -67,7 +71,14 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
         // TODO: check for dog type
         // TODO: decide about return value
         const pending_invitation_model = new AuthPendingInvitation(context);
-        await pending_invitation_model.create_one({ invitee_email, dog_id: dogTypeAndId.id, user_role });
+        await pending_invitation_model.create_one({
+            dog_id: dogTypeAndId.id,
+            input: {
+                user_role,
+                invitee_email,
+                invited_by,
+            },
+        });
         return { user_model };
     },
 });

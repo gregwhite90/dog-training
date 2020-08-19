@@ -8,6 +8,7 @@ export type InviteUserByEmailInput = {
     invitee_email: string;
     dog_id: string;
     user_role: UserDogRole;
+    invited_by: string;
     clientMutationId?: string | null;
 };
 export type InviteUserByEmailMutationVariables = {

@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 function updateGraphQLSchema(schemaPath) {
-    const { DogTrainingSchema } = require('../graphql/schema.ts');
+    const { DogTrainingSchema } = require('../dist/graphql/schema');
     const { printSchema } = require('graphql');
 
     fs.writeFileSync(schemaPath, printSchema(DogTrainingSchema));

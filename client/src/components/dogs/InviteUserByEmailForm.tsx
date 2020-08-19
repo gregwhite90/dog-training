@@ -49,7 +49,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
     console.log(`In InviteUserByEmailForm`);
     console.log(props);
 
-    const { user, isAuthenticated } = useAuth0();
+    const { user } = useAuth0();
 
     // TODO: programmatically fill in the values for the enum
 
@@ -81,6 +81,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                         {
                             invitee_email: values.invitee_email,
                             dog_id: props.dog.id,
+                            invited_by: user.sub,
                             user_role: values.user_role as UserDogRole,
                         },
                         () => {

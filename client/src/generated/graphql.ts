@@ -296,6 +296,8 @@ export type InviteUserByEmailInput = {
   dog_id: Scalars['ID'];
   /** The role the user plays for the dog. */
   user_role: UserDogRole;
+  /** The ID of the user inviting the other user to collaborate */
+  invited_by: Scalars['ID'];
   clientMutationId?: Maybe<Scalars['String']>;
 };
 

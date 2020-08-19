@@ -1,7 +1,5 @@
 import { User } from '../data-layer/auth0/models/User';
-import { Dog } from '../data-layer/db/models/Dog';
 import { PendingInvitation } from '../data-layer/db/models/PendingInvitation';
-import { Behavior } from '../data-layer/db/models/Behavior';
 import type { Context } from '../context';
 import type {
     PrismaClient,
@@ -10,6 +8,8 @@ import type {
     user_dog_role,
     behaviors,
     behaviorsCreateWithoutDogsInput,
+    pending_invitations,
+    pending_invitationsCreateWithoutDogsInput,
 } from '@prisma/client';
 
 // TODO: clean up the plural throughout
@@ -61,11 +61,50 @@ class AuthUser extends AuthModel {
         return this.get_one({ id: this.user_id });
     }
 
-    async get_all_dogs({ id }) {
+    async get_all_dogs(
+        { id }: { id: string }
+    ): Promise<{ id: number, user_role: user_dog_role }[] | null> {
+        // TODO: figure out auth
         if (id !== this.user_id) {
             throw new Error('Attempted unauthorized access.');
         }
-        return Dog.get_all_dog_ids_and_roles_for_user({ id });
+        return this.prisma.user_dogs.findMany({
+            where: {
+                user_id: id,
+            },
+            select: {
+                dog_id: true,
+                user_role: true,
+            }
+        }).then(dogs => {
+            return dogs.map(({ dog_id, user_role }) => ({
+                id: dog_id,
+                user_role,
+            }));
+        });
+        // TODO: deal with null return value
+    }
+
+    async get_all_users(
+        { id }: { id: string }
+    ): Promise<{ id: string, user_role: user_dog_role }[] | null> {
+        // TODO: figure out auth
+        // TODO: handle authorization failure
+        return this.prisma.user_dogs.findMany({
+            where: {
+                dog_id: parseInt(id),
+            },
+            select: {
+                user_id: true,
+                user_role: true,
+            }
+        }).then(users => {
+            return users.map(({ user_id, user_role }) => ({
+                id: user_id,
+                user_role,
+            }));
+        });
+        // TODO: deal with null return value
     }
 
     async get_all_dogs_for_viewer() {
@@ -85,7 +124,6 @@ class AuthDog extends AuthModel {
     constructor(context: Context) {
         super(context);
         this.graphql_typename = 'Dog';
-        console.log('creating auth dog');
     }
 
     async create_one(
@@ -193,15 +231,32 @@ class AuthPendingInvitation extends AuthModel {
     }
 
     // TOOD: authorization checks
-
-    async create_one({ invitee_email, dog_id, user_role }) {
-        return PendingInvitation.create_one({
-            invitee_email,
-            invited_by: this.user_id,
-            dog_id,
-            user_role
+    // TODO: check at the call site for correct calling
+    async create_one({
+        dog_id,
+        input
+    }: {
+        dog_id: string,
+        input: pending_invitationsCreateWithoutDogsInput
+    }): Promise<GraphQLObj<pending_invitations> | null> {
+        // TODO: authorization check
+        return this.prisma.pending_invitations.create({
+            data: {
+                dogs: {
+                    connect: {
+                        id: parseInt(dog_id),
+                    }
+                },
+                ...input,
+            },
+        }).then(pending_invitation => {
+            return pending_invitation
+                ? this.to_GraphQL_object(pending_invitation)
+                : null;
         });
     }
+
+    // TODO: convert rest to prisma
 
     async get_one({ id }) {
         return PendingInvitation.get_one({ id });
