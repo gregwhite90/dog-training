@@ -258,19 +258,47 @@ class AuthPendingInvitation extends AuthModel {
 
     // TODO: convert rest to prisma
 
-    async get_one({ id }) {
-        return PendingInvitation.get_one({ id });
+    async get_one({ id }: { id: string }): Promise<GraphQLObj<pending_invitations> | null> {
+        // TODO: implement auth
+        return this.prisma.pending_invitations.findOne({
+            where: {
+                id: parseInt(id),
+            }
+        }).then(pending_invitation => {
+            return pending_invitation ? this.to_GraphQL_object(pending_invitation) : null;
+        });
+        // TODO: catch rejected promise
+        // TODO: handle null return
+        // TODO: reject promise if no matching ID?
     }
 
-    // TODO: note that these are user ids
-    async get_all_sent({ id }) {
-        return PendingInvitation.get_sent_by_id({ id });
+    // TODO: clarify that these are user ids
+    async get_all_sent(
+        { id }: { id: string }
+    ): Promise<GraphQLObj<pending_invitations>[] | null> {
+        return this.prisma.pending_invitations.findMany({
+            where: {
+                invited_by: id
+            },
+        }).then(pending_invitations => {
+            return pending_invitations.map(pending_invitation =>
+                this.to_GraphQL_object(pending_invitation))
+        });
     }
 
-    async get_all_received({ id }) {
-        const { email, email_verified } = await User.get_email({ id });
-        // TODO: use email_verified
-        return PendingInvitation.get_received_by_email({ email });
+    async get_all_received(
+        { id }: { id: string }
+    ): Promise<GraphQLObj<pending_invitations>[] | null> {
+        const { email } = await User.get_email({ id });
+        // TODO: use email_verified?
+        return this.prisma.pending_invitations.findMany({
+            where: {
+                invitee_email: email,
+            },
+        }).then(pending_invitations => {
+            return pending_invitations.map(pending_invitation =>
+                this.to_GraphQL_object(pending_invitation))
+        });
     }
 
     async get_all_sent_viewer() {
@@ -281,7 +309,9 @@ class AuthPendingInvitation extends AuthModel {
         return this.get_all_received({ id: this.user_id });
     }
 
-    async accept_invitation({ invitation_id, user_id }) {
+    async accept_invitation(
+        { invitation_id, user_id }: { invitation_id: string, user_id: string }
+    ) {
         return PendingInvitation.accept_invitation({ invitation_id, user_id });
     }
 }
@@ -290,7 +320,6 @@ class AuthBehavior extends AuthModel {
     constructor(context: Context) {
         super(context);
         this.graphql_typename = 'Behavior';
-        console.log('creating auth behavior');
         // TODO: propagate the error if necessary.
     }
 
