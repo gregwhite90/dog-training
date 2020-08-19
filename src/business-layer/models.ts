@@ -9,6 +9,9 @@ import type {
     dogs,
 } from '@prisma/client';
 
+// TODO: clean up the plural throughout
+// TODO: clean up prisma typing
+
 interface IAuthModel {
     user_id: string,
     prisma: PrismaClient,
@@ -38,7 +41,6 @@ class AuthUser extends AuthModel {
     constructor(context: Context) {
         super(context);
         this.graphql_typename = 'User';
-        console.log('creating auth user');
         // TODO: propagate the error if necessary.
     }
 
@@ -80,24 +82,33 @@ class AuthDog extends AuthModel {
         console.log('creating auth dog');
     }
 
-    async create_one({ name, picture }) {
+    async create_one(
+        { name, picture }: { name: string, picture: string | null }
+    ): Promise<dogs | null> {
         // TODO: only needs authentication
-        const new_dog = await Dog.create_one({ name, picture });
         // TODO: take the return value of dog and insert a row into the user_dogs table for current user
-        const user_dog_relation = await Dog.add_to_user({
-            dog_id: new_dog.id,
-            user_id: this.user_id,
-            user_role: 'OWNER',
+        return this.prisma.user_dogs.create({
+            data: {
+                dogs: {
+                    create: {
+                        name,
+                        picture
+                    },
+                },
+                user_id: this.user_id,
+                user_role: 'OWNER',
+            },
+            select: {
+                dogs: true,
+            }
+        }).then(dogs => {
+            return dogs && dogs.dogs ? this.to_GraphQL_object(dogs.dogs) : null
         });
-        return Dog.create_object(new_dog);
-        // TODO: figure out return value
+        // TODO: confirm return value
     }
 
     async get_one({ id }: { id: string }): Promise<dogs | null> {
-        const auth = await Dog.check_authorization_for_dog({
-            dog_id: id,
-            user_id: this.user_id,
-        });
+        // TODO: convert auth to prisma as well. implement auth
         // TODO: handle authorization failure
         return this.prisma.dogs.findOne({
             where: {
