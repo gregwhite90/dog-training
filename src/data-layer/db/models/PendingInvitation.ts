@@ -1,81 +1,9 @@
 import db from '../pool';
 
+/**
+ * This class is only used for complicated functionality that is poorly suited to prisma.
+ */
 class PendingInvitation {
-
-    // TODO: can the interface be imported (requires knowledge of the GQL schema)
-    /**
-     * Generate GraphQL-layer-friendly object from raw persistence layer output
-     */
-
-    static create_object(raw_pending_invitation) {
-        return {
-            _node_type: 'PendingInvitation',
-            ...raw_pending_invitation,
-        };
-    }
-
-
-    /**
-     * Authorization operations
-     */
-
-    /**
-     * Read PendingInvitation-only operations
-     */
-
-    static async get_one({ id }) {
-        const { rows } = await db.query(
-            'SELECT * FROM pending_invitations WHERE id=$1',
-            [id]
-        );
-        // TODO: error-handling code?
-        return rows[0];
-    }
-
-    static async get_received_by_email({ email }) {
-        const { rows } = await db.query(
-            'SELECT * FROM pending_invitations WHERE invitee_email=lower($1)',
-            [email]
-        );
-        // TODO: error-handling code?
-        return rows;
-    }
-
-    static async get_sent_by_id({ id }) {
-        const { rows } = await db.query(
-            'SELECT * FROM pending_invitations WHERE invited_by=$1',
-            [id]
-        );
-        // TODO: error-handling code?
-        return rows;
-    }
-
-
-    /**
-     * Read PendingInvitation and other operations
-     */
-
-    /**
-     * Create PendingInvitation-only operations
-     */
-
-    static async create_one({ invitee_email, invited_by, dog_id, user_role }) {
-        const { rows } = await db.query(
-            'INSERT INTO pending_invitations(invitee_email, invited_by, dog_id, user_role) VALUES (lower($1), $2, $3, $4) RETURNING *',
-            [invitee_email, invited_by, dog_id, user_role]
-        );
-        // TODO: error-handling code?
-        // TODO: confirm that only one row was returned
-        return rows[0];
-    }
-
-    /**
-     * Create PendingInvitation and other operations
-     */
-
-    /**
-     * Update PendingInvitation-only operations
-     */
 
     /**
      * Update PendingInvitation and other operations
@@ -118,11 +46,6 @@ class PendingInvitation {
         // TODO: figure out return value
         return dog_id;
     }
-
-    /**
-     * Delete operations
-     */
-
 }
 
 export {
