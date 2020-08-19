@@ -26,7 +26,7 @@ const app: Express = express();
 app.use(sslRedirect());
 
 // Serve the static React files.
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Set up the API route
 app.use('/graphql',
@@ -45,7 +45,7 @@ app.get('/sign-s3/put', checkJwt, checkScopes(['write:assets']), signS3PutHandle
 app.get('/sign-s3/get', checkJwt, checkScopes(['read:assets']), signS3GetHandler);
 
 app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'), function(err) {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
         if (err) {
             res.status(500).send(err);
         }
