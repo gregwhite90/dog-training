@@ -15,7 +15,7 @@ class User {
      */
     static create_object(raw_user) {
         return {
-            _node_type: 'User',
+            __typename: 'User',
             id: raw_user.user_id,
             name: raw_user.name,
             picture: raw_user.picture, // TODO: confirm treatment if null
@@ -26,19 +26,19 @@ class User {
      * Read User-only operations
      */
 
-    static async get_one({id}) {
-        return auth0.getUser({id});
+    static async get_one({ id }) {
+        return auth0.getUser({ id });
     }
 
-    static async get_email({id}) {
-        return auth0.getUser({id})
-                    .then(user => ({
-                        email: user.email,
-                        email_verified: user.email_verified,
-                    }));
+    static async get_email({ id }) {
+        return auth0.getUser({ id })
+            .then(user => ({
+                email: user.email,
+                email_verified: user.email_verified,
+            }));
     }
 
-    static async get_all_by_email({email}) {
+    static async get_all_by_email({ email }) {
         const params = {
             search_engine: 'v3',
             q: `email:"${email}"`,

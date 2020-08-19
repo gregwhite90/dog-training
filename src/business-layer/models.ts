@@ -5,18 +5,24 @@ import { Behavior } from '../data-layer/db/models/Behavior';
 import type { Context } from '../context';
 import type {
     PrismaClient,
-    dogsWhereUniqueInput,
     dogs,
+    dogsCreateInput,
+    user_dog_role,
+    behaviors,
+    behaviorsCreateWithoutDogsInput,
 } from '@prisma/client';
 
 // TODO: clean up the plural throughout
 // TODO: clean up prisma typing
+// TODO: figure out if want to send GQL objects or what up layers
 
 interface IAuthModel {
     user_id: string,
     prisma: PrismaClient,
     graphql_typename: string;
 }
+
+type GraphQLObj<T extends object> = T & { __typename: string }
 
 class AuthModel implements IAuthModel {
 
@@ -29,7 +35,7 @@ class AuthModel implements IAuthModel {
         this.prisma = context.prisma;
     }
 
-    to_GraphQL_object<T extends object>(raw_obj: T): T & { __typename: string } {
+    to_GraphQL_object<T extends object>(raw_obj: T): GraphQLObj<T> {
         return {
             __typename: this.graphql_typename,
             ...raw_obj,
@@ -83,16 +89,15 @@ class AuthDog extends AuthModel {
     }
 
     async create_one(
-        { name, picture }: { name: string, picture: string | null }
-    ): Promise<dogs | null> {
+        input: dogsCreateInput
+    ): Promise<GraphQLObj<dogs> | null> {
         // TODO: only needs authentication
         // TODO: take the return value of dog and insert a row into the user_dogs table for current user
         return this.prisma.user_dogs.create({
             data: {
                 dogs: {
                     create: {
-                        name,
-                        picture
+                        ...input
                     },
                 },
                 user_id: this.user_id,
@@ -107,7 +112,7 @@ class AuthDog extends AuthModel {
         // TODO: confirm return value
     }
 
-    async get_one({ id }: { id: string }): Promise<dogs | null> {
+    async get_one({ id }: { id: string }): Promise<GraphQLObj<dogs> | null> {
         // TODO: convert auth to prisma as well. implement auth
         // TODO: handle authorization failure
         return this.prisma.dogs.findOne({
@@ -122,34 +127,69 @@ class AuthDog extends AuthModel {
         // TODO: reject promise if no matching ID?
     }
 
-    async get_all_users({ id }) {
-        const auth = await Dog.check_authorization_for_dog({
-            dog_id: id,
-            user_id: this.user_id,
-        });
+    // TODO: confirm the return value
+    async get_all_users(
+        { id }: { id: string }
+    ): Promise<{ id: string, user_role: user_dog_role }[] | null> {
+        // TODO: figure out auth
         // TODO: handle authorization failure
-        return Dog.get_all_user_ids_and_roles({ id });
+        return this.prisma.user_dogs.findMany({
+            where: {
+                dog_id: parseInt(id),
+            },
+            select: {
+                user_id: true,
+                user_role: true,
+            }
+        }).then(users => {
+            return users.map(({ user_id, user_role }) => ({
+                id: user_id,
+                user_role,
+            }));
+        });
+        // TODO: deal with null return value
     }
 
-    async edit_one({ id, name, picture }) {
-        return Dog.edit_one({ id, name, picture })
-            .then(Dog.create_object)
+    async edit_one(
+        { id, name, picture }: {
+            id: string,
+            name?: string | null,
+            picture: string | null
+        }): Promise<GraphQLObj<dogs> | null> {
+        // TODO: convert to prisma
+        return await this.prisma.dogs.update({
+            where: {
+                id: parseInt(id),
+            },
+            data: {
+                name,
+                picture,
+            },
+        }).then(dog => {
+            return dog ? this.to_GraphQL_object(dog) : null;
+        });
     }
 
-    async get_all_behavior_ids({ id }) {
-        return Dog.get_all_behavior_ids({ id });
+    async get_all_behavior_ids(
+        { id }: { id: string }
+    ): Promise<{ id: number }[] | null> {
+        return await this.prisma.behaviors.findMany({
+            where: {
+                dog_id: parseInt(id),
+            },
+            select: {
+                id: true,
+            },
+        });
     }
 }
 
 // TODO: figure out the email situation/context
+// TODO: figure out all the connections situations
 class AuthPendingInvitation extends AuthModel {
-
-    declare context: Context;
-
     constructor(context: Context) {
         super(context);
         this.graphql_typename = 'PendingInvitation';
-        this.context = context;
     }
 
     // TOOD: authorization checks
@@ -167,13 +207,13 @@ class AuthPendingInvitation extends AuthModel {
         return PendingInvitation.get_one({ id });
     }
 
+    // TODO: note that these are user ids
     async get_all_sent({ id }) {
         return PendingInvitation.get_sent_by_id({ id });
     }
 
     async get_all_received({ id }) {
-        const user_model = new AuthUser(this.context);
-        const { email, email_verified } = await user_model.get_email({ id });
+        const { email, email_verified } = await User.get_email({ id });
         // TODO: use email_verified
         return PendingInvitation.get_received_by_email({ email });
     }
@@ -199,17 +239,41 @@ class AuthBehavior extends AuthModel {
         // TODO: propagate the error if necessary.
     }
 
-    async create_one(input) {
-        console.log(`Creating behavior`);
-        console.log(input);
-        return Behavior.create_one(input).then(Behavior.create_object);
+    async create_one({
+        dog_id,
+        input,
+    }: {
+        dog_id: string,
+        input: behaviorsCreateWithoutDogsInput,
+    }): Promise<GraphQLObj<behaviors> | null> {
+        return this.prisma.behaviors.create({
+            data: {
+                dogs: {
+                    connect: {
+                        id: parseInt(dog_id)
+                    }
+                },
+                ...input
+            },
+        }).then(behavior => {
+            return behavior
+                ? this.to_GraphQL_object(behavior)
+                : null;
+        });
     }
 
     // TODO: authentication and authorization strategy
-    async get_one({ id }) {
+    async get_one({ id }: { id: string }): Promise<GraphQLObj<behaviors> | null> {
         // TODO: confirm error handling strategy
-        return Behavior.get_one({ id })
-            .then(Behavior.create_object);
+        return this.prisma.behaviors.findOne({
+            where: {
+                id: parseInt(id),
+            }
+        }).then(behavior => {
+            return behavior
+                ? this.to_GraphQL_object(behavior)
+                : null;
+        });
     }
 }
 

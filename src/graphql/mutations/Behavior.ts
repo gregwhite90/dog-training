@@ -62,14 +62,16 @@ const createBehaviorMutation = mutationWithClientMutationId({
         const dog_model = new AuthDog(context);
         const behavior = await behavior_model.create_one({
             dog_id: dog_type_and_id.id,
-            name,
-            explanation,
-            lure_description,
-            shape_description,
-            verbal_command,
-            hand_signal,
-            has_duration,
-            release_command,
+            input: {
+                name,
+                explanation,
+                lure_description,
+                shape_description,
+                verbal_command,
+                hand_signal,
+                has_duration,
+                release_command,
+            }
         }).then(behavior => behavior);
         return { behavior, dog_model };
     },
