@@ -1,0 +1,277 @@
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """The currently logged in user."""
+  viewer: User
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String!
+
+  """URL of the profile image of this user."""
+  picture: String
+  dogs(after: String, first: Int, before: String, last: Int): UserToDogConnection
+  pending_invitations_sent(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
+  pending_invitations_received(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
+}
+
+"""A connection to a list of items."""
+type UserToDogConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserToDogEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type UserToDogEdge {
+  """The item at the end of the edge"""
+  node: Dog
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The role the user plays for the dog."""
+  user_role: UserDogRole
+}
+
+type Dog implements Node {
+  """The ID of an object"""
+  id: ID!
+  users(after: String, first: Int, before: String, last: Int): DogToUserConnection
+  behaviors(after: String, first: Int, before: String, last: Int): BehaviorConnection
+  name: String!
+
+  """URL of the profile image of this dog."""
+  picture: String
+}
+
+"""A connection to a list of items."""
+type DogToUserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DogToUserEdge]
+}
+
+"""An edge in a connection."""
+type DogToUserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The role the user plays for the dog."""
+  user_role: UserDogRole
+}
+
+enum UserDogRole {
+  OWNER
+  TRAINER
+  VIEWER
+}
+
+"""A connection to a list of items."""
+type BehaviorConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BehaviorEdge]
+}
+
+"""An edge in a connection."""
+type BehaviorEdge {
+  """The item at the end of the edge"""
+  node: Behavior
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Behavior implements Node {
+  """The ID of an object"""
+  id: ID!
+  dog: Dog
+  name: String!
+
+  """Explanation of the desired behavior in clear, plain language."""
+  explanation: String
+
+  """Description of the lure used in training."""
+  lure_description: String
+
+  """Description of the shape used in training."""
+  shape_description: String
+
+  """The verbal command used to cue this behavior."""
+  verbal_command: String
+
+  """The hand signal used to cue this behavior."""
+  hand_signal: String
+
+  """Description of the shape used in training."""
+  has_duration: Boolean!
+
+  """The verbal command used to release this behavior."""
+  release_command: String
+}
+
+"""A connection to a list of items."""
+type PendingInvitationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PendingInvitationEdge]
+}
+
+"""An edge in a connection."""
+type PendingInvitationEdge {
+  """The item at the end of the edge"""
+  node: PendingInvitation
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type PendingInvitation implements Node {
+  """The ID of an object"""
+  id: ID!
+  invitee_email: String!
+  invited_by: User!
+  user_role: UserDogRole!
+  dog: Dog
+}
+
+type Mutation {
+  """Create a new dog with the currently logged in user as an 'owner'."""
+  createDog(input: CreateDogInput!): CreateDogPayload
+  editDog(input: EditDogInput!): EditDogPayload
+
+  """Invite an email address to collaborate training a dog"""
+  inviteUserByEmail(input: InviteUserByEmailInput!): InviteUserByEmailPayload
+
+  """Accept an invitation to collaborate training a dog"""
+  acceptInvitation(input: AcceptInvitationInput!): AcceptInvitationPayload
+
+  """Create a new desired behavior for the specified dog"""
+  createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
+}
+
+type CreateDogPayload {
+  dogEdge: UserToDogEdge!
+  viewer: User!
+  clientMutationId: String
+}
+
+input CreateDogInput {
+  name: String!
+
+  """URL of the profile image of this dog."""
+  picture: String
+  clientMutationId: String
+}
+
+type EditDogPayload {
+  dog: Dog!
+  clientMutationId: String
+}
+
+input EditDogInput {
+  id: ID!
+  name: String
+  picture: String
+  clientMutationId: String
+}
+
+type InviteUserByEmailPayload {
+  viewer: User!
+  clientMutationId: String
+}
+
+input InviteUserByEmailInput {
+  """The email address of the user to invite"""
+  invitee_email: String!
+
+  """The ID of the dog to invite the user to collaborate to train"""
+  dog_id: ID!
+
+  """The role the user plays for the dog."""
+  user_role: UserDogRole!
+  clientMutationId: String
+}
+
+type AcceptInvitationPayload {
+  dogEdge: UserToDogEdge!
+  viewer: User!
+  clientMutationId: String
+}
+
+input AcceptInvitationInput {
+  invitation_id: ID!
+  user_id: ID!
+  clientMutationId: String
+}
+
+type CreateBehaviorPayload {
+  behaviorEdge: BehaviorEdge!
+  clientMutationId: String
+}
+
+input CreateBehaviorInput {
+  dog_id: ID!
+  name: String!
+
+  """Explanation of the desired behavior in clear, plain language."""
+  explanation: String
+
+  """Description of the lure used in training."""
+  lure_description: String
+
+  """Description of the shape used in training."""
+  shape_description: String
+
+  """The verbal command used to cue this behavior."""
+  verbal_command: String
+
+  """The hand signal used to cue this behavior."""
+  hand_signal: String
+
+  """Description of the shape used in training."""
+  has_duration: Boolean!
+
+  """The verbal command used to release this behavior."""
+  release_command: String
+  clientMutationId: String
+}
