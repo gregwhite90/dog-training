@@ -340,6 +340,15 @@ export type CreateBehaviorInput = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
+export type BehaviorBreadcrumb_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'id' | 'name'>
+  & { dog?: Maybe<(
+    { __typename?: 'Dog' }
+    & Pick<Dog, 'name' | 'id'>
+  )> }
+);
+
 export type BehaviorCard_BehaviorFragment = (
   { __typename?: 'Behavior' }
   & Pick<Behavior, 'name' | 'explanation' | 'lure_description' | 'shape_description' | 'verbal_command' | 'hand_signal' | 'release_command'>
@@ -355,6 +364,7 @@ export type BehaviorDetailQueryQuery = (
   & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | (
     { __typename?: 'Behavior' }
     & BehaviorCard_BehaviorFragment
+    & BehaviorBreadcrumb_BehaviorFragment
   ) | { __typename?: 'PendingInvitation' }> }
 );
 
