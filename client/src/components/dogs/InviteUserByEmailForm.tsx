@@ -111,10 +111,8 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                         value={values.invitee_email}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.invitee_email && !errors.invitee_email}
                                         isInvalid={touched.invitee_email && !!errors.invitee_email}
                                     />
-                                    <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">{errors.invitee_email}</Form.Control.Feedback>
                                 </Form.Group>
                             </Form.Row>
@@ -139,11 +137,13 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                                <Button variant="primary"
+                                <Button
+                                    variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting}>
+                                    disabled={isSubmitting || !isValid}
+                                >
                                     Invite user by email
-                            </Button>
+                                </Button>
                             </Form.Row>
                         </FormikForm>
                     )}

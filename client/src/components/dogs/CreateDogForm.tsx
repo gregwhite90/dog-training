@@ -18,7 +18,7 @@ interface CreateDogFormProps {
 const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
     const validationSchema = yup.object<CreateDogInput>().shape({
         name: yup.string()
-                 .required("A name for this dog is required"),
+            .required("A name for this dog is required"),
     });
 
     return (
@@ -29,14 +29,14 @@ const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
-                        setSubmitting(true);
-                        props.saveCreation(
-                            values,
-                            () => {
-                                resetForm();
-                                setSubmitting(false);
-                            }
-                        );
+                    setSubmitting(true);
+                    props.saveCreation(
+                        values,
+                        () => {
+                            resetForm();
+                            setSubmitting(false);
+                        }
+                    );
                 }}
             >
                 {({ values,
@@ -57,12 +57,8 @@ const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
                                         value={values.name}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.name && !errors.name}
                                         isInvalid={touched.name && !!errors.name}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.name}
                                     </Form.Control.Feedback>
@@ -70,8 +66,8 @@ const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
                             </Form.Row>
                             <Form.Row>
                                 <Button variant="primary"
-                                        type="submit"
-                                        disabled={isSubmitting}>
+                                    type="submit"
+                                    disabled={isSubmitting || !isValid}>
                                     Submit name and upload an image!
                                 </Button>
                             </Form.Row>
