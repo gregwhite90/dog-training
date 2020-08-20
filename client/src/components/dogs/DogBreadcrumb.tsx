@@ -26,13 +26,15 @@ const DogBreadcrumb: React.FC<DogBreadcrumbProps> = (props) => {
                         {props.dog.name}
                     </Breadcrumb.Item>
                 </LinkContainer>
-                <LinkContainer to={`/dogs/${props.dog.id}/behaviors`}>
-                    <Breadcrumb.Item active={props.behaviors && props.active}>
-                        All behaviors
-                    </Breadcrumb.Item>
-                </LinkContainer>
+                {props.behaviors && (
+                    <LinkContainer to={`/dogs/${props.dog.id}/behaviors`}>
+                        <Breadcrumb.Item active={props.behaviors && props.active}>
+                            All behaviors for {props.dog.name}
+                        </Breadcrumb.Item>
+                    </LinkContainer>
+                )}
             </Breadcrumb>
-        </Container>
+        </Container >
     );
 }
 
