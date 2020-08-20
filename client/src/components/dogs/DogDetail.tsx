@@ -6,10 +6,9 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import HeaderBar from 'components/utils/HeaderBar';
-
 import DogCard from './DogCard';
 import InviteUserByEmailForm from './InviteUserByEmailForm';
+import DogBreadcrumb from './DogBreadcrumb';
 
 // TODO: authorization check
 
@@ -36,6 +35,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                     node(id: $id) {
                         ...DogCard_dog
                         ...InviteUserByEmailForm_dog
+                        ...DogBreadcrumb_dog
                     }
                 }
                 `}
@@ -44,23 +44,15 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                 if (props && props.node) {
                     return (
                         <>
-                            <HeaderBar
-                                button={{
-                                    text: "Dogs list",
-                                    link: "/dogs",
-                                }}
-                                header={{
-                                    text: "Detail for dog",
-                                }}
-                            />
+                            <DogBreadcrumb dog={props.node} active={true} behaviors={false} />
                             <Container>
-                                    <DogCard dog={props.node} />
-                                    <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
-                                    <Link to={`${match.url}/behaviors`}>
-                                        <Button variant="primary">
-                                            View desired behaviors
+                                <DogCard dog={props.node} />
+                                <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
+                                <Link to={`${match.url}/behaviors`}>
+                                    <Button variant="primary">
+                                        View desired behaviors
                                     </Button>
-                                    </Link>
+                                </Link>
                             </Container>
                         </>
                     );

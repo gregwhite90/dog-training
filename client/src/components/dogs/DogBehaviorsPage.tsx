@@ -4,7 +4,7 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
-import HeaderBar from 'components/utils/HeaderBar';
+import DogBreadcrumb from './DogBreadcrumb';
 
 import DogBehaviorsApp from './DogBehaviorsApp';
 
@@ -32,6 +32,7 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_i
                 query DogBehaviorsPageQuery($id: ID!) {
                     node(id: $id) {
                         ...DogBehaviorsApp_dog
+                        ...DogBreadcrumb_dog
                     }
                 }
                 `}
@@ -40,15 +41,7 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_i
                 if (props && props.node) {
                     return (
                         <>
-                            <HeaderBar
-                                button={{
-                                    text: "Dog detail",
-                                    link: `/dogs/${dog_id}`,
-                                }}
-                                header={{
-                                    text: "Behavior for dog",
-                                }}
-                            />
+                            <DogBreadcrumb dog={props.node} behaviors={true} active={true} />
                             <Container>
                                 <DogBehaviorsApp dog={props.node} match={match} />
                             </Container>

@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import type { BehaviorBreadcrumb_behavior } from '__generated__/BehaviorBreadcrumb_behavior.graphql';
 
 interface BehaviorBreadcrumbProps {
-    active?: boolean,
+    active: boolean,
     behavior: BehaviorBreadcrumb_behavior,
 };
 
