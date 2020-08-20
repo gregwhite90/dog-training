@@ -96,6 +96,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                     handleChange,
                     errors,
                     touched,
+                    dirty,
                     isValid,
                     isSubmitting }) => (
                         <FormikForm>
@@ -140,7 +141,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting || !isValid}
+                                    disabled={!dirty || isSubmitting || !isValid}
                                 >
                                     Invite user by email
                                 </Button>

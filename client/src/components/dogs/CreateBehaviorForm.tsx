@@ -93,6 +93,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                     handleChange,
                     errors,
                     touched,
+                    dirty,
                     isValid,
                     isSubmitting }) => (
                         <FormikForm>
@@ -252,7 +253,7 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                             <Form.Row>
                                 <Button variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting || !isValid}>
+                                    disabled={!dirty || isSubmitting || !isValid}>
                                     Add desired behavior
                                 </Button>
                             </Form.Row>

@@ -44,6 +44,7 @@ const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
                     handleChange,
                     errors,
                     touched,
+                    dirty,
                     isValid,
                     isSubmitting }) => (
                         <FormikForm>
@@ -65,9 +66,11 @@ const CreateDogForm: React.FC<CreateDogFormProps> = (props) => {
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                                <Button variant="primary"
+                                <Button
+                                    variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting || !isValid}>
+                                    disabled={!dirty || isSubmitting || !isValid}
+                                >
                                     Submit name and upload an image!
                                 </Button>
                             </Form.Row>
