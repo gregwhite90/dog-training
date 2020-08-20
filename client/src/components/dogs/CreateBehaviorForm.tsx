@@ -93,7 +93,6 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                     handleChange,
                     errors,
                     touched,
-                    isValid,
                     isSubmitting }) => (
                         <FormikForm>
                             <Form.Row>
@@ -108,12 +107,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.name}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.name && !errors.name}
                                         isInvalid={touched.name && !!errors.name}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.name}
                                     </Form.Control.Feedback>
@@ -132,12 +127,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.explanation}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.explanation && !errors.explanation}
                                         isInvalid={touched.explanation && !!errors.explanation}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.explanation}
                                     </Form.Control.Feedback>
@@ -156,12 +147,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.lure_description}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.lure_description && !errors.lure_description}
                                         isInvalid={touched.lure_description && !!errors.lure_description}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.lure_description}
                                     </Form.Control.Feedback>
@@ -180,12 +167,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.shape_description}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.shape_description && !errors.shape_description}
                                         isInvalid={touched.shape_description && !!errors.shape_description}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.shape_description}
                                     </Form.Control.Feedback>
@@ -203,12 +186,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.verbal_command}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.verbal_command && !errors.verbal_command}
                                         isInvalid={touched.verbal_command && !!errors.verbal_command}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.verbal_command}
                                     </Form.Control.Feedback>
@@ -227,12 +206,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                         value={values.hand_signal}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isValid={touched.hand_signal && !errors.hand_signal}
                                         isInvalid={touched.hand_signal && !!errors.hand_signal}
                                     />
-                                    <Form.Control.Feedback type="valid">
-                                        Looks good!
-                                </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.hand_signal}
                                     </Form.Control.Feedback>
@@ -265,12 +240,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                             value={values.release_command}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
-                                            isValid={touched.release_command && !errors.release_command}
                                             isInvalid={touched.release_command && !!errors.release_command}
                                         />
-                                        <Form.Control.Feedback type="valid">
-                                            Looks good!
-                                     </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid">
                                             {errors.release_command}
                                         </Form.Control.Feedback>
@@ -279,8 +250,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                             )}
                             <Form.Row>
                                 <Button variant="primary"
-                                        type="submit"
-                                        disabled={isSubmitting}>
+                                    type="submit"
+                                    disabled={isSubmitting}>
                                     Add desired behavior
                                 </Button>
                             </Form.Row>
