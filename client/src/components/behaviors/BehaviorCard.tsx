@@ -44,19 +44,11 @@ const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
                             </tr>
                         )
                     }
-                    {props.behavior.lure_description &&
+                    {props.behavior.incentive_description &&
                         (
                             <tr>
-                                <td>Lure description</td>
-                                <td>{props.behavior.lure_description}</td>
-                            </tr>
-                        )
-                    }
-                    {props.behavior.shape_description &&
-                        (
-                            <tr>
-                                <td>Shape description</td>
-                                <td>{props.behavior.shape_description}</td>
+                                <td>{props.behavior.incentive_method || "Incentive"} description</td>
+                                <td>{props.behavior.incentive_description}</td>
                             </tr>
                         )
                     }
@@ -71,8 +63,8 @@ export default createFragmentContainer(BehaviorCard, {
         fragment BehaviorCard_behavior on Behavior {
             name
             explanation
-            lure_description
-            shape_description
+            incentive_method
+            incentive_description
             verbal_command
             hand_signal
             release_command

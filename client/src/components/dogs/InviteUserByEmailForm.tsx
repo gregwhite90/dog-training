@@ -121,7 +121,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                 <Form.Group>
                                     <Form.Label>
                                         Invite user as:
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         as="select"
                                         name="user_role"

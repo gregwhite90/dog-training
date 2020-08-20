@@ -10,7 +10,8 @@
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update-schema": "node ./scripts/updateSchema.js",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "update-db": "npx prisma introspect && npx prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,7 @@
     "@graphql-codegen/cli": "1.17.8",
     "@graphql-codegen/typescript": "1.17.8",
     "@graphql-codegen/typescript-resolvers": "1.17.8",
-    "@prisma/cli": "^2.4.1",
+    "@prisma/cli": "^2.5.1",
     "@types/express": "^4.17.7",
     "@types/express-jwt": "0.0.42",
     "@types/graphql-relay": "^0.6.0",

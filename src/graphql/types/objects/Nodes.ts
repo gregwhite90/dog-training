@@ -6,7 +6,6 @@
 
 import {
     GraphQLObjectType,
-    GraphQLID,
     GraphQLString,
     GraphQLNonNull,
     GraphQLEnumType,
@@ -282,6 +281,19 @@ const {
     // TODO: decide if anything should go on the edge.
 });
 
+const incentiveMethodType = new GraphQLEnumType({
+    name: 'IncentiveMethod',
+    values: {
+        LURE: { value: 'LURE' },
+        SHAPE: { value: 'SHAPE' },
+    }
+});
+
+const incentiveMethodDescAndType = {
+    description: 'The method of incentivizing used to entice behavior before commands or hand signals are used.',
+    type: incentiveMethodType,
+};
+
 const behaviorTypeOwnedScalarFields = {
     name: {
         type: new GraphQLNonNull(GraphQLString),
@@ -290,13 +302,10 @@ const behaviorTypeOwnedScalarFields = {
         type: GraphQLString,
         description: 'Explanation of the desired behavior in clear, plain language.'
     },
-    lure_description: {
+    incentive_method: incentiveMethodDescAndType,
+    incentive_description: {
         type: GraphQLString,
-        description: 'Description of the lure used in training.'
-    },
-    shape_description: {
-        type: GraphQLString,
-        description: 'Description of the shape used in training.'
+        description: 'Description of the incentive method used in training.'
     },
     verbal_command: {
         type: GraphQLString,

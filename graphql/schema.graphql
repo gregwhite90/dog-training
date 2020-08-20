@@ -128,11 +128,13 @@ type Behavior implements Node {
   """Explanation of the desired behavior in clear, plain language."""
   explanation: String
 
-  """Description of the lure used in training."""
-  lure_description: String
+  """
+  The method of incentivizing used to entice behavior before commands or hand signals are used.
+  """
+  incentive_method: IncentiveMethod
 
-  """Description of the shape used in training."""
-  shape_description: String
+  """Description of the incentive method used in training."""
+  incentive_description: String
 
   """The verbal command used to cue this behavior."""
   verbal_command: String
@@ -145,6 +147,11 @@ type Behavior implements Node {
 
   """The verbal command used to release this behavior."""
   release_command: String
+}
+
+enum IncentiveMethod {
+  LURE
+  SHAPE
 }
 
 """A connection to a list of items."""
@@ -259,11 +266,13 @@ input CreateBehaviorInput {
   """Explanation of the desired behavior in clear, plain language."""
   explanation: String
 
-  """Description of the lure used in training."""
-  lure_description: String
+  """
+  The method of incentivizing used to entice behavior before commands or hand signals are used.
+  """
+  incentive_method: IncentiveMethod
 
-  """Description of the shape used in training."""
-  shape_description: String
+  """Description of the incentive method used in training."""
+  incentive_description: String
 
   """The verbal command used to cue this behavior."""
   verbal_command: String

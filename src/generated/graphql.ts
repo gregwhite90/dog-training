@@ -176,10 +176,10 @@ export type Behavior = Node & {
   name: Scalars['String'];
   /** Explanation of the desired behavior in clear, plain language. */
   explanation?: Maybe<Scalars['String']>;
-  /** Description of the lure used in training. */
-  lure_description?: Maybe<Scalars['String']>;
-  /** Description of the shape used in training. */
-  shape_description?: Maybe<Scalars['String']>;
+  /** The method of incentivizing used to entice behavior before commands or hand signals are used. */
+  incentive_method?: Maybe<IncentiveMethod>;
+  /** Description of the incentive method used in training. */
+  incentive_description?: Maybe<Scalars['String']>;
   /** The verbal command used to cue this behavior. */
   verbal_command?: Maybe<Scalars['String']>;
   /** The hand signal used to cue this behavior. */
@@ -189,6 +189,11 @@ export type Behavior = Node & {
   /** The verbal command used to release this behavior. */
   release_command?: Maybe<Scalars['String']>;
 };
+
+export enum IncentiveMethod {
+  Lure = 'LURE',
+  Shape = 'SHAPE'
+}
 
 /** A connection to a list of items. */
 export type PendingInvitationConnection = {
@@ -325,10 +330,10 @@ export type CreateBehaviorInput = {
   name: Scalars['String'];
   /** Explanation of the desired behavior in clear, plain language. */
   explanation?: Maybe<Scalars['String']>;
-  /** Description of the lure used in training. */
-  lure_description?: Maybe<Scalars['String']>;
-  /** Description of the shape used in training. */
-  shape_description?: Maybe<Scalars['String']>;
+  /** The method of incentivizing used to entice behavior before commands or hand signals are used. */
+  incentive_method?: Maybe<IncentiveMethod>;
+  /** Description of the incentive method used in training. */
+  incentive_description?: Maybe<Scalars['String']>;
   /** The verbal command used to cue this behavior. */
   verbal_command?: Maybe<Scalars['String']>;
   /** The hand signal used to cue this behavior. */
