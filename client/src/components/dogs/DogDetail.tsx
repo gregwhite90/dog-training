@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
+import HeaderBar from 'components/utils/HeaderBar';
+
 import DogCard from './DogCard';
 import InviteUserByEmailForm from './InviteUserByEmailForm';
 
@@ -41,15 +43,26 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <Container>
-                            <DogCard dog={props.node} />
-                            <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
-                            <Link to={`${match.url}/behaviors`}>
-                                <Button variant="primary">
-                                    View desired behaviors
-                                </Button>
-                            </Link>
-                        </Container >
+                        <>
+                            <HeaderBar
+                                button={{
+                                    text: "Dogs list",
+                                    link: "/dogs",
+                                }}
+                                header={{
+                                    text: "Detail for dog",
+                                }}
+                            />
+                            <Container>
+                                    <DogCard dog={props.node} />
+                                    <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
+                                    <Link to={`${match.url}/behaviors`}>
+                                        <Button variant="primary">
+                                            View desired behaviors
+                                    </Button>
+                                    </Link>
+                            </Container>
+                        </>
                     );
                 } else if (error) {
                     console.log(error);

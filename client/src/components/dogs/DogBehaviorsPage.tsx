@@ -4,7 +4,8 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
-import BehaviorCard from 'components/behaviors/BehaviorCard';
+import HeaderBar from 'components/utils/HeaderBar';
+
 import DogBehaviorsApp from './DogBehaviorsApp';
 
 // TODO: authorization check
@@ -38,9 +39,20 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_i
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <Container>
-                            <DogBehaviorsApp dog={props.node} match={match} />
-                        </Container>
+                        <>
+                            <HeaderBar
+                                button={{
+                                    text: "Dog detail",
+                                    link: `/dogs/${dog_id}`,
+                                }}
+                                header={{
+                                    text: "Behavior for dog",
+                                }}
+                            />
+                            <Container>
+                                <DogBehaviorsApp dog={props.node} match={match} />
+                            </Container>
+                        </>
                     );
                 } else if (error) {
                     console.log(error);

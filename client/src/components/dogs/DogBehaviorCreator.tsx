@@ -4,6 +4,8 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
+import HeaderBar from 'components/utils/HeaderBar';
+
 import CreateBehaviorForm from './CreateBehaviorForm';
 
 // TODO: authorization check
@@ -37,9 +39,20 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <Container>
-                            <CreateBehaviorForm dog={props.node} relay_environment={relay.environment} />
-                        </Container>
+                        <>
+                            <HeaderBar
+                                button={{
+                                    text: "Desired behaviors list",
+                                    link: `/dogs/${dog_id}/behaviors`,
+                                }}
+                                header={{
+                                    text: "Add a desired behavior",
+                                }}
+                            />
+                            <Container>
+                                <CreateBehaviorForm dog={props.node} relay_environment={relay.environment} />
+                            </Container>
+                        </>
                     );
                 } else if (error) {
                     console.log(error);

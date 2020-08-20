@@ -4,6 +4,8 @@ import {
 } from 'react-router-dom';
 import { withAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
+import HeaderBar from 'components/utils/HeaderBar';
+
 import CreateDogForm from './CreateDogForm';
 import DogImageUploader from './DogImageUploader';
 
@@ -61,13 +63,40 @@ class DogAdder extends React.Component {
     }
 
     render() {
+        const header_bar_button = {
+            text: "Dogs list",
+            link: "/dogs",
+        }
+        const header_bar_header = {
+            text: "Add a dog!",
+        }
         switch (this.state.step) {
             case 0:
-                return <CreateDogForm fieldValues={this.fieldValues}
-                                      saveCreation={this.saveCreation} />;
+                return (
+                    <>
+                        <HeaderBar
+                            button={header_bar_button}
+                            header={header_bar_header}
+                        />
+                        <CreateDogForm
+                            fieldValues={this.fieldValues}
+                            saveCreation={this.saveCreation}
+                        />
+                    </>
+                );
             case 1:
-                return <DogImageUploader fieldValues={this.fieldValues}
-                                         savePicture={this.savePicture} />;
+                return (
+                    <>
+                        <HeaderBar
+                            button={header_bar_button}
+                            header={header_bar_header}
+                        />
+                        <DogImageUploader
+                            fieldValues={this.fieldValues}
+                            savePicture={this.savePicture}
+                        />
+                    </>
+                );
             case 2:
                 return <Redirect to={`/dogs/${this.fieldValues.id}`}/>;
             default:

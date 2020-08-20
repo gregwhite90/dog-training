@@ -7,9 +7,6 @@ import {
 import { createBrowserHistory } from 'history';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 
 import { withAuth0 } from '@auth0/auth0-react';
 import createEnvironment from './lib/createRelayEnvironment';
@@ -46,25 +43,19 @@ class App extends React.Component<any, any> {
             <Router history={history}>
                 <div className="App">
                     <Navigation />
-                    <Container fluid>
-                        <Row>
-                            <Col>
-                                <Switch>
-                                    <Route path="/login" render={(_: any) => (
-                                        this.props.auth0.loginWithRedirect()
-                                    )} />
-                                    <Route path="/about" component={About} />
-                                    <Route path="/dogs" render={(props: any) => (
-                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
-                                    )} />
-                                    <Route path="/behaviors" render={(props: any) => (
-                                        <BehaviorsRouter {...props} relay={this.state.relay} />
-                                    )} />
-                                    <Route path="/" component={Home} />
-                                </Switch>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <Switch>
+                        <Route path="/login" render={(_: any) => (
+                            this.props.auth0.loginWithRedirect()
+                        )} />
+                        <Route path="/about" component={About} />
+                        <Route path="/dogs" render={(props: any) => (
+                            <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
+                        )} />
+                        <Route path="/behaviors" render={(props: any) => (
+                            <BehaviorsRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/" component={Home} />
+                    </Switch>
                 </div>
             </Router>
         );
