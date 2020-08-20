@@ -9,7 +9,7 @@ export type DogDetailQueryVariables = {
 };
 export type DogDetailQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"DogCard_dog" | "InviteUserByEmailForm_dog">;
+        readonly " $fragmentRefs": FragmentRefs<"DogCard_dog" | "InviteUserByEmailForm_dog" | "DogBreadcrumb_dog">;
     } | null;
 };
 export type DogDetailQuery = {
@@ -27,8 +27,14 @@ query DogDetailQuery(
     __typename
     ...DogCard_dog
     ...InviteUserByEmailForm_dog
+    ...DogBreadcrumb_dog
     id
   }
+}
+
+fragment DogBreadcrumb_dog on Dog {
+  id
+  name
 }
 
 fragment DogCard_dog on Dog {
@@ -82,6 +88,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "InviteUserByEmailForm_dog"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "DogBreadcrumb_dog"
           }
         ],
         "storageKey": null
@@ -145,14 +156,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1b7570a3fc18e07d545731697ceaf790",
+    "cacheID": "fe175731ac1b390400107c4ed7a4f4fa",
     "id": null,
     "metadata": {},
     "name": "DogDetailQuery",
     "operationKind": "query",
-    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...InviteUserByEmailForm_dog\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
+    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...InviteUserByEmailForm_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
   }
 };
 })();
-(node as any).hash = '75d010f6aac215f434d6ea002ff044bd';
+(node as any).hash = '6decc316ee4aec310967e0ef1b4be81b';
 export default node;

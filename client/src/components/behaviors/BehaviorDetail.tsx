@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 
 // TODO: create behavior card
 import BehaviorCard from './BehaviorCard';
+import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 
 // TODO: authorization check
 
@@ -32,6 +33,7 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) =
                 query BehaviorDetailQuery($id: ID!) {
                     node(id: $id) {
                         ...BehaviorCard_behavior
+                        ...BehaviorBreadcrumb_behavior
                     }
                 }
                 `}
@@ -39,9 +41,12 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) =
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <Container>
-                            <BehaviorCard behavior={props.node} />
-                        </Container>
+                        <>
+                            <BehaviorBreadcrumb behavior={props.node} active={true} />
+                            <Container>
+                                <BehaviorCard behavior={props.node} />
+                            </Container>
+                        </>
                     );
                 } else if (error) {
                     console.log(error);

@@ -4,6 +4,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 
 import DogsApp from './DogsApp';
 import PendingInvitations from './PendingInvitations';
+import DogsBreadcrumb from './DogsBreadcrumb';
 
 import type { DogsPageQuery } from '__generated__/DogsPageQuery.graphql';
 import type { IEnvironment } from 'relay-runtime';
@@ -38,6 +39,7 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
                 if (props && props.viewer) {
                     return (
                         <>
+                            <DogsBreadcrumb active={true} />
                             <DogsApp viewer={props.viewer} match={match} />
                             <PendingInvitations relay_environment={relay.environment} viewer={props.viewer} />
                         </>

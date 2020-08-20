@@ -9,7 +9,7 @@ export type DogBehaviorsPageQueryVariables = {
 };
 export type DogBehaviorsPageQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"DogBehaviorsApp_dog">;
+        readonly " $fragmentRefs": FragmentRefs<"DogBehaviorsApp_dog" | "DogBreadcrumb_dog">;
     } | null;
 };
 export type DogBehaviorsPageQuery = {
@@ -26,6 +26,7 @@ query DogBehaviorsPageQuery(
   node(id: $id) {
     __typename
     ...DogBehaviorsApp_dog
+    ...DogBreadcrumb_dog
     id
   }
 }
@@ -62,6 +63,11 @@ fragment DogBehaviorsList_dog on Dog {
       hasNextPage
     }
   }
+}
+
+fragment DogBreadcrumb_dog on Dog {
+  id
+  name
 }
 */
 
@@ -127,6 +133,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "DogBehaviorsApp_dog"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "DogBreadcrumb_dog"
           }
         ],
         "storageKey": null
@@ -284,14 +295,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e35cfa3273f4a82b3674e4096e14b212",
+    "cacheID": "9af066ad0744d83bbd2cae76f65da149",
     "id": null,
     "metadata": {},
     "name": "DogBehaviorsPageQuery",
     "operationKind": "query",
-    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  id\n  name\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  id\n  name\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n"
   }
 };
 })();
-(node as any).hash = '027f80239b1ca63279d08fe5ef5f0270';
+(node as any).hash = 'd8afef6c4fba2da5bfda948355442c91';
 export default node;

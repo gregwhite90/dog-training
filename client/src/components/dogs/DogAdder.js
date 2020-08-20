@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import { withAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
-import HeaderBar from 'components/utils/HeaderBar';
+import DogsBreadcrumb from './DogsBreadcrumb';
 
 import CreateDogForm from './CreateDogForm';
 import DogImageUploader from './DogImageUploader';
@@ -63,21 +63,11 @@ class DogAdder extends React.Component {
     }
 
     render() {
-        const header_bar_button = {
-            text: "Dogs list",
-            link: "/dogs",
-        }
-        const header_bar_header = {
-            text: "Add a dog!",
-        }
         switch (this.state.step) {
             case 0:
                 return (
                     <>
-                        <HeaderBar
-                            button={header_bar_button}
-                            header={header_bar_header}
-                        />
+                        <DogsBreadcrumb active={false} />
                         <CreateDogForm
                             fieldValues={this.fieldValues}
                             saveCreation={this.saveCreation}
@@ -87,10 +77,7 @@ class DogAdder extends React.Component {
             case 1:
                 return (
                     <>
-                        <HeaderBar
-                            button={header_bar_button}
-                            header={header_bar_header}
-                        />
+                        <DogsBreadcrumb active={false} />
                         <DogImageUploader
                             fieldValues={this.fieldValues}
                             savePicture={this.savePicture}

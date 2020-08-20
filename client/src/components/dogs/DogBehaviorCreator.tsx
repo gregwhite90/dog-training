@@ -4,7 +4,7 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
-import HeaderBar from 'components/utils/HeaderBar';
+import DogBreadcrumb from './DogBreadcrumb';
 
 import CreateBehaviorForm from './CreateBehaviorForm';
 
@@ -32,6 +32,7 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }
                 query DogBehaviorCreatorQuery($id: ID!) {
                     node(id: $id) {
                         ...CreateBehaviorForm_dog
+                        ...DogBreadcrumb_dog
                     }
                 }
                 `}
@@ -40,14 +41,10 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }
                 if (props && props.node) {
                     return (
                         <>
-                            <HeaderBar
-                                button={{
-                                    text: "Desired behaviors list",
-                                    link: `/dogs/${dog_id}/behaviors`,
-                                }}
-                                header={{
-                                    text: "Add a desired behavior",
-                                }}
+                            <DogBreadcrumb
+                                dog={props.node}
+                                behaviors={true}
+                                active={false}
                             />
                             <Container>
                                 <CreateBehaviorForm dog={props.node} relay_environment={relay.environment} />
