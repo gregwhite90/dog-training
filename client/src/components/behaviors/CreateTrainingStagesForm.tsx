@@ -54,7 +54,7 @@ const PromptsError: React.FC<PromptsErrorProps> = ({ errors, index }) => {
         && (errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts
         && typeof (errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts === 'string'
         ? (
-            <div className="invalid-feedback">
+            <div className="invalid-feedback" style={{ display: "block" }}>
                 {(errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts}
             </div>
         )
@@ -70,7 +70,7 @@ const TrainingStagesError: React.FC<TrainingStagesErrorProps> = ({ errors }) => 
         && errors.training_stages
         && typeof errors.training_stages === 'string'
         ? (
-            <div className="invalid-feedback">
+            <div className="invalid-feedback" style={{ display: "block" }}>
                 {errors.training_stages}
             </div>
         )
