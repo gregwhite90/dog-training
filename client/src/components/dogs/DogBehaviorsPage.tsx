@@ -13,14 +13,12 @@ import DogBehaviorsApp from './DogBehaviorsApp';
 // TODO: fix any types
 import type { DogBehaviorsPageQuery } from '__generated__/DogBehaviorsPageQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
 interface DogBehaviorsPageProps extends RouteComponentProps<MatchParams> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
     dog_id: string,
 }
 

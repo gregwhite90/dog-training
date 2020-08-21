@@ -13,14 +13,12 @@ import CreateBehaviorForm from './CreateBehaviorForm';
 // TODO: fix any types
 import type { DogBehaviorCreatorQuery } from '__generated__/DogBehaviorCreatorQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
 interface DogBehaviorCreatorProps extends RouteComponentProps<MatchParams> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
     dog_id: string,
 }
 

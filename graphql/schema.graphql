@@ -240,8 +240,8 @@ type Mutation {
   """Create a new desired behavior for the specified dog"""
   createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
 
-  """Create a new stage of training for the specified desired behavior"""
-  createTrainingStage(input: CreateTrainingStageInput!): CreateTrainingStagePayload
+  """Create the training stages for the specified desired behavior"""
+  createTrainingStages(input: CreateTrainingStagesInput!): CreateTrainingStagesPayload
 }
 
 type CreateDogPayload {
@@ -336,14 +336,18 @@ input CreateBehaviorInput {
   clientMutationId: String
 }
 
-type CreateTrainingStagePayload {
-  trainingStageEdge: TrainingStageEdge!
+type CreateTrainingStagesPayload {
+  trainingStageEdges: [TrainingStageEdge!]!
   clientMutationId: String
 }
 
-input CreateTrainingStageInput {
+input CreateTrainingStagesInput {
   behavior_id: ID!
+  training_stages: [TrainingStageScalarFields!]!
+  clientMutationId: String
+}
 
+input TrainingStageScalarFields {
   """The order within the sequence of training stages for this behavior"""
   seq: Int!
 
@@ -358,5 +362,4 @@ input CreateTrainingStageInput {
 
   """How frequently successful behavior is rewarded."""
   reward_frequency: RewardFrequency
-  clientMutationId: String
 }

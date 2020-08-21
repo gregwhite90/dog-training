@@ -283,8 +283,8 @@ export type Mutation = {
   acceptInvitation?: Maybe<AcceptInvitationPayload>;
   /** Create a new desired behavior for the specified dog */
   createBehavior?: Maybe<CreateBehaviorPayload>;
-  /** Create a new stage of training for the specified desired behavior */
-  createTrainingStage?: Maybe<CreateTrainingStagePayload>;
+  /** Create the training stages for the specified desired behavior */
+  createTrainingStages?: Maybe<CreateTrainingStagesPayload>;
 };
 
 
@@ -313,8 +313,8 @@ export type MutationCreateBehaviorArgs = {
 };
 
 
-export type MutationCreateTrainingStageArgs = {
-  input: CreateTrainingStageInput;
+export type MutationCreateTrainingStagesArgs = {
+  input: CreateTrainingStagesInput;
 };
 
 export type CreateDogPayload = {
@@ -401,14 +401,19 @@ export type CreateBehaviorInput = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
-export type CreateTrainingStagePayload = {
-  __typename?: 'CreateTrainingStagePayload';
-  trainingStageEdge: TrainingStageEdge;
+export type CreateTrainingStagesPayload = {
+  __typename?: 'CreateTrainingStagesPayload';
+  trainingStageEdges: Array<TrainingStageEdge>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
-export type CreateTrainingStageInput = {
+export type CreateTrainingStagesInput = {
   behavior_id: Scalars['ID'];
+  training_stages: Array<TrainingStageScalarFields>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TrainingStageScalarFields = {
   /** The order within the sequence of training stages for this behavior */
   seq: Scalars['Int'];
   /** Whether this stage includes an incentive method */
@@ -419,5 +424,4 @@ export type CreateTrainingStageInput = {
   hand: Scalars['Boolean'];
   /** How frequently successful behavior is rewarded. */
   reward_frequency?: Maybe<RewardFrequency>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };

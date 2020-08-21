@@ -14,14 +14,12 @@ import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 // TODO: create the behavior detail query
 import type { BehaviorDetailQuery } from '__generated__/BehaviorDetailQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
 interface BehaviorDetailProps extends RouteComponentProps<MatchParams> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
     behavior_id: string,
 }
 
@@ -42,7 +40,11 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) =
                 if (props && props.node) {
                     return (
                         <>
-                            <BehaviorBreadcrumb behavior={props.node} active={true} />
+                            <BehaviorBreadcrumb
+                                behavior={props.node}
+                                active={true}
+                                training_stages={false}
+                            />
                             <Container>
                                 <BehaviorCard behavior={props.node} />
                             </Container>

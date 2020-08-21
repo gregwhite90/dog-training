@@ -7,14 +7,12 @@ import PendingInvitations from './PendingInvitations';
 import DogsBreadcrumb from './DogsBreadcrumb';
 
 import type { DogsPageQuery } from '__generated__/DogsPageQuery.graphql';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 import type { RouteComponentProps } from 'react-router-dom';
 
 // TODO: pass down the match params (empty object in this case)
 interface DogsPageProps extends RouteComponentProps<{}> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
 }
 
 const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {

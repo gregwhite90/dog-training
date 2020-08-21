@@ -173,6 +173,7 @@ export type Behavior = Node & {
   /** The ID of an object */
   id: Scalars['ID'];
   dog?: Maybe<Dog>;
+  trainingStages?: Maybe<TrainingStageConnection>;
   name: Scalars['String'];
   /** Explanation of the desired behavior in clear, plain language. */
   explanation?: Maybe<Scalars['String']>;
@@ -189,6 +190,54 @@ export type Behavior = Node & {
   /** The verbal command used to release this behavior. */
   release_command?: Maybe<Scalars['String']>;
 };
+
+
+export type BehaviorTrainingStagesArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+/** A connection to a list of items. */
+export type TrainingStageConnection = {
+  __typename?: 'TrainingStageConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingStageEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingStageEdge = {
+  __typename?: 'TrainingStageEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TrainingStage>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type TrainingStage = Node & {
+  __typename?: 'TrainingStage';
+  /** The ID of an object */
+  id: Scalars['ID'];
+  behavior?: Maybe<Behavior>;
+  /** The order within the sequence of training stages for this behavior */
+  seq: Scalars['Int'];
+  /** Whether this stage includes an incentive method */
+  incentive: Scalars['Boolean'];
+  /** Whether this stage includes a verbal command */
+  verbal: Scalars['Boolean'];
+  /** Whether this stage includes a hand signal */
+  hand: Scalars['Boolean'];
+  /** How frequently successful behavior is rewarded. */
+  reward_frequency?: Maybe<RewardFrequency>;
+};
+
+export enum RewardFrequency {
+  Continuous = 'CONTINUOUS',
+  Intermittent = 'INTERMITTENT'
+}
 
 export enum IncentiveMethod {
   Lure = 'LURE',
@@ -234,6 +283,8 @@ export type Mutation = {
   acceptInvitation?: Maybe<AcceptInvitationPayload>;
   /** Create a new desired behavior for the specified dog */
   createBehavior?: Maybe<CreateBehaviorPayload>;
+  /** Create the training stages for the specified desired behavior */
+  createTrainingStages?: Maybe<CreateTrainingStagesPayload>;
 };
 
 
@@ -259,6 +310,11 @@ export type MutationAcceptInvitationArgs = {
 
 export type MutationCreateBehaviorArgs = {
   input: CreateBehaviorInput;
+};
+
+
+export type MutationCreateTrainingStagesArgs = {
+  input: CreateTrainingStagesInput;
 };
 
 export type CreateDogPayload = {
@@ -345,6 +401,31 @@ export type CreateBehaviorInput = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
+export type CreateTrainingStagesPayload = {
+  __typename?: 'CreateTrainingStagesPayload';
+  trainingStageEdges: Array<TrainingStageEdge>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateTrainingStagesInput = {
+  behavior_id: Scalars['ID'];
+  training_stages: Array<TrainingStageScalarFields>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TrainingStageScalarFields = {
+  /** The order within the sequence of training stages for this behavior */
+  seq: Scalars['Int'];
+  /** Whether this stage includes an incentive method */
+  incentive: Scalars['Boolean'];
+  /** Whether this stage includes a verbal command */
+  verbal: Scalars['Boolean'];
+  /** Whether this stage includes a hand signal */
+  hand: Scalars['Boolean'];
+  /** How frequently successful behavior is rewarded. */
+  reward_frequency?: Maybe<RewardFrequency>;
+};
+
 export type BehaviorBreadcrumb_BehaviorFragment = (
   { __typename?: 'Behavior' }
   & Pick<Behavior, 'id' | 'name'>
@@ -370,7 +451,26 @@ export type BehaviorDetailQueryQuery = (
     { __typename?: 'Behavior' }
     & BehaviorCard_BehaviorFragment
     & BehaviorBreadcrumb_BehaviorFragment
-  ) | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+);
+
+export type BehaviorTrainingStagesCreatorQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BehaviorTrainingStagesCreatorQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | (
+    { __typename?: 'Behavior' }
+    & BehaviorBreadcrumb_BehaviorFragment
+    & CreateTrainingStagesForm_BehaviorFragment
+  ) | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+);
+
+export type CreateTrainingStagesForm_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'id' | 'name' | 'incentive_method' | 'verbal_command'>
 );
 
 export type CreateBehaviorForm_DogFragment = (
@@ -389,7 +489,7 @@ export type DogBehaviorCreatorQueryQuery = (
     { __typename?: 'Dog' }
     & CreateBehaviorForm_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogBehaviorsApp_DogFragment = (
@@ -425,7 +525,7 @@ export type DogBehaviorsPageQueryQuery = (
     { __typename?: 'Dog' }
     & DogBehaviorsApp_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogBreadcrumb_DogFragment = (
@@ -450,7 +550,7 @@ export type DogDetailQueryQuery = (
     & DogCard_DogFragment
     & InviteUserByEmailForm_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogsApp_ViewerFragment = (

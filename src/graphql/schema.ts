@@ -39,7 +39,7 @@ import {
 } from './mutations/Behavior';
 
 import {
-    createTrainingStageMutation,
+    createTrainingStagesMutation,
 } from './mutations/TrainingStage';
 
 /**
@@ -71,7 +71,7 @@ const mutationType = new GraphQLObjectType({
         /* Behavior-focused mutations */
         createBehavior: createBehaviorMutation,
         /* Training stage-focused mutations */
-        createTrainingStage: createTrainingStageMutation,
+        createTrainingStages: createTrainingStagesMutation,
     }),
 });
 
