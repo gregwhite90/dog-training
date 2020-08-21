@@ -4,7 +4,14 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import { Formik, Form as FormikForm, FieldArray, ArrayHelpers } from 'formik';
+import {
+    Formik,
+    Form as FormikForm,
+    FieldArray,
+    ArrayHelpers,
+    Field,
+    FieldInputProps
+} from 'formik';
 import * as yup from 'yup';
 
 import Container from 'react-bootstrap/Container';
@@ -115,39 +122,59 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                 {(arrayHelpers: ArrayHelpers) => (
                                     <Container>
                                         {values.training_stages.map((training_stage, index) => (
-                                            <Container key={index}>
+                                            <Container
+                                                key={index}
+                                                className="p-3 mb-3 border rounded"
+                                            >
+                                                <h4>Stage {index + 1}</h4>
                                                 <Form.Row>
                                                     <Form.Group controlId={`formTrainingStagesPrompts-${index}`}>
                                                         <Form.Label>
                                                             Which prompt methods will be used in this training stage?
                                                         </Form.Label>
-                                                        <Form.Check
-                                                            type="checkbox"
+                                                        <Field
                                                             name={`training_stages[${index}].prompts`}
-                                                            label={`${props.behavior.incentive_method}`}
                                                             value="incentive"
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            id={`formTrainingStagesIncentiveBox-${index}`}
-                                                        />
-                                                        <Form.Check
-                                                            type="checkbox"
+                                                        >
+                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                                <Form.Check
+                                                                    type="checkbox"
+                                                                    label={`${props.behavior.incentive_method}`}
+                                                                    {...field}
+                                                                />
+                                                            )
+                                                            }
+                                                        </Field>
+                                                        <Field
                                                             name={`training_stages[${index}].prompts`}
-                                                            label={`${props.behavior.verbal_command} verbal command`}
                                                             value="verbal"
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            id={`formTrainingStagesVerbalBox-${index}`}
-                                                        />
-                                                        <Form.Check
-                                                            type="checkbox"
+                                                        >
+                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                                <Form.Check
+                                                                    type="checkbox"
+                                                                    label={
+                                                                        props.behavior.verbal_command
+                                                                        ? `${props.behavior.verbal_command} verbal command`
+                                                                        : "Verbal command"
+                                                                    }
+                                                                    {...field}
+                                                                />
+                                                            )
+                                                            }
+                                                        </Field>
+                                                        <Field
                                                             name={`training_stages[${index}].prompts`}
-                                                            label="Hand signal"
                                                             value="hand"
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            id={`formTrainingStagesHandBox-${index}`}
-                                                        />
+                                                        >
+                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                                <Form.Check
+                                                                    type="checkbox"
+                                                                    label="Hand signal"
+                                                                    {...field}
+                                                                />
+                                                            )
+                                                            }
+                                                        </Field>
                                                     </Form.Group>
                                                 </Form.Row>
                                                 <Form.Row>
