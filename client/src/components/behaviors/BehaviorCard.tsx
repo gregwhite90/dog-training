@@ -10,10 +10,6 @@ interface BehaviorCardProps {
 };
 
 const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
-    const node = {
-        title: props.behavior.name,
-        text: props.behavior.explanation,
-    };
     return (
         <Container fluid="md" className="p-3 mb-3 border rounded">
             <h3>{props.behavior.name}</h3>
