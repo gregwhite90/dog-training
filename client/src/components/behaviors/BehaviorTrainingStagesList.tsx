@@ -2,6 +2,8 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { Link } from 'react-router-dom';
 
+import Button from 'react-bootstrap/Button';
+
 import TrainingStageCard from 'components/training_stages/TrainingStageCard';
 
 import type { match } from 'react-router-dom';
@@ -27,6 +29,13 @@ const BehaviorTrainingStagesList: React.FC<BehaviorTrainingStagesListProps> = (p
                     </Link>
                 );
             })}
+            {!edges || edges.length === 0 &&
+                (
+                    <Link to={props.match.url + "/add"}>
+                        <Button variant="primary">Add training stages</Button>
+                    </Link>
+                )
+            }
         </>
     );
 }

@@ -45,6 +45,13 @@ fragment CreateTrainingStagesForm_behavior on Behavior {
   name
   incentive_method
   verbal_command
+  trainingStages(first: 1) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
 }
 */
 
@@ -161,6 +168,46 @@ return {
                 "kind": "ScalarField",
                 "name": "verbal_command",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 1
+                  }
+                ],
+                "concreteType": "TrainingStageConnection",
+                "kind": "LinkedField",
+                "name": "trainingStages",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "TrainingStageEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "TrainingStage",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "trainingStages(first:1)"
               }
             ],
             "type": "Behavior",
@@ -172,12 +219,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d85a0c4d5945e972230eb50ae54f3e3d",
+    "cacheID": "660edf0cf09ee1316eb92c0a67abe859",
     "id": null,
     "metadata": {},
     "name": "BehaviorTrainingStagesCreatorQuery",
     "operationKind": "query",
-    "text": "query BehaviorTrainingStagesCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorBreadcrumb_behavior\n    ...CreateTrainingStagesForm_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment CreateTrainingStagesForm_behavior on Behavior {\n  id\n  name\n  incentive_method\n  verbal_command\n}\n"
+    "text": "query BehaviorTrainingStagesCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorBreadcrumb_behavior\n    ...CreateTrainingStagesForm_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment CreateTrainingStagesForm_behavior on Behavior {\n  id\n  name\n  incentive_method\n  verbal_command\n  trainingStages(first: 1) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

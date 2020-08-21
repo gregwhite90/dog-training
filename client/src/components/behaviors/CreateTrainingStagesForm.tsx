@@ -3,6 +3,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Redirect } from 'react-router-dom';
 
 import {
     Formik,
@@ -81,6 +82,12 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
+
+    if (props.behavior.trainingStages
+        && props.behavior.trainingStages.edges
+        && props.behavior.trainingStages.edges.length > 0) {
+        return <Redirect to={`/behaviors/${props.behavior.id}/stages`} />;
+    }
 
     // TODO: decide which are required
     // TODO: finish the validation schema
@@ -303,6 +310,15 @@ export default createFragmentContainer(CreateTrainingStagesForm, {
             name
             incentive_method
             verbal_command
+            trainingStages(
+                first: 1
+            ) {
+                edges {
+                    node {
+                        id
+                    }
+                }
+            }
         }
     `,
 });
