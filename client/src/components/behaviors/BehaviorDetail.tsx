@@ -1,8 +1,10 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 // TODO: create behavior card
 import BehaviorCard from './BehaviorCard';
@@ -23,7 +25,7 @@ interface BehaviorDetailProps extends RouteComponentProps<MatchParams> {
     behavior_id: string,
 }
 
-const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) => {
+const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_id }) => {
     return (
         <QueryRenderer<BehaviorDetailQuery>
             environment={relay.environment}
@@ -47,6 +49,11 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) =
                             />
                             <Container>
                                 <BehaviorCard behavior={props.node} />
+                                <Link to={`${match.url}/stages`}>
+                                    <Button variant="primary">
+                                        View training stages
+                                    </Button>
+                                </Link>
                             </Container>
                         </>
                     );
