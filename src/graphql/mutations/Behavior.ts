@@ -1,6 +1,5 @@
 import {
     GraphQLNonNull,
-    GraphQLString,
     GraphQLID,
 } from 'graphql';
 
@@ -11,7 +10,6 @@ import {
 } from 'graphql-relay';
 
 import {
-    behaviorType,
     behaviorTypeOwnedScalarFields,
     behaviorEdge,
 } from '../types/objects/Nodes';

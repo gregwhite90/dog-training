@@ -37,15 +37,10 @@ import {
 import {
     createBehaviorMutation,
 } from './mutations/Behavior';
-/**
-const {
-    addTrainingStageMutation,
-    removeTrainingStageMutation,
-} = require('./mutations/TrainingStage');
 
-const { addTrainingSessionMutation } = require('./mutations/TrainingSession');
-const { addTrainingProgressMutation } = require('./mutations/TrainingProgress');
-*/
+import {
+    createTrainingStageMutation,
+} from './mutations/TrainingStage';
 
 /**
  * The entry points into the schema (root types).
@@ -73,21 +68,10 @@ const mutationType = new GraphQLObjectType({
         editDog: editDogMutation,
         inviteUserByEmail: inviteUserByEmailMutation,
         acceptInvitation: acceptInvitationMutation,
-        /**
-        removeDogForViewer: removeDogForViewerMutation,
-        removeDogForAll: removeDogForAllMutation,
         /* Behavior-focused mutations */
         createBehavior: createBehaviorMutation,
-        /*
-        removeBehavior: removeBehaviorMutation,
-        /* Training stage-focused mutations *
-        addTrainingStage: addTrainingStageMutation,
-        removeTrainingStage: removeTrainingStageMutation,
-        /* Training session-focused mutations *
-        addTrainingSession: addTrainingSessionMutation,
-        /* Training session- and Training progress-focused mutations *
-        addTrainingProgress: addTrainingProgressMutation,
-        */
+        /* Training stage-focused mutations */
+        createTrainingStage: createTrainingStageMutation,
     }),
 });
 

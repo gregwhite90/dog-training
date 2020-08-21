@@ -10,6 +10,7 @@ import {
     GraphQLNonNull,
     GraphQLEnumType,
     GraphQLBoolean,
+    GraphQLInt,
 } from 'graphql';
 
 import {
@@ -26,6 +27,7 @@ import {
     AuthDog,
     AuthPendingInvitation,
     AuthBehavior,
+    AuthTrainingStage,
 } from '../../../business-layer/models';
 
 import type {
@@ -338,6 +340,18 @@ const behaviorType = new GraphQLObjectType({
                 return dog_model.get_one({ id: behavior.dog_id });
             }
         },
+        trainingStages: {
+            type: trainingStageConnection,
+            args: connectionArgs,
+            resolve: (behavior, args, context: Context) => {
+                const behavior_model = new AuthBehavior(context);
+                // TODO: confirm that IDs vs objects works correctly
+                return connectionFromPromisedArray(
+                    behavior_model.get_all_training_stage_ids({ id: behavior.id }),
+                    args
+                );
+            },
+        },
         ...behaviorTypeOwnedScalarFields,
     }),
 });
@@ -356,6 +370,69 @@ const {
     // TODO: decide if anything should go on the edge.
 });
 
+const rewardFrequencyType = new GraphQLEnumType({
+    name: 'RewardFrequency',
+    values: {
+        CONTINUOUS: { value: 'CONTINUOUS' },
+        INTERMITTENT: { value: 'INTERMITTENT' },
+    }
+});
+
+const rewardFrequencyDescAndType = {
+    description: 'How frequently successful behavior is rewarded.',
+    type: rewardFrequencyType,
+};
+
+const trainingStageTypeOwnedScalarFields = {
+    seq: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: 'The order within the sequence of training stages for this behavior',
+    },
+    incentive: {
+        type: new GraphQLNonNull(GraphQLBoolean),
+        description: 'Whether this stage includes an incentive method',
+    },
+    verbal: {
+        type: new GraphQLNonNull(GraphQLBoolean),
+        description: 'Whether this stage includes a verbal command',
+    },
+    hand: {
+        type: new GraphQLNonNull(GraphQLBoolean),
+        description: 'Whether this stage includes a hand signal',
+    },
+    reward_frequency: rewardFrequencyDescAndType,
+};
+
+const trainingStageType = new GraphQLObjectType({
+    name: 'TrainingStage',
+    interfaces: [nodeInterface],
+    fields: () => ({
+        id: globalIdField(),
+        behavior: {
+            type: behaviorType,
+            resolve: (trainingStage, _args, context: Context) => {
+                const behavior_model = new AuthBehavior(context);
+                return behavior_model.get_one({ id: trainingStage.behavior_id });
+            }
+        },
+        ...trainingStageTypeOwnedScalarFields,
+    }),
+});
+
+const {
+    connectionType: trainingStageConnection,
+    edgeType: trainingStageEdge
+} = connectionDefinitions({
+    name: 'TrainingStage',
+    nodeType: trainingStageType,
+    resolveNode: (edge, _args, context) => {
+        const training_stage_model = new AuthTrainingStage(context);
+        // TODO: figure out return value
+        return training_stage_model.get_one({ id: edge.node.id });
+    },
+    // TODO: decide if anything should go on the edge.
+});
+
 export {
     dogType,
     dogTypeOwnedScalarFields,
@@ -368,4 +445,7 @@ export {
     behaviorType,
     behaviorEdge,
     behaviorTypeOwnedScalarFields,
+    trainingStageType,
+    trainingStageEdge,
+    trainingStageTypeOwnedScalarFields,
 };

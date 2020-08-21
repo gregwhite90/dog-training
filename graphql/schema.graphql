@@ -123,6 +123,7 @@ type Behavior implements Node {
   """The ID of an object"""
   id: ID!
   dog: Dog
+  trainingStages(after: String, first: Int, before: String, last: Int): TrainingStageConnection
   name: String!
 
   """Explanation of the desired behavior in clear, plain language."""
@@ -147,6 +148,50 @@ type Behavior implements Node {
 
   """The verbal command used to release this behavior."""
   release_command: String
+}
+
+"""A connection to a list of items."""
+type TrainingStageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingStageEdge]
+}
+
+"""An edge in a connection."""
+type TrainingStageEdge {
+  """The item at the end of the edge"""
+  node: TrainingStage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type TrainingStage implements Node {
+  """The ID of an object"""
+  id: ID!
+  behavior: Behavior
+
+  """The order within the sequence of training stages for this behavior"""
+  seq: Int!
+
+  """Whether this stage includes an incentive method"""
+  incentive: Boolean!
+
+  """Whether this stage includes a verbal command"""
+  verbal: Boolean!
+
+  """Whether this stage includes a hand signal"""
+  hand: Boolean!
+
+  """How frequently successful behavior is rewarded."""
+  reward_frequency: RewardFrequency
+}
+
+enum RewardFrequency {
+  CONTINUOUS
+  INTERMITTENT
 }
 
 enum IncentiveMethod {
@@ -194,6 +239,9 @@ type Mutation {
 
   """Create a new desired behavior for the specified dog"""
   createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
+
+  """Create a new stage of training for the specified desired behavior"""
+  createTrainingStage(input: CreateTrainingStageInput!): CreateTrainingStagePayload
 }
 
 type CreateDogPayload {
@@ -285,5 +333,30 @@ input CreateBehaviorInput {
 
   """The verbal command used to release this behavior."""
   release_command: String
+  clientMutationId: String
+}
+
+type CreateTrainingStagePayload {
+  trainingStageEdge: TrainingStageEdge!
+  clientMutationId: String
+}
+
+input CreateTrainingStageInput {
+  behavior_id: ID!
+
+  """The order within the sequence of training stages for this behavior"""
+  seq: Int!
+
+  """Whether this stage includes an incentive method"""
+  incentive: Boolean!
+
+  """Whether this stage includes a verbal command"""
+  verbal: Boolean!
+
+  """Whether this stage includes a hand signal"""
+  hand: Boolean!
+
+  """How frequently successful behavior is rewarded."""
+  reward_frequency: RewardFrequency
   clientMutationId: String
 }

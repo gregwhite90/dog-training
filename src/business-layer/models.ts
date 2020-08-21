@@ -10,6 +10,8 @@ import type {
     behaviorsCreateWithoutDogsInput,
     pending_invitations,
     pending_invitationsCreateWithoutDogsInput,
+    training_stages,
+    training_stagesCreateWithoutBehaviorsInput,
 } from '@prisma/client';
 
 // TODO: clean up the plural throughout
@@ -359,11 +361,71 @@ class AuthBehavior extends AuthModel {
                 : null;
         });
     }
+
+    async get_all_training_stage_ids(
+        { id }: { id: string }
+    ): Promise<{ id: number }[] | null> {
+        return await this.prisma.training_stages.findMany({
+            where: {
+                behavior_id: parseInt(id),
+            },
+            select: {
+                id: true,
+            },
+        });
+    }
 }
+
+class AuthTrainingStage extends AuthModel {
+    constructor(context: Context) {
+        super(context);
+        this.graphql_typename = 'TrainingStage';
+        // TODO: propagate the error if necessary.
+    }
+
+    async create_one({
+        behavior_id,
+        input,
+    }: {
+        behavior_id: string,
+        input: training_stagesCreateWithoutBehaviorsInput,
+    }): Promise<GraphQLObj<training_stages> | null> {
+        return this.prisma.training_stages.create({
+            data: {
+                behaviors: {
+                    connect: {
+                        id: parseInt(behavior_id)
+                    }
+                },
+                ...input
+            },
+        }).then(training_stage => {
+            return training_stage
+                ? this.to_GraphQL_object(training_stage)
+                : null;
+        });
+    }
+
+    // TODO: authentication and authorization strategy
+    async get_one({ id }: { id: string }): Promise<GraphQLObj<training_stages> | null> {
+        // TODO: confirm error handling strategy
+        return this.prisma.training_stages.findOne({
+            where: {
+                id: parseInt(id),
+            }
+        }).then(training_stage => {
+            return training_stage
+                ? this.to_GraphQL_object(training_stage)
+                : null;
+        });
+    }
+}
+
 
 export {
     AuthUser,
     AuthDog,
     AuthPendingInvitation,
     AuthBehavior,
+    AuthTrainingStage,
 };
