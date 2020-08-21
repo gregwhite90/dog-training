@@ -232,7 +232,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                     <Button
                                         variant="primary"
                                         type="submit"
-                                        disabled={!dirty || isSubmitting || !isValid}>
+                                        disabled={isSubmitting || !isValid}>
                                         Add all training stages
                                     </Button>
                                 </Form.Row>

@@ -390,6 +390,8 @@ class AuthTrainingStage extends AuthModel {
         behavior_id: string,
         input: training_stagesCreateWithoutBehaviorsInput,
     }): Promise<GraphQLObj<training_stages> | null> {
+        console.log('in AuthTrainingStage.create_one');
+        console.log(input);
         return this.prisma.training_stages.create({
             data: {
                 behaviors: {

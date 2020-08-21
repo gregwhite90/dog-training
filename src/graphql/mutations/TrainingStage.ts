@@ -70,7 +70,9 @@ const createTrainingStagesMutation = mutationWithClientMutationId({
         console.log(training_stages);
         const training_stage_model = new AuthTrainingStage(context);
         const behavior_model = new AuthBehavior(context);
-        const created_training_stages = Promise.all(training_stages.map(training_stage => {
+        const created_training_stages = await Promise.all(training_stages.map(training_stage => {
+            console.log('In training_stages.map');
+            console.log(training_stage);
             return training_stage_model.create_one({
                 behavior_id: local_behavior_id,
                 input: training_stage,
