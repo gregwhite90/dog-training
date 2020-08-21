@@ -42,6 +42,8 @@ const createTrainingStagesMutation = mutationWithClientMutationId({
         trainingStageEdges: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(trainingStageEdge))),
             resolve: ({ behavior_id, training_stages, behavior_model }) => { // TODO: figure out resolver
+                console.log('In trainingStageEdges resolver');
+                console.log(training_stages);
                 return behavior_model.get_all_training_stage_ids({ id: behavior_id }).then(
                     training_stage_ids => {
                         return training_stages.map(training_stage => ({
@@ -63,6 +65,9 @@ const createTrainingStagesMutation = mutationWithClientMutationId({
     }, context) => {
         const behavior_type_and_id = fromGlobalId(behavior_id);
         const local_behavior_id = behavior_type_and_id.id;
+        console.log('In mutateandgetpayload');
+        console.log(local_behavior_id);
+        console.log(training_stages);
         const training_stage_model = new AuthTrainingStage(context);
         const behavior_model = new AuthBehavior(context);
         const created_training_stages = Promise.all(training_stages.map(training_stage => {
