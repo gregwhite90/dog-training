@@ -372,6 +372,9 @@ class AuthBehavior extends AuthModel {
             select: {
                 id: true,
             },
+            orderBy: {
+                seq: 'asc'
+            }
         });
     }
 }
