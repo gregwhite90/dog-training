@@ -1,6 +1,3 @@
-CREATE DOMAIN UINT as INT
-       CHECK (VALUE >= 0);
-
 CREATE TABLE dogs (
        id           SERIAL PRIMARY KEY,
        name         VARCHAR NOT NULL,
@@ -36,7 +33,7 @@ CREATE TYPE frequency AS ENUM ('CONTINUOUS', 'INTERMITTENT');
 CREATE TABLE training_stages (
        id                    SERIAL PRIMARY KEY,
        behavior_id           INT NOT NULL,
-       seq                   UINT NOT NULL,
+       seq                   INT NOT NULL,
        incentive             BOOLEAN NOT NULL,
        verbal                BOOLEAN NOT NULL,
        hand                  BOOLEAN NOT NULL,
@@ -47,17 +44,21 @@ CREATE TABLE training_stages (
        CONSTRAINT unique_seq
                   UNIQUE(behavior_id, seq),
        CONSTRAINT at_least_one_action
-                  CHECK (incentive OR verbal OR hand)
+                  CHECK (incentive OR verbal OR hand),
+       CONSTRAINT nonnegative_seq
+                  CHECK (seq >= 0)
 );
 
 CREATE TABLE training_sessions (
        id                      SERIAL PRIMARY KEY,
        dog_id                  INT NOT NULL,
-       minutes_long            UINT,
+       minutes_long            INT,
        start_timestamp         TIMESTAMP WITH TIME ZONE,
        CONSTRAINT fk_dog
                   FOREIGN KEY(dog_id) REFERENCES dogs(id)
-                  ON DELETE CASCADE
+                  ON DELETE CASCADE,
+       CONSTRAINT nonnegative_minutes
+                  CHECK (minutes_long IS NULL OR minutes_long >= 0)
 );
 
 CREATE TYPE qualitative_level AS ENUM ('LOW', 'MEDIUM', 'HIGH');
@@ -66,9 +67,9 @@ CREATE TABLE training_progress (
        id                      SERIAL PRIMARY KEY,
        training_session_id     INT NOT NULL,
        training_stage_id       INT NOT NULL,
-       seq                     UINT NOT NULL,
-       successes               UINT,
-       attempts                UINT,
+       seq                     INT NOT NULL,
+       successes               INT,
+       attempts                INT,
        distance                qualitative_level,
        duration                qualitative_level,
        distractions            qualitative_level,
@@ -79,7 +80,13 @@ CREATE TABLE training_progress (
                   FOREIGN KEY(training_stage_id) REFERENCES training_stages(id)
                   ON DELETE CASCADE,
        CONSTRAINT valid_success_rate
-                  CHECK (successes IS NULL OR attempts IS NULL OR successes <= attempts)
+                  CHECK (successes IS NULL OR attempts IS NULL OR successes <= attempts),
+       CONSTRAINT nonnegative_seq
+                  CHECK (seq >= 0),
+       CONSTRAINT nonnegative_successes
+                  CHECK (successes IS NULL OR successes >= 0),
+       CONSTRAINT nonnegative_attempts
+                  CHECK (attempts IS NULL OR attempts >= 0)
 );
 
 CREATE TYPE user_dog_role AS ENUM ('OWNER', 'TRAINER', 'VIEWER');
