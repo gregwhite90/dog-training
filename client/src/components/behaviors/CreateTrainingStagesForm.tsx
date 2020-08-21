@@ -10,7 +10,9 @@ import {
     FieldArray,
     ArrayHelpers,
     Field,
-    FieldInputProps
+    FieldInputProps,
+    getIn,
+    FormikErrors,
 } from 'formik';
 import * as yup from 'yup';
 
@@ -26,12 +28,54 @@ import type {
     CreateTrainingStagesForm_behavior
 } from '__generated__/CreateTrainingStagesForm_behavior.graphql';
 import type { IEnvironment } from 'relay-runtime';
-import type { CreateTrainingStagesInput } from 'generated/graphql';
 
 interface CreateTrainingStagesFormProps {
     relay_environment: IEnvironment,
     behavior: CreateTrainingStagesForm_behavior,
 };
+
+interface CreateTrainingStagesFormValues {
+    training_stages: Array<{
+        prompts: Array<string>,
+        reward_frequency: RewardFrequency,
+    }>,
+}
+
+interface PromptsErrorProps {
+    index: number,
+    errors: FormikErrors<CreateTrainingStagesFormValues>,
+}
+
+const PromptsError: React.FC<PromptsErrorProps> = ({ errors, index }) => {
+    return errors
+        && errors.training_stages
+        && errors.training_stages[index]
+        && typeof errors.training_stages[index] !== 'string'
+        && (errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts
+        && typeof (errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts === 'string'
+        ? (
+            <div className="invalid-feedback">
+                {(errors.training_stages[index] as FormikErrors<{ prompts: string[], reward_frequency: string }>).prompts}
+            </div>
+        )
+        : null;
+}
+
+interface TrainingStagesErrorProps {
+    errors: FormikErrors<CreateTrainingStagesFormValues>,
+}
+
+const TrainingStagesError: React.FC<TrainingStagesErrorProps> = ({ errors }) => {
+    return errors
+        && errors.training_stages
+        && typeof errors.training_stages === 'string'
+        ? (
+            <div className="invalid-feedback">
+                {errors.training_stages}
+            </div>
+        )
+        : null;
+}
 
 const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props) => {
 
@@ -112,8 +156,8 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                 {({ values,
                     handleBlur,
                     handleChange,
-                    dirty,
                     isValid,
+                    errors,
                     isSubmitting }) => (
                         <FormikForm>
                             <FieldArray
@@ -128,7 +172,9 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                             >
                                                 <h4>Stage {index + 1}</h4>
                                                 <Form.Row>
-                                                    <Form.Group controlId={`formTrainingStagesPrompts-${index}`}>
+                                                    <Form.Group
+                                                        controlId={`formTrainingStagesPrompts-${index}`}
+                                                    >
                                                         <Form.Label>
                                                             Which prompt methods will be used in this training stage?
                                                         </Form.Label>
@@ -137,10 +183,11 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             name={`training_stages[${index}].prompts`}
                                                             value="incentive"
                                                         >
-                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                            {({ field, form: { errors } }: { field: FieldInputProps<string>, form: { errors: FormikErrors<CreateTrainingStagesFormValues> } }) => (
                                                                 <Form.Check
                                                                     type="checkbox"
                                                                     label={`${props.behavior.incentive_method}`}
+                                                                    isInvalid={getIn(errors, `training_stages[${index}].prompts`)}
                                                                     {...field}
                                                                 />
                                                             )
@@ -151,7 +198,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             name={`training_stages[${index}].prompts`}
                                                             value="verbal"
                                                         >
-                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                            {({ field, form: { errors } }: { field: FieldInputProps<string>, form: { errors: FormikErrors<CreateTrainingStagesFormValues> } }) => (
                                                                 <Form.Check
                                                                     type="checkbox"
                                                                     label={
@@ -159,6 +206,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                                             ? `${props.behavior.verbal_command} verbal command`
                                                                             : "Verbal command"
                                                                     }
+                                                                    isInvalid={getIn(errors, `training_stages[${index}].prompts`)}
                                                                     {...field}
                                                                 />
                                                             )
@@ -169,15 +217,17 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             name={`training_stages[${index}].prompts`}
                                                             value="hand"
                                                         >
-                                                            {({ field }: { field: FieldInputProps<string> }) => (
+                                                            {({ field, form: { errors } }: { field: FieldInputProps<string>, form: { errors: FormikErrors<CreateTrainingStagesFormValues> } }) => (
                                                                 <Form.Check
                                                                     type="checkbox"
                                                                     label="Hand signal"
+                                                                    isInvalid={getIn(errors, `training_stages[${index}].prompts`)}
                                                                     {...field}
                                                                 />
                                                             )
                                                             }
                                                         </Field>
+                                                        <PromptsError errors={errors} index={index} />
                                                     </Form.Group>
                                                 </Form.Row>
                                                 <Form.Row>
@@ -215,6 +265,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                 </Form.Row>
                                             </Container>
                                         ))}
+                                        <TrainingStagesError errors={errors} />
                                         <Form.Row>
                                             <Button
                                                 variant="primary"
