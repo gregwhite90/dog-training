@@ -120,7 +120,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                 name="training_stages"
                             >
                                 {(arrayHelpers: ArrayHelpers) => (
-                                    <Container>
+                                    <Container className="p-3 mb-3 border rounded">
                                         {values.training_stages.map((training_stage, index) => (
                                             <Container
                                                 key={index}
@@ -183,7 +183,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                 <Form.Row>
                                                     <Form.Group>
                                                         <Form.Label>
-                                                            Frequency of rewards for successful attempts at this stage:
+                                                            How frequently should successful attempts be rewarded at this stage?
                                                         </Form.Label>
                                                         <Form.Control
                                                             as="select"
