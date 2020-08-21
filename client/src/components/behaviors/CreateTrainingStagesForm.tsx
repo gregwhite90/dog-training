@@ -133,6 +133,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             Which prompt methods will be used in this training stage?
                                                         </Form.Label>
                                                         <Field
+                                                            type="checkbox"
                                                             name={`training_stages[${index}].prompts`}
                                                             value="incentive"
                                                         >
@@ -146,6 +147,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             }
                                                         </Field>
                                                         <Field
+                                                            type="checkbox"
                                                             name={`training_stages[${index}].prompts`}
                                                             value="verbal"
                                                         >
@@ -154,8 +156,8 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                                     type="checkbox"
                                                                     label={
                                                                         props.behavior.verbal_command
-                                                                        ? `${props.behavior.verbal_command} verbal command`
-                                                                        : "Verbal command"
+                                                                            ? `${props.behavior.verbal_command} verbal command`
+                                                                            : "Verbal command"
                                                                     }
                                                                     {...field}
                                                                 />
@@ -163,6 +165,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             }
                                                         </Field>
                                                         <Field
+                                                            type="checkbox"
                                                             name={`training_stages[${index}].prompts`}
                                                             value="hand"
                                                         >
