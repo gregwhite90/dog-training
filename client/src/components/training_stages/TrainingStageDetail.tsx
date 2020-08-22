@@ -6,58 +6,53 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import BehaviorCard from './BehaviorCard';
-import BehaviorBreadcrumb from './BehaviorBreadcrumb';
+import TrainingStageCard from './TrainingStageCard';
+import TrainingStageBreadcrumb from './TrainingStageBreadcrumb';
 
 // TODO: authorization check
 
 // TODO: fix any types
-import type { BehaviorDetailQuery } from '__generated__/BehaviorDetailQuery.graphql';
+// TODO: create the behavior detail query
+import type { TrainingStageDetailQuery } from '__generated__/TrainingStageDetailQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface BehaviorDetailProps extends RouteComponentProps<MatchParams> {
+interface TrainingStageDetailProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
-    behavior_id: string,
+    training_stage_id: string,
 }
 
-const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_id }) => {
+const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match, training_stage_id }) => {
     return (
-        <QueryRenderer<BehaviorDetailQuery>
+        <QueryRenderer<TrainingStageDetailQuery>
             environment={relay.environment}
             query={graphql`
-                query BehaviorDetailQuery($id: ID!) {
+                query TrainingStageDetailQuery($id: ID!) {
                     node(id: $id) {
-                        ...BehaviorCard_behavior
-                        ...BehaviorBreadcrumb_behavior
+                        ...TrainingStageCard_trainingStage
+                        ...TrainingStageBreadcrumb_trainingStage
                     }
                 }
                 `}
-            variables={{ id: behavior_id }}
+            variables={{ id: training_stage_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
                         <>
-                            <BehaviorBreadcrumb
-                                behavior={props.node}
+                            <TrainingStageBreadcrumb
+                                trainingStage={props.node}
                                 active={true}
-                                training_stages={false}
                             />
                             <Container>
-                                <BehaviorCard behavior={props.node} />
-                                <Link to={`${match.url}/stages`}>
-                                    <Button variant="primary">
-                                        View training stages
-                                    </Button>
-                                </Link>
+                                <TrainingStageCard trainingStage={props.node} />
                             </Container>
                         </>
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
                 return <div>Loading...</div>;
@@ -66,6 +61,6 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_
     );
 }
 
-export default withAuthenticationRequired(BehaviorDetail, {
+export default withAuthenticationRequired(TrainingStageDetail, {
     onRedirecting: () => (<div>Redirecting you to the login page...</div>)
 });
