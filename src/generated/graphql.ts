@@ -7,6 +7,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any;
 };
 
 export type Query = {
@@ -103,6 +105,7 @@ export type Dog = Node & {
   id: Scalars['ID'];
   users?: Maybe<DogToUserConnection>;
   behaviors?: Maybe<BehaviorConnection>;
+  training_sessions?: Maybe<TrainingSessionConnection>;
   name: Scalars['String'];
   /** URL of the profile image of this dog. */
   picture?: Maybe<Scalars['String']>;
@@ -118,6 +121,14 @@ export type DogUsersArgs = {
 
 
 export type DogBehaviorsArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type DogTraining_SessionsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -245,6 +256,45 @@ export enum IncentiveMethod {
 }
 
 /** A connection to a list of items. */
+export type TrainingSessionConnection = {
+  __typename?: 'TrainingSessionConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingSessionEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingSessionEdge = {
+  __typename?: 'TrainingSessionEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TrainingSession>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type TrainingSession = Node & {
+  __typename?: 'TrainingSession';
+  /** The ID of an object */
+  id: Scalars['ID'];
+  dog?: Maybe<Dog>;
+  trainingStages?: Maybe<TrainingStageConnection>;
+  /** The length of the training session, in minutes */
+  minutes_long: Scalars['Int'];
+  /** When this training session was started */
+  start_timestamp: Scalars['DateTime'];
+};
+
+
+export type TrainingSessionTrainingStagesArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+/** A connection to a list of items. */
 export type PendingInvitationConnection = {
   __typename?: 'PendingInvitationConnection';
   /** Information to aid in pagination. */
@@ -285,6 +335,8 @@ export type Mutation = {
   createBehavior?: Maybe<CreateBehaviorPayload>;
   /** Create the training stages for the specified desired behavior */
   createTrainingStages?: Maybe<CreateTrainingStagesPayload>;
+  /** Create a training session for the specified dog */
+  createTrainingSession?: Maybe<CreateTrainingSessionPayload>;
 };
 
 
@@ -315,6 +367,11 @@ export type MutationCreateBehaviorArgs = {
 
 export type MutationCreateTrainingStagesArgs = {
   input: CreateTrainingStagesInput;
+};
+
+
+export type MutationCreateTrainingSessionArgs = {
+  input: CreateTrainingSessionInput;
 };
 
 export type CreateDogPayload = {
@@ -424,4 +481,20 @@ export type TrainingStageScalarFields = {
   hand: Scalars['Boolean'];
   /** How frequently successful behavior is rewarded. */
   reward_frequency?: Maybe<RewardFrequency>;
+};
+
+export type CreateTrainingSessionPayload = {
+  __typename?: 'CreateTrainingSessionPayload';
+  trainingSessionEdge?: Maybe<TrainingSessionEdge>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateTrainingSessionInput = {
+  user_id: Scalars['ID'];
+  dog_id: Scalars['ID'];
+  /** The length of the training session, in minutes */
+  minutes_long: Scalars['Int'];
+  /** When this training session was started */
+  start_timestamp: Scalars['DateTime'];
+  clientMutationId?: Maybe<Scalars['String']>;
 };

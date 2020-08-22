@@ -68,6 +68,7 @@ type Dog implements Node {
   id: ID!
   users(after: String, first: Int, before: String, last: Int): DogToUserConnection
   behaviors(after: String, first: Int, before: String, last: Int): BehaviorConnection
+  training_sessions(after: String, first: Int, before: String, last: Int): TrainingSessionConnection
   name: String!
 
   """URL of the profile image of this dog."""
@@ -200,6 +201,42 @@ enum IncentiveMethod {
 }
 
 """A connection to a list of items."""
+type TrainingSessionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingSessionEdge]
+}
+
+"""An edge in a connection."""
+type TrainingSessionEdge {
+  """The item at the end of the edge"""
+  node: TrainingSession
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type TrainingSession implements Node {
+  """The ID of an object"""
+  id: ID!
+  dog: Dog
+  trainingStages(after: String, first: Int, before: String, last: Int): TrainingStageConnection
+
+  """The length of the training session, in minutes"""
+  minutes_long: Int!
+
+  """When this training session was started"""
+  start_timestamp: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""A connection to a list of items."""
 type PendingInvitationConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
@@ -242,6 +279,9 @@ type Mutation {
 
   """Create the training stages for the specified desired behavior"""
   createTrainingStages(input: CreateTrainingStagesInput!): CreateTrainingStagesPayload
+
+  """Create a training session for the specified dog"""
+  createTrainingSession(input: CreateTrainingSessionInput!): CreateTrainingSessionPayload
 }
 
 type CreateDogPayload {
@@ -362,4 +402,21 @@ input TrainingStageScalarFields {
 
   """How frequently successful behavior is rewarded."""
   reward_frequency: RewardFrequency
+}
+
+type CreateTrainingSessionPayload {
+  trainingSessionEdge: TrainingSessionEdge
+  clientMutationId: String
+}
+
+input CreateTrainingSessionInput {
+  user_id: ID!
+  dog_id: ID!
+
+  """The length of the training session, in minutes"""
+  minutes_long: Int!
+
+  """When this training session was started"""
+  start_timestamp: DateTime!
+  clientMutationId: String
 }
