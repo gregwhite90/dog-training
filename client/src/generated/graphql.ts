@@ -7,6 +7,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any;
 };
 
 export type Query = {
@@ -103,6 +105,7 @@ export type Dog = Node & {
   id: Scalars['ID'];
   users?: Maybe<DogToUserConnection>;
   behaviors?: Maybe<BehaviorConnection>;
+  training_sessions?: Maybe<TrainingSessionConnection>;
   name: Scalars['String'];
   /** URL of the profile image of this dog. */
   picture?: Maybe<Scalars['String']>;
@@ -118,6 +121,14 @@ export type DogUsersArgs = {
 
 
 export type DogBehaviorsArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type DogTraining_SessionsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -245,6 +256,45 @@ export enum IncentiveMethod {
 }
 
 /** A connection to a list of items. */
+export type TrainingSessionConnection = {
+  __typename?: 'TrainingSessionConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingSessionEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingSessionEdge = {
+  __typename?: 'TrainingSessionEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TrainingSession>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type TrainingSession = Node & {
+  __typename?: 'TrainingSession';
+  /** The ID of an object */
+  id: Scalars['ID'];
+  dog?: Maybe<Dog>;
+  trainingStages?: Maybe<TrainingStageConnection>;
+  /** The length of the training session, in minutes */
+  minutes_long: Scalars['Int'];
+  /** When this training session was started */
+  start_timestamp: Scalars['DateTime'];
+};
+
+
+export type TrainingSessionTrainingStagesArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+/** A connection to a list of items. */
 export type PendingInvitationConnection = {
   __typename?: 'PendingInvitationConnection';
   /** Information to aid in pagination. */
@@ -285,6 +335,8 @@ export type Mutation = {
   createBehavior?: Maybe<CreateBehaviorPayload>;
   /** Create the training stages for the specified desired behavior */
   createTrainingStages?: Maybe<CreateTrainingStagesPayload>;
+  /** Create a training session for the specified dog */
+  createTrainingSession?: Maybe<CreateTrainingSessionPayload>;
 };
 
 
@@ -315,6 +367,11 @@ export type MutationCreateBehaviorArgs = {
 
 export type MutationCreateTrainingStagesArgs = {
   input: CreateTrainingStagesInput;
+};
+
+
+export type MutationCreateTrainingSessionArgs = {
+  input: CreateTrainingSessionInput;
 };
 
 export type CreateDogPayload = {
@@ -426,6 +483,22 @@ export type TrainingStageScalarFields = {
   reward_frequency?: Maybe<RewardFrequency>;
 };
 
+export type CreateTrainingSessionPayload = {
+  __typename?: 'CreateTrainingSessionPayload';
+  trainingSessionEdge?: Maybe<TrainingSessionEdge>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateTrainingSessionInput = {
+  user_id: Scalars['ID'];
+  dog_id: Scalars['ID'];
+  /** The length of the training session, in minutes */
+  minutes_long: Scalars['Int'];
+  /** When this training session was started */
+  start_timestamp: Scalars['DateTime'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
 export type BehaviorBreadcrumb_BehaviorFragment = (
   { __typename?: 'Behavior' }
   & Pick<Behavior, 'id' | 'name'>
@@ -451,7 +524,13 @@ export type BehaviorDetailQueryQuery = (
     { __typename?: 'Behavior' }
     & BehaviorCard_BehaviorFragment
     & BehaviorBreadcrumb_BehaviorFragment
-  ) | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
+);
+
+export type BehaviorTrainingStagesApp_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'id' | 'name'>
+  & BehaviorTrainingStagesList_BehaviorFragment
 );
 
 export type BehaviorTrainingStagesCreatorQueryQueryVariables = Exact<{
@@ -465,12 +544,52 @@ export type BehaviorTrainingStagesCreatorQueryQuery = (
     { __typename?: 'Behavior' }
     & BehaviorBreadcrumb_BehaviorFragment
     & CreateTrainingStagesForm_BehaviorFragment
-  ) | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
+);
+
+export type BehaviorTrainingStagesList_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'id'>
+  & { trainingStages?: Maybe<(
+    { __typename?: 'TrainingStageConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'TrainingStageEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'TrainingStage' }
+        & Pick<TrainingStage, 'id'>
+        & TrainingStageCard_TrainingStageFragment
+      )> }
+    )>>> }
+  )> }
+);
+
+export type BehaviorTrainingStagesPageQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BehaviorTrainingStagesPageQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | (
+    { __typename?: 'Behavior' }
+    & BehaviorTrainingStagesApp_BehaviorFragment
+    & BehaviorBreadcrumb_BehaviorFragment
+  ) | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type CreateTrainingStagesForm_BehaviorFragment = (
   { __typename?: 'Behavior' }
   & Pick<Behavior, 'id' | 'name' | 'incentive_method' | 'verbal_command'>
+  & { trainingStages?: Maybe<(
+    { __typename?: 'TrainingStageConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'TrainingStageEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'TrainingStage' }
+        & Pick<TrainingStage, 'id'>
+      )> }
+    )>>> }
+  )> }
 );
 
 export type CreateBehaviorForm_DogFragment = (
@@ -489,7 +608,7 @@ export type DogBehaviorCreatorQueryQuery = (
     { __typename?: 'Dog' }
     & CreateBehaviorForm_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogBehaviorsApp_DogFragment = (
@@ -525,7 +644,7 @@ export type DogBehaviorsPageQueryQuery = (
     { __typename?: 'Dog' }
     & DogBehaviorsApp_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogBreadcrumb_DogFragment = (
@@ -550,7 +669,7 @@ export type DogDetailQueryQuery = (
     & DogCard_DogFragment
     & InviteUserByEmailForm_DogFragment
     & DogBreadcrumb_DogFragment
-  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'PendingInvitation' }> }
+  ) | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );
 
 export type DogsApp_ViewerFragment = (
@@ -613,4 +732,40 @@ export type PendingInvitations_ViewerFragment = (
       )> }
     )>>> }
   )> }
+);
+
+export type TrainingStageBreadcrumb_TrainingStageFragment = (
+  { __typename?: 'TrainingStage' }
+  & Pick<TrainingStage, 'id' | 'seq'>
+  & { behavior?: Maybe<(
+    { __typename?: 'Behavior' }
+    & Pick<Behavior, 'name' | 'id'>
+    & { dog?: Maybe<(
+      { __typename?: 'Dog' }
+      & Pick<Dog, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type TrainingStageCard_TrainingStageFragment = (
+  { __typename?: 'TrainingStage' }
+  & Pick<TrainingStage, 'seq' | 'incentive' | 'verbal' | 'hand' | 'reward_frequency'>
+  & { behavior?: Maybe<(
+    { __typename?: 'Behavior' }
+    & Pick<Behavior, 'incentive_method' | 'verbal_command'>
+  )> }
+);
+
+export type TrainingStageDetailQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type TrainingStageDetailQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | { __typename?: 'Behavior' } | (
+    { __typename?: 'TrainingStage' }
+    & TrainingStageCard_TrainingStageFragment
+    & TrainingStageBreadcrumb_TrainingStageFragment
+  ) | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );

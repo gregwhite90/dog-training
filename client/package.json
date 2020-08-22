@@ -43,7 +43,8 @@
     "eject": "react-app-rewired eject",
     "relay": "relay-compiler --language typescript --artifactDirectory ./src/__generated__/",
     "update-schema": "node ./scripts/updateSchema.js",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "update-graphql": "npm run update-schema && npm run generate"
   },
   "eslintConfig": {
     "extends": "react-app"
