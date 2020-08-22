@@ -42,6 +42,10 @@ import {
     createTrainingStagesMutation,
 } from './mutations/TrainingStage';
 
+import {
+    createTrainingSessionMutation,
+} from './mutations/TrainingSession';
+
 /**
  * The entry points into the schema (root types).
  */
@@ -72,6 +76,8 @@ const mutationType = new GraphQLObjectType({
         createBehavior: createBehaviorMutation,
         /* Training stage-focused mutations */
         createTrainingStages: createTrainingStagesMutation,
+        /* Training session-focused mutations */
+        createTrainingSession: createTrainingSessionMutation,
     }),
 });
 

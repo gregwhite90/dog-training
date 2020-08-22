@@ -23,11 +23,16 @@ import {
 } from 'graphql-relay';
 
 import {
+    GraphQLDateTime,
+} from 'graphql-scalars';
+
+import {
     AuthUser,
     AuthDog,
     AuthPendingInvitation,
     AuthBehavior,
     AuthTrainingStage,
+    AuthTrainingSession,
 } from '../../../business-layer/models';
 
 import type {
@@ -60,6 +65,9 @@ const { nodeInterface, nodeField } = nodeDefinitions<Context>(
             case 'TrainingStage':
                 model = new AuthTrainingStage(context);
                 break;
+            case 'TrainingSession':
+                model = new AuthTrainingSession(context);
+                break;
             default:
                 console.log(`Unknown type in node resolver: ${type}`);
                 break;
@@ -90,6 +98,7 @@ const { nodeInterface, nodeField } = nodeDefinitions<Context>(
 /**
  * Concrete types implementing Node
  */
+// TODO: add training sessions connection
 const userType = new GraphQLObjectType({
     name: 'User',
     interfaces: [nodeInterface],
@@ -179,6 +188,17 @@ const dogType = new GraphQLObjectType({
                 // TODO: confirm that IDs vs objects works correctly
                 return connectionFromPromisedArray(
                     dog_model.get_all_behavior_ids({ id: dog.id }),
+                    args
+                );
+            },
+        },
+        training_sessions: {
+            type: trainingSessionConnection,
+            args: connectionArgs,
+            resolve: (dog: Dog, args, context: Context) => {
+                const dog_model = new AuthDog(context);
+                return connectionFromPromisedArray(
+                    dog_model.get_all_training_session_ids({ id: dog.id }),
                     args
                 );
             },
@@ -406,6 +426,7 @@ const trainingStageTypeOwnedScalarFields = {
     reward_frequency: rewardFrequencyDescAndType,
 };
 
+// TODO: add training session connection? with data on the edge
 const trainingStageType = new GraphQLObjectType({
     name: 'TrainingStage',
     interfaces: [nodeInterface],
@@ -436,6 +457,59 @@ const {
     // TODO: decide if anything should go on the edge.
 });
 
+const trainingSessionTypeOwnedScalarFields = {
+    minutes_long: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: 'The length of the training session, in minutes',
+    },
+    start_timestamp: {
+        type: new GraphQLNonNull(GraphQLDateTime),
+        description: 'When this training session was started',
+    },
+};
+
+// TODO: add users connection
+// TODO: finish training stages connection with data on the edge
+const trainingSessionType = new GraphQLObjectType({
+    name: 'TrainingSession',
+    interfaces: [nodeInterface],
+    fields: () => ({
+        id: globalIdField(),
+        dog: {
+            type: dogType,
+            resolve: (trainingSession, _args, context: Context) => {
+                const dog_model = new AuthDog(context);
+                return dog_model.get_one({ id: trainingSession.dog_id });
+            }
+        },
+        trainingStages: {
+            type: trainingStageConnection,
+            args: connectionArgs,
+            resolve: (trainingSession, args, context: Context) => {
+                const training_session_model = new AuthTrainingSession(context);
+                // TODO: put progress data onto the edge
+                return connectionFromPromisedArray(
+                    training_session_model.get_all_training_stage_ids({ id: trainingSession.id }),
+                    args
+                );
+            },
+        },
+        ...trainingSessionTypeOwnedScalarFields,
+    }),
+});
+
+const {
+    connectionType: trainingSessionConnection,
+    edgeType: trainingSessionEdge
+} = connectionDefinitions({
+    name: 'TrainingSession',
+    nodeType: trainingSessionType,
+    resolveNode: (edge, _args, context) => {
+        const training_session_model = new AuthTrainingSession(context);
+        return training_session_model.get_one({ id: edge.node.id });
+    },
+});
+
 export {
     dogType,
     dogTypeOwnedScalarFields,
@@ -451,4 +525,7 @@ export {
     trainingStageType,
     trainingStageEdge,
     trainingStageTypeOwnedScalarFields,
+    trainingSessionType,
+    trainingSessionEdge,
+    trainingSessionTypeOwnedScalarFields,
 };
