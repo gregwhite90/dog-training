@@ -57,6 +57,9 @@ const { nodeInterface, nodeField } = nodeDefinitions<Context>(
             case 'Behavior':
                 model = new AuthBehavior(context);
                 break;
+            case 'TrainingStage':
+                model = new AuthTrainingStage(context);
+                break;
             default:
                 console.log(`Unknown type in node resolver: ${type}`);
                 break;
