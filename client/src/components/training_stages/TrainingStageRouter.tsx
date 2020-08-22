@@ -4,7 +4,7 @@ import {
     Route,
 } from 'react-router-dom';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import TrainigStageDetail from './TrainingStageDetail';
+import TrainingStageDetail from './TrainingStageDetail';
 
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
