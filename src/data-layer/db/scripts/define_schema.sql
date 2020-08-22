@@ -52,8 +52,8 @@ CREATE TABLE training_stages (
 CREATE TABLE training_sessions (
        id                      SERIAL PRIMARY KEY,
        dog_id                  INT NOT NULL,
+       start_timestamp         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
        minutes_long            INT,
-       start_timestamp         TIMESTAMP WITHOUT TIME ZONE,
        CONSTRAINT fk_dog
                   FOREIGN KEY(dog_id) REFERENCES dogs(id)
                   ON DELETE CASCADE,

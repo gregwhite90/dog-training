@@ -105,7 +105,7 @@ export type Dog = Node & {
   id: Scalars['ID'];
   users?: Maybe<DogToUserConnection>;
   behaviors?: Maybe<BehaviorConnection>;
-  training_sessions?: Maybe<TrainingSessionConnection>;
+  trainingSessions?: Maybe<TrainingSessionConnection>;
   name: Scalars['String'];
   /** URL of the profile image of this dog. */
   picture?: Maybe<Scalars['String']>;
@@ -128,7 +128,7 @@ export type DogBehaviorsArgs = {
 };
 
 
-export type DogTraining_SessionsArgs = {
+export type DogTrainingSessionsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -280,7 +280,7 @@ export type TrainingSession = Node & {
   dog?: Maybe<Dog>;
   trainingStages?: Maybe<TrainingStageConnection>;
   /** The length of the training session, in minutes */
-  minutes_long: Scalars['Int'];
+  minutes_long?: Maybe<Scalars['Int']>;
   /** When this training session was started */
   start_timestamp: Scalars['DateTime'];
 };
@@ -493,7 +493,7 @@ export type CreateTrainingSessionInput = {
   user_id: Scalars['ID'];
   dog_id: Scalars['ID'];
   /** The length of the training session, in minutes */
-  minutes_long: Scalars['Int'];
+  minutes_long?: Maybe<Scalars['Int']>;
   /** When this training session was started */
   start_timestamp: Scalars['DateTime'];
   clientMutationId?: Maybe<Scalars['String']>;

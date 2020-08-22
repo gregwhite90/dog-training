@@ -39,7 +39,7 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_i
                 if (props && props.node) {
                     return (
                         <>
-                            <DogBreadcrumb dog={props.node} behaviors={true} active={true} />
+                            <DogBreadcrumb dog={props.node} final="behaviors" active={true} />
                             <Container>
                                 <DogBehaviorsApp dog={props.node} match={match} />
                             </Container>

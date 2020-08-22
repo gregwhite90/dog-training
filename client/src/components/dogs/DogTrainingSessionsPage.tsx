@@ -6,30 +6,30 @@ import Container from 'react-bootstrap/Container';
 
 import DogBreadcrumb from './DogBreadcrumb';
 
-import CreateBehaviorForm from './CreateBehaviorForm';
+import DogTrainingSessionsApp from './DogTrainingSessionsApp';
 
 // TODO: authorization check
 
 // TODO: fix any types
-import type { DogBehaviorCreatorQuery } from '__generated__/DogBehaviorCreatorQuery.graphql';
+import type { DogTrainingSessionsPageQuery } from '__generated__/DogTrainingSessionsPageQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface DogBehaviorCreatorProps extends RouteComponentProps<MatchParams> {
+interface DogTrainingSessionsPageProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
     dog_id: string,
 }
 
-const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }) => {
+const DogTrainingSessionsPage: React.FC<DogTrainingSessionsPageProps> = ({ relay, match, dog_id }) => {
     return (
-        <QueryRenderer<DogBehaviorCreatorQuery>
+        <QueryRenderer<DogTrainingSessionsPageQuery>
             environment={relay.environment}
             query={graphql`
-                query DogBehaviorCreatorQuery($id: ID!) {
+                query DogTrainingSessionsPageQuery($id: ID!) {
                     node(id: $id) {
-                        ...CreateBehaviorForm_dog
+                        ...DogTrainingSessionsApp_dog
                         ...DogBreadcrumb_dog
                     }
                 }
@@ -39,13 +39,9 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }
                 if (props && props.node) {
                     return (
                         <>
-                            <DogBreadcrumb
-                                dog={props.node}
-                                final="behaviors"
-                                active={false}
-                            />
+                            <DogBreadcrumb dog={props.node} final="sessions" active={true} />
                             <Container>
-                                <CreateBehaviorForm dog={props.node} relay_environment={relay.environment} />
+                                <DogTrainingSessionsApp dog={props.node} match={match} />
                             </Container>
                         </>
                     );
@@ -60,6 +56,6 @@ const DogBehaviorCreator: React.FC<DogBehaviorCreatorProps> = ({ relay, dog_id }
     );
 }
 
-export default withAuthenticationRequired(DogBehaviorCreator, {
+export default withAuthenticationRequired(DogTrainingSessionsPage, {
     onRedirecting: () => (<div>Redirecting you to the login page...</div>)
 });

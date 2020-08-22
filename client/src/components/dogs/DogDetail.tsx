@@ -42,7 +42,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                 if (props && props.node) {
                     return (
                         <>
-                            <DogBreadcrumb dog={props.node} active={true} behaviors={false} />
+                            <DogBreadcrumb dog={props.node} active={true} />
                             <Container>
                                 <DogCard dog={props.node} />
                                 <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />

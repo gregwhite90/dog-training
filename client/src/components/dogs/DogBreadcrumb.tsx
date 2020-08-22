@@ -8,7 +8,7 @@ import type { DogBreadcrumb_dog } from '__generated__/DogBreadcrumb_dog.graphql'
 
 interface DogBreadcrumbProps {
     active: boolean,
-    behaviors: boolean,
+    final?: "behaviors" | "sessions",
     dog: DogBreadcrumb_dog,
 };
 
@@ -22,14 +22,14 @@ const DogBreadcrumb: React.FC<DogBreadcrumbProps> = (props) => {
                     </Breadcrumb.Item>
                 </LinkContainer>
                 <LinkContainer to={`/dogs/${props.dog.id}`}>
-                    <Breadcrumb.Item active={!props.behaviors && props.active}>
+                    <Breadcrumb.Item active={!props.final && props.active}>
                         {props.dog.name}
                     </Breadcrumb.Item>
                 </LinkContainer>
-                {props.behaviors && (
-                    <LinkContainer to={`/dogs/${props.dog.id}/behaviors`}>
-                        <Breadcrumb.Item active={props.behaviors && props.active}>
-                            All behaviors for {props.dog.name}
+                {props.final && (
+                    <LinkContainer to={`/dogs/${props.dog.id}/${props.final}`}>
+                        <Breadcrumb.Item active={props.final && props.active}>
+                            All {props.final} for {props.dog.name}
                         </Breadcrumb.Item>
                     </LinkContainer>
                 )}

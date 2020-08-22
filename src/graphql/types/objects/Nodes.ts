@@ -2,7 +2,7 @@
 // TODO: confirm all types from lower layers
 // TODO: type all lower layers
 // TODO: behavior and pending invitation types
-// TODO: use prisma
+// TODO: camelCase for pending invitations sent and received?
 
 import {
     GraphQLObjectType,
@@ -192,7 +192,7 @@ const dogType = new GraphQLObjectType({
                 );
             },
         },
-        training_sessions: {
+        trainingSessions: {
             type: trainingSessionConnection,
             args: connectionArgs,
             resolve: (dog: Dog, args, context: Context) => {
@@ -459,7 +459,7 @@ const {
 
 const trainingSessionTypeOwnedScalarFields = {
     minutes_long: {
-        type: new GraphQLNonNull(GraphQLInt),
+        type: GraphQLInt,
         description: 'The length of the training session, in minutes',
     },
     start_timestamp: {
