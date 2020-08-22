@@ -18,9 +18,6 @@ const BehaviorTrainingStagesApp: React.FC<BehaviorTrainingStagesAppProps> = (pro
         <>
             <h3>Training stages for {props.behavior.name}</h3>
             <BehaviorTrainingStagesList behavior={props.behavior} match={props.match} />
-            <Link to={props.match.url + "/add"}>
-                <Button variant="primary">Add training stages</Button>
-            </Link>
         </>
     );
 }
