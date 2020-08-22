@@ -36,6 +36,14 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
         dog_id: yup.string()
             .required("A dog ID is required"),
         start_timestamp: yup.string()
+            .transform((value, originalValue) => {
+                if (yup.string().isType(value) && value !== null && value !== undefined) {
+                    const date = new Date(value);
+                    return date.toISOString();
+                } else {
+                    return null;
+                }
+            })
             .required("The start time for this training session is required (an approximation is okay!)"),
         minutes_long: yup.number()
             .integer("Must be a whole number of minutes long")
@@ -52,7 +60,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 initialValues={{
                     dog_id: props.dog.id,
                     user_id: user.sub,
-                    start_timestamp: Date.now().toString(),
+                    start_timestamp: new Date(Date.now()).toISOString(),
                     minutes_long: "",
                 }}
                 validationSchema={validationSchema}
@@ -100,7 +108,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                             <Form.Row>
                                 <Form.Group controlId="formTrainingSessionMinutesLong">
                                     <Form.Label>
-                                        Duration of the trianing session:
+                                        Duration of the training session:
                                     </Form.Label>
                                     <InputGroup>
                                         <Form.Control

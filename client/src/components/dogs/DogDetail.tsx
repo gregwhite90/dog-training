@@ -51,6 +51,11 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                                         View desired behaviors
                                     </Button>
                                 </Link>
+                                <Link to={`${match.url}/sessions`}>
+                                    <Button variant="primary">
+                                        View training sessions
+                                    </Button>
+                                </Link>
                             </Container>
                         </>
                     );
