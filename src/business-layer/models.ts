@@ -457,25 +457,25 @@ class AuthTrainingSession extends AuthModel {
         user_id: string,
         dog_id: string,
         input: training_sessionsCreateWithoutDogsInput,
-    }): Promise<GraphQLObj<user_training_sessions> | null> {
-        return this.prisma.user_training_sessions.create({
+    }): Promise<GraphQLObj<training_sessions> | null> {
+        return this.prisma.training_sessions.create({
             data: {
-                user_id,
-                user_role: 'MAINTAINER',
-                training_sessions: {
-                    create: {
-                        dogs: {
-                            connect: {
-                                id: parseInt(dog_id)
-                            }
-                        },
-                        ...input
+                dogs: {
+                    connect: {
+                        id: parseInt(dog_id),
                     },
                 },
+                user_training_sessions: {
+                    create: {
+                        user_id: user_id,
+                        user_role: 'MAINTAINER',
+                    },
+                },
+                ...input,
             },
-        }).then(user_training_session => {
-            return user_training_session
-                ? this.to_GraphQL_object(user_training_session)
+        }).then(training_session => {
+            return training_session
+                ? this.to_GraphQL_object(training_session)
                 : null;
         });
     }
