@@ -31,10 +31,6 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
     // TODO: only allow one of shape vs. lure?
 
     const validationSchema = yup.object<CreateTrainingSessionInput>().shape({
-        user_id: yup.string()
-            .required("A user ID is required"),
-        dog_id: yup.string()
-            .required("A dog ID is required"),
         start_timestamp: yup.string()
             .transform((value, originalValue) => {
                 if (yup.string().isType(value) && value !== null && value !== undefined) {
@@ -46,6 +42,14 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
             })
             .required("The start time for this training session is required (an approximation is okay!)"),
         minutes_long: yup.number()
+            .nullable(true)
+            .transform((value, originalValue) => {
+                if (yup.string().isType(value) && value === "") {
+                    return null;
+                } else {
+                    return value;
+                }
+            })
             .integer("Must be a whole number of minutes long")
             .positive("Must be a positive number of minutes long"),
     });
@@ -58,9 +62,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
             <h3>Create a training session for {props.dog.name}!</h3>
             <Formik
                 initialValues={{
-                    dog_id: props.dog.id,
-                    user_id: user.sub,
-                    start_timestamp: new Date(Date.now()).toISOString(),
+                    start_timestamp: new Date(Date.now()).toISOString().split(/Z/gi)[0],
                     minutes_long: "",
                 }}
                 validationSchema={validationSchema}
@@ -69,6 +71,8 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                     CreateTrainingSessionMutation.commit(
                         props.relay_environment,
                         {
+                            dog_id: props.dog.id,
+                            user_id: user.sub,
                             ...validationSchema.cast(values),
                         } as CreateTrainingSessionInput,
                         () => {
