@@ -62,7 +62,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
             <h3>Create a training session for {props.dog.name}!</h3>
             <Formik
                 initialValues={{
-                    start_timestamp: new Date(Date.now()).toISOString().split(/Z/gi)[0],
+                    start_timestamp: "",
                     minutes_long: "",
                 }}
                 validationSchema={validationSchema}
@@ -86,6 +86,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 {({ values,
                     handleBlur,
                     handleChange,
+                    dirty,
                     errors,
                     touched,
                     isValid,
@@ -135,7 +136,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                             <Form.Row>
                                 <Button variant="primary"
                                     type="submit"
-                                    disabled={isSubmitting || !isValid}>
+                                    disabled={!dirty || isSubmitting || !isValid}>
                                     Add training session
                                 </Button>
                             </Form.Row>
