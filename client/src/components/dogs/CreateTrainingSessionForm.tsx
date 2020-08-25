@@ -51,7 +51,6 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 default:
                     return yup.string()
                         .oneOf([""], "Duration must be a number, or left empty")
-                        .required()
                         .transform((value, originalValue) => {
                             return yup.string().isType(value) && value === "" ? null : value;
                         });
