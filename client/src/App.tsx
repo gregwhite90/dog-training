@@ -18,6 +18,7 @@ import About from 'components/pages/About';
 import DogsRouter from 'components/dogs/DogsRouter';
 import BehaviorsRouter from 'components/behaviors/BehaviorsRouter';
 import TrainingStagesRouter from 'components/training_stages/TrainingStagesRouter';
+import TrainingSessionsRouter from 'components/training_sessions/TrainingSessionsRouter';
 
 import './App.scss';
 
@@ -57,6 +58,9 @@ class App extends React.Component<any, any> {
                         )} />
                         <Route path="/stages" render={(props: any) => (
                             <TrainingStagesRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/sessions" render={(props: any) => (
+                            <TrainingSessionsRouter {...props} relay={this.state.relay} />
                         )} />
                         <Route path="/" component={Home} />
                     </Switch>

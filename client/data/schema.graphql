@@ -25,6 +25,7 @@ type User implements Node {
   dogs(after: String, first: Int, before: String, last: Int): UserToDogConnection
   pending_invitations_sent(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
   pending_invitations_received(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
+  training_sessions(after: String, first: Int, before: String, last: Int): UserToTrainingSessionConnection!
 }
 
 """A connection to a list of items."""
@@ -263,6 +264,32 @@ type PendingInvitation implements Node {
   dog: Dog
 }
 
+"""A connection to a list of items."""
+type UserToTrainingSessionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserToTrainingSessionEdge]
+}
+
+"""An edge in a connection."""
+type UserToTrainingSessionEdge {
+  """The item at the end of the edge"""
+  node: TrainingSession
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The role the user plays for the training session."""
+  user_role: UserTrainingSessionRole
+}
+
+enum UserTrainingSessionRole {
+  MAINTAINER
+  PARTICIPANT
+}
+
 type Mutation {
   """Create a new dog with the currently logged in user as an 'owner'."""
   createDog(input: CreateDogInput!): CreateDogPayload
@@ -282,6 +309,11 @@ type Mutation {
 
   """Create a training session for the specified dog"""
   createTrainingSession(input: CreateTrainingSessionInput!): CreateTrainingSessionPayload
+
+  """
+  Create logs of training progress achieved on the specified training stage in the specified training session
+  """
+  createTrainingProgresses(input: CreateTrainingProgressesInput!): CreateTrainingProgressesPayload
 }
 
 type CreateDogPayload {
@@ -419,4 +451,86 @@ input CreateTrainingSessionInput {
   """When this training session was started"""
   start_timestamp: DateTime!
   clientMutationId: String
+}
+
+type CreateTrainingProgressesPayload {
+  trainingStageEdges: [TrainingSessionToTrainingStageEdge!]!
+  clientMutationId: String
+}
+
+"""An edge in a connection."""
+type TrainingSessionToTrainingStageEdge {
+  """The item at the end of the edge"""
+  node: TrainingStage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """
+  Order within the sequence of training progresses in this training session
+  """
+  seq: Int!
+
+  """The number of successful attempts of this training stage"""
+  successes: Int
+
+  """The number of total attempts of this training stage"""
+  attempts: Int
+
+  """
+  A qualitative assessment of the distance between human and dog while training this stage
+  """
+  distance: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage
+  """
+  duration: QualitativeLevel
+
+  """
+  A qualitative assessment of the amount of distractions for the dog while training this stage
+  """
+  distractions: QualitativeLevel
+}
+
+enum QualitativeLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+input CreateTrainingProgressesInput {
+  training_session_id: ID!
+  training_progresses: [TrainingProgress!]!
+  clientMutationId: String
+}
+
+input TrainingProgress {
+  training_stage_id: ID!
+
+  """
+  Order within the sequence of training progresses in this training session
+  """
+  seq: Int!
+
+  """The number of successful attempts of this training stage"""
+  successes: Int
+
+  """The number of total attempts of this training stage"""
+  attempts: Int
+
+  """
+  A qualitative assessment of the distance between human and dog while training this stage
+  """
+  distance: QualitativeLevel
+
+  """
+  A qualitative assessment of the amount of distractions for the dog while training this stage
+  """
+  distractions: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage
+  """
+  duration: QualitativeLevel
 }
