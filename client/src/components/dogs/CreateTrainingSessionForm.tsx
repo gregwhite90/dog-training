@@ -41,17 +41,22 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 }
             })
             .required("The start time for this training session is required (an approximation is okay!)"),
-        minutes_long: yup.number()
-            .nullable(true)
-            .transform((value, originalValue) => {
-                if (yup.string().isType(value) && value === "") {
-                    return null;
-                } else {
-                    return value;
-                }
-            })
-            .integer("Must be a whole number of minutes long")
-            .positive("Must be a positive number of minutes long"),
+        minutes_long: yup.lazy(value => {
+            switch (typeof value) {
+                case 'number':
+                    return yup.number()
+                        .nullable(true)
+                        .integer("Must be a whole number of minutes long")
+                        .positive("Must be a positive number of minutes long");
+                default:
+                    return yup.string()
+                        .oneOf([""], "Duration must be a number, or left empty")
+                        .required()
+                        .transform((value, originalValue) => {
+                            return yup.string().isType(value) && value === "" ? null : value;
+                        });
+            }
+        }),
     });
 
     // TODO: add styling to the error message
@@ -143,7 +148,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                         </FormikForm>
                     )}
             </Formik>
-        </Container>
+        </Container >
     );
 }
 
