@@ -139,13 +139,16 @@ const userType = new GraphQLObjectType({
                 );
             }
         },
-        /**
         training_sessions: {
             type: new GraphQLNonNull(userToTrainingSessionConnection),
             args: connectionArgs,
-            // TODO: actually implement resolver
+            resolve: (user: User, args, context: Context) => {
+                const user_model = new AuthUser(context);
+                return connectionFromPromisedArray(
+                    user_model.get_all_training_sessions({ id: user.id }), args
+                );
+            },
         },
-        */
     }),
 });
 
@@ -263,6 +266,7 @@ const { connectionType: userToDogConnection, edgeType: userToDogEdge } = connect
         },
     }),
 });
+
 
 const pendingInvitationType = new GraphQLObjectType({
     name: 'PendingInvitation',
@@ -510,6 +514,281 @@ const {
     },
 });
 
+const userTrainingSessionRoleType = new GraphQLEnumType({
+    name: 'UserTrainingSessionRole',
+    values: {
+        MAINTAINER: { value: 'MAINTAINER' },
+        PARTICIPANT: { value: 'PARTICIPANT' },
+    }
+});
+
+const userTrainingSessionRoleDescAndType = {
+    description: 'The role the user plays for the training session.',
+    type: userTrainingSessionRoleType,
+};
+
+const {
+    connectionType: trainingSessionToUserConnection,
+    edgeType: trainingSessionToUserEdge
+} = connectionDefinitions({
+    name: 'TrainingSessionToUser',
+    nodeType: userType,
+    resolveNode: (edge: { node: { id: string, user_role: string } }, args, context: Context) => {
+        const user_model = new AuthUser(context);
+        return user_model.get_one({ id: edge.node.id });
+    },
+    edgeFields: () => ({
+        user_role: {
+            ...userTrainingSessionRoleDescAndType,
+            resolve: (edge: { node: { id: string, user_role: string } }) => {
+                return edge.node.user_role;
+            },
+        },
+    }),
+});
+
+const {
+    connectionType: userToTrainingSessionConnection,
+    edgeType: userToTrainingSessionEdge,
+} = connectionDefinitions({
+    name: 'UserToTrainingSession',
+    nodeType: trainingSessionType,
+    resolveNode: (edge, args, context) => {
+        const training_session_model = new AuthTrainingSession(context);
+        return training_session_model.get_one({ id: edge.node.id });
+    },
+    edgeFields: () => ({
+        user_role: {
+            ...userTrainingSessionRoleDescAndType,
+            resolve: (edge) => {
+                return edge.node.user_role;
+            },
+        },
+    }),
+});
+
+const qualitativeLevelType = new GraphQLEnumType({
+    name: 'QualitativeLevel',
+    values: {
+        LOW: { value: 'LOW' },
+        MEDIUM: { value: 'MEDIUM' },
+        HIGH: { value: 'HIGH' },
+    }
+});
+
+const trainingProgressTypeOwnedScalarFields = {
+    seq: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: 'Order within the sequence of training progresses in this training session',
+    },
+    successes: {
+        type: GraphQLInt,
+        description: 'The number of successful attempts of this training stage',
+    },
+    attempts: {
+        type: GraphQLInt,
+        description: 'The number of total attempts of this training stage',
+    },
+    distance: {
+        type: qualitativeLevelType,
+        description: 'A qualitative assessment of the distance between human and dog while training this stage',
+    },
+    distractions: {
+        type: qualitativeLevelType,
+        description: 'A qualitative assessment of the amount of distractions for the dog while training this stage',
+    },
+    duration: {
+        type: qualitativeLevelType,
+        description: 'A qualitative assessment of the duration of the behavior attempted while training this stage',
+    },
+};
+
+const {
+    connectionType: trainingSessionToTrainingStageConnection,
+    edgeType: trainingSessionToTrainingStageEdge
+} = connectionDefinitions({
+    name: 'TrainingSessionToTrainingStage',
+    nodeType: trainingStageType,
+    resolveNode: (edge: { node: { id: string, training_progress: typeof trainingProgressTypeOwnedScalarFields } }, args, context: Context) => {
+        const training_stage_model = new AuthTrainingStage(context);
+        return training_stage_model.get_one({ id: edge.node.id });
+    },
+    edgeFields: () => ({
+        seq: {
+            ...trainingProgressTypeOwnedScalarFields.seq,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.seq;
+            },
+        },
+        successes: {
+            ...trainingProgressTypeOwnedScalarFields.successes,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.successes;
+            },
+        },
+        attempts: {
+            ...trainingProgressTypeOwnedScalarFields.attempts,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.attempts;
+            },
+        },
+        distance: {
+            ...trainingProgressTypeOwnedScalarFields.distance,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.distance;
+            },
+        },
+        duration: {
+            ...trainingProgressTypeOwnedScalarFields.duration,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.duration;
+            },
+        },
+        distractions: {
+            ...trainingProgressTypeOwnedScalarFields.distractions,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.distractions;
+            },
+        },
+    }),
+});
+
+const {
+    connectionType: trainingStageToTrainingSessionConnection,
+    edgeType: trainingStageToTrainingSessionEdge,
+} = connectionDefinitions({
+    name: 'TrainingStageToTrainingSession',
+    nodeType: trainingSessionType,
+    resolveNode: (edge, args, context) => {
+        const training_session_model = new AuthTrainingSession(context);
+        return training_session_model.get_one({ id: edge.node.id });
+    },
+    edgeFields: () => ({
+        seq: {
+            ...trainingProgressTypeOwnedScalarFields.seq,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.seq;
+            },
+        },
+        successes: {
+            ...trainingProgressTypeOwnedScalarFields.successes,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.successes;
+            },
+        },
+        attempts: {
+            ...trainingProgressTypeOwnedScalarFields.attempts,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.attempts;
+            },
+        },
+        distance: {
+            ...trainingProgressTypeOwnedScalarFields.distance,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.distance;
+            },
+        },
+        duration: {
+            ...trainingProgressTypeOwnedScalarFields.duration,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.duration;
+            },
+        },
+        distractions: {
+            ...trainingProgressTypeOwnedScalarFields.distractions,
+            resolve: (
+                edge: {
+                    node: {
+                        id: string,
+                        training_progress: typeof trainingProgressTypeOwnedScalarFields
+                    }
+                }
+            ) => {
+                return edge.node.training_progress.distractions;
+            },
+        },
+    }),
+});
+
+
+
 export {
     dogType,
     dogTypeOwnedScalarFields,
@@ -528,4 +807,7 @@ export {
     trainingSessionType,
     trainingSessionEdge,
     trainingSessionTypeOwnedScalarFields,
+    qualitativeLevelType,
+    trainingProgressTypeOwnedScalarFields,
+    trainingSessionToTrainingStageEdge,
 };

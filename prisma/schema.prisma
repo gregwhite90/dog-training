@@ -45,7 +45,6 @@ model pending_invitations {
 }
 
 model training_progress {
-  id                  Int                @default(autoincrement()) @id
   training_session_id Int
   training_stage_id   Int
   seq                 Int
@@ -57,7 +56,7 @@ model training_progress {
   training_sessions   training_sessions  @relation(fields: [training_session_id], references: [id])
   training_stages     training_stages    @relation(fields: [training_stage_id], references: [id])
 
-  @@unique([training_session_id, seq], name: "unique_session_seq")
+  @@id([training_session_id, seq])
 }
 
 model training_sessions {

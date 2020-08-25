@@ -6,6 +6,7 @@ import type {
     dogs,
     dogsCreateInput,
     user_dog_role,
+    user_training_session_role,
     behaviors,
     behaviorsCreateWithoutDogsInput,
     pending_invitations,
@@ -14,7 +15,8 @@ import type {
     training_stagesCreateWithoutBehaviorsInput,
     training_sessions,
     training_sessionsCreateWithoutDogsInput,
-    user_training_sessions,
+    training_progress, // TODO: confirm
+    training_progressCreateWithoutTraining_sessionsInput,
 } from '@prisma/client';
 
 // TODO: clean up the plural throughout
@@ -122,6 +124,30 @@ class AuthUser extends AuthModel {
 
     async get_email({ id }) {
         return User.get_email({ id });
+    }
+
+    async get_all_training_sessions(
+        { id }: { id: string }
+    ): Promise<{ id: number, user_role: user_training_session_role }[] | null> {
+        // TODO: figure out auth
+        if (id !== this.user_id) {
+            throw new Error('Attempted unauthorized access.');
+        }
+        return this.prisma.user_training_sessions.findMany({
+            where: {
+                user_id: id,
+            },
+            select: {
+                training_session_id: true,
+                user_role: true,
+            }
+        }).then(training_sessions => {
+            return training_sessions.map(({ training_session_id, user_role }) => ({
+                id: training_session_id,
+                user_role,
+            }));
+        });
+        // TODO: deal with null return value
     }
 }
 
@@ -514,6 +540,53 @@ class AuthTrainingSession extends AuthModel {
     }
 }
 
+class AuthTrainingProgress extends AuthModel {
+    constructor(context: Context) {
+        super(context);
+        this.graphql_typename = 'TrainingProgress';
+        // TODO: propagate the error if necessary.
+    }
+
+    async create_one({
+        training_session_id,
+        input,
+    }: {
+        training_session_id: string,
+        input: training_progressCreateWithoutTraining_sessionsInput,
+    }): Promise<GraphQLObj<training_progress> | null> {
+        return this.prisma.training_progress.create({
+            data: {
+                training_sessions: {
+                    connect: {
+                        id: parseInt(training_session_id)
+                    }
+                },
+                ...input
+            },
+        }).then(training_stage => {
+            return training_stage
+                ? this.to_GraphQL_object(training_stage)
+                : null;
+        });
+    }
+
+    // TODO: authentication and authorization strategy
+    async get_one({ training_session_id, seq }: { training_session_id: string, seq: number }): Promise<GraphQLObj<training_progress> | null> {
+        // TODO: confirm error handling strategy
+        return this.prisma.training_progress.findOne({
+            where: {
+                training_session_id_seq: {
+                    training_session_id: parseInt(training_session_id),
+                    seq,
+                },
+            }
+        }).then(training_progress => {
+            return training_progress
+                ? this.to_GraphQL_object(training_progress)
+                : null;
+        });
+    }
+}
 
 export {
     AuthUser,
@@ -522,4 +595,5 @@ export {
     AuthBehavior,
     AuthTrainingStage,
     AuthTrainingSession,
+    AuthTrainingProgress,
 };

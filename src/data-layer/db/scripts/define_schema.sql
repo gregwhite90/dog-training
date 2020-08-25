@@ -64,7 +64,6 @@ CREATE TABLE training_sessions (
 CREATE TYPE qualitative_level AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
 CREATE TABLE training_progress (
-       id                      SERIAL PRIMARY KEY,
        training_session_id     INT NOT NULL,
        training_stage_id       INT NOT NULL,
        seq                     INT NOT NULL,
@@ -79,8 +78,8 @@ CREATE TABLE training_progress (
        CONSTRAINT fk_training_stage
                   FOREIGN KEY(training_stage_id) REFERENCES training_stages(id)
                   ON DELETE CASCADE,
-       CONSTRAINT unique_session_seq
-                  UNIQUE(training_session_id, seq),
+       CONSTRAINT pk_session_seq
+                  PRIMARY KEY(training_session_id, seq),
        CONSTRAINT valid_success_rate
                   CHECK (successes IS NULL OR attempts IS NULL OR successes <= attempts),
        CONSTRAINT nonnegative_seq
