@@ -50,6 +50,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                         .positive("Must be a positive number of minutes long");
                 default:
                     return yup.string()
+                        .nullable(true)
                         .oneOf([""], "Duration must be a number, or left empty")
                         .transform((value, originalValue) => {
                             return yup.string().isType(value) && value === "" ? null : value;
