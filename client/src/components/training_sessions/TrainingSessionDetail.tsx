@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 
 import TrainingSessionCard from './TrainingSessionCard';
 import TrainingSessionBreadcrumb from './TrainingSessionBreadcrumb';
+import TrainingSessionTrainingProgressesList from './TrainingSessionTrainingProgressesList';
 
 // TODO: authorization check
 
@@ -33,6 +34,7 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                     node(id: $id) {
                         ...TrainingSessionCard_trainingSession
                         ...TrainingSessionBreadcrumb_trainingSession
+                        ...TrainingSessionTrainingProgressesList_trainingSession
                     }
                 }
                 `}
@@ -47,6 +49,11 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                             />
                             <Container>
                                 <TrainingSessionCard trainingSession={props.node} />
+                            </Container>
+                            <Container>
+                                <TrainingSessionTrainingProgressesList
+                                    trainingSession={props.node}
+                                />
                             </Container>
                         </>
                     );

@@ -223,13 +223,63 @@ type TrainingSession implements Node {
   """The ID of an object"""
   id: ID!
   dog: Dog
-  trainingStages(after: String, first: Int, before: String, last: Int): TrainingStageConnection
+  trainingStages(after: String, first: Int, before: String, last: Int): TrainingSessionToTrainingStageConnection
 
   """The length of the training session, in minutes"""
   minutes_long: Int
 
   """When this training session was started"""
   start_timestamp: DateTime!
+}
+
+"""A connection to a list of items."""
+type TrainingSessionToTrainingStageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingSessionToTrainingStageEdge]
+}
+
+"""An edge in a connection."""
+type TrainingSessionToTrainingStageEdge {
+  """The item at the end of the edge"""
+  node: TrainingStage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """
+  Order within the sequence of training progresses in this training session
+  """
+  seq: Int!
+
+  """The number of successful attempts of this training stage"""
+  successes: Int
+
+  """The number of total attempts of this training stage"""
+  attempts: Int
+
+  """
+  A qualitative assessment of the distance between human and dog while training this stage
+  """
+  distance: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage
+  """
+  duration: QualitativeLevel
+
+  """
+  A qualitative assessment of the amount of distractions for the dog while training this stage
+  """
+  distractions: QualitativeLevel
+}
+
+enum QualitativeLevel {
+  LOW
+  MEDIUM
+  HIGH
 }
 
 """
@@ -456,47 +506,6 @@ input CreateTrainingSessionInput {
 type CreateTrainingProgressesPayload {
   trainingStageEdges: [TrainingSessionToTrainingStageEdge!]!
   clientMutationId: String
-}
-
-"""An edge in a connection."""
-type TrainingSessionToTrainingStageEdge {
-  """The item at the end of the edge"""
-  node: TrainingStage
-
-  """A cursor for use in pagination"""
-  cursor: String!
-
-  """
-  Order within the sequence of training progresses in this training session
-  """
-  seq: Int!
-
-  """The number of successful attempts of this training stage"""
-  successes: Int
-
-  """The number of total attempts of this training stage"""
-  attempts: Int
-
-  """
-  A qualitative assessment of the distance between human and dog while training this stage
-  """
-  distance: QualitativeLevel
-
-  """
-  A qualitative assessment of the duration of the behavior attempted while training this stage
-  """
-  duration: QualitativeLevel
-
-  """
-  A qualitative assessment of the amount of distractions for the dog while training this stage
-  """
-  distractions: QualitativeLevel
-}
-
-enum QualitativeLevel {
-  LOW
-  MEDIUM
-  HIGH
 }
 
 input CreateTrainingProgressesInput {

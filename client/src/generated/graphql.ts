@@ -287,7 +287,7 @@ export type TrainingSession = Node & {
   /** The ID of an object */
   id: Scalars['ID'];
   dog?: Maybe<Dog>;
-  trainingStages?: Maybe<TrainingStageConnection>;
+  trainingStages?: Maybe<TrainingSessionToTrainingStageConnection>;
   /** The length of the training session, in minutes */
   minutes_long?: Maybe<Scalars['Int']>;
   /** When this training session was started */
@@ -301,6 +301,42 @@ export type TrainingSessionTrainingStagesArgs = {
   before?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
 };
+
+/** A connection to a list of items. */
+export type TrainingSessionToTrainingStageConnection = {
+  __typename?: 'TrainingSessionToTrainingStageConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingSessionToTrainingStageEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingSessionToTrainingStageEdge = {
+  __typename?: 'TrainingSessionToTrainingStageEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TrainingStage>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+  /** Order within the sequence of training progresses in this training session */
+  seq: Scalars['Int'];
+  /** The number of successful attempts of this training stage */
+  successes?: Maybe<Scalars['Int']>;
+  /** The number of total attempts of this training stage */
+  attempts?: Maybe<Scalars['Int']>;
+  /** A qualitative assessment of the distance between human and dog while training this stage */
+  distance?: Maybe<QualitativeLevel>;
+  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
+  duration?: Maybe<QualitativeLevel>;
+  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
+  distractions?: Maybe<QualitativeLevel>;
+};
+
+export enum QualitativeLevel {
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH'
+}
 
 
 /** A connection to a list of items. */
@@ -545,33 +581,6 @@ export type CreateTrainingProgressesPayload = {
   trainingStageEdges: Array<TrainingSessionToTrainingStageEdge>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
-
-/** An edge in a connection. */
-export type TrainingSessionToTrainingStageEdge = {
-  __typename?: 'TrainingSessionToTrainingStageEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<TrainingStage>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-  /** Order within the sequence of training progresses in this training session */
-  seq: Scalars['Int'];
-  /** The number of successful attempts of this training stage */
-  successes?: Maybe<Scalars['Int']>;
-  /** The number of total attempts of this training stage */
-  attempts?: Maybe<Scalars['Int']>;
-  /** A qualitative assessment of the distance between human and dog while training this stage */
-  distance?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
-  duration?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
-  distractions?: Maybe<QualitativeLevel>;
-};
-
-export enum QualitativeLevel {
-  Low = 'LOW',
-  Medium = 'MEDIUM',
-  High = 'HIGH'
-}
 
 export type CreateTrainingProgressesInput = {
   training_session_id: Scalars['ID'];
@@ -885,12 +894,52 @@ export type PendingInvitations_ViewerFragment = (
   )> }
 );
 
+export type TrainingSessionBreadcrumb_TrainingSessionFragment = (
+  { __typename?: 'TrainingSession' }
+  & Pick<TrainingSession, 'id' | 'start_timestamp'>
+  & { dog?: Maybe<(
+    { __typename?: 'Dog' }
+    & Pick<Dog, 'name' | 'id'>
+  )> }
+);
+
 export type TrainingSessionCard_TrainingSessionFragment = (
   { __typename?: 'TrainingSession' }
   & Pick<TrainingSession, 'start_timestamp' | 'minutes_long'>
   & { dog?: Maybe<(
     { __typename?: 'Dog' }
     & Pick<Dog, 'id' | 'name'>
+  )> }
+);
+
+export type TrainingSessionDetailQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type TrainingSessionDetailQueryQuery = (
+  { __typename?: 'Query' }
+  & { node?: Maybe<{ __typename?: 'User' } | { __typename?: 'Dog' } | { __typename?: 'Behavior' } | { __typename?: 'TrainingStage' } | (
+    { __typename?: 'TrainingSession' }
+    & TrainingSessionCard_TrainingSessionFragment
+    & TrainingSessionBreadcrumb_TrainingSessionFragment
+    & TrainingSessionTrainingProgressesList_TrainingSessionFragment
+  ) | { __typename?: 'PendingInvitation' }> }
+);
+
+export type TrainingSessionTrainingProgressesList_TrainingSessionFragment = (
+  { __typename?: 'TrainingSession' }
+  & Pick<TrainingSession, 'id'>
+  & { trainingStages?: Maybe<(
+    { __typename?: 'TrainingSessionToTrainingStageConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'TrainingSessionToTrainingStageEdge' }
+      & Pick<TrainingSessionToTrainingStageEdge, 'seq' | 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
+      & { node?: Maybe<(
+        { __typename?: 'TrainingStage' }
+        & Pick<TrainingStage, 'id'>
+      )> }
+    )>>> }
   )> }
 );
 

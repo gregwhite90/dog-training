@@ -487,7 +487,7 @@ const trainingSessionType = new GraphQLObjectType({
             }
         },
         trainingStages: {
-            type: trainingStageConnection,
+            type: trainingSessionToTrainingStageConnection,
             args: connectionArgs,
             resolve: (trainingSession, args, context: Context) => {
                 const training_session_model = new AuthTrainingSession(context);
