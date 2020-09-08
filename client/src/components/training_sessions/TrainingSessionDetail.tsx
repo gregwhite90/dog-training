@@ -53,6 +53,7 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                             <Container>
                                 <TrainingSessionTrainingProgressesList
                                     trainingSession={props.node}
+                                    match={match}
                                 />
                             </Container>
                         </>

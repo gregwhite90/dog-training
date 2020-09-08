@@ -2,7 +2,6 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { Link } from 'react-router-dom';
 
-import TrainingProgressCard from 'components/training_progress/TrainingProgressCard';
 import Container from 'react-bootstrap/Container';
 
 import type { match } from 'react-router-dom';
@@ -27,14 +26,14 @@ const TrainingSessionTrainingProgressesList: React.FC<TrainingSessionTrainingPro
             {edges.map(edge => {
                 return (
                     <Container key={edge!.seq}>
-                        {edge.successes &&
+                        {edge!.successes &&
                             (
-                                <span>{edge.successes} successes</span>
+                                <span>{edge!.successes} successes</span>
                             )
                         }
-                        {edge.attempts &&
+                        {edge!.attempts &&
                             (
-                                <span>{edge.successes && "on"}{edge.attempts} attempts</span>
+                                <span>{edge!.successes && "on"}{edge!.attempts} attempts</span>
                             )
                         }
                     </Container>
