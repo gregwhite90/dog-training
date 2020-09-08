@@ -523,19 +523,20 @@ class AuthTrainingSession extends AuthModel {
     // TODO: also include the data for the edge
     async get_all_training_stage_ids(
         { id }: { id: string }
-    ): Promise<{ id: number }[] | null> {
+    ): Promise<{
+        id: number,
+        training_progress: training_progress,
+    }[] | null> {
         return await this.prisma.training_progress.findMany({
             where: {
                 training_session_id: parseInt(id),
             },
-            select: {
-                training_stage_id: true,
-            },
             orderBy: {
                 seq: 'asc'
             }
-        }).then(training_stage_ids => training_stage_ids.map(training_stage => ({
-            id: training_stage.training_stage_id
+        }).then(training_progresses => training_progresses.map(training_progress => ({
+            id: training_progress.training_stage_id,
+            training_progress,
         })));
     }
 }

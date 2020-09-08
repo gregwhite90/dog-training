@@ -492,7 +492,10 @@ const trainingSessionType = new GraphQLObjectType({
             resolve: (trainingSession, args, context: Context) => {
                 const training_session_model = new AuthTrainingSession(context);
                 // TODO: put progress data onto the edge
-                return connectionFromPromisedArray(
+                return connectionFromPromisedArray<{
+                    id: number,
+                    training_progress: ITrainingProgress,
+                }>(
                     training_session_model.get_all_training_stage_ids({ id: trainingSession.id }),
                     args
                 );
@@ -603,26 +606,39 @@ const trainingProgressTypeOwnedScalarFields = {
     },
 };
 
+interface ITrainingProgress {
+    seq: number,
+    successes?: number,
+    attempts?: number,
+    distance?: string,
+    distractions?: string,
+    duration?: string,
+}
+
+interface ITrainingSessionToTrainingStageEdge {
+    node: {
+        id: number,
+        training_progress: ITrainingProgress,
+    }
+}
+
+interface ITrainingStageToTrainingSessionEdge extends ITrainingSessionToTrainingStageEdge { }
+
 const {
     connectionType: trainingSessionToTrainingStageConnection,
     edgeType: trainingSessionToTrainingStageEdge
 } = connectionDefinitions({
     name: 'TrainingSessionToTrainingStage',
     nodeType: trainingStageType,
-    resolveNode: (edge: { node: { id: string, training_progress: typeof trainingProgressTypeOwnedScalarFields } }, args, context: Context) => {
+    resolveNode: (edge: ITrainingSessionToTrainingStageEdge, args, context: Context) => {
         const training_stage_model = new AuthTrainingStage(context);
-        return training_stage_model.get_one({ id: edge.node.id });
+        return training_stage_model.get_one({ id: edge.node.id.toString() });
     },
     edgeFields: () => ({
         seq: {
             ...trainingProgressTypeOwnedScalarFields.seq,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.seq;
             },
@@ -630,12 +646,7 @@ const {
         successes: {
             ...trainingProgressTypeOwnedScalarFields.successes,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.successes;
             },
@@ -643,12 +654,7 @@ const {
         attempts: {
             ...trainingProgressTypeOwnedScalarFields.attempts,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.attempts;
             },
@@ -656,12 +662,7 @@ const {
         distance: {
             ...trainingProgressTypeOwnedScalarFields.distance,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.distance;
             },
@@ -669,12 +670,7 @@ const {
         duration: {
             ...trainingProgressTypeOwnedScalarFields.duration,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.duration;
             },
@@ -682,12 +678,7 @@ const {
         distractions: {
             ...trainingProgressTypeOwnedScalarFields.distractions,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingSessionToTrainingStageEdge
             ) => {
                 return edge.node.training_progress.distractions;
             },
@@ -709,12 +700,7 @@ const {
         seq: {
             ...trainingProgressTypeOwnedScalarFields.seq,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.seq;
             },
@@ -722,12 +708,7 @@ const {
         successes: {
             ...trainingProgressTypeOwnedScalarFields.successes,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.successes;
             },
@@ -735,12 +716,7 @@ const {
         attempts: {
             ...trainingProgressTypeOwnedScalarFields.attempts,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.attempts;
             },
@@ -748,12 +724,7 @@ const {
         distance: {
             ...trainingProgressTypeOwnedScalarFields.distance,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.distance;
             },
@@ -761,12 +732,7 @@ const {
         duration: {
             ...trainingProgressTypeOwnedScalarFields.duration,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.duration;
             },
@@ -774,12 +740,7 @@ const {
         distractions: {
             ...trainingProgressTypeOwnedScalarFields.distractions,
             resolve: (
-                edge: {
-                    node: {
-                        id: string,
-                        training_progress: typeof trainingProgressTypeOwnedScalarFields
-                    }
-                }
+                edge: ITrainingStageToTrainingSessionEdge
             ) => {
                 return edge.node.training_progress.distractions;
             },
