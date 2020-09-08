@@ -10,6 +10,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 
+import { nullable_number } from 'components/utils/FormValidationUtils';
+
 import CreateTrainingSessionMutation from 'relay/mutations/CreateTrainingSessionMutation';
 
 // For types
@@ -41,22 +43,13 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 }
             })
             .required("The start time for this training session is required (an approximation is okay!)"),
-        minutes_long: yup.lazy(value => {
-            switch (typeof value) {
-                case 'number':
-                    return yup.number()
-                        .nullable(true)
-                        .integer("Must be a whole number of minutes long")
-                        .positive("Must be a positive number of minutes long");
-                default:
-                    return yup.string()
-                        .nullable(true)
-                        .oneOf([""], "Duration must be a number, or left empty")
-                        .transform((value, originalValue) => {
-                            return yup.string().isType(value) && value === "" ? null : value;
-                        });
-            }
-        }),
+        minutes_long: nullable_number(
+            yup.number()
+                .nullable(true)
+                .integer("Must be a whole number of minutes long")
+                .positive("Must be a positive number of minutes long"),
+            "Duration must be a number, or left empty"
+        ),
     });
 
     // TODO: add styling to the error message
