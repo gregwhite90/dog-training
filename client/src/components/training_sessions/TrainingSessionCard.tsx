@@ -20,7 +20,7 @@ const TrainingSessionCard: React.FC<TrainingSessionCardProps> = (props) => {
                     trainingSession={props.trainingSession}
                     date={true}
                     time={true}
-                    minutes={true}
+                    minutes={false}
                 />
             </p>
         </Container>

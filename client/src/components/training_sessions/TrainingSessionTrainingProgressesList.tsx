@@ -34,7 +34,7 @@ const TrainingSessionTrainingProgressesList: React.FC<TrainingSessionTrainingPro
                         }
                         {edge!.attempts &&
                             (
-                                <span>{edge!.successes && "on"}{edge!.attempts} attempts</span>
+                                <span>{edge!.successes && " on "}{edge!.attempts} attempts</span>
                             )
                         }
                     </Container>
