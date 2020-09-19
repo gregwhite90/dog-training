@@ -3,6 +3,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 import type { match } from 'react-router-dom';
 import type { TrainingSessionTrainingProgressesList_trainingSession } from '__generated__/TrainingSessionTrainingProgressesList_trainingSession.graphql';
@@ -39,6 +40,13 @@ const TrainingSessionTrainingProgressesList: React.FC<TrainingSessionTrainingPro
                     </Container>
                 );
             })}
+            {!edges || edges.length === 0 &&
+                (
+                    <Link to={props.match.url + "/add"}>
+                        <Button variant="primary">Log training progress</Button>
+                    </Link>
+                )
+            }
         </>
     );
 }

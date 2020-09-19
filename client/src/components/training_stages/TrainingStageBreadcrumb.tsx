@@ -45,7 +45,7 @@ const TrainingStageBreadcrumb: React.FC<TrainingStageBreadcrumbProps> = (props) 
                     </LinkContainer>
                     <LinkContainer to={`/stages/${props.trainingStage.id}`}>
                         <Breadcrumb.Item active={props.active}>
-                            Stage {props.trainingStage.seq}
+                            Stage {props.trainingStage.seq + 1}
                         </Breadcrumb.Item>
                     </LinkContainer>
                 </Breadcrumb>

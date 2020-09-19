@@ -4,30 +4,29 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type TrainingSessionDetailQueryVariables = {
+export type TrainingSessionTrainingProgressesPageQueryVariables = {
     id: string;
 };
-export type TrainingSessionDetailQueryResponse = {
+export type TrainingSessionTrainingProgressesPageQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"TrainingSessionCard_trainingSession" | "TrainingSessionBreadcrumb_trainingSession" | "TrainingSessionTrainingProgressesList_trainingSession">;
+        readonly " $fragmentRefs": FragmentRefs<"TrainingSessionTrainingProgressesApp_trainingSession" | "TrainingSessionBreadcrumb_trainingSession">;
     } | null;
 };
-export type TrainingSessionDetailQuery = {
-    readonly response: TrainingSessionDetailQueryResponse;
-    readonly variables: TrainingSessionDetailQueryVariables;
+export type TrainingSessionTrainingProgressesPageQuery = {
+    readonly response: TrainingSessionTrainingProgressesPageQueryResponse;
+    readonly variables: TrainingSessionTrainingProgressesPageQueryVariables;
 };
 
 
 
 /*
-query TrainingSessionDetailQuery(
+query TrainingSessionTrainingProgressesPageQuery(
   $id: ID!
 ) {
   node(id: $id) {
     __typename
-    ...TrainingSessionCard_trainingSession
+    ...TrainingSessionTrainingProgressesApp_trainingSession
     ...TrainingSessionBreadcrumb_trainingSession
-    ...TrainingSessionTrainingProgressesList_trainingSession
     id
   }
 }
@@ -41,17 +40,19 @@ fragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {
   ...TrainingSessionName_trainingSession
 }
 
-fragment TrainingSessionCard_trainingSession on TrainingSession {
+fragment TrainingSessionName_trainingSession on TrainingSession {
+  start_timestamp
+  minutes_long
+}
+
+fragment TrainingSessionTrainingProgressesApp_trainingSession on TrainingSession {
+  id
   dog {
     id
     name
   }
+  ...TrainingSessionTrainingProgressesList_trainingSession
   ...TrainingSessionName_trainingSession
-}
-
-fragment TrainingSessionName_trainingSession on TrainingSession {
-  start_timestamp
-  minutes_long
 }
 
 fragment TrainingSessionTrainingProgressesList_trainingSession on TrainingSession {
@@ -119,7 +120,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "TrainingSessionDetailQuery",
+    "name": "TrainingSessionTrainingProgressesPageQuery",
     "selections": [
       {
         "alias": null,
@@ -132,17 +133,12 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "TrainingSessionCard_trainingSession"
+            "name": "TrainingSessionTrainingProgressesApp_trainingSession"
           },
           {
             "args": null,
             "kind": "FragmentSpread",
             "name": "TrainingSessionBreadcrumb_trainingSession"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "TrainingSessionTrainingProgressesList_trainingSession"
           }
         ],
         "storageKey": null
@@ -155,7 +151,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "TrainingSessionDetailQuery",
+    "name": "TrainingSessionTrainingProgressesPageQuery",
     "selections": [
       {
         "alias": null,
@@ -187,20 +183,6 @@ return {
                     "storageKey": null
                   }
                 ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "start_timestamp",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "minutes_long",
                 "storageKey": null
               },
               {
@@ -320,6 +302,20 @@ return {
                 "key": "TrainingSessionTrainingProgressesList_trainingStages",
                 "kind": "LinkedHandle",
                 "name": "trainingStages"
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "start_timestamp",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "minutes_long",
+                "storageKey": null
               }
             ],
             "type": "TrainingSession",
@@ -331,14 +327,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d2397a68d47b653c951cd32f9e83f52f",
+    "cacheID": "a10ee4ee2414488c4094045539f1e946",
     "id": null,
     "metadata": {},
-    "name": "TrainingSessionDetailQuery",
+    "name": "TrainingSessionTrainingProgressesPageQuery",
     "operationKind": "query",
-    "text": "query TrainingSessionDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionCard_trainingSession\n    ...TrainingSessionBreadcrumb_trainingSession\n    ...TrainingSessionTrainingProgressesList_trainingSession\n    id\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingSessionTrainingProgressesList_trainingSession on TrainingSession {\n  id\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        __typename\n      }\n      seq\n      successes\n      attempts\n      distance\n      distractions\n      duration\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query TrainingSessionTrainingProgressesPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionTrainingProgressesApp_trainingSession\n    ...TrainingSessionBreadcrumb_trainingSession\n    id\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingSessionTrainingProgressesApp_trainingSession on TrainingSession {\n  id\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionTrainingProgressesList_trainingSession\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionTrainingProgressesList_trainingSession on TrainingSession {\n  id\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        __typename\n      }\n      seq\n      successes\n      attempts\n      distance\n      distractions\n      duration\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '58bc07cffec75ebcbfa6bb89dc685709';
+(node as any).hash = 'bb35dd7e57c6c86b5875bac6e5d37497';
 export default node;

@@ -5,12 +5,11 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type TrainingSessionCard_trainingSession = {
-    readonly start_timestamp: unknown;
-    readonly minutes_long: number | null;
     readonly dog: {
         readonly id: string;
         readonly name: string;
     } | null;
+    readonly " $fragmentRefs": FragmentRefs<"TrainingSessionName_trainingSession">;
     readonly " $refType": "TrainingSessionCard_trainingSession";
 };
 export type TrainingSessionCard_trainingSession$data = TrainingSessionCard_trainingSession;
@@ -27,20 +26,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "name": "TrainingSessionCard_trainingSession",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "start_timestamp",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "minutes_long",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -65,10 +50,15 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "TrainingSessionName_trainingSession"
     }
   ],
   "type": "TrainingSession",
   "abstractKey": null
 };
-(node as any).hash = 'f4f05ff21f95d286bbebfb725b507610';
+(node as any).hash = '0bae4283f28b0470622abb4190b464b8';
 export default node;

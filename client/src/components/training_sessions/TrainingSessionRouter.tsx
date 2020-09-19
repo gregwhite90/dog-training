@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import TrainingSessionDetail from './TrainingSessionDetail';
+import TrainingSessionTrainingProgressesRouter from './TrainingSessionTrainingProgressesRouter';
 
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
@@ -20,6 +21,13 @@ interface TrainingSessionRouterProps extends RouteComponentProps<MatchParams> {
 const TrainingSessionRouter: React.FC<TrainingSessionRouterProps> = (props) => {
     return (
         <Switch>
+            <Route path={props.match.url + "/progress"} render={(p) => (
+                <TrainingSessionTrainingProgressesRouter
+                    {...p}
+                    training_session_id={props.match.params.id}
+                    relay={props.relay}
+                />
+            )} />
             <Route path={props.match.url + "/"} render={(p) => (
                 <TrainingSessionDetail {...p} training_session_id={props.match.params.id} relay={props.relay} />
             )} />

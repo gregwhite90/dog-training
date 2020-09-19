@@ -6,34 +6,31 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import TrainingSessionCard from './TrainingSessionCard';
 import TrainingSessionBreadcrumb from './TrainingSessionBreadcrumb';
 
-// TODO: authorization check
+import TrainingSessionTrainingProgressesApp from './TrainingSessionTrainingProgressesApp';
 
-// TODO: fix any types
-// TODO: create the behavior detail query
-import type { TrainingSessionDetailQuery } from '__generated__/TrainingSessionDetailQuery.graphql';
+import type { TrainingSessionTrainingProgressesPageQuery } from '__generated__/TrainingSessionTrainingProgressesPageQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface TrainingSessionDetailProps extends RouteComponentProps<MatchParams> {
+interface TrainingSessionTrainingProgressesPageProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
     training_session_id: string,
 }
 
-const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, match, training_session_id }) => {
+// TODO: only allow for the creation once.
+const TrainingSessionTrainingProgressesPage: React.FC<TrainingSessionTrainingProgressesPageProps> = ({ relay, match, training_session_id }) => {
     return (
-        <QueryRenderer<TrainingSessionDetailQuery>
+        <QueryRenderer<TrainingSessionTrainingProgressesPageQuery>
             environment={relay.environment}
             query={graphql`
-                query TrainingSessionDetailQuery($id: ID!) {
+                query TrainingSessionTrainingProgressesPageQuery($id: ID!) {
                     node(id: $id) {
-                        ...TrainingSessionCard_trainingSession
+                        ...TrainingSessionTrainingProgressesApp_trainingSession
                         ...TrainingSessionBreadcrumb_trainingSession
-                        ...TrainingSessionTrainingProgressesList_trainingSession
                     }
                 }
                 `}
@@ -44,16 +41,11 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                         <>
                             <TrainingSessionBreadcrumb
                                 trainingSession={props.node}
+                                progresses={true}
                                 active={true}
-                                progresses={false}
                             />
                             <Container>
-                                <TrainingSessionCard trainingSession={props.node} />
-                                <Link to={`${match.url}/progress`}>
-                                    <Button variant="primary">
-                                        View training progress
-                                    </Button>
-                                </Link>
+                                <TrainingSessionTrainingProgressesApp trainingSession={props.node} match={match} />
                             </Container>
                         </>
                     );
@@ -61,13 +53,12 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
-
                 return <div>Loading...</div>;
             }}
         />
     );
 }
 
-export default withAuthenticationRequired(TrainingSessionDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+export default withAuthenticationRequired(TrainingSessionTrainingProgressesPage, {
+    onRedirecting: () => (<div>Redirecting you to the login page</div>)
 });

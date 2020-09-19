@@ -61,12 +61,16 @@ fragment DogTrainingSessionsList_dog on Dog {
 }
 
 fragment TrainingSessionCard_trainingSession on TrainingSession {
-  start_timestamp
-  minutes_long
   dog {
     id
     name
   }
+  ...TrainingSessionName_trainingSession
+}
+
+fragment TrainingSessionName_trainingSession on TrainingSession {
+  start_timestamp
+  minutes_long
 }
 */
 
@@ -193,6 +197,19 @@ return {
                           {
                             "alias": null,
                             "args": null,
+                            "concreteType": "Dog",
+                            "kind": "LinkedField",
+                            "name": "dog",
+                            "plural": false,
+                            "selections": [
+                              (v3/*: any*/),
+                              (v4/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
                             "name": "start_timestamp",
                             "storageKey": null
@@ -202,19 +219,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "minutes_long",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Dog",
-                            "kind": "LinkedField",
-                            "name": "dog",
-                            "plural": false,
-                            "selections": [
-                              (v3/*: any*/),
-                              (v4/*: any*/)
-                            ],
                             "storageKey": null
                           },
                           (v2/*: any*/)
@@ -278,12 +282,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "752dd1feed89fcd84e8a5b4243545582",
+    "cacheID": "57d365677e4feba04a0b1b91b31c126e",
     "id": null,
     "metadata": {},
     "name": "DogTrainingSessionsPageQuery",
     "operationKind": "query",
-    "text": "query DogTrainingSessionsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogTrainingSessionsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogTrainingSessionsApp_dog on Dog {\n  id\n  name\n  ...DogTrainingSessionsList_dog\n}\n\nfragment DogTrainingSessionsList_dog on Dog {\n  id\n  trainingSessions(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingSessionCard_trainingSession\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n  dog {\n    id\n    name\n  }\n}\n"
+    "text": "query DogTrainingSessionsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogTrainingSessionsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogTrainingSessionsApp_dog on Dog {\n  id\n  name\n  ...DogTrainingSessionsList_dog\n}\n\nfragment DogTrainingSessionsList_dog on Dog {\n  id\n  trainingSessions(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingSessionCard_trainingSession\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n"
   }
 };
 })();
