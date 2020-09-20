@@ -548,11 +548,15 @@ class AuthTrainingProgress extends AuthModel {
         // TODO: propagate the error if necessary.
     }
 
+    // TODO: the type signature here is wrong: the input (that we care about)
+    // does not have a training_stages or a training_sessions field
     async create_one({
         training_session_id,
+        training_stage_id,
         input,
     }: {
         training_session_id: string,
+        training_stage_id: string,
         input: training_progressCreateWithoutTraining_sessionsInput,
     }): Promise<GraphQLObj<training_progress> | null> {
         return this.prisma.training_progress.create({
@@ -560,6 +564,11 @@ class AuthTrainingProgress extends AuthModel {
                 training_sessions: {
                     connect: {
                         id: parseInt(training_session_id)
+                    }
+                },
+                training_stages: {
+                    connect: {
+                        id: parseInt(training_stage_id)
                     }
                 },
                 ...input
