@@ -18,3 +18,21 @@ export function nullable_number(
         }
     });
 };
+
+export function nullable_string() {
+    return yup.string()
+        .nullable()
+        .transform((value, originalValue) => {
+            return value || null;
+        });
+};
+
+// TODO: figure out how to use enum in generic guard
+export function nullable_enum(enum_obj: any) {
+    return yup.mixed<string>()
+        .oneOf([""].concat(Object.values(enum_obj)))
+        .nullable()
+        .transform((value, originalValue) => {
+            return value || null;
+        });
+};

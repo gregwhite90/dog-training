@@ -9,6 +9,8 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import { nullable_string } from 'components/utils/FormValidationUtils';
+
 import CreateBehaviorMutation from 'relay/mutations/CreateBehaviorMutation';
 import { IncentiveMethod } from 'generated/graphql';
 
@@ -32,12 +34,6 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
 
     // TODO: decide which are required
     // TODO: only allow one of shape vs. lure?
-
-    const nullable_string = () => yup.string()
-        .nullable()
-        .transform((value, originalValue) => {
-            return value ? originalValue : null;
-        });
 
     const validationSchema = yup.object<CreateBehaviorInput>().shape({
         dog_id: yup.string()

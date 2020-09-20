@@ -23,7 +23,10 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import { nullable_number } from 'components/utils/FormValidationUtils';
+import {
+    nullable_number,
+    nullable_enum,
+} from 'components/utils/FormValidationUtils';
 
 import CreateTrainingProgressesMutation from 'relay/mutations/CreateTrainingProgressesMutation';
 import { QualitativeLevel } from 'generated/graphql';
@@ -44,9 +47,9 @@ interface CreateTrainingProgressesFormValues {
         training_stage_id: string,
         successes: number,
         attempts: number,
-        distance: QualitativeLevel,
-        distractions: QualitativeLevel,
-        duration: QualitativeLevel,
+        distance: QualitativeLevel | null,
+        distractions: QualitativeLevel | null,
+        duration: QualitativeLevel | null,
     }>,
 }
 
@@ -88,12 +91,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                         .positive("Must be a positive number of attempts"),
                     "Attempts must be a number, or left empty"
                 ),
-                distance: yup.mixed<QualitativeLevel>()
-                    .oneOf(Object.values(QualitativeLevel)),
-                distractions: yup.mixed<QualitativeLevel>()
-                    .oneOf(Object.values(QualitativeLevel)),
-                duration: yup.mixed<QualitativeLevel>()
-                    .oneOf(Object.values(QualitativeLevel)),
+                distance: nullable_enum(QualitativeLevel),
+                distractions: nullable_enum(QualitativeLevel),
+                duration: nullable_enum(QualitativeLevel),
             })
         )
             .required("You must log at least one stage of a behavior you trained during this session"),
@@ -135,9 +135,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                 training_stage_id: training_progress!.training_stage_id,
                                 successes: training_progress!.successes,
                                 attempts: training_progress!.attempts,
-                                distractions: training_progress!.distractions as QualitativeLevel,
-                                distance: training_progress!.distance as QualitativeLevel,
-                                duration: training_progress!.duration as QualitativeLevel,
+                                distractions: training_progress!.distractions as QualitativeLevel | null,
+                                distance: training_progress!.distance as QualitativeLevel | null,
+                                duration: training_progress!.duration as QualitativeLevel | null,
                             })),
                         },
                         () => {
@@ -214,7 +214,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                 <Form.Row>
                                                     <Form.Group>
                                                         <Form.Label>
-                                                            Distance?
+                                                            Distance
                                                         </Form.Label>
                                                         <Form.Control
                                                             as="select"
@@ -223,6 +223,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                         >
+                                                            <option value=""></option>
                                                             {Object.values(QualitativeLevel).map(level => {
                                                                 return (
                                                                     <option
@@ -239,7 +240,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                 <Form.Row>
                                                     <Form.Group>
                                                         <Form.Label>
-                                                            Distractions?
+                                                            Distractions
                                                         </Form.Label>
                                                         <Form.Control
                                                             as="select"
@@ -248,6 +249,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                         >
+                                                            <option value=""></option>
                                                             {Object.values(QualitativeLevel).map(level => {
                                                                 return (
                                                                     <option
@@ -264,7 +266,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                 <Form.Row>
                                                     <Form.Group>
                                                         <Form.Label>
-                                                            Duration?
+                                                            Duration
                                                         </Form.Label>
                                                         <Form.Control
                                                             as="select"
@@ -273,6 +275,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                         >
+                                                            <option value=""></option>
                                                             {Object.values(QualitativeLevel).map(level => {
                                                                 return (
                                                                     <option
