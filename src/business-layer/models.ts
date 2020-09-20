@@ -16,7 +16,7 @@ import type {
     training_sessions,
     training_sessionsCreateWithoutDogsInput,
     training_progress, // TODO: confirm
-    training_progressCreateWithoutTraining_sessionsInput,
+    training_progressCreateInput,
 } from '@prisma/client';
 
 // TODO: clean up the plural throughout
@@ -548,30 +548,15 @@ class AuthTrainingProgress extends AuthModel {
         // TODO: propagate the error if necessary.
     }
 
-    // TODO: the type signature here is wrong: the input (that we care about)
-    // does not have a training_stages or a training_sessions field
+    // TODO: figure out where the type signature and type checking should live.
     async create_one({
-        training_session_id,
-        training_stage_id,
         input,
     }: {
-        training_session_id: string,
-        training_stage_id: string,
-        input: training_progressCreateWithoutTraining_sessionsInput,
+        input: training_progressCreateInput,
     }): Promise<GraphQLObj<training_progress> | null> {
         return this.prisma.training_progress.create({
             data: {
-                training_sessions: {
-                    connect: {
-                        id: parseInt(training_session_id)
-                    }
-                },
-                training_stages: {
-                    connect: {
-                        id: parseInt(training_stage_id)
-                    }
-                },
-                ...input
+                ...input,
             },
         }).then(training_stage => {
             return training_stage
