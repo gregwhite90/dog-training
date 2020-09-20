@@ -88,7 +88,7 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
         const training_session_model = new AuthTrainingSession(context);
         const training_progress_model = new AuthTrainingProgress(context);
         const training_stage_model = new AuthTrainingStage(context);
-        const created_training_stages = await Promise.all(training_progresses.map(training_progress => {
+        const created_training_progresses = await Promise.all(training_progresses.map(training_progress => {
             // TODO: figure out where the type signature and type checking should live
             const training_stage_type_and_id = fromGlobalId(training_progress.training_stage_id);
             const local_training_stage_id = training_stage_type_and_id.id;
@@ -113,7 +113,7 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                 },
             }).then(training_progress => training_progress)
         }));
-        return { training_session_id: local_training_session_id, training_stages: created_training_stages, training_session_model, training_stage_model };
+        return { training_session_id: local_training_session_id, training_progresses: created_training_progresses, training_session_model, training_stage_model };
     },
 });
 
