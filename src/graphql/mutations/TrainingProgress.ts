@@ -58,8 +58,15 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                 training_stage_model,
             }) => {
                 // TODO: figure out resolver
+                console.log("In trainingStageEdges resolver");
+                console.log("Training session id");
+                console.log(training_session_id);
+                console.log("Training progresses");
+                console.log(training_progresses);
                 return training_session_model.get_all_training_stage_ids({ id: training_session_id }).then(
                     training_stage_ids => {
+                        console.log("Training stage ids");
+                        console.log(training_stage_ids);
                         return training_progresses.map(training_progress => ({
                             cursor: cursorForObjectInConnection(
                                 training_stage_ids,
