@@ -1,4 +1,5 @@
 // TODO: implement feedback.
+// TODO: fix all the non-null assertions
 
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
@@ -44,6 +45,7 @@ interface CreateTrainingProgressesFormProps {
 
 interface CreateTrainingProgressesFormValues {
     training_progresses: Array<{
+        behavior_id: string,
         training_stage_id: string,
         successes: number,
         attempts: number,
@@ -73,10 +75,14 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
     // TODO: NULLABLE FIELDS
     // TODO: NULLABLE SELECT
     // TODO: CONDITIONAL RENDERING OF DURATION
+    // TODO: CONDITIONAL TRAINING STAGE ID
     const validationSchema = yup.object().shape({
         training_progresses: yup.array().of(
             yup.object().shape({
-                training_stage_id: yup.string().required(),
+                behavior_id: yup.string().required().oneOf(props.trainingSession!.dog!.behaviors!.edges!.map(edge => edge!.node!.id)),
+                training_stage_id: yup.string().required().oneOf(props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                    edge!.node!.trainingStages!.edges!.map(e => e!.node!.id)
+                )).flat()),
                 successes: nullable_number(
                     yup.number()
                         .nullable(true)
@@ -104,6 +110,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
     // TODO: bring in the training session identifier to cutomize header?
 
     const defaultTrainingProgressValues = {
+        behavior_id: "",
         training_stage_id: "",
         successes: "",
         attempts: "",
@@ -167,16 +174,54 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                 <h4>Stage trained number {index + 1}</h4>
                                                 <Form.Row>
                                                     <Form.Group
-                                                        controlId={`formTrainingProgressesTrainingStage-${index}`}
+                                                        controlId={`formTrainingProgressesBehavior-${index}`}
                                                     >
                                                         <Form.Label>
-                                                            Which training stage does this progress refer to?
+                                                            Which behavior does this progress refer to?
                                                         </Form.Label>
-                                                        <Field
-                                                            name={`training_progresses[${index}].training_stage_id`}
-                                                        />
+                                                        <Form.Control
+                                                            as="select"
+                                                            name={`training_progresses[${index}].behavior_id`}
+                                                            value={values.training_progresses[index].behavior_id}
+                                                            onBlur={handleBlur}
+                                                            onChange={handleChange}
+                                                        >
+                                                            <option value=""></option>
+                                                            {props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                                                                <option key={edge!.node!.id} value={edge!.node!.id}>{edge!.node!.name}</option>
+                                                            ))
+                                                            }
+                                                        </Form.Control>
                                                     </Form.Group>
                                                 </Form.Row>
+                                                {values.training_progresses[index].behavior_id &&
+                                                    (
+                                                        <Form.Row>
+                                                            <Form.Group
+                                                                controlId={`formTrainingProgressesTrainingStage-${index}`}
+                                                            >
+                                                                <Form.Label>
+                                                                    Which training stage of this behavior?
+                                                                </Form.Label>
+                                                                <Form.Control
+                                                                    as="select"
+                                                                    name={`training_progresses[${index}].training_stage_id`}
+                                                                    value={values.training_progresses[index].training_stage_id}
+                                                                    onBlur={handleBlur}
+                                                                    onChange={handleChange}
+                                                                >
+                                                                    <option value=""></option>
+                                                                    {props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                                                                        edge!.node!.trainingStages!.edges!.map(e => (
+                                                                            <option key={e!.node!.id} value={e!.node!.id}>Stage {e!.node!.seq + 1}</option>
+                                                                        ))
+                                                                    ))
+                                                                    }
+                                                                </Form.Control>
+                                                            </Form.Group>
+                                                        </Form.Row>
+                                                    )
+                                                }
                                                 <Form.Row>
                                                     <Col>
                                                         <Form.Group controlId={`formTrainingProgressesSuccesses-${index}`}>
@@ -335,6 +380,29 @@ export default createFragmentContainer(CreateTrainingProgressesForm, {
     trainingSession: graphql`
         fragment CreateTrainingProgressesForm_trainingSession on TrainingSession {
             id
+            dog {
+                id
+                behaviors(
+                    first: 2147483647 # max GraphQLInt
+                ) {
+                    edges {
+                        node {
+                            id
+                            name
+                            trainingStages(
+                                first: 2147483647 # max GraphQLInt
+                            ) {
+                                edges {
+                                    node {
+                                        id
+                                        seq
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             trainingStages(
                 first: 1
             ) {

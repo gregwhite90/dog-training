@@ -6,6 +6,25 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CreateTrainingProgressesForm_trainingSession = {
     readonly id: string;
+    readonly dog: {
+        readonly id: string;
+        readonly behaviors: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                    readonly name: string;
+                    readonly trainingStages: {
+                        readonly edges: ReadonlyArray<{
+                            readonly node: {
+                                readonly id: string;
+                                readonly seq: number;
+                            } | null;
+                        } | null> | null;
+                    } | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly trainingStages: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -30,7 +49,14 @@ var v0 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 2147483647
+  }
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -38,6 +64,100 @@ return {
   "name": "CreateTrainingProgressesForm_trainingSession",
   "selections": [
     (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Dog",
+      "kind": "LinkedField",
+      "name": "dog",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": (v1/*: any*/),
+          "concreteType": "BehaviorConnection",
+          "kind": "LinkedField",
+          "name": "behaviors",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "BehaviorEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Behavior",
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": (v1/*: any*/),
+                      "concreteType": "TrainingStageConnection",
+                      "kind": "LinkedField",
+                      "name": "trainingStages",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "TrainingStageEdge",
+                          "kind": "LinkedField",
+                          "name": "edges",
+                          "plural": true,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "TrainingStage",
+                              "kind": "LinkedField",
+                              "name": "node",
+                              "plural": false,
+                              "selections": [
+                                (v0/*: any*/),
+                                {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "seq",
+                                  "storageKey": null
+                                }
+                              ],
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": "trainingStages(first:2147483647)"
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": "behaviors(first:2147483647)"
+        }
+      ],
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -83,5 +203,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'cd14c87df13e74a2d50424d9122adad5';
+(node as any).hash = '2dc2400b4bba52d275f1957dcfaff064';
 export default node;
