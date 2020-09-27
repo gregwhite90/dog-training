@@ -75,15 +75,8 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                                     training_stage_ids,
                                     training_progress.training_stage_id
                                 ),
-                                seq: training_progress.seq,
-                                successes: training_progress.successes,
-                                attempts: training_progress.attempts,
-                                distance: training_progress.distance,
-                                duration: training_progress.duration,
-                                distractions: training_progress.distractions,
-                                node: training_stage_model.get_one({
-                                    id: training_progress.training_stage_id
-                                }).then(training_stage => training_stage), // TODO: confirm resolving Promise
+                                training_progress,
+                                node: { id: training_progress.training_stage_id },
                             };
                         });
                     }
