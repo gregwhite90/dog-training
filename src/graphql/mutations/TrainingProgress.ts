@@ -67,18 +67,16 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                     training_stage_ids => {
                         console.log("Training stage ids");
                         console.log(training_stage_ids);
-                        return training_progresses.map(training_progress => {
-                            console.log("Training progress");
-                            console.log(training_progress);
-                            return {
-                                cursor: cursorForObjectInConnection(
-                                    training_stage_ids,
-                                    training_progress.training_stage_id
-                                ),
+                        return training_progresses.map(training_progress => ({
+                            cursor: cursorForObjectInConnection(
+                                training_stage_ids,
+                                training_progress.training_stage_id
+                            ),
+                            node: {
+                                id: training_progress.training_stage_id,
                                 training_progress,
-                                node: { id: training_progress.training_stage_id },
-                            };
-                        });
+                            },
+                        }));
                     }
                 );
             },
