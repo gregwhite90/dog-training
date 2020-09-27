@@ -67,19 +67,23 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                     training_stage_ids => {
                         console.log("Training stage ids");
                         console.log(training_stage_ids);
-                        return training_progresses.map(training_progress => ({
-                            cursor: cursorForObjectInConnection(
-                                training_stage_ids,
-                                training_progress.training_stage_id
-                            ),
-                            seq: training_progress.seq,
-                            successes: training_progress.successes,
-                            attempts: training_progress.attempts,
-                            distance: training_progress.distance,
-                            duration: training_progress.duration,
-                            distractions: training_progress.distractions,
-                            node: training_stage_model.get_one(training_progress.training_stage_id), // TODO: confirm
-                        }));
+                        return training_progresses.map(training_progress => {
+                            console.log("Training progress");
+                            console.log(training_progress);
+                            return {
+                                cursor: cursorForObjectInConnection(
+                                    training_stage_ids,
+                                    training_progress.training_stage_id
+                                ),
+                                seq: training_progress.seq,
+                                successes: training_progress.successes,
+                                attempts: training_progress.attempts,
+                                distance: training_progress.distance,
+                                duration: training_progress.duration,
+                                distractions: training_progress.distractions,
+                                node: training_stage_model.get_one(training_progress.training_stage_id), // TODO: confirm
+                            };
+                        });
                     }
                 );
             },
