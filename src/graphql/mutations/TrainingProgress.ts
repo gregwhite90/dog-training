@@ -81,7 +81,9 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                                 distance: training_progress.distance,
                                 duration: training_progress.duration,
                                 distractions: training_progress.distractions,
-                                node: training_stage_model.get_one(training_progress.training_stage_id), // TODO: confirm
+                                node: training_stage_model.get_one(
+                                    training_progress.training_stage_id
+                                ).then(training_stage => training_stage), // TODO: confirm
                             };
                         });
                     }
@@ -124,7 +126,12 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
                 },
             }).then(training_progress => training_progress)
         }));
-        return { training_session_id: local_training_session_id, training_progresses: created_training_progresses, training_session_model, training_stage_model };
+        return {
+            training_session_id: local_training_session_id,
+            training_progresses: created_training_progresses,
+            training_session_model,
+            training_stage_model
+        };
     },
 });
 
