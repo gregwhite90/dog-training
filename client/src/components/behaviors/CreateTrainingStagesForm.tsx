@@ -17,6 +17,7 @@ import {
 } from 'formik';
 import * as yup from 'yup';
 
+import ContainerCard from 'components/utils/ContainerCard';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -171,12 +172,9 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                 name="training_stages"
                             >
                                 {(arrayHelpers: ArrayHelpers) => (
-                                    <Container className="p-3 mb-3 border rounded">
+                                    <ContainerCard>
                                         {values.training_stages.map((training_stage, index) => (
-                                            <Container
-                                                key={index}
-                                                className="p-3 mb-3 border rounded"
-                                            >
+                                            <ContainerCard key={index}>
                                                 <h4>Stage {index + 1}</h4>
                                                 <Form.Row>
                                                     <Form.Group
@@ -270,7 +268,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                         Remove this training stage
                                                     </Button>
                                                 </Form.Row>
-                                            </Container>
+                                            </ContainerCard>
                                         ))}
                                         <TrainingStagesError errors={errors} />
                                         <Form.Row>
@@ -281,7 +279,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                 Add a training stage
                                             </Button>
                                         </Form.Row>
-                                    </Container>
+                                    </ContainerCard>
                                 )
                                 }
                             </FieldArray>

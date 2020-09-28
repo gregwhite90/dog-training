@@ -1,9 +1,13 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 
-const ContainerCard: React.FC<{}> = (props) => {
+// TODO: figure out the props type?
+const ContainerCard: React.FC<any> = (props) => {
     return (
-        <Container fluid="md" className="p-3 mb-3 border rounded">
+        <Container
+            {...props}
+            className="p-3 mb-3 border rounded"
+        >
             {props.children}
         </Container>
     );

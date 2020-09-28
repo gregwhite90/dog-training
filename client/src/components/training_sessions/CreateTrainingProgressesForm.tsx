@@ -19,6 +19,7 @@ import {
 import * as yup from 'yup';
 
 import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -165,12 +166,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                 name="training_progresses"
                             >
                                 {(arrayHelpers: ArrayHelpers) => (
-                                    <Container className="p-3 mb-3 border rounded">
+                                    <ContainerCard>
                                         {values.training_progresses.map((training_progress, index) => (
-                                            <Container
-                                                key={index}
-                                                className="p-3 mb-3 border rounded"
-                                            >
+                                            <ContainerCard key={index}>
                                                 <h4>Stage trained number {index + 1}</h4>
                                                 <Form.Row>
                                                     <Form.Group
@@ -342,7 +340,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                         Remove this training stage
                                                     </Button>
                                                 </Form.Row>
-                                            </Container>
+                                            </ContainerCard>
                                         ))}
                                         <Form.Row>
                                             <Button
@@ -352,7 +350,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                 Log another progress
                                             </Button>
                                         </Form.Row>
-                                    </Container>
+                                    </ContainerCard>
                                 )
                                 }
                             </FieldArray>

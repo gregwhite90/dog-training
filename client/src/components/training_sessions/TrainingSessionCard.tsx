@@ -13,7 +13,7 @@ interface TrainingSessionCardProps {
 // TODO: fix non-null assertion
 const TrainingSessionCard: React.FC<TrainingSessionCardProps> = (props) => {
     return (
-        <ContainerCard>
+        <ContainerCard fluid="md">
             <h3>Session training {props.trainingSession.dog!.name}</h3>
             <p>
                 <TrainingSessionName

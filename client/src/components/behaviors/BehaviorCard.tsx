@@ -11,7 +11,7 @@ interface BehaviorCardProps {
 
 const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
     return (
-        <ContainerCard>
+        <ContainerCard fluid="md">
             <h3>{props.behavior.name}</h3>
             <p>{props.behavior.explanation}</p>
             <Table bordered hover>

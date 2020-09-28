@@ -12,7 +12,7 @@ interface TrainingStageCardProps {
 // TODO: clean up the non-null assertions
 const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
     return (
-        <ContainerCard>
+        <ContainerCard fluid="md">
             <h3>Stage {props.trainingStage.seq + 1}</h3>
             <Table bordered hover>
                 <tbody>
