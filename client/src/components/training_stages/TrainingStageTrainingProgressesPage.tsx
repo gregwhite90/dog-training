@@ -6,32 +6,30 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import TrainingStageCard from './TrainingStageCard';
 import TrainingStageBreadcrumb from './TrainingStageBreadcrumb';
 
-// TODO: authorization check
+import TrainingStageTrainingProgressesApp from './TrainingStageTrainingProgressesApp';
 
-// TODO: fix any types
-// TODO: create the behavior detail query
-import type { TrainingStageDetailQuery } from '__generated__/TrainingStageDetailQuery.graphql';
+import type { TrainingStageTrainingProgressesPageQuery } from '__generated__/TrainingStageTrainingProgressesPageQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface TrainingStageDetailProps extends RouteComponentProps<MatchParams> {
+interface TrainingStageTrainingProgressesPageProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
     training_stage_id: string,
 }
 
-const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match, training_stage_id }) => {
+// TODO: only allow for the creation once.
+const TrainingStageTrainingProgressesPage: React.FC<TrainingStageTrainingProgressesPageProps> = ({ relay, match, training_stage_id }) => {
     return (
-        <QueryRenderer<TrainingStageDetailQuery>
+        <QueryRenderer<TrainingStageTrainingProgressesPageQuery>
             environment={relay.environment}
             query={graphql`
-                query TrainingStageDetailQuery($id: ID!) {
+                query TrainingStageTrainingProgressesPageQuery($id: ID!) {
                     node(id: $id) {
-                        ...TrainingStageCard_trainingStage
+                        ...TrainingStageTrainingProgressesApp_trainingStage
                         ...TrainingStageBreadcrumb_trainingStage
                     }
                 }
@@ -43,16 +41,11 @@ const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match,
                         <>
                             <TrainingStageBreadcrumb
                                 trainingStage={props.node}
-                                progresses={false}
+                                progresses={true}
                                 active={true}
                             />
                             <Container>
-                                <TrainingStageCard trainingStage={props.node} />
-                                <Link to={`${match.url}/progress`}>
-                                    <Button variant="primary">
-                                        View training progress
-                                    </Button>
-                                </Link>
+                                <TrainingStageTrainingProgressesApp trainingStage={props.node} match={match} />
                             </Container>
                         </>
                     );
@@ -60,13 +53,12 @@ const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match,
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
-
                 return <div>Loading...</div>;
             }}
         />
     );
 }
 
-export default withAuthenticationRequired(TrainingStageDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+export default withAuthenticationRequired(TrainingStageTrainingProgressesPage, {
+    onRedirecting: () => (<div>Redirecting you to the login page</div>)
 });

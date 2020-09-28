@@ -10,6 +10,7 @@ import type { TrainingStageBreadcrumb_trainingStage } from '__generated__/Traini
 
 interface TrainingStageBreadcrumbProps {
     active: boolean,
+    progresses: boolean,
     trainingStage: TrainingStageBreadcrumb_trainingStage,
 };
 
@@ -46,13 +47,22 @@ const TrainingStageBreadcrumb: React.FC<TrainingStageBreadcrumbProps> = (props) 
                         </Breadcrumb.Item>
                     </LinkContainer>
                     <LinkContainer to={`/stages/${props.trainingStage.id}`}>
-                        <Breadcrumb.Item active={props.active}>
+                        <Breadcrumb.Item active={!props.progresses && props.active}>
                             <TrainingStageName
                                 detail={false}
                                 trainingStage={props.trainingStage}
                             />
                         </Breadcrumb.Item>
                     </LinkContainer>
+                    {props.progresses &&
+                        (
+                            <LinkContainer to={`/stages/${props.trainingStage.id}/progress`}>
+                                <Breadcrumb.Item active={props.active}>
+                                    Progress on stage
+                                </Breadcrumb.Item>
+                            </LinkContainer>
+                        )
+                    }
                 </Breadcrumb>
             </Container>
         );
