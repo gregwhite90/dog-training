@@ -16,7 +16,7 @@ export type CreateTrainingStagesForm_behavior = {
                 readonly id: string;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "CreateTrainingStagesForm_behavior";
 };
 export type CreateTrainingStagesForm_behavior$data = CreateTrainingStagesForm_behavior;

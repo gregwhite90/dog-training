@@ -20,18 +20,18 @@ export type CreateTrainingProgressesForm_trainingSession = {
                                 readonly seq: number;
                             } | null;
                         } | null> | null;
-                    } | null;
+                    };
                 } | null;
             } | null> | null;
-        } | null;
-    } | null;
+        };
+    };
     readonly trainingStages: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "CreateTrainingProgressesForm_trainingSession";
 };
 export type CreateTrainingProgressesForm_trainingSession$data = CreateTrainingProgressesForm_trainingSession;

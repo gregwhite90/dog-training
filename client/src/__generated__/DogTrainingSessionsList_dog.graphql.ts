@@ -13,7 +13,7 @@ export type DogTrainingSessionsList_dog = {
                 readonly " $fragmentRefs": FragmentRefs<"TrainingSessionCard_trainingSession">;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "DogTrainingSessionsList_dog";
 };
 export type DogTrainingSessionsList_dog$data = DogTrainingSessionsList_dog;

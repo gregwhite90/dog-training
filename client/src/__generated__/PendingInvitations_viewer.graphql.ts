@@ -17,13 +17,13 @@ export type PendingInvitations_viewer = {
                     readonly name: string;
                     readonly picture: string | null;
                     readonly id: string;
-                } | null;
+                };
                 readonly invited_by: {
                     readonly name: string;
                 };
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "PendingInvitations_viewer";
 };
 export type PendingInvitations_viewer$data = PendingInvitations_viewer;

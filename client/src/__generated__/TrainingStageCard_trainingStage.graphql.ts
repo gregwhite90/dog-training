@@ -11,7 +11,7 @@ export type TrainingStageCard_trainingStage = {
     readonly incentive: boolean;
     readonly verbal: boolean;
     readonly hand: boolean;
-    readonly reward_frequency: RewardFrequency | null;
+    readonly reward_frequency: RewardFrequency;
     readonly behavior: {
         readonly incentive_method: IncentiveMethod | null;
         readonly verbal_command: string | null;

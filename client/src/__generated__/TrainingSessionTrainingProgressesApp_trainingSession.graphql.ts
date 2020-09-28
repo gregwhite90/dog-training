@@ -9,7 +9,7 @@ export type TrainingSessionTrainingProgressesApp_trainingSession = {
     readonly dog: {
         readonly id: string;
         readonly name: string;
-    } | null;
+    };
     readonly " $fragmentRefs": FragmentRefs<"TrainingSessionTrainingProgressesList_trainingSession" | "TrainingSessionName_trainingSession">;
     readonly " $refType": "TrainingSessionTrainingProgressesApp_trainingSession";
 };

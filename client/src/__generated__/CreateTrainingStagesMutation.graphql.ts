@@ -14,7 +14,7 @@ export type TrainingStageScalarFields = {
     incentive: boolean;
     verbal: boolean;
     hand: boolean;
-    reward_frequency?: RewardFrequency | null;
+    reward_frequency: RewardFrequency;
 };
 export type CreateTrainingStagesMutationVariables = {
     input: CreateTrainingStagesInput;

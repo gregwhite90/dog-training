@@ -9,13 +9,13 @@ export type DogsList_viewer = {
     readonly id: string;
     readonly dogs: {
         readonly edges: ReadonlyArray<{
-            readonly user_role: UserDogRole | null;
+            readonly user_role: UserDogRole;
             readonly node: {
                 readonly id: string;
                 readonly " $fragmentRefs": FragmentRefs<"DogCard_dog">;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "DogsList_viewer";
 };
 export type DogsList_viewer$data = DogsList_viewer;

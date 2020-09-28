@@ -13,7 +13,7 @@ export type BehaviorTrainingStagesList_behavior = {
                 readonly " $fragmentRefs": FragmentRefs<"TrainingStageCard_trainingStage">;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "BehaviorTrainingStagesList_behavior";
 };
 export type BehaviorTrainingStagesList_behavior$data = BehaviorTrainingStagesList_behavior;

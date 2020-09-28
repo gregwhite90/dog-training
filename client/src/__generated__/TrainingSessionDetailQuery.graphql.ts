@@ -9,7 +9,7 @@ export type TrainingSessionDetailQueryVariables = {
 };
 export type TrainingSessionDetailQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"TrainingSessionCard_trainingSession" | "TrainingSessionBreadcrumb_trainingSession" | "TrainingSessionTrainingProgressesList_trainingSession">;
+        readonly " $fragmentRefs": FragmentRefs<"TrainingSessionCard_trainingSession" | "TrainingSessionBreadcrumb_trainingSession">;
     } | null;
 };
 export type TrainingSessionDetailQuery = {
@@ -27,7 +27,6 @@ query TrainingSessionDetailQuery(
     __typename
     ...TrainingSessionCard_trainingSession
     ...TrainingSessionBreadcrumb_trainingSession
-    ...TrainingSessionTrainingProgressesList_trainingSession
     id
   }
 }
@@ -53,29 +52,6 @@ fragment TrainingSessionName_trainingSession on TrainingSession {
   start_timestamp
   minutes_long
 }
-
-fragment TrainingSessionTrainingProgressesList_trainingSession on TrainingSession {
-  id
-  trainingStages(first: 2147483647) {
-    edges {
-      node {
-        id
-        __typename
-      }
-      seq
-      successes
-      attempts
-      distance
-      distractions
-      duration
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}
 */
 
 const node: ConcreteRequest = (function(){
@@ -97,23 +73,9 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v4 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 2147483647
-  }
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -138,11 +100,6 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "TrainingSessionBreadcrumb_trainingSession"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "TrainingSessionTrainingProgressesList_trainingSession"
           }
         ],
         "storageKey": null
@@ -165,8 +122,14 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          },
           (v2/*: any*/),
-          (v3/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -178,7 +141,7 @@ return {
                 "name": "dog",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -202,124 +165,6 @@ return {
                 "kind": "ScalarField",
                 "name": "minutes_long",
                 "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": (v4/*: any*/),
-                "concreteType": "TrainingSessionToTrainingStageConnection",
-                "kind": "LinkedField",
-                "name": "trainingStages",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "TrainingSessionToTrainingStageEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "TrainingStage",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v3/*: any*/),
-                          (v2/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "seq",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "successes",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "attempts",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "distance",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "distractions",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "duration",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "cursor",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "kind": "LinkedField",
-                    "name": "pageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "endCursor",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "hasNextPage",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": "trainingStages(first:2147483647)"
-              },
-              {
-                "alias": null,
-                "args": (v4/*: any*/),
-                "filters": null,
-                "handle": "connection",
-                "key": "TrainingSessionTrainingProgressesList_trainingStages",
-                "kind": "LinkedHandle",
-                "name": "trainingStages"
               }
             ],
             "type": "TrainingSession",
@@ -331,14 +176,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d2397a68d47b653c951cd32f9e83f52f",
+    "cacheID": "c2614a7401bee444c0f0f32719474595",
     "id": null,
     "metadata": {},
     "name": "TrainingSessionDetailQuery",
     "operationKind": "query",
-    "text": "query TrainingSessionDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionCard_trainingSession\n    ...TrainingSessionBreadcrumb_trainingSession\n    ...TrainingSessionTrainingProgressesList_trainingSession\n    id\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingSessionTrainingProgressesList_trainingSession on TrainingSession {\n  id\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        __typename\n      }\n      seq\n      successes\n      attempts\n      distance\n      distractions\n      duration\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query TrainingSessionDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionCard_trainingSession\n    ...TrainingSessionBreadcrumb_trainingSession\n    id\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n"
   }
 };
 })();
-(node as any).hash = '58bc07cffec75ebcbfa6bb89dc685709';
+(node as any).hash = '55c1f37128ba9aa45305af674dd6ca39';
 export default node;

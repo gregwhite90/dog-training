@@ -33,7 +33,6 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                     node(id: $id) {
                         ...TrainingSessionCard_trainingSession
                         ...TrainingSessionBreadcrumb_trainingSession
-                        ...TrainingSessionTrainingProgressesList_trainingSession
                     }
                 }
                 `}

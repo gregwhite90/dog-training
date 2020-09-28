@@ -8,7 +8,7 @@ export type TrainingSessionCard_trainingSession = {
     readonly dog: {
         readonly id: string;
         readonly name: string;
-    } | null;
+    };
     readonly " $fragmentRefs": FragmentRefs<"TrainingSessionName_trainingSession">;
     readonly " $refType": "TrainingSessionCard_trainingSession";
 };

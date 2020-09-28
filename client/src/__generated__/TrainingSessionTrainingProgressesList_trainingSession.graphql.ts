@@ -4,22 +4,15 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QualitativeLevel = "HIGH" | "LOW" | "MEDIUM" | "%future added value";
 export type TrainingSessionTrainingProgressesList_trainingSession = {
     readonly id: string;
     readonly trainingStages: {
         readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-            } | null;
             readonly seq: number;
-            readonly successes: number | null;
-            readonly attempts: number | null;
-            readonly distance: QualitativeLevel | null;
-            readonly distractions: QualitativeLevel | null;
-            readonly duration: QualitativeLevel | null;
+            readonly " $fragmentRefs": FragmentRefs<"TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge">;
         } | null> | null;
-    } | null;
+    };
+    readonly " $fragmentRefs": FragmentRefs<"TrainingSessionName_trainingSession">;
     readonly " $refType": "TrainingSessionTrainingProgressesList_trainingSession";
 };
 export type TrainingSessionTrainingProgressesList_trainingSession$data = TrainingSessionTrainingProgressesList_trainingSession;
@@ -30,15 +23,7 @@ export type TrainingSessionTrainingProgressesList_trainingSession$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": {
@@ -55,7 +40,13 @@ return {
   },
   "name": "TrainingSessionTrainingProgressesList_trainingSession",
   "selections": [
-    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
     {
       "alias": "trainingStages",
       "args": null,
@@ -75,12 +66,25 @@ return {
             {
               "alias": null,
               "args": null,
+              "kind": "ScalarField",
+              "name": "seq",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
               "concreteType": "TrainingStage",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -92,53 +96,9 @@ return {
               "storageKey": null
             },
             {
-              "alias": null,
               "args": null,
-              "kind": "ScalarField",
-              "name": "seq",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "successes",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "attempts",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "distance",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "distractions",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "duration",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
+              "kind": "FragmentSpread",
+              "name": "TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge"
             }
           ],
           "storageKey": null
@@ -170,11 +130,15 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "TrainingSessionName_trainingSession"
     }
   ],
   "type": "TrainingSession",
   "abstractKey": null
 };
-})();
-(node as any).hash = '9959e035f48c23c243671628f4b15f2a';
+(node as any).hash = '8ff2b5f78c2e4328cc20fd7bf1931da1';
 export default node;

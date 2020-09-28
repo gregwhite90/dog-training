@@ -13,7 +13,7 @@ export type TrainingStageBreadcrumb_trainingStage = {
         readonly dog: {
             readonly id: string;
             readonly name: string;
-        } | null;
+        };
     } | null;
     readonly " $refType": "TrainingStageBreadcrumb_trainingStage";
 };

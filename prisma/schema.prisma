@@ -19,7 +19,7 @@ model behaviors {
   verbal_command        String?
   hand_signal           String?
   hand_demo_media       String?
-  has_duration          Boolean?
+  has_duration          Boolean
   release_command       String?
   dogs                  dogs              @relation(fields: [dog_id], references: [id])
   training_stages       training_stages[]
