@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 import Table from 'react-bootstrap/Table';
 
 import type { BehaviorCard_behavior } from '__generated__/BehaviorCard_behavior.graphql';
@@ -11,7 +11,7 @@ interface BehaviorCardProps {
 
 const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
     return (
-        <Container fluid="md" className="p-3 mb-3 border rounded">
+        <ContainerCard>
             <h3>{props.behavior.name}</h3>
             <p>{props.behavior.explanation}</p>
             <Table bordered hover>
@@ -50,7 +50,7 @@ const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
                     }
                 </tbody>
             </Table>
-        </Container>
+        </ContainerCard>
     );
 }
 

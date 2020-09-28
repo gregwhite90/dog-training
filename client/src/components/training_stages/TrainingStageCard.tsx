@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 import Table from 'react-bootstrap/Table';
 
 import type { TrainingStageCard_trainingStage } from '__generated__/TrainingStageCard_trainingStage.graphql';
@@ -12,7 +12,7 @@ interface TrainingStageCardProps {
 // TODO: clean up the non-null assertions
 const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
     return (
-        <Container fluid="md" className="p-3 mb-3 border rounded">
+        <ContainerCard>
             <h3>Stage {props.trainingStage.seq + 1}</h3>
             <Table bordered hover>
                 <tbody>
@@ -56,7 +56,7 @@ const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
                     }
                 </tbody>
             </Table>
-        </Container>
+        </ContainerCard>
     );
 }
 

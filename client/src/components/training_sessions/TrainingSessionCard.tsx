@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 
 import TrainingSessionName from './TrainingSessionName';
 
@@ -13,7 +13,7 @@ interface TrainingSessionCardProps {
 // TODO: fix non-null assertion
 const TrainingSessionCard: React.FC<TrainingSessionCardProps> = (props) => {
     return (
-        <Container fluid="md" className="p-3 mb-3 border rounded">
+        <ContainerCard>
             <h3>Session training {props.trainingSession.dog!.name}</h3>
             <p>
                 <TrainingSessionName
@@ -23,7 +23,7 @@ const TrainingSessionCard: React.FC<TrainingSessionCardProps> = (props) => {
                     minutes={false}
                 />
             </p>
-        </Container>
+        </ContainerCard>
     );
 }
 
