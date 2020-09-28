@@ -209,32 +209,7 @@ type TrainingStageToTrainingSessionEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
-
-  """
-  Order within the sequence of training progresses in this training session
-  """
-  seq: Int!
-
-  """The number of successful attempts of this training stage"""
-  successes: Int
-
-  """The number of total attempts of this training stage"""
-  attempts: Int
-
-  """
-  A qualitative assessment of the distance between human and dog while training this stage
-  """
-  distance: QualitativeLevel
-
-  """
-  A qualitative assessment of the duration of the behavior attempted while training this stage
-  """
-  duration: QualitativeLevel
-
-  """
-  A qualitative assessment of the amount of distractions for the dog while training this stage
-  """
-  distractions: QualitativeLevel
+  training_progress: TrainingProgress!
 }
 
 type TrainingSession implements Node {
@@ -267,32 +242,35 @@ type TrainingSessionToTrainingStageEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+  training_progress: TrainingProgress!
+}
 
+type TrainingProgress {
   """
   Order within the sequence of training progresses in this training session
   """
   seq: Int!
 
-  """The number of successful attempts of this training stage"""
+  """The number of successful attempts of this stage in this session"""
   successes: Int
 
-  """The number of total attempts of this training stage"""
+  """The number of total attempts of this stage in this session"""
   attempts: Int
 
   """
-  A qualitative assessment of the distance between human and dog while training this stage
+  A qualitative assessment of the distance between human and dog while training this stage in this session
   """
   distance: QualitativeLevel
 
   """
-  A qualitative assessment of the duration of the behavior attempted while training this stage
-  """
-  duration: QualitativeLevel
-
-  """
-  A qualitative assessment of the amount of distractions for the dog while training this stage
+  A qualitative assessment of the amount of distractions for the dog while training this stage in this session
   """
   distractions: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage in this session
+  """
+  duration: QualitativeLevel
 }
 
 enum QualitativeLevel {
@@ -578,11 +556,11 @@ type CreateTrainingProgressesPayload {
 
 input CreateTrainingProgressesInput {
   training_session_id: ID!
-  training_progresses: [TrainingProgress!]!
+  training_progresses: [TrainingProgressInput!]!
   clientMutationId: String
 }
 
-input TrainingProgress {
+input TrainingProgressInput {
   training_stage_id: ID!
 
   """
@@ -590,24 +568,24 @@ input TrainingProgress {
   """
   seq: Int!
 
-  """The number of successful attempts of this training stage"""
+  """The number of successful attempts of this stage in this session"""
   successes: Int
 
-  """The number of total attempts of this training stage"""
+  """The number of total attempts of this stage in this session"""
   attempts: Int
 
   """
-  A qualitative assessment of the distance between human and dog while training this stage
+  A qualitative assessment of the distance between human and dog while training this stage in this session
   """
   distance: QualitativeLevel
 
   """
-  A qualitative assessment of the amount of distractions for the dog while training this stage
+  A qualitative assessment of the amount of distractions for the dog while training this stage in this session
   """
   distractions: QualitativeLevel
 
   """
-  A qualitative assessment of the duration of the behavior attempted while training this stage
+  A qualitative assessment of the duration of the behavior attempted while training this stage in this session
   """
   duration: QualitativeLevel
 }

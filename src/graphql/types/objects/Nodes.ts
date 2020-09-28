@@ -27,6 +27,10 @@ import {
 } from 'graphql-scalars';
 
 import {
+    trainingProgressType,
+} from './TrainingProgress';
+
+import {
     AuthUser,
     AuthDog,
     AuthPendingInvitation,
@@ -648,6 +652,7 @@ const {
     }),
 });
 
+/**
 const qualitativeLevelType = new GraphQLEnumType({
     name: 'QualitativeLevel',
     values: {
@@ -684,6 +689,8 @@ const trainingProgressTypeOwnedScalarFields = {
     },
 };
 
+*/
+
 // TODO: pull this in from elsewhere?
 interface ITrainingProgress {
     seq: number,
@@ -714,57 +721,18 @@ const {
         return training_stage_model.get_one({ id: edge.node.id.toString() });
     },
     edgeFields: () => ({
-        seq: {
-            ...trainingProgressTypeOwnedScalarFields.seq,
+        training_progress: {
+            type: new GraphQLNonNull(trainingProgressType),
             resolve: (
                 edge: ITrainingSessionToTrainingStageEdge
             ) => {
-                return edge.node.training_progress.seq;
-            },
-        },
-        successes: {
-            ...trainingProgressTypeOwnedScalarFields.successes,
-            resolve: (
-                edge: ITrainingSessionToTrainingStageEdge
-            ) => {
-                return edge.node.training_progress.successes;
-            },
-        },
-        attempts: {
-            ...trainingProgressTypeOwnedScalarFields.attempts,
-            resolve: (
-                edge: ITrainingSessionToTrainingStageEdge
-            ) => {
-                return edge.node.training_progress.attempts;
-            },
-        },
-        distance: {
-            ...trainingProgressTypeOwnedScalarFields.distance,
-            resolve: (
-                edge: ITrainingSessionToTrainingStageEdge
-            ) => {
-                return edge.node.training_progress.distance;
-            },
-        },
-        duration: {
-            ...trainingProgressTypeOwnedScalarFields.duration,
-            resolve: (
-                edge: ITrainingSessionToTrainingStageEdge
-            ) => {
-                return edge.node.training_progress.duration;
-            },
-        },
-        distractions: {
-            ...trainingProgressTypeOwnedScalarFields.distractions,
-            resolve: (
-                edge: ITrainingSessionToTrainingStageEdge
-            ) => {
-                return edge.node.training_progress.distractions;
+                return edge.node.training_progress;
             },
         },
     }),
 });
 
+// TODO: decide if "resolve" is unecessary
 const {
     connectionType: trainingStageToTrainingSessionConnection,
     edgeType: trainingStageToTrainingSessionEdge,
@@ -776,52 +744,12 @@ const {
         return training_session_model.get_one({ id: edge.node.id });
     },
     edgeFields: () => ({
-        seq: {
-            ...trainingProgressTypeOwnedScalarFields.seq,
+        training_progress: {
+            type: new GraphQLNonNull(trainingProgressType),
             resolve: (
                 edge: ITrainingStageToTrainingSessionEdge
             ) => {
-                return edge.node.training_progress.seq;
-            },
-        },
-        successes: {
-            ...trainingProgressTypeOwnedScalarFields.successes,
-            resolve: (
-                edge: ITrainingStageToTrainingSessionEdge
-            ) => {
-                return edge.node.training_progress.successes;
-            },
-        },
-        attempts: {
-            ...trainingProgressTypeOwnedScalarFields.attempts,
-            resolve: (
-                edge: ITrainingStageToTrainingSessionEdge
-            ) => {
-                return edge.node.training_progress.attempts;
-            },
-        },
-        distance: {
-            ...trainingProgressTypeOwnedScalarFields.distance,
-            resolve: (
-                edge: ITrainingStageToTrainingSessionEdge
-            ) => {
-                return edge.node.training_progress.distance;
-            },
-        },
-        duration: {
-            ...trainingProgressTypeOwnedScalarFields.duration,
-            resolve: (
-                edge: ITrainingStageToTrainingSessionEdge
-            ) => {
-                return edge.node.training_progress.duration;
-            },
-        },
-        distractions: {
-            ...trainingProgressTypeOwnedScalarFields.distractions,
-            resolve: (
-                edge: ITrainingStageToTrainingSessionEdge
-            ) => {
-                return edge.node.training_progress.distractions;
+                return edge.node.training_progress;
             },
         },
     }),
@@ -847,7 +775,5 @@ export {
     trainingSessionType,
     trainingSessionEdge,
     trainingSessionTypeOwnedScalarFields,
-    qualitativeLevelType,
-    trainingProgressTypeOwnedScalarFields,
     trainingSessionToTrainingStageEdge,
 };

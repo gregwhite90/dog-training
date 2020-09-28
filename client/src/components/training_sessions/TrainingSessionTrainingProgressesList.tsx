@@ -30,7 +30,7 @@ const TrainingSessionTrainingProgressesList: React.FC<TrainingSessionTrainingPro
         <>
             {edges.map(edge => {
                 return (
-                    <Container key={edge!.seq} fluid="md" className="p-3 mb-3 border rounded">
+                    <Container key={edge!.training_progress.seq} fluid="md" className="p-3 mb-3 border rounded">
                         <TrainingProgressTrainingSessionCard
                             trainingSessionToTrainingStageEdge={edge!}
                         />
@@ -67,7 +67,9 @@ export default createFragmentContainer(TrainingSessionTrainingProgressesList, {
                 first: 2147483647 # max GraphQLInt
             ) @connection(key: "TrainingSessionTrainingProgressesList_trainingStages") {
                 edges {
-                    seq
+                    training_progress {
+                        seq
+                    }
                     ...TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge
                 }
             }

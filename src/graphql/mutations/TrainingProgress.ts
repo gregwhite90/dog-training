@@ -14,9 +14,12 @@ import {
 // TODO: figure out
 // TODO: move type defs to Nodes file
 import {
-    trainingProgressTypeOwnedScalarFields,
     trainingSessionToTrainingStageEdge,
 } from '../types/objects/Nodes';
+
+import {
+    trainingProgressTypeOwnedScalarFields,
+} from '../types/objects/TrainingProgress';
 
 // TODO: figure out
 // TODO: create model
@@ -36,7 +39,7 @@ const createTrainingProgressesMutation = mutationWithClientMutationId({
         training_progresses: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(
                 new GraphQLInputObjectType({
-                    name: 'TrainingProgress',
+                    name: 'TrainingProgressInput',
                     fields: {
                         training_stage_id: {
                             type: new GraphQLNonNull(GraphQLID),

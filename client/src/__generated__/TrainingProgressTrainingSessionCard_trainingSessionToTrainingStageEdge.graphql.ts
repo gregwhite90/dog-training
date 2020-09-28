@@ -6,12 +6,14 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type QualitativeLevel = "HIGH" | "LOW" | "MEDIUM" | "%future added value";
 export type TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge = {
-    readonly seq: number;
-    readonly successes: number | null;
-    readonly attempts: number | null;
-    readonly distance: QualitativeLevel | null;
-    readonly distractions: QualitativeLevel | null;
-    readonly duration: QualitativeLevel | null;
+    readonly training_progress: {
+        readonly seq: number;
+        readonly successes: number | null;
+        readonly attempts: number | null;
+        readonly distance: QualitativeLevel | null;
+        readonly distractions: QualitativeLevel | null;
+        readonly duration: QualitativeLevel | null;
+    };
     readonly node: {
         readonly id: string;
         readonly behavior: {
@@ -47,43 +49,54 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "seq",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "successes",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "attempts",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "distance",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "distractions",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "duration",
+      "concreteType": "TrainingProgress",
+      "kind": "LinkedField",
+      "name": "training_progress",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "seq",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "successes",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "attempts",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "distance",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "distractions",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "duration",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -125,5 +138,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '26c0b7a08c753fc8ea13c5676ed87db1';
+(node as any).hash = 'fca2e6a56ff97dd60b75915ce4137099';
 export default node;

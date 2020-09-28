@@ -8,7 +8,9 @@ export type TrainingSessionTrainingProgressesList_trainingSession = {
     readonly id: string;
     readonly trainingStages: {
         readonly edges: ReadonlyArray<{
-            readonly seq: number;
+            readonly training_progress: {
+                readonly seq: number;
+            };
             readonly " $fragmentRefs": FragmentRefs<"TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge">;
         } | null> | null;
     };
@@ -66,8 +68,19 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "kind": "ScalarField",
-              "name": "seq",
+              "concreteType": "TrainingProgress",
+              "kind": "LinkedField",
+              "name": "training_progress",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "seq",
+                  "storageKey": null
+                }
+              ],
               "storageKey": null
             },
             {
@@ -140,5 +153,5 @@ const node: ReaderFragment = {
   "type": "TrainingSession",
   "abstractKey": null
 };
-(node as any).hash = '8ff2b5f78c2e4328cc20fd7bf1931da1';
+(node as any).hash = '4d5fb462f3c6bbc2d306e72799816f6c';
 export default node;

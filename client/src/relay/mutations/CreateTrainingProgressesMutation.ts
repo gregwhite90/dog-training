@@ -11,12 +11,14 @@ const mutation = graphql`
                 node {
                     id
                 }
-                seq
-                successes
-                attempts
-                distance
-                distractions
-                duration
+                training_progress {
+                    seq
+                    successes
+                    attempts
+                    distance
+                    distractions
+                    duration
+                }
             }
         }
     }

@@ -288,18 +288,7 @@ export type TrainingStageToTrainingSessionEdge = {
   node?: Maybe<TrainingSession>;
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
-  /** Order within the sequence of training progresses in this training session */
-  seq: Scalars['Int'];
-  /** The number of successful attempts of this training stage */
-  successes?: Maybe<Scalars['Int']>;
-  /** The number of total attempts of this training stage */
-  attempts?: Maybe<Scalars['Int']>;
-  /** A qualitative assessment of the distance between human and dog while training this stage */
-  distance?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
-  duration?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
-  distractions?: Maybe<QualitativeLevel>;
+  training_progress: TrainingProgress;
 };
 
 export type TrainingSession = Node & {
@@ -347,18 +336,23 @@ export type TrainingSessionToTrainingStageEdge = {
   node?: Maybe<TrainingStage>;
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
+  training_progress: TrainingProgress;
+};
+
+export type TrainingProgress = {
+  __typename?: 'TrainingProgress';
   /** Order within the sequence of training progresses in this training session */
   seq: Scalars['Int'];
-  /** The number of successful attempts of this training stage */
+  /** The number of successful attempts of this stage in this session */
   successes?: Maybe<Scalars['Int']>;
-  /** The number of total attempts of this training stage */
+  /** The number of total attempts of this stage in this session */
   attempts?: Maybe<Scalars['Int']>;
-  /** A qualitative assessment of the distance between human and dog while training this stage */
+  /** A qualitative assessment of the distance between human and dog while training this stage in this session */
   distance?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
-  duration?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
+  /** A qualitative assessment of the amount of distractions for the dog while training this stage in this session */
   distractions?: Maybe<QualitativeLevel>;
+  /** A qualitative assessment of the duration of the behavior attempted while training this stage in this session */
+  duration?: Maybe<QualitativeLevel>;
 };
 
 export enum QualitativeLevel {
@@ -661,23 +655,23 @@ export type CreateTrainingProgressesPayload = {
 
 export type CreateTrainingProgressesInput = {
   training_session_id: Scalars['ID'];
-  training_progresses: Array<TrainingProgress>;
+  training_progresses: Array<TrainingProgressInput>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
-export type TrainingProgress = {
+export type TrainingProgressInput = {
   training_stage_id: Scalars['ID'];
   /** Order within the sequence of training progresses in this training session */
   seq: Scalars['Int'];
-  /** The number of successful attempts of this training stage */
+  /** The number of successful attempts of this stage in this session */
   successes?: Maybe<Scalars['Int']>;
-  /** The number of total attempts of this training stage */
+  /** The number of total attempts of this stage in this session */
   attempts?: Maybe<Scalars['Int']>;
-  /** A qualitative assessment of the distance between human and dog while training this stage */
+  /** A qualitative assessment of the distance between human and dog while training this stage in this session */
   distance?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
+  /** A qualitative assessment of the amount of distractions for the dog while training this stage in this session */
   distractions?: Maybe<QualitativeLevel>;
-  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
+  /** A qualitative assessment of the duration of the behavior attempted while training this stage in this session */
   duration?: Maybe<QualitativeLevel>;
 };
 
@@ -978,8 +972,10 @@ export type PendingInvitations_ViewerFragment = (
 
 export type TrainingProgressTrainingSessionCard_TrainingSessionToTrainingStageEdgeFragment = (
   { __typename?: 'TrainingSessionToTrainingStageEdge' }
-  & Pick<TrainingSessionToTrainingStageEdge, 'seq' | 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
-  & { node?: Maybe<(
+  & { training_progress: (
+    { __typename?: 'TrainingProgress' }
+    & Pick<TrainingProgress, 'seq' | 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
+  ), node?: Maybe<(
     { __typename?: 'TrainingStage' }
     & Pick<TrainingStage, 'id'>
     & { behavior: (
@@ -1100,7 +1096,10 @@ export type TrainingSessionTrainingProgressesList_TrainingSessionFragment = (
     { __typename?: 'TrainingSessionToTrainingStageConnection' }
     & { edges?: Maybe<Array<Maybe<(
       { __typename?: 'TrainingSessionToTrainingStageEdge' }
-      & Pick<TrainingSessionToTrainingStageEdge, 'seq'>
+      & { training_progress: (
+        { __typename?: 'TrainingProgress' }
+        & Pick<TrainingProgress, 'seq'>
+      ) }
       & TrainingProgressTrainingSessionCard_TrainingSessionToTrainingStageEdgeFragment
     )>>> }
   ) }

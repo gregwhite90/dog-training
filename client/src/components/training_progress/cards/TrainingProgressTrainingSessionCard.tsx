@@ -18,7 +18,7 @@ interface TrainingProgressTrainingSessionCardProps {
 
 const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSessionCardProps> = (props) => {
     const edge = props.trainingSessionToTrainingStageEdge;
-    const table_display = edge.distance || edge.duration || edge.distractions;
+    const table_display = edge.training_progress.distance || edge.training_progress.duration || edge.training_progress.distractions;
     return (
         <>
             <Row>
@@ -41,14 +41,14 @@ const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSess
                 </Link>
             </Row>
             <Row>
-                {edge.successes &&
+                {edge.training_progress.successes &&
                     (
-                        <span>{edge.successes} successes</span>
+                        <span>{edge.training_progress.successes} successes</span>
                     )
                 }
-                {edge.attempts &&
+                {edge.training_progress.attempts &&
                     (
-                        <span>{edge.successes && "/"}{edge.attempts} attempts</span>
+                        <span>{edge.training_progress.successes && "/"}{edge.training_progress.attempts} attempts</span>
                     )
                 }
             </Row>
@@ -57,27 +57,27 @@ const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSess
                     (
                         <Table bordered hover>
                             <tbody>
-                                {edge.duration &&
+                                {edge.training_progress.duration &&
                                     (
                                         <tr>
                                             <td>Duration</td>
-                                            <td>{edge.duration}</td>
+                                            <td>{edge.training_progress.duration}</td>
                                         </tr>
                                     )
                                 }
-                                {edge.distractions &&
+                                {edge.training_progress.distractions &&
                                     (
                                         <tr>
                                             <td>Distractions</td>
-                                            <td>{edge.distractions}</td>
+                                            <td>{edge.training_progress.distractions}</td>
                                         </tr>
                                     )
                                 }
-                                {edge.distance &&
+                                {edge.training_progress.distance &&
                                     (
                                         <tr>
                                             <td>Distance</td>
-                                            <td>{edge.distance}</td>
+                                            <td>{edge.training_progress.distance}</td>
                                         </tr>
                                     )
                                 }
@@ -96,12 +96,14 @@ const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSess
 export default createFragmentContainer(TrainingProgressTrainingSessionCard, {
     trainingSessionToTrainingStageEdge: graphql`
         fragment TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge on TrainingSessionToTrainingStageEdge {
-            seq
-            successes
-            attempts
-            distance
-            distractions
-            duration
+            training_progress {
+                seq
+                successes
+                attempts
+                distance
+                distractions
+                duration
+            }
             node {
                 id
                 ...TrainingStageName_trainingStage
