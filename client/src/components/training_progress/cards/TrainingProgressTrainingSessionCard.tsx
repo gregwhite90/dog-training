@@ -17,64 +17,66 @@ interface TrainingProgressTrainingSessionCardProps {
 };
 
 const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSessionCardProps> = (props) => {
+    const edge = props.trainingSessionToTrainingStageEdge;
+    const table_display = edge.distance || edge.duration || edge.distractions;
     return (
         <>
             <Row>
-                <Link to={`/behaviors/${props.trainingSessionToTrainingStageEdge.node!.behavior!.id}`}>
+                <Link to={`/behaviors/${edge.node!.behavior!.id}`}>
                     <h3>
                         <BehaviorName
-                            behavior={props.trainingSessionToTrainingStageEdge.node!.behavior!}
+                            behavior={edge.node!.behavior!}
                         />
                     </h3>
                 </Link>
-                <Link to={`/stages/${props.trainingSessionToTrainingStageEdge.node!.id}`}>
+            </Row>
+            <Row>
+                <Link to={`/stages/${edge.node!.id}`}>
                     <h4>
                         <TrainingStageName
-                            trainingStage={props.trainingSessionToTrainingStageEdge.node!}
+                            trainingStage={edge.node!}
                         />
                     </h4>
                 </Link>
             </Row>
             <Row>
-                {props.trainingSessionToTrainingStageEdge.successes &&
+                {edge.successes &&
                     (
-                        <span>{props.trainingSessionToTrainingStageEdge.successes} successes</span>
+                        <span>{edge.successes} successes</span>
                     )
                 }
-                {props.trainingSessionToTrainingStageEdge.attempts &&
+                {edge.attempts &&
                     (
-                        <span>{props.trainingSessionToTrainingStageEdge.successes && " on "}{props.trainingSessionToTrainingStageEdge.attempts} attempts</span>
+                        <span>{edge.successes && "/"}{edge.attempts} attempts</span>
                     )
                 }
             </Row>
             <Row>
-                {props.trainingSessionToTrainingStageEdge.duration ||
-                    props.trainingSessionToTrainingStageEdge.distractions ||
-                    props.trainingSessionToTrainingStageEdge.distance &&
+                {table_display &&
                     (
                         <Table bordered hover>
                             <tbody>
-                                {props.trainingSessionToTrainingStageEdge.duration &&
+                                {edge.duration &&
                                     (
                                         <tr>
                                             <td>Duration</td>
-                                            <td>{props.trainingSessionToTrainingStageEdge.duration}</td>
+                                            <td>{edge.duration}</td>
                                         </tr>
                                     )
                                 }
-                                {props.trainingSessionToTrainingStageEdge.distractions &&
+                                {edge.distractions &&
                                     (
                                         <tr>
                                             <td>Distractions</td>
-                                            <td>{props.trainingSessionToTrainingStageEdge.distractions}</td>
+                                            <td>{edge.distractions}</td>
                                         </tr>
                                     )
                                 }
-                                {props.trainingSessionToTrainingStageEdge.distance &&
+                                {edge.distance &&
                                     (
                                         <tr>
                                             <td>Distance</td>
-                                            <td>{props.trainingSessionToTrainingStageEdge.distance}</td>
+                                            <td>{edge.distance}</td>
                                         </tr>
                                     )
                                 }
