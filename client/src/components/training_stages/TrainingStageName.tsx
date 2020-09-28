@@ -9,21 +9,19 @@ interface TrainingStageNameProps {
 };
 
 const TrainingStageName: React.FC<TrainingStageNameProps> = (props) => {
+    const stage = props.trainingStage;
+    const descriptors: Array<string | null> = [
+        stage.incentive && stage.behavior.incentive_method ? stage.behavior.incentive_method.toLowerCase() : null,
+        stage.verbal ? 'verbal' : null,
+        stage.hand ? 'hand' : null,
+        `${stage.reward_frequency.toLowerCase()} rewards`,
+    ].filter(elem => elem);
     return (
-        <span>Stage {props.trainingStage.seq + 1}
+        <span>Stage {stage.seq + 1}
             {props.detail &&
                 (
                     <span>
-                        {' ('}
-                        {props.trainingStage.incentive && props.trainingStage.behavior.incentive_method &&
-                            (
-                                <span>{props.trainingStage.behavior.incentive_method}</span>
-                            )
-                        }
-                        {props.trainingStage.verbal && 'verbal'}
-                        {props.trainingStage.hand && 'hand'}
-                        {`${props.trainingStage.reward_frequency} rewards`}
-                        {')'}
+                        {` (${descriptors.join(" / ")})`}
                     </span>
                 )
             }

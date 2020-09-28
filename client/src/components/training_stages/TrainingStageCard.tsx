@@ -15,7 +15,7 @@ interface TrainingStageCardProps {
 const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
     return (
         <ContainerCard fluid="md">
-            <h3><TrainingStageName detail={true} trainingStage={props.trainingStage} /></h3>
+            <h3><TrainingStageName detail={false} trainingStage={props.trainingStage} /></h3>
             <Table bordered hover>
                 <tbody>
                     <tr>
