@@ -250,7 +250,7 @@ export type TrainingStage = Node & {
   __typename?: 'TrainingStage';
   /** The ID of an object */
   id: Scalars['ID'];
-  behavior?: Maybe<Behavior>;
+  behavior: Behavior;
   trainingSessions?: Maybe<TrainingStageToTrainingSessionConnection>;
   /** The order within the sequence of training stages for this behavior */
   seq: Scalars['Int'];
@@ -709,6 +709,11 @@ export type BehaviorDetailQueryQuery = (
   ) | { __typename?: 'TrainingStage' } | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
 );
 
+export type BehaviorName_BehaviorFragment = (
+  { __typename?: 'Behavior' }
+  & Pick<Behavior, 'name'>
+);
+
 export type BehaviorTrainingStagesApp_BehaviorFragment = (
   { __typename?: 'Behavior' }
   & Pick<Behavior, 'id' | 'name'>
@@ -971,24 +976,19 @@ export type PendingInvitations_ViewerFragment = (
   ) }
 );
 
-export type TrainingProgressTrainingSessionCard_TrainingSessionFragment = (
-  { __typename?: 'TrainingSession' }
-  & { trainingStages: (
-    { __typename?: 'TrainingSessionToTrainingStageConnection' }
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'TrainingSessionToTrainingStageEdge' }
-      & Pick<TrainingSessionToTrainingStageEdge, 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
-      & { node?: Maybe<(
-        { __typename?: 'TrainingStage' }
-        & Pick<TrainingStage, 'id' | 'seq'>
-        & { behavior?: Maybe<(
-          { __typename?: 'Behavior' }
-          & Pick<Behavior, 'id' | 'name'>
-        )> }
-      )> }
-    )>>> }
-  ) }
-  & TrainingSessionName_TrainingSessionFragment
+export type TrainingProgressTrainingSessionCard_TrainingSessionToTrainingStageEdgeFragment = (
+  { __typename?: 'TrainingSessionToTrainingStageEdge' }
+  & Pick<TrainingSessionToTrainingStageEdge, 'seq' | 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
+  & { node?: Maybe<(
+    { __typename?: 'TrainingStage' }
+    & Pick<TrainingStage, 'id'>
+    & { behavior: (
+      { __typename?: 'Behavior' }
+      & Pick<Behavior, 'id'>
+      & BehaviorName_BehaviorFragment
+    ) }
+    & TrainingStageName_TrainingStageFragment
+  )> }
 );
 
 export type CreateTrainingProgressesForm_TrainingSessionFragment = (
@@ -1010,7 +1010,8 @@ export type CreateTrainingProgressesForm_TrainingSessionFragment = (
               { __typename?: 'TrainingStageEdge' }
               & { node?: Maybe<(
                 { __typename?: 'TrainingStage' }
-                & Pick<TrainingStage, 'id' | 'seq'>
+                & Pick<TrainingStage, 'id'>
+                & TrainingStageName_TrainingStageFragment
               )> }
             )>>> }
           ) }
@@ -1059,7 +1060,6 @@ export type TrainingSessionDetailQueryQuery = (
     { __typename?: 'TrainingSession' }
     & TrainingSessionCard_TrainingSessionFragment
     & TrainingSessionBreadcrumb_TrainingSessionFragment
-    & TrainingSessionTrainingProgressesList_TrainingSessionFragment
   ) | { __typename?: 'PendingInvitation' }> }
 );
 
@@ -1100,13 +1100,11 @@ export type TrainingSessionTrainingProgressesList_TrainingSessionFragment = (
     { __typename?: 'TrainingSessionToTrainingStageConnection' }
     & { edges?: Maybe<Array<Maybe<(
       { __typename?: 'TrainingSessionToTrainingStageEdge' }
-      & Pick<TrainingSessionToTrainingStageEdge, 'seq' | 'successes' | 'attempts' | 'distance' | 'distractions' | 'duration'>
-      & { node?: Maybe<(
-        { __typename?: 'TrainingStage' }
-        & Pick<TrainingStage, 'id'>
-      )> }
+      & Pick<TrainingSessionToTrainingStageEdge, 'seq'>
+      & TrainingProgressTrainingSessionCard_TrainingSessionToTrainingStageEdgeFragment
     )>>> }
   ) }
+  & TrainingSessionName_TrainingSessionFragment
 );
 
 export type TrainingSessionTrainingProgressesPageQueryQueryVariables = Exact<{
@@ -1125,24 +1123,26 @@ export type TrainingSessionTrainingProgressesPageQueryQuery = (
 
 export type TrainingStageBreadcrumb_TrainingStageFragment = (
   { __typename?: 'TrainingStage' }
-  & Pick<TrainingStage, 'id' | 'seq'>
-  & { behavior?: Maybe<(
+  & Pick<TrainingStage, 'id'>
+  & { behavior: (
     { __typename?: 'Behavior' }
     & Pick<Behavior, 'name' | 'id'>
     & { dog: (
       { __typename?: 'Dog' }
       & Pick<Dog, 'id' | 'name'>
     ) }
-  )> }
+  ) }
+  & TrainingStageName_TrainingStageFragment
 );
 
 export type TrainingStageCard_TrainingStageFragment = (
   { __typename?: 'TrainingStage' }
-  & Pick<TrainingStage, 'seq' | 'incentive' | 'verbal' | 'hand' | 'reward_frequency'>
-  & { behavior?: Maybe<(
+  & Pick<TrainingStage, 'incentive' | 'verbal' | 'hand' | 'reward_frequency'>
+  & { behavior: (
     { __typename?: 'Behavior' }
     & Pick<Behavior, 'incentive_method' | 'verbal_command'>
-  )> }
+  ) }
+  & TrainingStageName_TrainingStageFragment
 );
 
 export type TrainingStageDetailQueryQueryVariables = Exact<{
@@ -1157,4 +1157,13 @@ export type TrainingStageDetailQueryQuery = (
     & TrainingStageCard_TrainingStageFragment
     & TrainingStageBreadcrumb_TrainingStageFragment
   ) | { __typename?: 'TrainingSession' } | { __typename?: 'PendingInvitation' }> }
+);
+
+export type TrainingStageName_TrainingStageFragment = (
+  { __typename?: 'TrainingStage' }
+  & Pick<TrainingStage, 'seq' | 'incentive' | 'verbal' | 'hand' | 'reward_frequency'>
+  & { behavior: (
+    { __typename?: 'Behavior' }
+    & Pick<Behavior, 'incentive_method'>
+  ) }
 );

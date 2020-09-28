@@ -25,6 +25,8 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+import TrainingStageName from 'components/training_stages/TrainingStageName';
+
 import {
     nullable_number,
     nullable_enum,
@@ -211,7 +213,12 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                                     <option value=""></option>
                                                                     {props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
                                                                         edge!.node!.trainingStages!.edges!.map(e => (
-                                                                            <option key={e!.node!.id} value={e!.node!.id}>Stage {e!.node!.seq + 1}</option>
+                                                                            <option key={e!.node!.id} value={e!.node!.id}>
+                                                                                <TrainingStageName
+                                                                                    detail={true}
+                                                                                    trainingStage={e!.node!}
+                                                                                />
+                                                                            </option>
                                                                         ))
                                                                     ))
                                                                     }
@@ -393,7 +400,7 @@ export default createFragmentContainer(CreateTrainingProgressesForm, {
                                 edges {
                                     node {
                                         id
-                                        seq
+                                        ...TrainingStageName_trainingStage
                                     }
                                 }
                             }

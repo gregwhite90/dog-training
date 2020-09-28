@@ -484,7 +484,7 @@ const trainingStageType = new GraphQLObjectType({
     fields: () => ({
         id: globalIdField(),
         behavior: {
-            type: behaviorType,
+            type: new GraphQLNonNull(behaviorType),
             resolve: (trainingStage, _args, context: Context) => {
                 const behavior_model = new AuthBehavior(context);
                 return behavior_model.get_one({ id: trainingStage.behavior_id });

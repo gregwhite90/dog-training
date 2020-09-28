@@ -174,7 +174,7 @@ type TrainingStageEdge {
 type TrainingStage implements Node {
   """The ID of an object"""
   id: ID!
-  behavior: Behavior
+  behavior: Behavior!
   trainingSessions(after: String, first: Int, before: String, last: Int): TrainingStageToTrainingSessionConnection
 
   """The order within the sequence of training stages for this behavior"""

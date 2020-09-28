@@ -34,6 +34,7 @@ const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSess
                 <Link to={`/stages/${edge.node!.id}`}>
                     <h4>
                         <TrainingStageName
+                            detail={true}
                             trainingStage={edge.node!}
                         />
                     </h4>

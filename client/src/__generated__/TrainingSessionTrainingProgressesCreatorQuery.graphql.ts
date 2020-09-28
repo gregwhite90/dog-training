@@ -44,7 +44,7 @@ fragment CreateTrainingProgressesForm_trainingSession on TrainingSession {
             edges {
               node {
                 id
-                seq
+                ...TrainingStageName_trainingStage
               }
             }
           }
@@ -73,6 +73,18 @@ fragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {
 fragment TrainingSessionName_trainingSession on TrainingSession {
   start_timestamp
   minutes_long
+}
+
+fragment TrainingStageName_trainingStage on TrainingStage {
+  seq
+  incentive
+  behavior {
+    incentive_method
+    id
+  }
+  verbal
+  hand
+  reward_frequency
 }
 */
 
@@ -236,6 +248,53 @@ return {
                                             "kind": "ScalarField",
                                             "name": "seq",
                                             "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "incentive",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "Behavior",
+                                            "kind": "LinkedField",
+                                            "name": "behavior",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "kind": "ScalarField",
+                                                "name": "incentive_method",
+                                                "storageKey": null
+                                              },
+                                              (v2/*: any*/)
+                                            ],
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "verbal",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "hand",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "reward_frequency",
+                                            "storageKey": null
                                           }
                                         ],
                                         "storageKey": null
@@ -322,12 +381,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0397dedc14dc95edc282cb8c51821733",
+    "cacheID": "313c10a5e4b39032b448ccf9ef9c8cb7",
     "id": null,
     "metadata": {},
     "name": "TrainingSessionTrainingProgressesCreatorQuery",
     "operationKind": "query",
-    "text": "query TrainingSessionTrainingProgressesCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionBreadcrumb_trainingSession\n    ...CreateTrainingProgressesForm_trainingSession\n    id\n  }\n}\n\nfragment CreateTrainingProgressesForm_trainingSession on TrainingSession {\n  id\n  dog {\n    id\n    behaviors(first: 2147483647) {\n      edges {\n        node {\n          id\n          name\n          trainingStages(first: 2147483647) {\n            edges {\n              node {\n                id\n                seq\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n  trainingStages(first: 1) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n"
+    "text": "query TrainingSessionTrainingProgressesCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TrainingSessionBreadcrumb_trainingSession\n    ...CreateTrainingProgressesForm_trainingSession\n    id\n  }\n}\n\nfragment CreateTrainingProgressesForm_trainingSession on TrainingSession {\n  id\n  dog {\n    id\n    behaviors(first: 2147483647) {\n      edges {\n        node {\n          id\n          name\n          trainingStages(first: 2147483647) {\n            edges {\n              node {\n                id\n                ...TrainingStageName_trainingStage\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n  trainingStages(first: 1) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n\nfragment TrainingSessionBreadcrumb_trainingSession on TrainingSession {\n  id\n  dog {\n    name\n    id\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingStageName_trainingStage on TrainingStage {\n  seq\n  incentive\n  behavior {\n    incentive_method\n    id\n  }\n  verbal\n  hand\n  reward_frequency\n}\n"
   }
 };
 })();

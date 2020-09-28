@@ -4,6 +4,8 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 
+import TrainingStageName from 'components/training_stages/TrainingStageName';
+
 import type { TrainingStageBreadcrumb_trainingStage } from '__generated__/TrainingStageBreadcrumb_trainingStage.graphql';
 
 interface TrainingStageBreadcrumbProps {
@@ -45,7 +47,10 @@ const TrainingStageBreadcrumb: React.FC<TrainingStageBreadcrumbProps> = (props) 
                     </LinkContainer>
                     <LinkContainer to={`/stages/${props.trainingStage.id}`}>
                         <Breadcrumb.Item active={props.active}>
-                            Stage {props.trainingStage.seq + 1}
+                            <TrainingStageName
+                                detail={false}
+                                trainingStage={props.trainingStage}
+                            />
                         </Breadcrumb.Item>
                     </LinkContainer>
                 </Breadcrumb>
@@ -57,7 +62,7 @@ export default createFragmentContainer(TrainingStageBreadcrumb, {
     trainingStage: graphql`
         fragment TrainingStageBreadcrumb_trainingStage on TrainingStage {
             id
-            seq
+            ...TrainingStageName_trainingStage
             behavior {
                 name
                 id

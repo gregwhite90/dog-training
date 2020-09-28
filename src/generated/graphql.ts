@@ -250,7 +250,7 @@ export type TrainingStage = Node & {
   __typename?: 'TrainingStage';
   /** The ID of an object */
   id: Scalars['ID'];
-  behavior?: Maybe<Behavior>;
+  behavior: Behavior;
   trainingSessions?: Maybe<TrainingStageToTrainingSessionConnection>;
   /** The order within the sequence of training stages for this behavior */
   seq: Scalars['Int'];

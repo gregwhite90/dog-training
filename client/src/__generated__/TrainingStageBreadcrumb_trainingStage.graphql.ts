@@ -6,7 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type TrainingStageBreadcrumb_trainingStage = {
     readonly id: string;
-    readonly seq: number;
     readonly behavior: {
         readonly name: string;
         readonly id: string;
@@ -14,7 +13,8 @@ export type TrainingStageBreadcrumb_trainingStage = {
             readonly id: string;
             readonly name: string;
         };
-    } | null;
+    };
+    readonly " $fragmentRefs": FragmentRefs<"TrainingStageName_trainingStage">;
     readonly " $refType": "TrainingStageBreadcrumb_trainingStage";
 };
 export type TrainingStageBreadcrumb_trainingStage$data = TrainingStageBreadcrumb_trainingStage;
@@ -50,13 +50,6 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "seq",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "Behavior",
       "kind": "LinkedField",
       "name": "behavior",
@@ -79,11 +72,16 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "TrainingStageName_trainingStage"
     }
   ],
   "type": "TrainingStage",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'cd523c6646a34f2470c874af5d0d3f23';
+(node as any).hash = 'd39021a26817278d9bb7a4184f8997d9';
 export default node;

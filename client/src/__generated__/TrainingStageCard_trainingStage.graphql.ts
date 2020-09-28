@@ -7,7 +7,6 @@ import { FragmentRefs } from "relay-runtime";
 export type IncentiveMethod = "LURE" | "SHAPE" | "%future added value";
 export type RewardFrequency = "CONTINUOUS" | "INTERMITTENT" | "%future added value";
 export type TrainingStageCard_trainingStage = {
-    readonly seq: number;
     readonly incentive: boolean;
     readonly verbal: boolean;
     readonly hand: boolean;
@@ -15,7 +14,8 @@ export type TrainingStageCard_trainingStage = {
     readonly behavior: {
         readonly incentive_method: IncentiveMethod | null;
         readonly verbal_command: string | null;
-    } | null;
+    };
+    readonly " $fragmentRefs": FragmentRefs<"TrainingStageName_trainingStage">;
     readonly " $refType": "TrainingStageCard_trainingStage";
 };
 export type TrainingStageCard_trainingStage$data = TrainingStageCard_trainingStage;
@@ -32,13 +32,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "name": "TrainingStageCard_trainingStage",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "seq",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -91,10 +84,15 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "TrainingStageName_trainingStage"
     }
   ],
   "type": "TrainingStage",
   "abstractKey": null
 };
-(node as any).hash = 'b5e564264fe7193964eafca19ef8ea43';
+(node as any).hash = '59f44866162bbab608396cf05386cf76';
 export default node;

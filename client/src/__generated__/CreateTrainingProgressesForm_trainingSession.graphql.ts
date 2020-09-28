@@ -17,7 +17,7 @@ export type CreateTrainingProgressesForm_trainingSession = {
                         readonly edges: ReadonlyArray<{
                             readonly node: {
                                 readonly id: string;
-                                readonly seq: number;
+                                readonly " $fragmentRefs": FragmentRefs<"TrainingStageName_trainingStage">;
                             } | null;
                         } | null> | null;
                     };
@@ -131,11 +131,9 @@ return {
                               "selections": [
                                 (v0/*: any*/),
                                 {
-                                  "alias": null,
                                   "args": null,
-                                  "kind": "ScalarField",
-                                  "name": "seq",
-                                  "storageKey": null
+                                  "kind": "FragmentSpread",
+                                  "name": "TrainingStageName_trainingStage"
                                 }
                               ],
                               "storageKey": null
@@ -203,5 +201,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2dc2400b4bba52d275f1957dcfaff064';
+(node as any).hash = '440dc6d4f580bb7bcd75f983d018cb2e';
 export default node;

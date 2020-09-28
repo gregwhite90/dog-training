@@ -65,7 +65,7 @@ fragment BehaviorTrainingStagesList_behavior on Behavior {
 }
 
 fragment TrainingStageCard_trainingStage on TrainingStage {
-  seq
+  ...TrainingStageName_trainingStage
   incentive
   verbal
   hand
@@ -75,6 +75,18 @@ fragment TrainingStageCard_trainingStage on TrainingStage {
     verbal_command
     id
   }
+}
+
+fragment TrainingStageName_trainingStage on TrainingStage {
+  seq
+  incentive
+  behavior {
+    incentive_method
+    id
+  }
+  verbal
+  hand
+  reward_frequency
 }
 */
 
@@ -215,6 +227,32 @@ return {
                           {
                             "alias": null,
                             "args": null,
+                            "concreteType": "Behavior",
+                            "kind": "LinkedField",
+                            "name": "behavior",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "incentive_method",
+                                "storageKey": null
+                              },
+                              (v3/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "verbal_command",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
                             "name": "verbal",
                             "storageKey": null
@@ -231,32 +269,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "reward_frequency",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Behavior",
-                            "kind": "LinkedField",
-                            "name": "behavior",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "incentive_method",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "verbal_command",
-                                "storageKey": null
-                              },
-                              (v3/*: any*/)
-                            ],
                             "storageKey": null
                           },
                           (v2/*: any*/)
@@ -333,12 +345,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "befdb8c4af4cff34417ffaeeeefc56eb",
+    "cacheID": "8ea5f1a54d23a5113d38f66840f4c6f6",
     "id": null,
     "metadata": {},
     "name": "BehaviorTrainingStagesPageQuery",
     "operationKind": "query",
-    "text": "query BehaviorTrainingStagesPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorTrainingStagesApp_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorTrainingStagesApp_behavior on Behavior {\n  id\n  name\n  ...BehaviorTrainingStagesList_behavior\n}\n\nfragment BehaviorTrainingStagesList_behavior on Behavior {\n  id\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingStageCard_trainingStage\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingStageCard_trainingStage on TrainingStage {\n  seq\n  incentive\n  verbal\n  hand\n  reward_frequency\n  behavior {\n    incentive_method\n    verbal_command\n    id\n  }\n}\n"
+    "text": "query BehaviorTrainingStagesPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorTrainingStagesApp_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorTrainingStagesApp_behavior on Behavior {\n  id\n  name\n  ...BehaviorTrainingStagesList_behavior\n}\n\nfragment BehaviorTrainingStagesList_behavior on Behavior {\n  id\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingStageCard_trainingStage\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingStageCard_trainingStage on TrainingStage {\n  ...TrainingStageName_trainingStage\n  incentive\n  verbal\n  hand\n  reward_frequency\n  behavior {\n    incentive_method\n    verbal_command\n    id\n  }\n}\n\nfragment TrainingStageName_trainingStage on TrainingStage {\n  seq\n  incentive\n  behavior {\n    incentive_method\n    id\n  }\n  verbal\n  hand\n  reward_frequency\n}\n"
   }
 };
 })();

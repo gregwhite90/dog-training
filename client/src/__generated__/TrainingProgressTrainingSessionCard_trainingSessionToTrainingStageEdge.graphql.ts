@@ -17,7 +17,7 @@ export type TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEd
         readonly behavior: {
             readonly id: string;
             readonly " $fragmentRefs": FragmentRefs<"BehaviorName_behavior">;
-        } | null;
+        };
         readonly " $fragmentRefs": FragmentRefs<"TrainingStageName_trainingStage">;
     } | null;
     readonly " $refType": "TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge";

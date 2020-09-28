@@ -3,6 +3,8 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import ContainerCard from 'components/utils/ContainerCard';
 import Table from 'react-bootstrap/Table';
 
+import TrainingStageName from 'components/training_stages/TrainingStageName';
+
 import type { TrainingStageCard_trainingStage } from '__generated__/TrainingStageCard_trainingStage.graphql';
 
 interface TrainingStageCardProps {
@@ -13,7 +15,7 @@ interface TrainingStageCardProps {
 const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
     return (
         <ContainerCard fluid="md">
-            <h3>Stage {props.trainingStage.seq + 1}</h3>
+            <h3><TrainingStageName detail={true} trainingStage={props.trainingStage} /></h3>
             <Table bordered hover>
                 <tbody>
                     <tr>
@@ -63,7 +65,7 @@ const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
 export default createFragmentContainer(TrainingStageCard, {
     trainingStage: graphql`
         fragment TrainingStageCard_trainingStage on TrainingStage {
-            seq
+            ...TrainingStageName_trainingStage
             incentive
             verbal
             hand
