@@ -25,6 +25,7 @@ import {
 
 import { sendInvitation } from '../../sendgrid';
 
+// TODO: the user_role workaround is a little sketchy
 const inviteUserByEmailMutation = mutationWithClientMutationId({
     name: 'InviteUserByEmail',
     description: `Invite an email address to collaborate training a dog`,
@@ -39,7 +40,7 @@ const inviteUserByEmailMutation = mutationWithClientMutationId({
         },
         user_role: {
             type: new GraphQLNonNull(userDogRoleType),
-            description: userRoleDescAndType.description,
+            description: (userRoleDescAndType()).description,
         },
         invited_by: {
             type: new GraphQLNonNull(GraphQLID),

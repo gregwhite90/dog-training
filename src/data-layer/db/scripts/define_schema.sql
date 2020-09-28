@@ -18,7 +18,7 @@ CREATE TABLE behaviors (
        verbal_command           VARCHAR,
        hand_signal              VARCHAR,
        hand_demo_media          VARCHAR,
-       has_duration             BOOLEAN,
+       has_duration             BOOLEAN NOT NULL,
        release_command          VARCHAR,
        CONSTRAINT fk_dog
                   FOREIGN KEY(dog_id) REFERENCES dogs(id)

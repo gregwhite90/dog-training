@@ -262,6 +262,9 @@ class AuthDog extends AuthModel {
             select: {
                 id: true,
             },
+            orderBy: {
+                start_timestamp: 'desc',
+            },
         });
     }
 }
@@ -419,6 +422,28 @@ class AuthBehavior extends AuthModel {
             }
         });
     }
+
+    async get_all_training_session_ids(
+        { id }: { id: string }
+    ): Promise<{ id: number }[] | null> {
+        return await this.prisma.training_sessions.findMany({
+            where: {
+                dogs: {
+                    behaviors: {
+                        every: {
+                            id: parseInt(id),
+                        },
+                    },
+                },
+            },
+            select: {
+                id: true,
+            },
+            orderBy: {
+                start_timestamp: 'desc'
+            }
+        });
+    }
 }
 
 class AuthTrainingStage extends AuthModel {
@@ -465,6 +490,26 @@ class AuthTrainingStage extends AuthModel {
                 ? this.to_GraphQL_object(training_stage)
                 : null;
         });
+    }
+
+    // TODO: authentication and authorization strategy
+    async get_all_training_sessions(
+        { id }: { id: string }
+    ): Promise<{
+        id: number,
+        training_progress: training_progress,
+    }[] | null> {
+        return await this.prisma.training_progress.findMany({
+            where: {
+                training_stage_id: parseInt(id),
+            },
+            orderBy: {
+                seq: 'asc'
+            }
+        }).then(training_progresses => training_progresses.map(training_progress => ({
+            id: training_progress.training_session_id,
+            training_progress,
+        })));
     }
 }
 
@@ -520,8 +565,7 @@ class AuthTrainingSession extends AuthModel {
         });
     }
 
-    // TODO: also include the data for the edge
-    async get_all_training_stage_ids(
+    async get_all_training_stages(
         { id }: { id: string }
     ): Promise<{
         id: number,
@@ -538,6 +582,28 @@ class AuthTrainingSession extends AuthModel {
             id: training_progress.training_stage_id,
             training_progress,
         })));
+    }
+
+    // TODO: finalize
+    async get_all_users(
+        { id }: { id: string }
+    ): Promise<{ id: string, user_role: user_training_session_role }[] | null> {
+        // TODO: figure out auth
+        return this.prisma.user_training_sessions.findMany({
+            where: {
+                training_session_id: parseInt(id),
+            },
+            select: {
+                user_id: true,
+                user_role: true,
+            }
+        }).then(training_sessions => {
+            return training_sessions.map(({ user_id, user_role }) => ({
+                id: user_id,
+                user_role,
+            }));
+        });
+        // TODO: deal with null return value
     }
 }
 

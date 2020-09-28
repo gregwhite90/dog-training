@@ -37,9 +37,9 @@ export type User = Node & {
   name: Scalars['String'];
   /** URL of the profile image of this user. */
   picture?: Maybe<Scalars['String']>;
-  dogs?: Maybe<UserToDogConnection>;
-  pending_invitations_sent?: Maybe<PendingInvitationConnection>;
-  pending_invitations_received?: Maybe<PendingInvitationConnection>;
+  dogs: UserToDogConnection;
+  pending_invitations_sent: PendingInvitationConnection;
+  pending_invitations_received: PendingInvitationConnection;
   training_sessions: UserToTrainingSessionConnection;
 };
 
@@ -105,16 +105,16 @@ export type UserToDogEdge = {
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
   /** The role the user plays for the dog. */
-  user_role?: Maybe<UserDogRole>;
+  user_role: UserDogRole;
 };
 
 export type Dog = Node & {
   __typename?: 'Dog';
   /** The ID of an object */
   id: Scalars['ID'];
-  users?: Maybe<DogToUserConnection>;
-  behaviors?: Maybe<BehaviorConnection>;
-  trainingSessions?: Maybe<TrainingSessionConnection>;
+  users: DogToUserConnection;
+  behaviors: BehaviorConnection;
+  trainingSessions: TrainingSessionConnection;
   name: Scalars['String'];
   /** URL of the profile image of this dog. */
   picture?: Maybe<Scalars['String']>;
@@ -161,7 +161,7 @@ export type DogToUserEdge = {
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
   /** The role the user plays for the dog. */
-  user_role?: Maybe<UserDogRole>;
+  user_role: UserDogRole;
 };
 
 export enum UserDogRole {
@@ -192,8 +192,9 @@ export type Behavior = Node & {
   __typename?: 'Behavior';
   /** The ID of an object */
   id: Scalars['ID'];
-  dog?: Maybe<Dog>;
-  trainingStages?: Maybe<TrainingStageConnection>;
+  dog: Dog;
+  trainingStages: TrainingStageConnection;
+  trainingSessions: TrainingSessionConnection;
   name: Scalars['String'];
   /** Explanation of the desired behavior in clear, plain language. */
   explanation?: Maybe<Scalars['String']>;
@@ -205,7 +206,7 @@ export type Behavior = Node & {
   verbal_command?: Maybe<Scalars['String']>;
   /** The hand signal used to cue this behavior. */
   hand_signal?: Maybe<Scalars['String']>;
-  /** Description of the shape used in training. */
+  /** Whether this behavior has a duration component. */
   has_duration: Scalars['Boolean'];
   /** The verbal command used to release this behavior. */
   release_command?: Maybe<Scalars['String']>;
@@ -213,6 +214,14 @@ export type Behavior = Node & {
 
 
 export type BehaviorTrainingStagesArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type BehaviorTrainingSessionsArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -242,6 +251,7 @@ export type TrainingStage = Node & {
   /** The ID of an object */
   id: Scalars['ID'];
   behavior?: Maybe<Behavior>;
+  trainingSessions?: Maybe<TrainingStageToTrainingSessionConnection>;
   /** The order within the sequence of training stages for this behavior */
   seq: Scalars['Int'];
   /** Whether this stage includes an incentive method */
@@ -251,43 +261,54 @@ export type TrainingStage = Node & {
   /** Whether this stage includes a hand signal */
   hand: Scalars['Boolean'];
   /** How frequently successful behavior is rewarded. */
-  reward_frequency?: Maybe<RewardFrequency>;
+  reward_frequency: RewardFrequency;
 };
 
-export enum RewardFrequency {
-  Continuous = 'CONTINUOUS',
-  Intermittent = 'INTERMITTENT'
-}
 
-export enum IncentiveMethod {
-  Lure = 'LURE',
-  Shape = 'SHAPE'
-}
+export type TrainingStageTrainingSessionsArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
 
 /** A connection to a list of items. */
-export type TrainingSessionConnection = {
-  __typename?: 'TrainingSessionConnection';
+export type TrainingStageToTrainingSessionConnection = {
+  __typename?: 'TrainingStageToTrainingSessionConnection';
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** A list of edges. */
-  edges?: Maybe<Array<Maybe<TrainingSessionEdge>>>;
+  edges?: Maybe<Array<Maybe<TrainingStageToTrainingSessionEdge>>>;
 };
 
 /** An edge in a connection. */
-export type TrainingSessionEdge = {
-  __typename?: 'TrainingSessionEdge';
+export type TrainingStageToTrainingSessionEdge = {
+  __typename?: 'TrainingStageToTrainingSessionEdge';
   /** The item at the end of the edge */
   node?: Maybe<TrainingSession>;
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
+  /** Order within the sequence of training progresses in this training session */
+  seq: Scalars['Int'];
+  /** The number of successful attempts of this training stage */
+  successes?: Maybe<Scalars['Int']>;
+  /** The number of total attempts of this training stage */
+  attempts?: Maybe<Scalars['Int']>;
+  /** A qualitative assessment of the distance between human and dog while training this stage */
+  distance?: Maybe<QualitativeLevel>;
+  /** A qualitative assessment of the duration of the behavior attempted while training this stage */
+  duration?: Maybe<QualitativeLevel>;
+  /** A qualitative assessment of the amount of distractions for the dog while training this stage */
+  distractions?: Maybe<QualitativeLevel>;
 };
 
 export type TrainingSession = Node & {
   __typename?: 'TrainingSession';
   /** The ID of an object */
   id: Scalars['ID'];
-  dog?: Maybe<Dog>;
-  trainingStages?: Maybe<TrainingSessionToTrainingStageConnection>;
+  dog: Dog;
+  trainingStages: TrainingSessionToTrainingStageConnection;
+  users: TrainingSessionToUserConnection;
   /** The length of the training session, in minutes */
   minutes_long?: Maybe<Scalars['Int']>;
   /** When this training session was started */
@@ -296,6 +317,14 @@ export type TrainingSession = Node & {
 
 
 export type TrainingSessionTrainingStagesArgs = {
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type TrainingSessionUsersArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -338,6 +367,59 @@ export enum QualitativeLevel {
   High = 'HIGH'
 }
 
+/** A connection to a list of items. */
+export type TrainingSessionToUserConnection = {
+  __typename?: 'TrainingSessionToUserConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingSessionToUserEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingSessionToUserEdge = {
+  __typename?: 'TrainingSessionToUserEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<User>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+  /** The role the user plays for the training session. */
+  user_role: UserTrainingSessionRole;
+};
+
+export enum UserTrainingSessionRole {
+  Maintainer = 'MAINTAINER',
+  Participant = 'PARTICIPANT'
+}
+
+
+export enum RewardFrequency {
+  Continuous = 'CONTINUOUS',
+  Intermittent = 'INTERMITTENT'
+}
+
+/** A connection to a list of items. */
+export type TrainingSessionConnection = {
+  __typename?: 'TrainingSessionConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<TrainingSessionEdge>>>;
+};
+
+/** An edge in a connection. */
+export type TrainingSessionEdge = {
+  __typename?: 'TrainingSessionEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TrainingSession>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export enum IncentiveMethod {
+  Lure = 'LURE',
+  Shape = 'SHAPE'
+}
 
 /** A connection to a list of items. */
 export type PendingInvitationConnection = {
@@ -364,7 +446,7 @@ export type PendingInvitation = Node & {
   invitee_email: Scalars['String'];
   invited_by: User;
   user_role: UserDogRole;
-  dog?: Maybe<Dog>;
+  dog: Dog;
 };
 
 /** A connection to a list of items. */
@@ -384,13 +466,8 @@ export type UserToTrainingSessionEdge = {
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
   /** The role the user plays for the training session. */
-  user_role?: Maybe<UserTrainingSessionRole>;
+  user_role: UserTrainingSessionRole;
 };
-
-export enum UserTrainingSessionRole {
-  Maintainer = 'MAINTAINER',
-  Participant = 'PARTICIPANT'
-}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -528,7 +605,7 @@ export type CreateBehaviorInput = {
   verbal_command?: Maybe<Scalars['String']>;
   /** The hand signal used to cue this behavior. */
   hand_signal?: Maybe<Scalars['String']>;
-  /** Description of the shape used in training. */
+  /** Whether this behavior has a duration component. */
   has_duration: Scalars['Boolean'];
   /** The verbal command used to release this behavior. */
   release_command?: Maybe<Scalars['String']>;
@@ -557,7 +634,7 @@ export type TrainingStageScalarFields = {
   /** Whether this stage includes a hand signal */
   hand: Scalars['Boolean'];
   /** How frequently successful behavior is rewarded. */
-  reward_frequency?: Maybe<RewardFrequency>;
+  reward_frequency: RewardFrequency;
 };
 
 export type CreateTrainingSessionPayload = {

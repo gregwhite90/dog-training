@@ -23,10 +23,6 @@ import { AuthUser } from '../business-layer/models';
 import {
     createDogMutation,
     editDogMutation,
-    /**
-    removeDogForViewerMutation,
-    removeDogForAllMutation,
-    */
 } from './mutations/Dog';
 
 import {
