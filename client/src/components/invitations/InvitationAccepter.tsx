@@ -14,6 +14,7 @@ interface InvitationAccepterProps {
     invitation_id: string;
 };
 
+// TODO: cleaner refresh when accepting an invitation?
 const InvitationAccepter: React.FC<InvitationAccepterProps> = (props) => {
     const { user } = useAuth0();
 
@@ -22,7 +23,7 @@ const InvitationAccepter: React.FC<InvitationAccepterProps> = (props) => {
             AcceptInvitationMutation.commit(
                 props.relay_environment,
                 { invitation_id: props.invitation_id, user_id: user.sub },
-                () => { },
+                () => window.location.reload(false),
             );
         }}>
             Accept

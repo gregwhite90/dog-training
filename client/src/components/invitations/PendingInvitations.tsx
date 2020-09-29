@@ -53,27 +53,32 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
                 <Dropdown.Item href="/invitations/add">
                     Send an invitation
                 </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Header>
-                    Pending invitations recieved
-                </Dropdown.Header>
-                {edges.map(edge => edge!.node)
-                    .map(node => {
-                        return (
-                            <ContainerCard key={node!.id}>
-                                <Row><Col>Dog: {node!.dog!.name}</Col></Row>
-                                <Row><Col>Role: {node!.user_role}</Col></Row>
-                                <Row><Col>From: {node!.invited_by!.name}</Col></Row>
-                                <Row><Col>To: {node!.invitee_email}</Col></Row>
-                                <Row><Col>
-                                    <InvitationAccepter
-                                        relay_environment={props.relay_environment}
-                                        invitation_id={node!.id}
-                                    />
-                                </Col></Row>
-                            </ContainerCard>
-                        );
-                    })
+                {edges.length > 0 &&
+                    (
+                        <>
+                            <Dropdown.Divider />
+                            <Dropdown.Header>
+                                Pending invitations recieved
+                             </Dropdown.Header>
+                            {edges.map(edge => {
+                                return (
+                                    <ContainerCard key={edge!.node!.id}>
+                                        <Row><Col>Dog: {edge!.node!.dog!.name}</Col></Row>
+                                        <Row><Col>Role: {edge!.node!.user_role}</Col></Row>
+                                        <Row><Col>From: {edge!.node!.invited_by!.name}</Col></Row>
+                                        <Row><Col>To: {edge!.node!.invitee_email}</Col></Row>
+                                        <Row><Col>
+                                            <InvitationAccepter
+                                                relay_environment={props.relay_environment}
+                                                invitation_id={edge!.node!.id}
+                                            />
+                                        </Col></Row>
+                                    </ContainerCard>
+                                    );
+                                })
+                            }
+                        </>
+                    )
                 }
             </Dropdown.Menu>
         </Dropdown>
