@@ -51,6 +51,11 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_
                                         View training stages
                                     </Button>
                                 </Link>
+                                <Link to={`${match.url}/progress`}>
+                                    <Button variant="primary">
+                                        View training progress
+                                    </Button>
+                                </Link>
                             </Container>
                         </>
                     );
