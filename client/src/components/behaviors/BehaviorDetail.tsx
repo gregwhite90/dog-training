@@ -43,7 +43,6 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_
                             <BehaviorBreadcrumb
                                 behavior={props.node}
                                 active={true}
-                                training_stages={false}
                             />
                             <Container>
                                 <BehaviorCard behavior={props.node} />

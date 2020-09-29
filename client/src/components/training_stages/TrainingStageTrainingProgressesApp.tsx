@@ -1,7 +1,5 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 
 import TrainingStageTrainingProgressesList from './TrainingStageTrainingProgressesList';
 import TrainingStageName from './TrainingStageName';

@@ -2,9 +2,8 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { Link } from 'react-router-dom';
 
-import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 
 import TrainingProgressTrainingStageCard from 'components/training_progress/cards/TrainingProgressTrainingStageCard';
 import TrainingStageName from 'components/training_stages/TrainingStageName';
@@ -31,7 +30,7 @@ const TrainingStageTrainingProgressesList: React.FC<TrainingStageTrainingProgres
         <>
             {edges.map(edge => {
                 return (
-                    <Container key={edge!.training_progress.seq} fluid="md" className="p-3 mb-3 border rounded">
+                    <ContainerCard key={edge!.training_progress.seq} fluid="md">
                         <Row>
                             <h3>
                                 <Link to={`/behaviors/${props.trainingStage.behavior.id}`}>
@@ -52,7 +51,7 @@ const TrainingStageTrainingProgressesList: React.FC<TrainingStageTrainingProgres
                         <TrainingProgressTrainingStageCard
                             trainingStageToTrainingSessionEdge={edge!}
                         />
-                    </Container>
+                    </ContainerCard>
                 );
             })}
         </>

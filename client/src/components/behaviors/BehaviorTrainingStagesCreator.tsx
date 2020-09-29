@@ -41,7 +41,7 @@ const BehaviorTrainingStagesCreator: React.FC<BehaviorTrainingStagesCreatorProps
                             <BehaviorBreadcrumb
                                 behavior={props.node}
                                 active={false}
-                                training_stages={true}
+                                leaf="stages"
                             />
                             <Container>
                                 <CreateTrainingStagesForm

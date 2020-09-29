@@ -8,28 +8,28 @@ import Button from 'react-bootstrap/Button';
 
 import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 
-import BehaviorTrainingStagesApp from './BehaviorTrainingStagesApp';
+import BehaviorTrainingProgressesApp from './BehaviorTrainingProgressesApp';
 
-import type { BehaviorTrainingStagesPageQuery } from '__generated__/BehaviorTrainingStagesPageQuery.graphql';
+import type { BehaviorTrainingProgressesPageQuery } from '__generated__/BehaviorTrainingProgressesPageQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface BehaviorTrainingStagesPageProps extends RouteComponentProps<MatchParams> {
+interface BehaviorTrainingProgressesPageProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
     behavior_id: string,
 }
 
 // TODO: only allow for the creation once.
-const BehaviorTrainingStagesPage: React.FC<BehaviorTrainingStagesPageProps> = ({ relay, match, behavior_id }) => {
+const BehaviorTrainingProgressesPage: React.FC<BehaviorTrainingProgressesPageProps> = ({ relay, match, behavior_id }) => {
     return (
-        <QueryRenderer<BehaviorTrainingStagesPageQuery>
+        <QueryRenderer<BehaviorTrainingProgressesPageQuery>
             environment={relay.environment}
             query={graphql`
-                query BehaviorTrainingStagesPageQuery($id: ID!) {
+                query BehaviorTrainingProgressesPageQuery($id: ID!) {
                     node(id: $id) {
-                        ...BehaviorTrainingStagesApp_behavior
+                        ...BehaviorTrainingProgressesApp_behavior
                         ...BehaviorBreadcrumb_behavior
                     }
                 }
@@ -41,11 +41,11 @@ const BehaviorTrainingStagesPage: React.FC<BehaviorTrainingStagesPageProps> = ({
                         <>
                             <BehaviorBreadcrumb
                                 behavior={props.node}
-                                leaf="stages"
+                                leaf="progress"
                                 active={true}
                             />
                             <Container>
-                                <BehaviorTrainingStagesApp behavior={props.node} match={match} />
+                                <BehaviorTrainingProgressesApp behavior={props.node} match={match} />
                             </Container>
                         </>
                     );
@@ -59,6 +59,6 @@ const BehaviorTrainingStagesPage: React.FC<BehaviorTrainingStagesPageProps> = ({
     );
 }
 
-export default withAuthenticationRequired(BehaviorTrainingStagesPage, {
+export default withAuthenticationRequired(BehaviorTrainingProgressesPage, {
     onRedirecting: () => (<div>Redirecting you to the login page</div>)
 });
