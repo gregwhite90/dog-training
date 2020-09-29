@@ -1,43 +1,40 @@
 import React from 'react';
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
 
-import DogsApp from './DogsApp';
-import DogsBreadcrumb from './DogsBreadcrumb';
+import PendingInvitations from './PendingInvitations';
 
-import type { DogsPageQuery } from '__generated__/DogsPageQuery.graphql';
+import type { PendingInvitationsPageQuery } from '__generated__/PendingInvitationsPageQuery.graphql';
 import type { RelayProp } from 'react-relay';
-import type { RouteComponentProps } from 'react-router-dom';
 
 // TODO: pass down the match params (empty object in this case)
-interface DogsPageProps extends RouteComponentProps<{}> {
+interface PendingInvitationsPageProps {
     relay: RelayProp,
 }
 
-const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
+const PendingInvitationsPage: React.FC<PendingInvitationsPageProps> = ({ relay }) => {
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     return (
-        <QueryRenderer<DogsPageQuery>
+        <QueryRenderer<PendingInvitationsPageQuery>
             environment={relay.environment}
             query={graphql`
-                query DogsPageQuery {
+                query PendingInvitationsPageQuery {
                     viewer {
-                        ...DogsApp_viewer
+                        ...PendingInvitations_viewer
                     }
                 }
                 `}
             cacheConfig={{
-                poll: 10000 // 10 seconds
+                poll: 60000 // 60 seconds
             }}
             variables={{}}
             render={({ error, props }) => {
                 if (props && props.viewer) {
                     return (
-                        <>
-                            <DogsBreadcrumb active={true} />
-                            <DogsApp viewer={props.viewer} match={match} />
-                        </>
+                        <PendingInvitations
+                            relay_environment={relay.environment}
+                            viewer={props.viewer}
+                        />
                     );
                 } else if (error) {
                     console.log(error);
@@ -50,6 +47,4 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
     );
 }
 
-export default withAuthenticationRequired(DogsPage, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
-});
+export default PendingInvitationsPage;

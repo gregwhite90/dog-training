@@ -46,7 +46,7 @@ class App extends React.Component<any, any> {
         return (
             <Router history={history}>
                 <div className="App">
-                    <Navigation />
+                    <Navigation relay={this.state.relay} />
                     <Switch>
                         <Route path="/login" render={(_: any) => (
                             this.props.auth0.loginWithRedirect()
