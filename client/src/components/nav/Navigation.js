@@ -2,6 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavLink from 'react-bootstrap/NavLink';
+import NavItem from 'react-bootstrap/NavItem';
+import Badge from 'react-bootstrap/Badge';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
 import { LinkContainer } from 'react-router-bootstrap';
 import LoginButton from '../authentication/LoginButton';
@@ -9,6 +13,13 @@ import LogoutButton from '../authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import logo from '../../logo_dark.svg';
 
+import {
+    PlusIcon,
+    BellIcon,
+} from '@primer/octicons-react';
+
+// TODO: make the add links actually work
+// TODO: figure out the pending invitations situation
 const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
     const MARGIN_WITHIN_NAV = 3;
@@ -22,15 +33,6 @@ const Navigation = () => {
 
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    {isAuthenticated &&
-                     (
-                         <LinkContainer to="/dogs" exact>
-                             <Nav.Item className={`mr-${MARGIN_WITHIN_NAV}`}>
-                                 <span>Dogs</span>
-                             </Nav.Item>
-                         </LinkContainer>
-                     )
-                    }
                     <LinkContainer to="/about" exact>
                         <Nav.Item>
                             <span>About</span>
@@ -41,11 +43,47 @@ const Navigation = () => {
                 {isAuthenticated
                  ? (
                      <Nav>
+                         <Dropdown as={NavItem} className={`mr-${MARGIN_WITHIN_NAV}`}>
+                             <Dropdown.Toggle as={NavLink}>
+                                 <PlusIcon size="medium" />
+                             </Dropdown.Toggle>
+                             <Dropdown.Menu>
+                                 <Dropdown.Item>
+                                     Dog
+                                 </Dropdown.Item>
+                                 <Dropdown.Item>
+                                     Behavior
+                                 </Dropdown.Item>
+                                 <Dropdown.Item>
+                                     Training session
+                                 </Dropdown.Item>
+                             </Dropdown.Menu>
+                         </Dropdown>
+                         <Dropdown as={NavItem} className={`mr-${MARGIN_WITHIN_NAV}`}>
+                             <Dropdown.Toggle as={NavLink}>
+                                 <>
+                                     <BellIcon size="medium" />
+                                     {' '}
+                                     <Badge variant="primary">0</Badge>
+                                 </>
+                             </Dropdown.Toggle>
+                             <Dropdown.Menu>
+                                 <Dropdown.Header>
+                                     Pending invitations
+                                 </Dropdown.Header>
+                                 <Dropdown.Item>
+                                     Pending invitation 1
+                                 </Dropdown.Item>
+                                 <Dropdown.Item>
+                                     Pending invitation 2
+                                 </Dropdown.Item>
+                             </Dropdown.Menu>
+                         </Dropdown>
                          <Nav.Item className={`mr-${MARGIN_WITHIN_NAV}`}>
                              <LogoutButton />
                          </Nav.Item>
                          <Nav.Item>
-                             <Image src={user.picture} alt={user.name} width="35px" roundedCircle />
+                             <Image src={user.picture} alt={user.name} width="32px" roundedCircle />
                          </Nav.Item>
                      </Nav>
                  )
