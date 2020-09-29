@@ -15,6 +15,8 @@ interface InvitationAccepterProps {
 };
 
 // TODO: cleaner refresh when accepting an invitation?
+// TODO: disable the accept button?
+// TODO: also make it remove the pending invitation from that list?
 const InvitationAccepter: React.FC<InvitationAccepterProps> = (props) => {
     const { user } = useAuth0();
 
