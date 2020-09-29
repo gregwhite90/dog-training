@@ -45,6 +45,15 @@ fragment PendingInvitations_viewer on User {
       }
     }
   }
+  dogs {
+    edges {
+      user_role
+      node {
+        id
+        name
+      }
+    }
+  }
 }
 */
 
@@ -57,6 +66,13 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "user_role",
+  "storageKey": null
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -137,13 +153,7 @@ return {
                         "name": "invitee_email",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "user_role",
-                        "storageKey": null
-                      },
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -152,7 +162,7 @@ return {
                         "name": "dog",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
+                          (v2/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -172,11 +182,47 @@ return {
                         "name": "invited_by",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
+                          (v2/*: any*/),
                           (v0/*: any*/)
                         ],
                         "storageKey": null
                       }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "UserToDogConnection",
+            "kind": "LinkedField",
+            "name": "dogs",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "UserToDogEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  (v1/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Dog",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v0/*: any*/),
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -192,12 +238,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2c8892816610d8319efb51665e7d0718",
+    "cacheID": "8ffd25978dc7d01d9d5b48c3b083954b",
     "id": null,
     "metadata": {},
     "name": "PendingInvitationsDropdownQuery",
     "operationKind": "query",
-    "text": "query PendingInvitationsDropdownQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query PendingInvitationsDropdownQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n  dogs {\n    edges {\n      user_role\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();

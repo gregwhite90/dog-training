@@ -34,60 +34,90 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
             && props.viewer.pending_invitations_received.edges
             ? props.viewer.pending_invitations_received.edges.filter(Boolean)
             : [];
+    const dogEdges =
+        props
+            && props.viewer
+            && props.viewer.dogs
+            && props.viewer.dogs.edges
+            ? props.viewer.dogs.edges.filter(edge => edge && edge.user_role == 'OWNER')
+            : [];
     return (
-        <Dropdown
-            alignRight={true}
-            as={NavItem}
-            className={`mr-${props.margin_within_nav}`}
-        >
-            <Dropdown.Toggle as={NavLink}>
-                <>
-                    <PeopleIcon size="small" verticalAlign="middle" />
-                    {edges.length > 0 &&
-                        (
+        <>
+            {(edges.length > 0 || dogEdges.length > 0) &&
+                (
+                    <Dropdown
+                        alignRight={true}
+                        as={NavItem}
+                        className={`mr-${props.margin_within_nav}`}
+                    >
+                        <Dropdown.Toggle as={NavLink}>
                             <>
-                                {' '}
-                                <Badge variant="primary">
-                                    {edges.length}
-                                </Badge>
+                                <PeopleIcon size="small" verticalAlign="middle" />
+                                {edges.length > 0 &&
+                                    (
+                                        <>
+                                            {' '}
+                                            <Badge variant="primary">
+                                                {edges.length}
+                                            </Badge>
+                                        </>
+                                    )
+                                }
                             </>
-                        )
-                    }
-                </>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item href="/invitations/add">
-                    Send an invitation
-                </Dropdown.Item>
-                {edges.length > 0 &&
-                    (
-                        <>
-                            <Dropdown.Divider />
-                            <Dropdown.Header>
-                                Pending invitations recieved
-                             </Dropdown.Header>
-                            {edges.map(edge => {
-                                return (
-                                    <ContainerCard key={edge!.node!.id}>
-                                        <Row><Col>Dog: {edge!.node!.dog!.name}</Col></Row>
-                                        <Row><Col>Role: {edge!.node!.user_role}</Col></Row>
-                                        <Row><Col>From: {edge!.node!.invited_by!.name}</Col></Row>
-                                        <Row><Col>To: {edge!.node!.invitee_email}</Col></Row>
-                                        <Row><Col>
-                                            <InvitationAccepter
-                                                relay_environment={props.relay_environment}
-                                                invitation_id={edge!.node!.id}
-                                            />
-                                        </Col></Row>
-                                    </ContainerCard>
-                                );
-                            })
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown>
+                                <Dropdown.Toggle as={NavLink}>
+                                    Send an invitation
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {dogEdges.map(edge => {
+                                        return (
+                                            <Dropdown.Item
+                                                key={`invitation-${edge!.node!.id}`}
+                                                href={`/dogs/${edge!.node!.id}/invitations/add`}
+                                            >
+                                                {edge!.node!.name}
+                                            </Dropdown.Item>
+                                        );
+                                    })
+                                    }
+                                    <Dropdown.Item>Dog 1</Dropdown.Item>
+                                    <Dropdown.Item>Dog 2</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            {edges.length > 0 &&
+                                (
+                                    <>
+                                        <Dropdown.Divider />
+                                        <Dropdown.Header>
+                                            Pending invitations recieved
+                                </Dropdown.Header>
+                                        {edges.map(edge => {
+                                            return (
+                                                <ContainerCard key={edge!.node!.id}>
+                                                    <Row><Col>Dog: {edge!.node!.dog!.name}</Col></Row>
+                                                    <Row><Col>Role: {edge!.node!.user_role}</Col></Row>
+                                                    <Row><Col>From: {edge!.node!.invited_by!.name}</Col></Row>
+                                                    <Row><Col>To: {edge!.node!.invitee_email}</Col></Row>
+                                                    <Row><Col>
+                                                        <InvitationAccepter
+                                                            relay_environment={props.relay_environment}
+                                                            invitation_id={edge!.node!.id}
+                                                        />
+                                                    </Col></Row>
+                                                </ContainerCard>
+                                            );
+                                        })
+                                        }
+                                    </>
+                                )
                             }
-                        </>
-                    )
-                }
-            </Dropdown.Menu>
-        </Dropdown>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                )
+            }
+        </>
     );
 }
 
@@ -110,6 +140,15 @@ export default createFragmentContainer(PendingInvitations, {
                         invited_by {
                             name
                         }
+                    }
+                }
+            }
+            dogs {
+                edges {
+                    user_role
+                    node {
+                        id
+                        name
                     }
                 }
             }
