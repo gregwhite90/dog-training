@@ -2,8 +2,16 @@ import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
 
 import ContainerCard from 'components/utils/ContainerCard';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Dropdown from 'react-bootstrap/Dropdown';
+import NavLink from 'react-bootstrap/NavLink';
+import NavItem from 'react-bootstrap/NavItem';
+import Badge from 'react-bootstrap/Badge';
+
+import {
+    PeopleIcon,
+} from '@primer/octicons-react';
 
 import InvitationAccepter from './InvitationAccepter';
 
@@ -13,6 +21,7 @@ import type { IEnvironment } from 'relay-runtime';
 interface PendingInvitationProps {
     viewer: PendingInvitations_viewer,
     relay_environment: IEnvironment,
+    margin_within_nav: number,
 }
 
 // TODO: figure out if can get rid of the ! everywhere
@@ -26,26 +35,48 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
             ? props.viewer.pending_invitations_received.edges.filter(Boolean)
             : [];
     return (
-        <Container>
-            {edges.map(edge => edge!.node)
-                .map(node => {
-                    return (
-                        <ContainerCard key={node!.id}>
-                            <Row>Dog: {node!.dog!.name}</Row>
-                            <Row>Role: {node!.user_role}</Row>
-                            <Row>From: {node!.invited_by!.name}</Row>
-                            <Row>To: {node!.invitee_email}</Row>
-                            <Row>
-                                <InvitationAccepter
-                                    relay_environment={props.relay_environment}
-                                    invitation_id={node!.id}
-                                />
-                            </Row>
-                        </ContainerCard>
-                    );
-                })
-            }
-        </Container>
+        <Dropdown
+            alignRight={true}
+            as={NavItem}
+            className={`mr-${props.margin_within_nav}`}
+        >
+            <Dropdown.Toggle as={NavLink}>
+                <>
+                    <PeopleIcon size="small" verticalAlign="middle" />
+                    {' '}
+                    <Badge variant="primary">
+                        {edges.length}
+                    </Badge>
+                </>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+                <Dropdown.Item href="/invitations/add">
+                    Send an invitation
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Header>
+                    Pending invitations recieved
+                </Dropdown.Header>
+                {edges.map(edge => edge!.node)
+                    .map(node => {
+                        return (
+                            <ContainerCard key={node!.id}>
+                                <Row><Col>Dog: {node!.dog!.name}</Col></Row>
+                                <Row><Col>Role: {node!.user_role}</Col></Row>
+                                <Row><Col>From: {node!.invited_by!.name}</Col></Row>
+                                <Row><Col>To: {node!.invitee_email}</Col></Row>
+                                <Row><Col>
+                                    <InvitationAccepter
+                                        relay_environment={props.relay_environment}
+                                        invitation_id={node!.id}
+                                    />
+                                </Col></Row>
+                            </ContainerCard>
+                        );
+                    })
+                }
+            </Dropdown.Menu>
+        </Dropdown>
     );
 }
 

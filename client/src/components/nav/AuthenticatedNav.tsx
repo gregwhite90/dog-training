@@ -5,19 +5,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Nav from 'react-bootstrap/Nav';
 import NavLink from 'react-bootstrap/NavLink';
 import NavItem from 'react-bootstrap/NavItem';
-import Badge from 'react-bootstrap/Badge';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
-import Button from 'react-bootstrap/Button';
 
 import {
     PlusIcon,
-    PeopleIcon,
 } from '@primer/octicons-react';
 
-import PendingInvitationsPage from 'components/invitations/PendingInvitationsPage';
+import PendingInvitationsDropdown from './PendingInvitationsDropdown';
 
 import type { RelayProp } from 'react-relay';
 
@@ -36,36 +31,10 @@ const AuthenticatedNav: React.FC<AuthenticatedNavProps> = ({ relay }) => {
 
     return (
         <Nav>
-            <Dropdown
-                alignRight={true}
-                as={NavItem}
-                className={`mr-${MARGIN_WITHIN_NAV}`}
-            >
-                <Dropdown.Toggle as={NavLink}>
-                    <>
-                        <PeopleIcon size="small" verticalAlign="middle" />
-                        {' '}
-                        <Badge variant="primary">0</Badge>
-                    </>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item href="/invitations/add">
-                        Send an invitation
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Header>
-                        Pending invitations recieved
-                    </Dropdown.Header>
-                    <PendingInvitationsPage relay={relay} />
-                    <Container>
-                        <Row>Dog: </Row>
-                        <Row>Role: </Row>
-                        <Row>From: </Row>
-                        <Row>To: </Row>
-                        <Row><Button variant="primary">Accept</Button></Row>
-                    </Container>
-                </Dropdown.Menu>
-            </Dropdown>
+            <PendingInvitationsDropdown
+                relay={relay}
+                margin_within_nav={MARGIN_WITHIN_NAV}
+            />
             <Dropdown
                 alignRight={true}
                 as={NavItem}

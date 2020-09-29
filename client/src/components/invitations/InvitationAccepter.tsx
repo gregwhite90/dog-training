@@ -25,7 +25,7 @@ const InvitationAccepter: React.FC<InvitationAccepterProps> = (props) => {
                 () => { },
             );
         }}>
-            Accept invitation!
+            Accept
         </Button>
     );
 }

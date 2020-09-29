@@ -4,21 +4,21 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PendingInvitationsPageQueryVariables = {};
-export type PendingInvitationsPageQueryResponse = {
+export type PendingInvitationsDropdownQueryVariables = {};
+export type PendingInvitationsDropdownQueryResponse = {
     readonly viewer: {
         readonly " $fragmentRefs": FragmentRefs<"PendingInvitations_viewer">;
     } | null;
 };
-export type PendingInvitationsPageQuery = {
-    readonly response: PendingInvitationsPageQueryResponse;
-    readonly variables: PendingInvitationsPageQueryVariables;
+export type PendingInvitationsDropdownQuery = {
+    readonly response: PendingInvitationsDropdownQueryResponse;
+    readonly variables: PendingInvitationsDropdownQueryVariables;
 };
 
 
 
 /*
-query PendingInvitationsPageQuery {
+query PendingInvitationsDropdownQuery {
   viewer {
     ...PendingInvitations_viewer
     id
@@ -68,7 +68,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "PendingInvitationsPageQuery",
+    "name": "PendingInvitationsDropdownQuery",
     "selections": [
       {
         "alias": null,
@@ -94,7 +94,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "PendingInvitationsPageQuery",
+    "name": "PendingInvitationsDropdownQuery",
     "selections": [
       {
         "alias": null,
@@ -192,14 +192,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1f8b73f8cd6db831a08047c058c58fbe",
+    "cacheID": "2c8892816610d8319efb51665e7d0718",
     "id": null,
     "metadata": {},
-    "name": "PendingInvitationsPageQuery",
+    "name": "PendingInvitationsDropdownQuery",
     "operationKind": "query",
-    "text": "query PendingInvitationsPageQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query PendingInvitationsDropdownQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '57058d7fa9c01d8aa7660cb7c980f9d6';
+(node as any).hash = 'f682e3e8466cbb60247daed59a4b7649';
 export default node;
