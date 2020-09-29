@@ -5,25 +5,28 @@ import Nav from 'react-bootstrap/Nav';
 import NavLink from 'react-bootstrap/NavLink';
 import NavItem from 'react-bootstrap/NavItem';
 import Badge from 'react-bootstrap/Badge';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
 import LoginButton from '../authentication/LoginButton';
-import LogoutButton from '../authentication/LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import logo from '../../logo_dark.svg';
 
 import {
     PlusIcon,
-    BellIcon,
+    PeopleIcon,
 } from '@primer/octicons-react';
 
 // TODO: make the add links actually work
 // TODO: create the endpoints /sessions/add and /behaviors/add. Select a dog and redirect
 // TODO: use the correct link if already on a dog
 // TODO: figure out the pending invitations situation
+// TODO: handle if no user.picture?
 const Navigation = () => {
-    const { user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, logout } = useAuth0();
     const MARGIN_WITHIN_NAV = 3;
 
     return (
@@ -64,29 +67,38 @@ const Navigation = () => {
                          <Dropdown as={NavItem} className={`mr-${MARGIN_WITHIN_NAV}`}>
                              <Dropdown.Toggle as={NavLink}>
                                  <>
-                                     <BellIcon size="small" verticalAlign="middle" />
+                                     <PeopleIcon size="small" verticalAlign="middle" />
                                      {' '}
                                      <Badge variant="primary">0</Badge>
                                  </>
                              </Dropdown.Toggle>
                              <Dropdown.Menu>
-                                 <Dropdown.Header>
-                                     Pending invitations
-                                 </Dropdown.Header>
-                                 <Dropdown.Item>
-                                     Pending invitation 1
+                                 <Dropdown.Item href="/invitations/add">
+                                     Send an invitation
                                  </Dropdown.Item>
-                                 <Dropdown.Item>
-                                     Pending invitation 2
+                                 <Dropdown.Divider />
+                                 <Dropdown.Header>
+                                     Pending invitations recieved
+                                 </Dropdown.Header>
+                                 <Dropdown.Item as={Container}>
+                                     <Row>Dog: </Row>
+                                     <Row>Role: </Row>
+                                     <Row>From: </Row>
+                                     <Row>To: </Row>
+                                     <Row><Button variant="primary">Accept</Button></Row>
                                  </Dropdown.Item>
                              </Dropdown.Menu>
                          </Dropdown>
-                         <Nav.Item className={`mr-${MARGIN_WITHIN_NAV}`}>
-                             <LogoutButton />
-                         </Nav.Item>
-                         <Nav.Item>
-                             <Image src={user.picture} alt={user.name} width="32px" roundedCircle />
-                         </Nav.Item>
+                         <Dropdown as={NavItem}>
+                             <Dropdown.Toggle as={NavLink}>
+                                 <Image src={user.picture} alt={user.name} width="32px" roundedCircle />
+                             </Dropdown.Toggle>
+                             <Dropdown.Menu>
+                                 <Dropdown.Item onClick={() => logout()}>
+                                     Log out
+                                 </Dropdown.Item>
+                             </Dropdown.Menu>
+                         </Dropdown>
                      </Nav>
                  )
                  : (

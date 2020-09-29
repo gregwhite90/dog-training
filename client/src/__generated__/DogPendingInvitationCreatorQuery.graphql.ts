@@ -4,29 +4,29 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type DogDetailQueryVariables = {
+export type DogPendingInvitationCreatorQueryVariables = {
     id: string;
 };
-export type DogDetailQueryResponse = {
+export type DogPendingInvitationCreatorQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"DogCard_dog" | "DogBreadcrumb_dog">;
+        readonly " $fragmentRefs": FragmentRefs<"DogBreadcrumb_dog" | "InviteUserByEmailForm_dog">;
     } | null;
 };
-export type DogDetailQuery = {
-    readonly response: DogDetailQueryResponse;
-    readonly variables: DogDetailQueryVariables;
+export type DogPendingInvitationCreatorQuery = {
+    readonly response: DogPendingInvitationCreatorQueryResponse;
+    readonly variables: DogPendingInvitationCreatorQueryVariables;
 };
 
 
 
 /*
-query DogDetailQuery(
+query DogPendingInvitationCreatorQuery(
   $id: ID!
 ) {
   node(id: $id) {
     __typename
-    ...DogCard_dog
     ...DogBreadcrumb_dog
+    ...InviteUserByEmailForm_dog
     id
   }
 }
@@ -36,7 +36,8 @@ fragment DogBreadcrumb_dog on Dog {
   name
 }
 
-fragment DogCard_dog on Dog {
+fragment InviteUserByEmailForm_dog on Dog {
+  id
   name
   picture
 }
@@ -62,7 +63,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "DogDetailQuery",
+    "name": "DogPendingInvitationCreatorQuery",
     "selections": [
       {
         "alias": null,
@@ -75,12 +76,12 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "DogCard_dog"
+            "name": "DogBreadcrumb_dog"
           },
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "DogBreadcrumb_dog"
+            "name": "InviteUserByEmailForm_dog"
           }
         ],
         "storageKey": null
@@ -93,7 +94,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "DogDetailQuery",
+    "name": "DogPendingInvitationCreatorQuery",
     "selections": [
       {
         "alias": null,
@@ -144,14 +145,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1bb5bf88777e030e3431cdf5a35f03ea",
+    "cacheID": "5dba6f0ceb04a5eea958f9af45cf0fac",
     "id": null,
     "metadata": {},
-    "name": "DogDetailQuery",
+    "name": "DogPendingInvitationCreatorQuery",
     "operationKind": "query",
-    "text": "query DogDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogCard_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n"
+    "text": "query DogPendingInvitationCreatorQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBreadcrumb_dog\n    ...InviteUserByEmailForm_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment InviteUserByEmailForm_dog on Dog {\n  id\n  name\n  picture\n}\n"
   }
 };
 })();
-(node as any).hash = '52f4a73ccdefccf585fe4126cb5502a1';
+(node as any).hash = '6ab1a8692fabae6fd6cc9c5bf58a565d';
 export default node;

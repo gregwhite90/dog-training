@@ -32,7 +32,6 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                 query DogDetailQuery($id: ID!) {
                     node(id: $id) {
                         ...DogCard_dog
-                        ...InviteUserByEmailForm_dog
                         ...DogBreadcrumb_dog
                     }
                 }
@@ -45,7 +44,6 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                             <DogBreadcrumb dog={props.node} active={true} />
                             <Container>
                                 <DogCard dog={props.node} />
-                                <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
                                 <Link to={`${match.url}/behaviors`}>
                                     <Button variant="primary">
                                         View desired behaviors
@@ -61,7 +59,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
                 return <div>Loading...</div>;

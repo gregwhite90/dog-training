@@ -20,6 +20,7 @@ import DogsRouter from 'components/dogs/DogsRouter';
 import BehaviorsRouter from 'components/behaviors/BehaviorsRouter';
 import TrainingStagesRouter from 'components/training_stages/TrainingStagesRouter';
 import TrainingSessionsRouter from 'components/training_sessions/TrainingSessionsRouter';
+import PendingInvitationsRouter from 'components/invitations/PendingInvitationsRouter';
 
 import './App.scss';
 
@@ -62,6 +63,9 @@ class App extends React.Component<any, any> {
                         )} />
                         <Route path="/sessions" render={(props: any) => (
                             <TrainingSessionsRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/invitations" render={(props: any) => (
+                            <PendingInvitationsRouter {...props} relay={this.state.relay} />
                         )} />
                         <Route path="/" render={(props: any) => (
                             this.props.auth0.isAuthenticated

@@ -4,48 +4,46 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
 
-import BehaviorBreadcrumb from './BehaviorBreadcrumb';
-
-import CreateTrainingStagesForm from './CreateTrainingStagesForm';
+import DogBreadcrumb from './DogBreadcrumb';
+import InviteUserByEmailForm from './InviteUserByEmailForm';
 
 import type {
-    BehaviorTrainingStagesCreatorQuery
-} from '__generated__/BehaviorTrainingStagesCreatorQuery.graphql';
+    DogPendingInvitationCreatorQuery
+} from '__generated__/DogPendingInvitationCreatorQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
-interface BehaviorTrainingStagesCreatorProps extends RouteComponentProps<MatchParams> {
+interface DogPendingInvitationCreatorProps extends RouteComponentProps<MatchParams> {
     relay: RelayProp,
-    behavior_id: string,
+    dog_id: string,
 }
 
-const BehaviorTrainingStagesCreator: React.FC<BehaviorTrainingStagesCreatorProps> = ({ relay, behavior_id }) => {
+const DogPendingInvitationCreator: React.FC<DogPendingInvitationCreatorProps> = ({ relay, dog_id }) => {
     return (
-        <QueryRenderer<BehaviorTrainingStagesCreatorQuery>
+        <QueryRenderer<DogPendingInvitationCreatorQuery>
             environment={relay.environment}
             query={graphql`
-                query BehaviorTrainingStagesCreatorQuery($id: ID!) {
+                query DogPendingInvitationCreatorQuery($id: ID!) {
                     node(id: $id) {
-                        ...BehaviorBreadcrumb_behavior
-                        ...CreateTrainingStagesForm_behavior
+                        ...DogBreadcrumb_dog
+                        ...InviteUserByEmailForm_dog
                     }
                 }
                 `}
-            variables={{ id: behavior_id }}
+            variables={{ id: dog_id }}
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
                         <>
-                            <BehaviorBreadcrumb
-                                behavior={props.node}
-                                active={false}
-                                leaf="stages"
+                            <DogBreadcrumb
+                                dog={props.node}
+                                active={true}
                             />
                             <Container>
-                                <CreateTrainingStagesForm
-                                    behavior={props.node}
+                                <InviteUserByEmailForm
+                                    dog={props.node}
                                     relay_environment={relay.environment} />
                             </Container>
                         </>
@@ -61,6 +59,6 @@ const BehaviorTrainingStagesCreator: React.FC<BehaviorTrainingStagesCreatorProps
     );
 }
 
-export default withAuthenticationRequired(BehaviorTrainingStagesCreator, {
+export default withAuthenticationRequired(DogPendingInvitationCreator, {
     onRedirecting: () => (<div>Redirecting you to the login page</div>)
 });

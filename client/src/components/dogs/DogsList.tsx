@@ -24,7 +24,7 @@ const DogsList: React.FC<DogsListProps> = (props) => {
         <>
             {edges.map(edge => {
                 return (
-                    <Link to={`/dogs/${edge!.node!.id}${props.linkSuffix && props.linkSuffix}`}>
+                    <Link to={`/dogs/${edge!.node!.id}${props.linkSuffix ? props.linkSuffix : ''}`}>
                         <DogCard key={edge!.node!.id} dog={edge!.node!} role={edge!.user_role as UserDogRole} />
                     </Link>
                 );
