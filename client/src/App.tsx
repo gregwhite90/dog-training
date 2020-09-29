@@ -3,6 +3,7 @@ import {
     Router,
     Switch,
     Route,
+    Redirect,
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
@@ -62,7 +63,11 @@ class App extends React.Component<any, any> {
                         <Route path="/sessions" render={(props: any) => (
                             <TrainingSessionsRouter {...props} relay={this.state.relay} />
                         )} />
-                        <Route path="/" component={Home} />
+                        <Route path="/" render={(props: any) => (
+                            this.props.auth0.isAuthenticated
+                                ? (<Redirect to="/dogs" />)
+                                : (<Home />)
+                        )} />
                     </Switch>
                 </div>
             </Router>
