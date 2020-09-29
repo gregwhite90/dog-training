@@ -43,10 +43,16 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
             <Dropdown.Toggle as={NavLink}>
                 <>
                     <PeopleIcon size="small" verticalAlign="middle" />
-                    {' '}
-                    <Badge variant="primary">
-                        {edges.length}
-                    </Badge>
+                    {edges.length > 0 &&
+                        (
+                            <>
+                                {' '}
+                                <Badge variant="primary">
+                                    {edges.length}
+                                </Badge>
+                            </>
+                        )
+                    }
                 </>
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -74,8 +80,8 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
                                             />
                                         </Col></Row>
                                     </ContainerCard>
-                                    );
-                                })
+                                );
+                            })
                             }
                         </>
                     )
