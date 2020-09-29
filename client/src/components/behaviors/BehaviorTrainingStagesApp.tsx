@@ -1,7 +1,5 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 
 import BehaviorTrainingStagesList from './BehaviorTrainingStagesList';
 
@@ -15,18 +13,13 @@ interface BehaviorTrainingStagesAppProps {
 
 const BehaviorTrainingStagesApp: React.FC<BehaviorTrainingStagesAppProps> = (props) => {
     return (
-        <>
-            <h3>Training stages for {props.behavior.name}</h3>
-            <BehaviorTrainingStagesList behavior={props.behavior} match={props.match} />
-        </>
+        <BehaviorTrainingStagesList behavior={props.behavior} match={props.match} />
     );
 }
 
 export default createFragmentContainer(BehaviorTrainingStagesApp, {
     behavior: graphql`
         fragment BehaviorTrainingStagesApp_behavior on Behavior {
-            id
-            name
             ...BehaviorTrainingStagesList_behavior
         }
     `,
