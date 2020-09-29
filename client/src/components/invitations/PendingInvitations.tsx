@@ -82,8 +82,6 @@ const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
                                         );
                                     })
                                     }
-                                    <Dropdown.Item>Dog 1</Dropdown.Item>
-                                    <Dropdown.Item>Dog 2</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                             {edges.length > 0 &&
