@@ -4,15 +4,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QualitativeLevel = "HIGH" | "LOW" | "MEDIUM" | "%future added value";
 export type TrainingProgressTrainingStageCard_trainingStageToTrainingSessionEdge = {
     readonly training_progress: {
-        readonly seq: number;
-        readonly successes: number | null;
-        readonly attempts: number | null;
-        readonly distance: QualitativeLevel | null;
-        readonly distractions: QualitativeLevel | null;
-        readonly duration: QualitativeLevel | null;
+        readonly " $fragmentRefs": FragmentRefs<"TrainingProgressDisplay_trainingProgress">;
     };
     readonly node: {
         readonly id: string;
@@ -43,46 +37,9 @@ const node: ReaderFragment = {
       "plural": false,
       "selections": [
         {
-          "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "seq",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "successes",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "attempts",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "distance",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "distractions",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "duration",
-          "storageKey": null
+          "kind": "FragmentSpread",
+          "name": "TrainingProgressDisplay_trainingProgress"
         }
       ],
       "storageKey": null
@@ -114,5 +71,5 @@ const node: ReaderFragment = {
   "type": "TrainingStageToTrainingSessionEdge",
   "abstractKey": null
 };
-(node as any).hash = 'bbb43e2de4f16e1a977fc35869a64a46';
+(node as any).hash = 'e9c2b044a4634da41202487391e7c6bf';
 export default node;

@@ -4,15 +4,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QualitativeLevel = "HIGH" | "LOW" | "MEDIUM" | "%future added value";
 export type TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge = {
     readonly training_progress: {
-        readonly seq: number;
-        readonly successes: number | null;
-        readonly attempts: number | null;
-        readonly distance: QualitativeLevel | null;
-        readonly distractions: QualitativeLevel | null;
-        readonly duration: QualitativeLevel | null;
+        readonly " $fragmentRefs": FragmentRefs<"TrainingProgressDisplay_trainingProgress">;
     };
     readonly node: {
         readonly id: string;
@@ -55,46 +49,9 @@ return {
       "plural": false,
       "selections": [
         {
-          "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "seq",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "successes",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "attempts",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "distance",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "distractions",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "duration",
-          "storageKey": null
+          "kind": "FragmentSpread",
+          "name": "TrainingProgressDisplay_trainingProgress"
         }
       ],
       "storageKey": null
@@ -138,5 +95,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fca2e6a56ff97dd60b75915ce4137099';
+(node as any).hash = '5f1d61934645abb6f267b14cdd1f1e53';
 export default node;
