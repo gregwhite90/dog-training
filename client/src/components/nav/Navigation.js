@@ -19,6 +19,8 @@ import {
 } from '@primer/octicons-react';
 
 // TODO: make the add links actually work
+// TODO: create the endpoints /sessions/add and /behaviors/add. Select a dog and redirect
+// TODO: use the correct link if already on a dog
 // TODO: figure out the pending invitations situation
 const Navigation = () => {
     const { user, isAuthenticated } = useAuth0();
@@ -45,16 +47,16 @@ const Navigation = () => {
                      <Nav>
                          <Dropdown as={NavItem} className={`mr-${MARGIN_WITHIN_NAV}`}>
                              <Dropdown.Toggle as={NavLink}>
-                                 <PlusIcon size="medium" />
+                                 <PlusIcon size="small" verticalAlign="middle" />
                              </Dropdown.Toggle>
                              <Dropdown.Menu>
-                                 <Dropdown.Item>
+                                 <Dropdown.Item href="/dogs/add">
                                      Dog
                                  </Dropdown.Item>
-                                 <Dropdown.Item>
+                                 <Dropdown.Item href="/behaviors/add">
                                      Behavior
                                  </Dropdown.Item>
-                                 <Dropdown.Item>
+                                 <Dropdown.Item href="/sessions/add">
                                      Training session
                                  </Dropdown.Item>
                              </Dropdown.Menu>
@@ -62,7 +64,7 @@ const Navigation = () => {
                          <Dropdown as={NavItem} className={`mr-${MARGIN_WITHIN_NAV}`}>
                              <Dropdown.Toggle as={NavLink}>
                                  <>
-                                     <BellIcon size="medium" />
+                                     <BellIcon size="small" verticalAlign="middle" />
                                      {' '}
                                      <Badge variant="primary">0</Badge>
                                  </>

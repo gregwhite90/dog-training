@@ -12,6 +12,7 @@ import type { UserDogRole } from 'generated/graphql';
 interface DogsListProps {
     viewer: DogsList_viewer,
     match: match<{}>,
+    linkSuffix?: string,
 }
 
 const DogsList: React.FC<DogsListProps> = (props) => {
@@ -23,7 +24,7 @@ const DogsList: React.FC<DogsListProps> = (props) => {
         <>
             {edges.map(edge => {
                 return (
-                    <Link to={`${props.match.url}/${edge!.node!.id}`}>
+                    <Link to={`/dogs/${edge!.node!.id}${props.linkSuffix && props.linkSuffix}`}>
                         <DogCard key={edge!.node!.id} dog={edge!.node!} role={edge!.user_role as UserDogRole} />
                     </Link>
                 );
