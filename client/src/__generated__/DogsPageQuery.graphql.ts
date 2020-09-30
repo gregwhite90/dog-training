@@ -31,7 +31,6 @@ fragment DogCard_dog on Dog {
 }
 
 fragment DogsApp_viewer on User {
-  id
   ...DogsList_viewer
 }
 
@@ -221,12 +220,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "59b5c2e48c51d738b5f194d056383c00",
+    "cacheID": "a6ee0efcfb983e6cd2aceb475152f770",
     "id": null,
     "metadata": {},
     "name": "DogsPageQuery",
     "operationKind": "query",
-    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  id\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      user_role\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query DogsPageQuery {\n  viewer {\n    ...DogsApp_viewer\n    id\n  }\n}\n\nfragment DogCard_dog on Dog {\n  name\n  picture\n}\n\nfragment DogsApp_viewer on User {\n  ...DogsList_viewer\n}\n\nfragment DogsList_viewer on User {\n  id\n  dogs(first: 2147483647) {\n    edges {\n      user_role\n      node {\n        id\n        ...DogCard_dog\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

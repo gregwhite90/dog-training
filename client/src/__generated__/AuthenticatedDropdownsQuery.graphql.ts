@@ -4,24 +4,38 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PendingInvitationsDropdownQueryVariables = {};
-export type PendingInvitationsDropdownQueryResponse = {
+export type AuthenticatedDropdownsQueryVariables = {};
+export type AuthenticatedDropdownsQueryResponse = {
     readonly viewer: {
-        readonly " $fragmentRefs": FragmentRefs<"PendingInvitations_viewer">;
+        readonly " $fragmentRefs": FragmentRefs<"PendingInvitations_viewer" | "AddActions_viewer">;
     } | null;
 };
-export type PendingInvitationsDropdownQuery = {
-    readonly response: PendingInvitationsDropdownQueryResponse;
-    readonly variables: PendingInvitationsDropdownQueryVariables;
+export type AuthenticatedDropdownsQuery = {
+    readonly response: AuthenticatedDropdownsQueryResponse;
+    readonly variables: AuthenticatedDropdownsQueryVariables;
 };
 
 
 
 /*
-query PendingInvitationsDropdownQuery {
+query AuthenticatedDropdownsQuery {
   viewer {
     ...PendingInvitations_viewer
+    ...AddActions_viewer
     id
+  }
+}
+
+fragment AddActions_viewer on User {
+  id
+  dogs {
+    edges {
+      user_role
+      node {
+        id
+        name
+      }
+    }
   }
 }
 
@@ -84,7 +98,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "PendingInvitationsDropdownQuery",
+    "name": "AuthenticatedDropdownsQuery",
     "selections": [
       {
         "alias": null,
@@ -98,6 +112,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "PendingInvitations_viewer"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "AddActions_viewer"
           }
         ],
         "storageKey": null
@@ -110,7 +129,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "PendingInvitationsDropdownQuery",
+    "name": "AuthenticatedDropdownsQuery",
     "selections": [
       {
         "alias": null,
@@ -238,14 +257,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8ffd25978dc7d01d9d5b48c3b083954b",
+    "cacheID": "743e87050e6fdc5d32b869dd951aac39",
     "id": null,
     "metadata": {},
-    "name": "PendingInvitationsDropdownQuery",
+    "name": "AuthenticatedDropdownsQuery",
     "operationKind": "query",
-    "text": "query PendingInvitationsDropdownQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    id\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n  dogs {\n    edges {\n      user_role\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query AuthenticatedDropdownsQuery {\n  viewer {\n    ...PendingInvitations_viewer\n    ...AddActions_viewer\n    id\n  }\n}\n\nfragment AddActions_viewer on User {\n  id\n  dogs {\n    edges {\n      user_role\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n\nfragment PendingInvitations_viewer on User {\n  id\n  pending_invitations_received {\n    edges {\n      node {\n        id\n        invitee_email\n        user_role\n        dog {\n          name\n          picture\n          id\n        }\n        invited_by {\n          name\n          id\n        }\n      }\n    }\n  }\n  dogs {\n    edges {\n      user_role\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'f682e3e8466cbb60247daed59a4b7649';
+(node as any).hash = 'e8c0320782550a4236ae8813495a52ce';
 export default node;

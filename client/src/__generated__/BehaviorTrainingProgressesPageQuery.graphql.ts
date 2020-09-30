@@ -45,8 +45,6 @@ fragment BehaviorName_behavior on Behavior {
 }
 
 fragment BehaviorTrainingProgressesApp_behavior on Behavior {
-  id
-  ...BehaviorName_behavior
   ...BehaviorTrainingProgressesList_behavior
 }
 
@@ -409,12 +407,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e445368e77cf272ecb57ca8bdbcb27bb",
+    "cacheID": "ebb871d35b4e14a787bab62c775a52f8",
     "id": null,
     "metadata": {},
     "name": "BehaviorTrainingProgressesPageQuery",
     "operationKind": "query",
-    "text": "query BehaviorTrainingProgressesPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorTrainingProgressesApp_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorName_behavior on Behavior {\n  name\n}\n\nfragment BehaviorTrainingProgressesApp_behavior on Behavior {\n  id\n  ...BehaviorName_behavior\n  ...BehaviorTrainingProgressesList_behavior\n}\n\nfragment BehaviorTrainingProgressesList_behavior on Behavior {\n  id\n  ...BehaviorName_behavior\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingStageName_trainingStage\n        trainingSessions(first: 2147483647) {\n          edges {\n            training_progress {\n              seq\n            }\n            ...TrainingProgressTrainingStageCard_trainingStageToTrainingSessionEdge\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment TrainingProgressDisplay_trainingProgress on TrainingProgress {\n  seq\n  successes\n  attempts\n  distance\n  distractions\n  duration\n}\n\nfragment TrainingProgressTrainingStageCard_trainingStageToTrainingSessionEdge on TrainingStageToTrainingSessionEdge {\n  training_progress {\n    ...TrainingProgressDisplay_trainingProgress\n  }\n  node {\n    id\n    ...TrainingSessionName_trainingSession\n  }\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingStageName_trainingStage on TrainingStage {\n  seq\n  incentive\n  behavior {\n    incentive_method\n    id\n  }\n  verbal\n  hand\n  reward_frequency\n}\n"
+    "text": "query BehaviorTrainingProgressesPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorTrainingProgressesApp_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorName_behavior on Behavior {\n  name\n}\n\nfragment BehaviorTrainingProgressesApp_behavior on Behavior {\n  ...BehaviorTrainingProgressesList_behavior\n}\n\nfragment BehaviorTrainingProgressesList_behavior on Behavior {\n  id\n  ...BehaviorName_behavior\n  trainingStages(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingStageName_trainingStage\n        trainingSessions(first: 2147483647) {\n          edges {\n            training_progress {\n              seq\n            }\n            ...TrainingProgressTrainingStageCard_trainingStageToTrainingSessionEdge\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment TrainingProgressDisplay_trainingProgress on TrainingProgress {\n  seq\n  successes\n  attempts\n  distance\n  distractions\n  duration\n}\n\nfragment TrainingProgressTrainingStageCard_trainingStageToTrainingSessionEdge on TrainingStageToTrainingSessionEdge {\n  training_progress {\n    ...TrainingProgressDisplay_trainingProgress\n  }\n  node {\n    id\n    ...TrainingSessionName_trainingSession\n  }\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n\nfragment TrainingStageName_trainingStage on TrainingStage {\n  seq\n  incentive\n  behavior {\n    incentive_method\n    id\n  }\n  verbal\n  hand\n  reward_frequency\n}\n"
   }
 };
 })();

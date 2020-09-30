@@ -2,28 +2,30 @@ import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 
 import PendingInvitations from 'components/invitations/PendingInvitations';
+import AddActions from './AddActions';
 
 import { Rings } from 'svg-loaders-react';
 
-import type { PendingInvitationsDropdownQuery } from '__generated__/PendingInvitationsDropdownQuery.graphql';
+import type { AuthenticatedDropdownsQuery } from '__generated__/AuthenticatedDropdownsQuery.graphql';
 import type { RelayProp } from 'react-relay';
 
 // TODO: pass down the match params (empty object in this case)
-interface PendingInvitationsDropdownProps {
+interface AuthenticatedDropdownsProps {
     relay: RelayProp,
     margin_within_nav: number,
 }
 
-const PendingInvitationsDropdown: React.FC<PendingInvitationsDropdownProps> = ({ relay, margin_within_nav }) => {
+const AuthenticatedDropdowns: React.FC<AuthenticatedDropdownsProps> = ({ relay, margin_within_nav }) => {
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     return (
-        <QueryRenderer<PendingInvitationsDropdownQuery>
+        <QueryRenderer<AuthenticatedDropdownsQuery>
             environment={relay.environment}
             query={graphql`
-                query PendingInvitationsDropdownQuery {
+                query AuthenticatedDropdownsQuery {
                     viewer {
                         ...PendingInvitations_viewer
+                        ...AddActions_viewer
                     }
                 }
                 `}
@@ -34,11 +36,18 @@ const PendingInvitationsDropdown: React.FC<PendingInvitationsDropdownProps> = ({
             render={({ error, props }) => {
                 if (props && props.viewer) {
                     return (
-                        <PendingInvitations
-                            relay_environment={relay.environment}
-                            viewer={props.viewer}
-                            margin_within_nav={margin_within_nav}
-                        />
+                        <>
+                            <PendingInvitations
+                                relay_environment={relay.environment}
+                                viewer={props.viewer}
+                                margin_within_nav={margin_within_nav}
+                            />
+                            <AddActions
+                                relay_environment={relay.environment}
+                                viewer={props.viewer}
+                                margin_within_nav={margin_within_nav}
+                            />
+                        </>
                     );
                 } else if (error) {
                     console.log(error);
@@ -51,4 +60,4 @@ const PendingInvitationsDropdown: React.FC<PendingInvitationsDropdownProps> = ({
     );
 }
 
-export default PendingInvitationsDropdown;
+export default AuthenticatedDropdowns;

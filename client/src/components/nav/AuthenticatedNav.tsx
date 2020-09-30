@@ -8,11 +8,7 @@ import NavItem from 'react-bootstrap/NavItem';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
 
-import {
-    PlusIcon,
-} from '@primer/octicons-react';
-
-import PendingInvitationsDropdown from './PendingInvitationsDropdown';
+import AuthenticatedDropdowns from './AuthenticatedDropdowns';
 
 import type { RelayProp } from 'react-relay';
 
@@ -31,30 +27,10 @@ const AuthenticatedNav: React.FC<AuthenticatedNavProps> = ({ relay }) => {
 
     return (
         <Nav>
-            <PendingInvitationsDropdown
+            <AuthenticatedDropdowns
                 relay={relay}
                 margin_within_nav={MARGIN_WITHIN_NAV}
             />
-            <Dropdown
-                alignRight={true}
-                as={NavItem}
-                className={`mr-${MARGIN_WITHIN_NAV}`}
-            >
-                <Dropdown.Toggle as={NavLink}>
-                    <PlusIcon size="small" verticalAlign="middle" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item href="/dogs/add">
-                        Dog
-                    </Dropdown.Item>
-                    <Dropdown.Item href="/behaviors/add">
-                        Behavior
-                    </Dropdown.Item>
-                    <Dropdown.Item href="/sessions/add">
-                        Training session
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
             <Dropdown
                 alignRight={true}
                 as={NavItem}
@@ -65,7 +41,7 @@ const AuthenticatedNav: React.FC<AuthenticatedNavProps> = ({ relay }) => {
                 <Dropdown.Menu>
                     <Dropdown.Item onClick={() => logout()}>
                         Log out
-                                 </Dropdown.Item>
+                    </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </Nav>

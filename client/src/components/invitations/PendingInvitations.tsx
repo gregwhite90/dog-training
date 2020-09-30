@@ -18,7 +18,7 @@ import InvitationAccepter from './InvitationAccepter';
 import type { PendingInvitations_viewer } from '__generated__/PendingInvitations_viewer.graphql';
 import type { IEnvironment } from 'relay-runtime';
 
-interface PendingInvitationProps {
+interface PendingInvitationsProps {
     viewer: PendingInvitations_viewer,
     relay_environment: IEnvironment,
     margin_within_nav: number,
@@ -26,7 +26,7 @@ interface PendingInvitationProps {
 
 // TODO: figure out if can get rid of the ! everywhere
 // TODO: figure out relay situation
-const PendingInvitations: React.FC<PendingInvitationProps> = (props) => {
+const PendingInvitations: React.FC<PendingInvitationsProps> = (props) => {
     const edges =
         props
             && props.viewer

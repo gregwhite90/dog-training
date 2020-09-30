@@ -5,8 +5,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type BehaviorTrainingStagesApp_behavior = {
-    readonly id: string;
-    readonly name: string;
     readonly " $fragmentRefs": FragmentRefs<"BehaviorTrainingStagesList_behavior">;
     readonly " $refType": "BehaviorTrainingStagesApp_behavior";
 };
@@ -25,20 +23,6 @@ const node: ReaderFragment = {
   "name": "BehaviorTrainingStagesApp_behavior",
   "selections": [
     {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "BehaviorTrainingStagesList_behavior"
@@ -47,5 +31,5 @@ const node: ReaderFragment = {
   "type": "Behavior",
   "abstractKey": null
 };
-(node as any).hash = '8351f0589e525452458158f6445c511b';
+(node as any).hash = '96a31e1a3e3597838ed85aa30d1f9136';
 export default node;

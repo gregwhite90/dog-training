@@ -37,8 +37,6 @@ fragment DogBreadcrumb_dog on Dog {
 }
 
 fragment DogTrainingSessionsApp_dog on Dog {
-  id
-  name
   ...DogTrainingSessionsList_dog
 }
 
@@ -103,20 +101,20 @@ v3 = {
   "name": "id",
   "storageKey": null
 },
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v5 = [
+v4 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 2147483647
   }
-];
+],
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -168,10 +166,9 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v4/*: any*/),
               {
                 "alias": null,
-                "args": (v5/*: any*/),
+                "args": (v4/*: any*/),
                 "concreteType": "TrainingSessionConnection",
                 "kind": "LinkedField",
                 "name": "trainingSessions",
@@ -203,7 +200,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -265,13 +262,14 @@ return {
               },
               {
                 "alias": null,
-                "args": (v5/*: any*/),
+                "args": (v4/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "DogTrainingSessionsList_trainingSessions",
                 "kind": "LinkedHandle",
                 "name": "trainingSessions"
-              }
+              },
+              (v5/*: any*/)
             ],
             "type": "Dog",
             "abstractKey": null
@@ -282,12 +280,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "57d365677e4feba04a0b1b91b31c126e",
+    "cacheID": "d53bf237bcedd1dcbd3be71ba1694391",
     "id": null,
     "metadata": {},
     "name": "DogTrainingSessionsPageQuery",
     "operationKind": "query",
-    "text": "query DogTrainingSessionsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogTrainingSessionsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogTrainingSessionsApp_dog on Dog {\n  id\n  name\n  ...DogTrainingSessionsList_dog\n}\n\nfragment DogTrainingSessionsList_dog on Dog {\n  id\n  trainingSessions(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingSessionCard_trainingSession\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n"
+    "text": "query DogTrainingSessionsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogTrainingSessionsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n\nfragment DogTrainingSessionsApp_dog on Dog {\n  ...DogTrainingSessionsList_dog\n}\n\nfragment DogTrainingSessionsList_dog on Dog {\n  id\n  trainingSessions(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...TrainingSessionCard_trainingSession\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TrainingSessionCard_trainingSession on TrainingSession {\n  dog {\n    id\n    name\n  }\n  ...TrainingSessionName_trainingSession\n}\n\nfragment TrainingSessionName_trainingSession on TrainingSession {\n  start_timestamp\n  minutes_long\n}\n"
   }
 };
 })();
