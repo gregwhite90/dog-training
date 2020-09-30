@@ -26,7 +26,9 @@ const AddActions: React.FC<AddActionsProps> = (props) => {
             && props.viewer
             && props.viewer.dogs
             && props.viewer.dogs.edges
-            ? props.viewer.dogs.edges.filter(edge => edge && edge.user_role == 'OWNER')
+            ? props.viewer.dogs.edges.filter(edge => {
+                return edge && (edge.user_role == 'OWNER' || edge.user_role == 'TRAINER')
+            })
             : [];
     return (
         <Dropdown
