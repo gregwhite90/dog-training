@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import BehaviorRouter from './BehaviorRouter';
+import BehaviorCreator from './BehaviorCreator';
 
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
@@ -18,6 +19,9 @@ interface BehaviorsRouterProps extends RouteComponentProps<MatchParams> {
 const BehaviorsRouter: React.FC<BehaviorsRouterProps> = (props) => {
     return (
         <Switch>
+            <Route path={props.match.url + "/add"} render={(p) => (
+                <BehaviorCreator {...p} relay={props.relay} />
+            )} />
             <Route path={props.match.url + "/:id"} render={(p) => (
                 <BehaviorRouter {...p} relay={props.relay} />
             )} />

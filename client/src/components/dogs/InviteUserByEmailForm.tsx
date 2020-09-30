@@ -14,7 +14,8 @@ import InviteUserByEmailMutation from 'relay/mutations/InviteUserByEmailMutation
 // For types
 import type { InviteUserByEmailForm_dog } from '__generated__/InviteUserByEmailForm_dog.graphql';
 import type { IEnvironment } from 'relay-runtime';
-import type { InviteUserByEmailInput, UserDogRole } from 'generated/graphql';
+import { UserDogRole } from 'generated/graphql';
+import type { InviteUserByEmailInput } from 'generated/graphql';
 // TODO: use RelayProp from react-relay?
 
 interface InviteUserByEmailFormProps {
@@ -57,8 +58,8 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
         invitee_email: yup.string()
             .email("Must be a valid email address")
             .required("Email address to invite to collaborate is required"),
-        user_role: yup.string()
-            .matches(/(OWNER|TRAINER|VIEWER)/, "Role of user is not valid")
+        user_role: yup.mixed<UserDogRole>()
+            .oneOf(Object.values(UserDogRole), "Role of user is not valid")
             .required("Role of invited user is required"),
     });
 
@@ -121,7 +122,7 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                 <Form.Group>
                                     <Form.Label>
                                         Invite user as:
-                                </Form.Label>
+                                    </Form.Label>
                                     <Form.Control
                                         as="select"
                                         name="user_role"
@@ -130,9 +131,16 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                                         onChange={handleChange}
                                         isInvalid={!!errors.user_role}
                                     >
-                                        <option value="OWNER">Owner</option>
-                                        <option value="TRAINER" disabled>Trainer</option>
-                                        <option value="VIEWER" disabled>Viewer</option>
+                                        {Object.values(UserDogRole).map(role => {
+                                            return (
+                                                <option
+                                                    key={`${role}`}
+                                                    value={role}
+                                                >
+                                                    {role}
+                                                </option>
+                                            );
+                                        })}
                                     </Form.Control>
                                     <Form.Control.Feedback type="invalid">{errors.user_role}</Form.Control.Feedback>
                                 </Form.Group>

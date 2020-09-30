@@ -3,12 +3,13 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
+export type IncentiveMethod = "LURE" | "SHAPE" | "%future added value";
 export type CreateBehaviorInput = {
     dog_id: string;
     name: string;
     explanation?: string | null;
-    lure_description?: string | null;
-    shape_description?: string | null;
+    incentive_method?: IncentiveMethod | null;
+    incentive_description?: string | null;
     verbal_command?: string | null;
     hand_signal?: string | null;
     has_duration: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import Container from 'react-bootstrap/Container';
+import ContainerCard from 'components/utils/ContainerCard';
 import Table from 'react-bootstrap/Table';
 
 import type { BehaviorCard_behavior } from '__generated__/BehaviorCard_behavior.graphql';
@@ -10,12 +10,8 @@ interface BehaviorCardProps {
 };
 
 const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
-    const node = {
-        title: props.behavior.name,
-        text: props.behavior.explanation,
-    };
     return (
-        <Container fluid="md" className="p-3 mb-3 border rounded">
+        <ContainerCard fluid="md">
             <h3>{props.behavior.name}</h3>
             <p>{props.behavior.explanation}</p>
             <Table bordered hover>
@@ -44,25 +40,17 @@ const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
                             </tr>
                         )
                     }
-                    {props.behavior.lure_description &&
+                    {props.behavior.incentive_description &&
                         (
                             <tr>
-                                <td>Lure description</td>
-                                <td>{props.behavior.lure_description}</td>
-                            </tr>
-                        )
-                    }
-                    {props.behavior.shape_description &&
-                        (
-                            <tr>
-                                <td>Shape description</td>
-                                <td>{props.behavior.shape_description}</td>
+                                <td>{props.behavior.incentive_method || "Incentive"} description</td>
+                                <td>{props.behavior.incentive_description}</td>
                             </tr>
                         )
                     }
                 </tbody>
             </Table>
-        </Container>
+        </ContainerCard>
     );
 }
 
@@ -71,8 +59,8 @@ export default createFragmentContainer(BehaviorCard, {
         fragment BehaviorCard_behavior on Behavior {
             name
             explanation
-            lure_description
-            shape_description
+            incentive_method
+            incentive_description
             verbal_command
             hand_signal
             release_command

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.0.0",
+    "@popperjs/core": "^2.5.3",
+    "@primer/octicons-react": "^11.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -33,6 +35,7 @@
     "react-scripts": "3.4.1",
     "relay-devtools": "^1.4.0",
     "spark-md5": "^3.0.1",
+    "svg-loaders-react": "^2.2.1",
     "typescript": "^3.9.7",
     "yup": "^0.29.3"
   },
@@ -43,7 +46,8 @@
     "eject": "react-app-rewired eject",
     "relay": "relay-compiler --language typescript --artifactDirectory ./src/__generated__/",
     "update-schema": "node ./scripts/updateSchema.js",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "update-graphql": "npm run update-schema && npm run generate"
   },
   "eslintConfig": {
     "extends": "react-app"

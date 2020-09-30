@@ -6,6 +6,8 @@ import {
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import DogDetail from './DogDetail';
 import DogBehaviorsRouter from './DogBehaviorsRouter';
+import DogTrainingSessionsRouter from './DogTrainingSessionsRouter';
+import DogPendingInvitationsRouter from './DogPendingInvitationsRouter';
 
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
@@ -24,6 +26,12 @@ const DogRouter: React.FC<DogRouterProps> = (props) => {
         <Switch>
             <Route path={props.match.url + "/behaviors"} render={(p) => (
                 <DogBehaviorsRouter {...p} dog_id={props.match.params.id} relay={props.relay} />
+            )} />
+            <Route path={props.match.url + "/sessions"} render={(p) => (
+                <DogTrainingSessionsRouter {...p} dog_id={props.match.params.id} relay={props.relay} />
+            )} />
+            <Route path={props.match.url + "/invitations"} render={(p) => (
+                <DogPendingInvitationsRouter {...p} dog_id={props.match.params.id} relay={props.relay} />
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
                 <DogDetail {...p} dog_id={props.match.params.id} relay={props.relay} />

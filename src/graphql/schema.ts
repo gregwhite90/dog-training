@@ -23,10 +23,6 @@ import { AuthUser } from '../business-layer/models';
 import {
     createDogMutation,
     editDogMutation,
-    /**
-    removeDogForViewerMutation,
-    removeDogForAllMutation,
-    */
 } from './mutations/Dog';
 
 import {
@@ -37,15 +33,18 @@ import {
 import {
     createBehaviorMutation,
 } from './mutations/Behavior';
-/**
-const {
-    addTrainingStageMutation,
-    removeTrainingStageMutation,
-} = require('./mutations/TrainingStage');
 
-const { addTrainingSessionMutation } = require('./mutations/TrainingSession');
-const { addTrainingProgressMutation } = require('./mutations/TrainingProgress');
-*/
+import {
+    createTrainingStagesMutation,
+} from './mutations/TrainingStage';
+
+import {
+    createTrainingSessionMutation,
+} from './mutations/TrainingSession';
+
+import {
+    createTrainingProgressesMutation,
+} from './mutations/TrainingProgress';
 
 /**
  * The entry points into the schema (root types).
@@ -73,21 +72,14 @@ const mutationType = new GraphQLObjectType({
         editDog: editDogMutation,
         inviteUserByEmail: inviteUserByEmailMutation,
         acceptInvitation: acceptInvitationMutation,
-        /**
-        removeDogForViewer: removeDogForViewerMutation,
-        removeDogForAll: removeDogForAllMutation,
         /* Behavior-focused mutations */
         createBehavior: createBehaviorMutation,
-        /*
-        removeBehavior: removeBehaviorMutation,
-        /* Training stage-focused mutations *
-        addTrainingStage: addTrainingStageMutation,
-        removeTrainingStage: removeTrainingStageMutation,
-        /* Training session-focused mutations *
-        addTrainingSession: addTrainingSessionMutation,
-        /* Training session- and Training progress-focused mutations *
-        addTrainingProgress: addTrainingProgressMutation,
-        */
+        /* Training stage-focused mutations */
+        createTrainingStages: createTrainingStagesMutation,
+        /* Training session-focused mutations */
+        createTrainingSession: createTrainingSessionMutation,
+        /* Training stage- and training session-focused mutations */
+        createTrainingProgresses: createTrainingProgressesMutation,
     }),
 });
 

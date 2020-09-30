@@ -43,8 +43,8 @@ fragment BehaviorBreadcrumb_behavior on Behavior {
 fragment BehaviorCard_behavior on Behavior {
   name
   explanation
-  lure_description
-  shape_description
+  incentive_method
+  incentive_description
   verbal_command
   hand_signal
   release_command
@@ -149,14 +149,14 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "lure_description",
+                "name": "incentive_method",
                 "storageKey": null
               },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "shape_description",
+                "name": "incentive_description",
                 "storageKey": null
               },
               {
@@ -203,12 +203,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "083172b8d0990a853403d0f0fd8f1ece",
+    "cacheID": "31720afb14dbbe445cae53ba9e9294fb",
     "id": null,
     "metadata": {},
     "name": "BehaviorDetailQuery",
     "operationKind": "query",
-    "text": "query BehaviorDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorCard_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n"
+    "text": "query BehaviorDetailQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...BehaviorCard_behavior\n    ...BehaviorBreadcrumb_behavior\n    id\n  }\n}\n\nfragment BehaviorBreadcrumb_behavior on Behavior {\n  id\n  name\n  dog {\n    name\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  incentive_method\n  incentive_description\n  verbal_command\n  hand_signal\n  release_command\n}\n"
   }
 };
 })();

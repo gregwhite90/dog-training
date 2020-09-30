@@ -3,6 +3,7 @@ import {
     Router,
     Switch,
     Route,
+    Redirect,
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
@@ -17,6 +18,9 @@ import About from 'components/pages/About';
 
 import DogsRouter from 'components/dogs/DogsRouter';
 import BehaviorsRouter from 'components/behaviors/BehaviorsRouter';
+import TrainingStagesRouter from 'components/training_stages/TrainingStagesRouter';
+import TrainingSessionsRouter from 'components/training_sessions/TrainingSessionsRouter';
+import PendingInvitationsRouter from 'components/invitations/PendingInvitationsRouter';
 
 import './App.scss';
 
@@ -42,7 +46,7 @@ class App extends React.Component<any, any> {
         return (
             <Router history={history}>
                 <div className="App">
-                    <Navigation />
+                    <Navigation relay={this.state.relay} />
                     <Switch>
                         <Route path="/login" render={(_: any) => (
                             this.props.auth0.loginWithRedirect()
@@ -54,7 +58,20 @@ class App extends React.Component<any, any> {
                         <Route path="/behaviors" render={(props: any) => (
                             <BehaviorsRouter {...props} relay={this.state.relay} />
                         )} />
-                        <Route path="/" component={Home} />
+                        <Route path="/stages" render={(props: any) => (
+                            <TrainingStagesRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/sessions" render={(props: any) => (
+                            <TrainingSessionsRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/invitations" render={(props: any) => (
+                            <PendingInvitationsRouter {...props} relay={this.state.relay} />
+                        )} />
+                        <Route path="/" render={(props: any) => (
+                            this.props.auth0.isAuthenticated
+                                ? (<Redirect to="/dogs" />)
+                                : (<Home />)
+                        )} />
                     </Switch>
                 </div>
             </Router>

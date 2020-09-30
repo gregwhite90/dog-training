@@ -34,16 +34,14 @@ query DogBehaviorsPageQuery(
 fragment BehaviorCard_behavior on Behavior {
   name
   explanation
-  lure_description
-  shape_description
+  incentive_method
+  incentive_description
   verbal_command
   hand_signal
   release_command
 }
 
 fragment DogBehaviorsApp_dog on Dog {
-  id
-  name
   ...DogBehaviorsList_dog
 }
 
@@ -100,20 +98,20 @@ v3 = {
   "name": "id",
   "storageKey": null
 },
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v5 = [
+v4 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 2147483647
   }
-];
+],
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -165,10 +163,9 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v4/*: any*/),
               {
                 "alias": null,
-                "args": (v5/*: any*/),
+                "args": (v4/*: any*/),
                 "concreteType": "BehaviorConnection",
                 "kind": "LinkedField",
                 "name": "behaviors",
@@ -191,7 +188,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -203,14 +200,14 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "lure_description",
+                            "name": "incentive_method",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "shape_description",
+                            "name": "incentive_description",
                             "storageKey": null
                           },
                           {
@@ -278,13 +275,14 @@ return {
               },
               {
                 "alias": null,
-                "args": (v5/*: any*/),
+                "args": (v4/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "DogBehaviorsList_behaviors",
                 "kind": "LinkedHandle",
                 "name": "behaviors"
-              }
+              },
+              (v5/*: any*/)
             ],
             "type": "Dog",
             "abstractKey": null
@@ -295,12 +293,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9af066ad0744d83bbd2cae76f65da149",
+    "cacheID": "0b02cfa6347167350bae30006cd5d7e2",
     "id": null,
     "metadata": {},
     "name": "DogBehaviorsPageQuery",
     "operationKind": "query",
-    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  lure_description\n  shape_description\n  verbal_command\n  hand_signal\n  release_command\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  id\n  name\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n"
+    "text": "query DogBehaviorsPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...DogBehaviorsApp_dog\n    ...DogBreadcrumb_dog\n    id\n  }\n}\n\nfragment BehaviorCard_behavior on Behavior {\n  name\n  explanation\n  incentive_method\n  incentive_description\n  verbal_command\n  hand_signal\n  release_command\n}\n\nfragment DogBehaviorsApp_dog on Dog {\n  ...DogBehaviorsList_dog\n}\n\nfragment DogBehaviorsList_dog on Dog {\n  id\n  behaviors(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...BehaviorCard_behavior\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment DogBreadcrumb_dog on Dog {\n  id\n  name\n}\n"
   }
 };
 })();

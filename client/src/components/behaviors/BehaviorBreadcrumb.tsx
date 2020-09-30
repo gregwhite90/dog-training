@@ -8,6 +8,7 @@ import type { BehaviorBreadcrumb_behavior } from '__generated__/BehaviorBreadcru
 
 interface BehaviorBreadcrumbProps {
     active: boolean,
+    leaf?: "stages" | "progress",
     behavior: BehaviorBreadcrumb_behavior,
 };
 
@@ -31,10 +32,19 @@ const BehaviorBreadcrumb: React.FC<BehaviorBreadcrumbProps> = (props) => {
                     </Breadcrumb.Item>
                 </LinkContainer>
                 <LinkContainer to={`/behaviors/${props.behavior.id}`}>
-                    <Breadcrumb.Item active={props.active}>
+                    <Breadcrumb.Item active={props.active && !props.leaf}>
                         {props.behavior.name}
                     </Breadcrumb.Item>
                 </LinkContainer>
+                {props.leaf &&
+                    (
+                        <LinkContainer to={`/behaviors/${props.behavior.id}/${props.leaf}`}>
+                            <Breadcrumb.Item active={props.active}>
+                                All {props.leaf} for {props.behavior.name}
+                            </Breadcrumb.Item>
+                        </LinkContainer>
+                    )
+                }
             </Breadcrumb>
         </Container>
     );

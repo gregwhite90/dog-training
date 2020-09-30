@@ -9,7 +9,10 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import { nullable_string } from 'components/utils/FormValidationUtils';
+
 import CreateBehaviorMutation from 'relay/mutations/CreateBehaviorMutation';
+import { IncentiveMethod } from 'generated/graphql';
 
 // For types
 import type { CreateBehaviorForm_dog } from '__generated__/CreateBehaviorForm_dog.graphql';
@@ -32,20 +35,16 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
     // TODO: decide which are required
     // TODO: only allow one of shape vs. lure?
 
-    const nullable_string = () => yup.string()
-        .nullable()
-        .transform((value, originalValue) => {
-            return value ? originalValue : null;
-        });
-
     const validationSchema = yup.object<CreateBehaviorInput>().shape({
         dog_id: yup.string()
             .required("A dog ID is required"),
         name: yup.string()
             .required("A name for this desired behavior is required"),
         explanation: nullable_string(),
-        lure_description: nullable_string(),
-        shape_description: nullable_string(),
+        incentive_method: yup.mixed<IncentiveMethod>()
+            .oneOf(Object.values(IncentiveMethod),
+                "Incentive method must be one of valid options"),
+        incentive_description: nullable_string(),
         verbal_command: nullable_string(),
         hand_signal: nullable_string(),
         has_duration: yup.bool()
@@ -64,8 +63,8 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                     dog_id: props.dog.id,
                     name: "",
                     explanation: "",
-                    lure_description: "",
-                    shape_description: "",
+                    incentive_method: "LURE",
+                    incentive_description: "",
                     verbal_command: "",
                     hand_signal: "",
                     has_duration: false,
@@ -137,42 +136,49 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                                <Form.Group controlId="formBehaviorLureDescription">
+                                <Form.Group>
                                     <Form.Label>
-                                        Description of the lure to be used in training (physical incentive for your dog to perform the behavior):
+                                        Method used to incentivize behavior without command or hand signal:
                                     </Form.Label>
                                     <Form.Control
-                                        as="textarea"
-                                        rows={2}
-                                        name="lure_description"
-                                        placeholder="Lure description"
-                                        value={values.lure_description}
+                                        as="select"
+                                        name="incentive_method"
+                                        value={values.incentive_method}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isInvalid={touched.lure_description && !!errors.lure_description}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.lure_description}
-                                    </Form.Control.Feedback>
+                                        isInvalid={!!errors.incentive_method}
+                                    >
+                                        {Object.values(IncentiveMethod).map(method => {
+                                            return (
+                                                <option
+                                                    key={method}
+                                                    value={method}
+                                                >
+                                                    {method}
+                                                </option>
+                                            );
+                                        })}
+                                    </Form.Control>
+                                    <Form.Control.Feedback type="invalid">{errors.incentive_method}</Form.Control.Feedback>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                                <Form.Group controlId="formBehaviorShapeDescription">
+                                <Form.Group controlId="formBehaviorIncentiveDescription">
                                     <Form.Label>
-                                        Description of the shaping to be used in training (non-physical encouragement for successively closer steps like a game of hot-cold, primarily for when physical lure is impractical):
+                                        Description of the {values.incentive_method} to be used in training (physical incentive for your dog to perform the behavior):
                                     </Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={2}
-                                        name="shape_description"
-                                        placeholder="Shape description"
-                                        value={values.shape_description}
+                                        name="incentive_description"
+                                        placeholder={`${values.incentive_method} description`}
+                                        value={values.incentive_description}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        isInvalid={touched.shape_description && !!errors.shape_description}
+                                        isInvalid={touched.incentive_description && !!errors.incentive_description}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.shape_description}
+                                        {errors.incentive_description}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Form.Row>

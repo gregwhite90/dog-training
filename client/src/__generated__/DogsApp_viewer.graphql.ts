@@ -5,7 +5,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type DogsApp_viewer = {
-    readonly id: string;
     readonly " $fragmentRefs": FragmentRefs<"DogsList_viewer">;
     readonly " $refType": "DogsApp_viewer";
 };
@@ -24,13 +23,6 @@ const node: ReaderFragment = {
   "name": "DogsApp_viewer",
   "selections": [
     {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "DogsList_viewer"
@@ -39,5 +31,5 @@ const node: ReaderFragment = {
   "type": "User",
   "abstractKey": null
 };
-(node as any).hash = 'ace7cd433c0c10a26fe4eb65bde6d7fc';
+(node as any).hash = 'b95acf68e5aa59a90efa424a1c36a60e';
 export default node;

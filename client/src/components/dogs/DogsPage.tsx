@@ -3,18 +3,15 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
 
 import DogsApp from './DogsApp';
-import PendingInvitations from './PendingInvitations';
 import DogsBreadcrumb from './DogsBreadcrumb';
 
 import type { DogsPageQuery } from '__generated__/DogsPageQuery.graphql';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 import type { RouteComponentProps } from 'react-router-dom';
 
 // TODO: pass down the match params (empty object in this case)
 interface DogsPageProps extends RouteComponentProps<{}> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
 }
 
 const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
@@ -27,7 +24,6 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
                 query DogsPageQuery {
                     viewer {
                         ...DogsApp_viewer
-                        ...PendingInvitations_viewer
                     }
                 }
                 `}
@@ -41,12 +37,11 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
                         <>
                             <DogsBreadcrumb active={true} />
                             <DogsApp viewer={props.viewer} match={match} />
-                            <PendingInvitations relay_environment={relay.environment} viewer={props.viewer} />
                         </>
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
                 return <div>Loading...</div>;

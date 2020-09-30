@@ -7,6 +7,8 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import BehaviorDetail from './BehaviorDetail';
 import BehaviorTrainingStagesRouter from './BehaviorTrainingStagesRouter';
 
+import BehaviorTrainingProgressesPage from './BehaviorTrainingProgressesPage';
+
 import type { RouteComponentProps } from 'react-router-dom';
 import type { RelayProp } from 'react-relay';
 
@@ -21,11 +23,26 @@ interface BehaviorRouterProps extends RouteComponentProps<MatchParams> {
 const BehaviorRouter: React.FC<BehaviorRouterProps> = (props) => {
     return (
         <Switch>
+            <Route path={props.match.url + "/progress"} render={(p) => (
+                <BehaviorTrainingProgressesPage
+                    {...p}
+                    behavior_id={props.match.params.id}
+                    relay={props.relay}
+                />
+            )} />
             <Route path={props.match.url + "/stages"} render={(p) => (
-                <BehaviorTrainingStagesRouter {...p} behavior_id={props.match.params.id} relay={props.relay} />
+                <BehaviorTrainingStagesRouter
+                    {...p}
+                    behavior_id={props.match.params.id}
+                    relay={props.relay}
+                />
             )} />
             <Route path={props.match.url + "/"} render={(p) => (
-                <BehaviorDetail {...p} behavior_id={props.match.params.id} relay={props.relay} />
+                <BehaviorDetail
+                    {...p}
+                    behavior_id={props.match.params.id}
+                    relay={props.relay}
+                />
             )} />
         </Switch>
     );

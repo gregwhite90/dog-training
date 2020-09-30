@@ -17,13 +17,22 @@ export type PendingInvitations_viewer = {
                     readonly name: string;
                     readonly picture: string | null;
                     readonly id: string;
-                } | null;
+                };
                 readonly invited_by: {
                     readonly name: string;
                 };
             } | null;
         } | null> | null;
-    } | null;
+    };
+    readonly dogs: {
+        readonly edges: ReadonlyArray<{
+            readonly user_role: UserDogRole;
+            readonly node: {
+                readonly id: string;
+                readonly name: string;
+            } | null;
+        } | null> | null;
+    };
     readonly " $refType": "PendingInvitations_viewer";
 };
 export type PendingInvitations_viewer$data = PendingInvitations_viewer;
@@ -43,6 +52,13 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "user_role",
+  "storageKey": null
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -88,13 +104,7 @@ return {
                   "name": "invitee_email",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "user_role",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -103,7 +113,7 @@ return {
                   "name": "dog",
                   "plural": false,
                   "selections": [
-                    (v1/*: any*/),
+                    (v2/*: any*/),
                     {
                       "alias": null,
                       "args": null,
@@ -123,10 +133,46 @@ return {
                   "name": "invited_by",
                   "plural": false,
                   "selections": [
-                    (v1/*: any*/)
+                    (v2/*: any*/)
                   ],
                   "storageKey": null
                 }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "UserToDogConnection",
+      "kind": "LinkedField",
+      "name": "dogs",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "UserToDogEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            (v1/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Dog",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                (v2/*: any*/)
               ],
               "storageKey": null
             }
@@ -141,5 +187,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fadd1161963185e8bd3d5b9bf6596810';
+(node as any).hash = '039371b6d8d9e232fe1d902c91d456fb';
 export default node;

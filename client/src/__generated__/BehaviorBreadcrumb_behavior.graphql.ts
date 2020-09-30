@@ -10,7 +10,7 @@ export type BehaviorBreadcrumb_behavior = {
     readonly dog: {
         readonly name: string;
         readonly id: string;
-    } | null;
+    };
     readonly " $refType": "BehaviorBreadcrumb_behavior";
 };
 export type BehaviorBreadcrumb_behavior$data = BehaviorBreadcrumb_behavior;

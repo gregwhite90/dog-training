@@ -22,9 +22,10 @@ type User implements Node {
 
   """URL of the profile image of this user."""
   picture: String
-  dogs(after: String, first: Int, before: String, last: Int): UserToDogConnection
-  pending_invitations_sent(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
-  pending_invitations_received(after: String, first: Int, before: String, last: Int): PendingInvitationConnection
+  dogs(after: String, first: Int, before: String, last: Int): UserToDogConnection!
+  pending_invitations_sent(after: String, first: Int, before: String, last: Int): PendingInvitationConnection!
+  pending_invitations_received(after: String, first: Int, before: String, last: Int): PendingInvitationConnection!
+  training_sessions(after: String, first: Int, before: String, last: Int): UserToTrainingSessionConnection!
 }
 
 """A connection to a list of items."""
@@ -60,14 +61,15 @@ type UserToDogEdge {
   cursor: String!
 
   """The role the user plays for the dog."""
-  user_role: UserDogRole
+  user_role: UserDogRole!
 }
 
 type Dog implements Node {
   """The ID of an object"""
   id: ID!
-  users(after: String, first: Int, before: String, last: Int): DogToUserConnection
-  behaviors(after: String, first: Int, before: String, last: Int): BehaviorConnection
+  users(after: String, first: Int, before: String, last: Int): DogToUserConnection!
+  behaviors(after: String, first: Int, before: String, last: Int): BehaviorConnection!
+  trainingSessions(after: String, first: Int, before: String, last: Int): TrainingSessionConnection!
   name: String!
 
   """URL of the profile image of this dog."""
@@ -92,7 +94,7 @@ type DogToUserEdge {
   cursor: String!
 
   """The role the user plays for the dog."""
-  user_role: UserDogRole
+  user_role: UserDogRole!
 }
 
 enum UserDogRole {
@@ -122,17 +124,21 @@ type BehaviorEdge {
 type Behavior implements Node {
   """The ID of an object"""
   id: ID!
-  dog: Dog
+  dog: Dog!
+  trainingStages(after: String, first: Int, before: String, last: Int): TrainingStageConnection!
+  trainingSessions(after: String, first: Int, before: String, last: Int): TrainingSessionConnection!
   name: String!
 
   """Explanation of the desired behavior in clear, plain language."""
   explanation: String
 
-  """Description of the lure used in training."""
-  lure_description: String
+  """
+  The method of incentivizing used to entice behavior before commands or hand signals are used.
+  """
+  incentive_method: IncentiveMethod
 
-  """Description of the shape used in training."""
-  shape_description: String
+  """Description of the incentive method used in training."""
+  incentive_description: String
 
   """The verbal command used to cue this behavior."""
   verbal_command: String
@@ -140,11 +146,196 @@ type Behavior implements Node {
   """The hand signal used to cue this behavior."""
   hand_signal: String
 
-  """Description of the shape used in training."""
+  """Whether this behavior has a duration component."""
   has_duration: Boolean!
 
   """The verbal command used to release this behavior."""
   release_command: String
+}
+
+"""A connection to a list of items."""
+type TrainingStageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingStageEdge]
+}
+
+"""An edge in a connection."""
+type TrainingStageEdge {
+  """The item at the end of the edge"""
+  node: TrainingStage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type TrainingStage implements Node {
+  """The ID of an object"""
+  id: ID!
+  behavior: Behavior!
+  trainingSessions(after: String, first: Int, before: String, last: Int): TrainingStageToTrainingSessionConnection
+
+  """The order within the sequence of training stages for this behavior"""
+  seq: Int!
+
+  """Whether this stage includes an incentive method"""
+  incentive: Boolean!
+
+  """Whether this stage includes a verbal command"""
+  verbal: Boolean!
+
+  """Whether this stage includes a hand signal"""
+  hand: Boolean!
+
+  """How frequently successful behavior is rewarded."""
+  reward_frequency: RewardFrequency!
+}
+
+"""A connection to a list of items."""
+type TrainingStageToTrainingSessionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingStageToTrainingSessionEdge]
+}
+
+"""An edge in a connection."""
+type TrainingStageToTrainingSessionEdge {
+  """The item at the end of the edge"""
+  node: TrainingSession
+
+  """A cursor for use in pagination"""
+  cursor: String!
+  training_progress: TrainingProgress!
+}
+
+type TrainingSession implements Node {
+  """The ID of an object"""
+  id: ID!
+  dog: Dog!
+  trainingStages(after: String, first: Int, before: String, last: Int): TrainingSessionToTrainingStageConnection!
+  users(after: String, first: Int, before: String, last: Int): TrainingSessionToUserConnection!
+
+  """The length of the training session, in minutes"""
+  minutes_long: Int
+
+  """When this training session was started"""
+  start_timestamp: DateTime!
+}
+
+"""A connection to a list of items."""
+type TrainingSessionToTrainingStageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingSessionToTrainingStageEdge]
+}
+
+"""An edge in a connection."""
+type TrainingSessionToTrainingStageEdge {
+  """The item at the end of the edge"""
+  node: TrainingStage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+  training_progress: TrainingProgress!
+}
+
+type TrainingProgress {
+  """
+  Order within the sequence of training progresses in this training session
+  """
+  seq: Int!
+
+  """The number of successful attempts of this stage in this session"""
+  successes: Int
+
+  """The number of total attempts of this stage in this session"""
+  attempts: Int
+
+  """
+  A qualitative assessment of the distance between human and dog while training this stage in this session
+  """
+  distance: QualitativeLevel
+
+  """
+  A qualitative assessment of the amount of distractions for the dog while training this stage in this session
+  """
+  distractions: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage in this session
+  """
+  duration: QualitativeLevel
+}
+
+enum QualitativeLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+"""A connection to a list of items."""
+type TrainingSessionToUserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingSessionToUserEdge]
+}
+
+"""An edge in a connection."""
+type TrainingSessionToUserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The role the user plays for the training session."""
+  user_role: UserTrainingSessionRole!
+}
+
+enum UserTrainingSessionRole {
+  MAINTAINER
+  PARTICIPANT
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum RewardFrequency {
+  CONTINUOUS
+  INTERMITTENT
+}
+
+"""A connection to a list of items."""
+type TrainingSessionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingSessionEdge]
+}
+
+"""An edge in a connection."""
+type TrainingSessionEdge {
+  """The item at the end of the edge"""
+  node: TrainingSession
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+enum IncentiveMethod {
+  LURE
+  SHAPE
 }
 
 """A connection to a list of items."""
@@ -171,7 +362,28 @@ type PendingInvitation implements Node {
   invitee_email: String!
   invited_by: User!
   user_role: UserDogRole!
-  dog: Dog
+  dog: Dog!
+}
+
+"""A connection to a list of items."""
+type UserToTrainingSessionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserToTrainingSessionEdge]
+}
+
+"""An edge in a connection."""
+type UserToTrainingSessionEdge {
+  """The item at the end of the edge"""
+  node: TrainingSession
+
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The role the user plays for the training session."""
+  user_role: UserTrainingSessionRole!
 }
 
 type Mutation {
@@ -187,6 +399,17 @@ type Mutation {
 
   """Create a new desired behavior for the specified dog"""
   createBehavior(input: CreateBehaviorInput!): CreateBehaviorPayload
+
+  """Create the training stages for the specified desired behavior"""
+  createTrainingStages(input: CreateTrainingStagesInput!): CreateTrainingStagesPayload
+
+  """Create a training session for the specified dog"""
+  createTrainingSession(input: CreateTrainingSessionInput!): CreateTrainingSessionPayload
+
+  """
+  Create logs of training progress achieved on the specified training stage in the specified training session
+  """
+  createTrainingProgresses(input: CreateTrainingProgressesInput!): CreateTrainingProgressesPayload
 }
 
 type CreateDogPayload {
@@ -259,11 +482,13 @@ input CreateBehaviorInput {
   """Explanation of the desired behavior in clear, plain language."""
   explanation: String
 
-  """Description of the lure used in training."""
-  lure_description: String
+  """
+  The method of incentivizing used to entice behavior before commands or hand signals are used.
+  """
+  incentive_method: IncentiveMethod
 
-  """Description of the shape used in training."""
-  shape_description: String
+  """Description of the incentive method used in training."""
+  incentive_description: String
 
   """The verbal command used to cue this behavior."""
   verbal_command: String
@@ -271,10 +496,96 @@ input CreateBehaviorInput {
   """The hand signal used to cue this behavior."""
   hand_signal: String
 
-  """Description of the shape used in training."""
+  """Whether this behavior has a duration component."""
   has_duration: Boolean!
 
   """The verbal command used to release this behavior."""
   release_command: String
   clientMutationId: String
+}
+
+type CreateTrainingStagesPayload {
+  trainingStageEdges: [TrainingStageEdge!]!
+  clientMutationId: String
+}
+
+input CreateTrainingStagesInput {
+  behavior_id: ID!
+  training_stages: [TrainingStageScalarFields!]!
+  clientMutationId: String
+}
+
+input TrainingStageScalarFields {
+  """The order within the sequence of training stages for this behavior"""
+  seq: Int!
+
+  """Whether this stage includes an incentive method"""
+  incentive: Boolean!
+
+  """Whether this stage includes a verbal command"""
+  verbal: Boolean!
+
+  """Whether this stage includes a hand signal"""
+  hand: Boolean!
+
+  """How frequently successful behavior is rewarded."""
+  reward_frequency: RewardFrequency!
+}
+
+type CreateTrainingSessionPayload {
+  trainingSessionEdge: TrainingSessionEdge
+  clientMutationId: String
+}
+
+input CreateTrainingSessionInput {
+  user_id: ID!
+  dog_id: ID!
+
+  """The length of the training session, in minutes"""
+  minutes_long: Int
+
+  """When this training session was started"""
+  start_timestamp: DateTime!
+  clientMutationId: String
+}
+
+type CreateTrainingProgressesPayload {
+  trainingStageEdges: [TrainingSessionToTrainingStageEdge!]!
+  clientMutationId: String
+}
+
+input CreateTrainingProgressesInput {
+  training_session_id: ID!
+  training_progresses: [TrainingProgressInput!]!
+  clientMutationId: String
+}
+
+input TrainingProgressInput {
+  training_stage_id: ID!
+
+  """
+  Order within the sequence of training progresses in this training session
+  """
+  seq: Int!
+
+  """The number of successful attempts of this stage in this session"""
+  successes: Int
+
+  """The number of total attempts of this stage in this session"""
+  attempts: Int
+
+  """
+  A qualitative assessment of the distance between human and dog while training this stage in this session
+  """
+  distance: QualitativeLevel
+
+  """
+  A qualitative assessment of the amount of distractions for the dog while training this stage in this session
+  """
+  distractions: QualitativeLevel
+
+  """
+  A qualitative assessment of the duration of the behavior attempted while training this stage in this session
+  """
+  duration: QualitativeLevel
 }

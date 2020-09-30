@@ -1,31 +1,29 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
-// TODO: create behavior card
 import BehaviorCard from './BehaviorCard';
 import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 
 // TODO: authorization check
 
 // TODO: fix any types
-// TODO: create the behavior detail query
 import type { BehaviorDetailQuery } from '__generated__/BehaviorDetailQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
 interface BehaviorDetailProps extends RouteComponentProps<MatchParams> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
     behavior_id: string,
 }
 
-const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) => {
+const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_id }) => {
     return (
         <QueryRenderer<BehaviorDetailQuery>
             environment={relay.environment}
@@ -42,9 +40,22 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, behavior_id }) =
                 if (props && props.node) {
                     return (
                         <>
-                            <BehaviorBreadcrumb behavior={props.node} active={true} />
+                            <BehaviorBreadcrumb
+                                behavior={props.node}
+                                active={true}
+                            />
                             <Container>
                                 <BehaviorCard behavior={props.node} />
+                                <Link to={`${match.url}/stages`}>
+                                    <Button variant="primary">
+                                        View training stages
+                                    </Button>
+                                </Link>
+                                <Link to={`${match.url}/progress`}>
+                                    <Button variant="primary">
+                                        View training progress
+                                    </Button>
+                                </Link>
                             </Container>
                         </>
                     );

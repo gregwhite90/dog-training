@@ -13,7 +13,7 @@ export type DogBehaviorsList_dog = {
                 readonly " $fragmentRefs": FragmentRefs<"BehaviorCard_behavior">;
             } | null;
         } | null> | null;
-    } | null;
+    };
     readonly " $refType": "DogBehaviorsList_dog";
 };
 export type DogBehaviorsList_dog$data = DogBehaviorsList_dog;

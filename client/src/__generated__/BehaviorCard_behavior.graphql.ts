@@ -4,11 +4,12 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type IncentiveMethod = "LURE" | "SHAPE" | "%future added value";
 export type BehaviorCard_behavior = {
     readonly name: string;
     readonly explanation: string | null;
-    readonly lure_description: string | null;
-    readonly shape_description: string | null;
+    readonly incentive_method: IncentiveMethod | null;
+    readonly incentive_description: string | null;
     readonly verbal_command: string | null;
     readonly hand_signal: string | null;
     readonly release_command: string | null;
@@ -46,14 +47,14 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "lure_description",
+      "name": "incentive_method",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "shape_description",
+      "name": "incentive_description",
       "storageKey": null
     },
     {
@@ -81,5 +82,5 @@ const node: ReaderFragment = {
   "type": "Behavior",
   "abstractKey": null
 };
-(node as any).hash = '2c1a185cdf90413363d3bdb5c3474ff0';
+(node as any).hash = '1fea3c5999d3c3725502231dbb79e09b';
 export default node;

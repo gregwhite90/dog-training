@@ -1,6 +1,5 @@
 import {
     GraphQLNonNull,
-    GraphQLString,
     GraphQLID,
 } from 'graphql';
 
@@ -11,7 +10,6 @@ import {
 } from 'graphql-relay';
 
 import {
-    behaviorType,
     behaviorTypeOwnedScalarFields,
     behaviorEdge,
 } from '../types/objects/Nodes';
@@ -50,8 +48,8 @@ const createBehaviorMutation = mutationWithClientMutationId({
         dog_id,
         name,
         explanation,
-        lure_description,
-        shape_description,
+        incentive_method,
+        incentive_description,
         verbal_command,
         hand_signal,
         has_duration,
@@ -65,8 +63,8 @@ const createBehaviorMutation = mutationWithClientMutationId({
             input: {
                 name,
                 explanation,
-                lure_description,
-                shape_description,
+                incentive_method,
+                incentive_description,
                 verbal_command,
                 hand_signal,
                 has_duration,

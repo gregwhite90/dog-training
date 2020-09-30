@@ -15,14 +15,12 @@ import DogBreadcrumb from './DogBreadcrumb';
 // TODO: fix any types
 import type { DogDetailQuery } from '__generated__/DogDetailQuery.graphql';
 import type { RouteComponentProps } from 'react-router-dom';
-import type { IEnvironment } from 'relay-runtime';
+import type { RelayProp } from 'react-relay';
 
 interface MatchParams { }
 
 interface DogDetailProps extends RouteComponentProps<MatchParams> {
-    relay: {
-        environment: IEnvironment,
-    },
+    relay: RelayProp,
     dog_id: string,
 }
 
@@ -34,7 +32,6 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                 query DogDetailQuery($id: ID!) {
                     node(id: $id) {
                         ...DogCard_dog
-                        ...InviteUserByEmailForm_dog
                         ...DogBreadcrumb_dog
                     }
                 }
@@ -44,13 +41,17 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                 if (props && props.node) {
                     return (
                         <>
-                            <DogBreadcrumb dog={props.node} active={true} behaviors={false} />
+                            <DogBreadcrumb dog={props.node} active={true} />
                             <Container>
                                 <DogCard dog={props.node} />
-                                <InviteUserByEmailForm dog={props.node} relay_environment={relay.environment} />
                                 <Link to={`${match.url}/behaviors`}>
                                     <Button variant="primary">
                                         View desired behaviors
+                                    </Button>
+                                </Link>
+                                <Link to={`${match.url}/sessions`}>
+                                    <Button variant="primary">
+                                        View training sessions
                                     </Button>
                                 </Link>
                             </Container>
@@ -58,7 +59,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
                 return <div>Loading...</div>;
