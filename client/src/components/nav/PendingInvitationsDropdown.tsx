@@ -3,6 +3,8 @@ import { graphql, QueryRenderer } from 'react-relay';
 
 import PendingInvitations from 'components/invitations/PendingInvitations';
 
+import { Rings } from 'svg-loaders-react';
+
 import type { PendingInvitationsDropdownQuery } from '__generated__/PendingInvitationsDropdownQuery.graphql';
 import type { RelayProp } from 'react-relay';
 
@@ -43,7 +45,7 @@ const PendingInvitationsDropdown: React.FC<PendingInvitationsDropdownProps> = ({
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return <Rings />;
             }}
         />
     );
