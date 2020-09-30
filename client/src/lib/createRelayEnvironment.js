@@ -3,29 +3,48 @@ import {
     Network,
     RecordSource,
     Store,
+    Observable,
 } from 'relay-runtime';
 
-function fetchQuery(
-    operation,
-    variables,
-) {
-    return fetch('/graphql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            query: operation.text,
-            variables,
-        }),
-    }).then(response => {
-        return response.json();
+export default function createEnvironment(getAccessTokenSilently) {
+    function fetchQuery(
+        operation,
+        variables
+    ) {
+        return Observable.create((sink) => {
+            return getAccessTokenSilently({
+                audience: 'https://dog-training-staging.herokuapp.com/graphql',
+                scope: 'read:viewer',
+            }).then(token => {
+                // TODO: token error-handling code
+                console.log(token);
+                fetch('/graphql', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'Application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        query: operation.text,
+                        variables,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.errors) {
+                            sink.error(data.errors);
+                            return;
+                        }
+                        sink.next(data);
+                        sink.complete();
+                    });
+            });
+        });
+    }
+
+    return new Environment({
+        network: Network.create(fetchQuery),
+        store: new Store(new RecordSource()),
     });
-}
-
-const environment = new Environment({
-    network: Network.create(fetchQuery),
-    store: new Store(new RecordSource()),
-});
-
-export default environment;
+};

@@ -1,8 +1,4 @@
-const fs = require('fs');
 const path = require('path');
-const DogTrainingSchema = require('../../schema');
-const { printSchema } = require('../../node_modules/graphql');
+const { updateGraphQLSchema } = require('../../scripts/updateGraphQLSchema');
 
-const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
-fs.writeFileSync(schemaPath, printSchema(DogTrainingSchema));
-console.log('Wrote ' + schemaPath);
+updateGraphQLSchema(path.resolve(__dirname, '../data/schema.graphql'));
