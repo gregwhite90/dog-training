@@ -19,23 +19,22 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             marginBottom: "0px",
+            color: 'map-get($theme-colors, "light")',
         }}
         fluid
     >
-      <h1
-          style={{
-              color: "map-get($theme-colors, light)",
-          }}
-      >
+      <h1>
         Your dog doesn't speak human.<br />
         Help them.
       </h1>
       <h1>
-        <LoginButton />
+        <LoginButton variant="primary" />
       </h1>
       <h2>
         <Link to="/about">
-            <Button>
+          <Button
+              variant="primary"
+          >
                 Learn more
             </Button>
         </Link>
