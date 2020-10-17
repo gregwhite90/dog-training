@@ -10,9 +10,17 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
     <Jumbotron
         style={{
             backgroundImage: `url(${img_url})`,
+            height: "100vh",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
         }}
+        fluid
     >
-      Your dog doesn't speak human. Help them.
+      <h1>
+        Your dog doesn't speak human.<br />
+        Help them.
+      </h1>
     </Jumbotron>
 
 );
