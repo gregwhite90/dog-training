@@ -47,10 +47,12 @@ class App extends React.Component<any, any> {
             <Router history={history}>
                 <div className="App">
                     {(!this.props.auth0.isAuthenticated &&
-                        (
-                            <Route path="/" render={(props: any) => (
+                      (
+                          <Switch>
+                            <Route exact path="/" render={(props: any) => (
                                 <Home img_url="https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public/addie_confused.JPG" />
                             )} />
+                          </Switch>
                         )
                     ) || (
                             <>
