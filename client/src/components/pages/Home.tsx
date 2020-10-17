@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 import LoginButton from 'components/authentication/LoginButton';
 
@@ -19,17 +21,23 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             marginBottom: "0px",
-            color: "$base3",
         }}
         fluid
     >
-      <h1>
+      <Container fluid>
+        <Row>
+      <h1
+          style={{
+              color: "$base3",
+          }}
+      >
         Your dog doesn't speak human. Help them.
       </h1>
-      <h1>
+      </Row>
+      <Row>
         <LoginButton variant="primary" size="lg" />
-      </h1>
-      <h2>
+      </Row>
+      <Row>
         <Link to="/about">
           <Button
               variant="primary"
@@ -38,7 +46,8 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
                 Learn more
             </Button>
         </Link>
-      </h2>
+      </Row>
+      </Container>
     </Jumbotron>
 
 );

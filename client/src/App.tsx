@@ -42,51 +42,60 @@ class App extends React.Component<any, any> {
         });
     }
 
+    // TODO: fix the repeated code
+    // TODO: make sure this doesn't break the router
     render() {
-        return (
-            <Router history={history}>
-                <div className="App">
-                    {(!this.props.auth0.isAuthenticated &&
-                      (
-                          <Switch>
-                            <Route exact path="/" render={(props: any) => (
+        if (!this.props.auth0.isAuthenticated) {
+            return (
+                <Router history={history}>
+                    <div className="App">
+                        <Switch>
+                            <Route path="/login" render={(_: any) => (
+                                this.props.auth0.loginWithRedirect()
+                            )} />
+                            <Route path="/about" render={(_: any) => (
+                                <>
+                                    <Navigation relay={this.state.relay} />
+                                    <About />
+                                </>
+                            )} />
+                            <Route path="/" render={(props: any) => (
                                 <Home img_url="https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public/addie_confused.JPG" />
                             )} />
-                          </Switch>
-                        )
-                    ) || (
-                            <>
-                                <Navigation relay={this.state.relay} />
-                                <Switch>
-                                    <Route path="/login" render={(_: any) => (
-                                        this.props.auth0.loginWithRedirect()
-                                    )} />
-                                    <Route path="/about" component={About} />
-                                    <Route path="/dogs" render={(props: any) => (
-                                        <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
-                                    )} />
-                                    <Route path="/behaviors" render={(props: any) => (
-                                        <BehaviorsRouter {...props} relay={this.state.relay} />
-                                    )} />
-                                    <Route path="/stages" render={(props: any) => (
-                                        <TrainingStagesRouter {...props} relay={this.state.relay} />
-                                    )} />
-                                    <Route path="/sessions" render={(props: any) => (
-                                        <TrainingSessionsRouter {...props} relay={this.state.relay} />
-                                    )} />
-                                    <Route path="/invitations" render={(props: any) => (
-                                        <PendingInvitationsRouter {...props} relay={this.state.relay} />
-                                    )} />
-                                    <Route path="/" render={(props: any) => (
-                                        <Redirect to="/dogs" />
-                                    )} />
-                                </Switch>
-                            </>
-                        )
-                    }
-                </div>
-            </Router>
-        );
+                        </Switch>
+                    </div>
+                </Router>
+            );
+        } else {
+            return (
+                <Router history={history}>
+                    <div className="App">
+                        <Navigation relay={this.state.relay} />
+                        <Switch>
+                            <Route path="/about" component={About} />
+                            <Route path="/dogs" render={(props: any) => (
+                                <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
+                            )} />
+                            <Route path="/behaviors" render={(props: any) => (
+                                <BehaviorsRouter {...props} relay={this.state.relay} />
+                            )} />
+                            <Route path="/stages" render={(props: any) => (
+                                <TrainingStagesRouter {...props} relay={this.state.relay} />
+                            )} />
+                            <Route path="/sessions" render={(props: any) => (
+                                <TrainingSessionsRouter {...props} relay={this.state.relay} />
+                            )} />
+                            <Route path="/invitations" render={(props: any) => (
+                                <PendingInvitationsRouter {...props} relay={this.state.relay} />
+                            )} />
+                            <Route path="/" render={(props: any) => (
+                                <Redirect to="/dogs" />
+                            )} />
+                        </Switch>
+                    </div>
+                </Router>
+            );
+        }
     }
 }
 
