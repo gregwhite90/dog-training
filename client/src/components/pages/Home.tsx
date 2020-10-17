@@ -22,7 +22,11 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
         }}
         fluid
     >
-      <h1>
+      <h1
+          style={{
+              color: "map-get($theme-colors, light)",
+          }}
+      >
         Your dog doesn't speak human.<br />
         Help them.
       </h1>
