@@ -70,7 +70,7 @@ class App extends React.Component<any, any> {
                         <Route path="/" render={(props: any) => (
                             this.props.auth0.isAuthenticated
                                 ? (<Redirect to="/dogs" />)
-                                : (<Home />)
+                                : (<Home img_url="https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public/addie_confused.JPG"/>)
                         )} />
                     </Switch>
                 </div>
