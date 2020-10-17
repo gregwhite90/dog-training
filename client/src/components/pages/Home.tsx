@@ -13,7 +13,7 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ img_url }) => (
     <Jumbotron
         style={{
-            backgroundImage: `url(${img_url})`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${img_url})`,
             height: "100vh",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
