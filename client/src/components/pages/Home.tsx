@@ -13,38 +13,37 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ img_url }) => (
-    <Row className="d-flex flex-column flex-grow-1 mb-0 text-light">
-      <Jumbotron
-          style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${img_url})`,
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-          }}
-          fluid
-      >
-        <Container fluid>
-          <Row className="mb-3">
-            <h1>
-              Your dog doesn't speak human. Help them.
-            </h1>
-          </Row>
-          <Row className="mb-3">
-            <LoginButton variant="light" size="lg" />
-          </Row>
-          <Row className="mb-3">
-            <Link to="/about">
-              <Button
-                  variant="light"
-                  size="sm"
-              >
-                Learn more
-              </Button>
-            </Link>
-          </Row>
-        </Container>
-      </Jumbotron>
-    </Row>
+    <Jumbotron
+        style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${img_url})`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            height: "100vh",
+        }}
+        fluid
+    >
+      <Container className="text-light" fluid>
+        <Row className="mb-3">
+          <h1>
+            Your dog doesn't speak human. Help them.
+          </h1>
+        </Row>
+        <Row className="mb-3">
+          <LoginButton variant="light" size="lg" />
+        </Row>
+        <Row className="mb-3">
+          <Link to="/about">
+            <Button
+                variant="light"
+                size="sm"
+            >
+              Learn more
+            </Button>
+          </Link>
+        </Row>
+      </Container>
+    </Jumbotron>
 );
 
 export default Home;

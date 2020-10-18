@@ -49,7 +49,7 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <Router history={history}>
-              <div className="App min-vh-100">
+              <div className="App">
                 <Navigation relay={this.state.relay} />
                 <Switch>
                   <Route path="/login" render={(_: any) => (
