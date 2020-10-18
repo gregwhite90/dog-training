@@ -20,39 +20,39 @@ const BehaviorCard: React.FC<BehaviorCardProps> = ({
     const BehaviorHeaderLevel = `h${headerLevel}` as HeaderLevelType;
     return (
         <ContainerCard fluid="md">
-            <BehaviorHeaderLevel>{props.behavior.name}</BehaviorHeaderLevel>
-            <p>{props.behavior.explanation}</p>
+            <BehaviorHeaderLevel>{behavior.name}</BehaviorHeaderLevel>
+            <p>{behavior.explanation}</p>
             <Table bordered hover>
                 <tbody>
-                    {props.behavior.verbal_command &&
+                    {behavior.verbal_command &&
                         (
                             <tr>
                                 <td>Verbal command</td>
-                                <td>{props.behavior.verbal_command}</td>
+                                <td>{behavior.verbal_command}</td>
                             </tr>
                         )
                     }
-                    {props.behavior.hand_signal &&
+                    {behavior.hand_signal &&
                         (
                             <tr>
                                 <td>Hand signal</td>
-                                <td>{props.behavior.hand_signal}</td>
+                                <td>{behavior.hand_signal}</td>
                             </tr>
                         )
                     }
-                    {props.behavior.release_command &&
+                    {behavior.release_command &&
                         (
                             <tr>
                                 <td>Release command</td>
-                                <td>{props.behavior.release_command}</td>
+                                <td>{behavior.release_command}</td>
                             </tr>
                         )
                     }
-                    {props.behavior.incentive_description &&
+                    {behavior.incentive_description &&
                         (
                             <tr>
-                                <td>{props.behavior.incentive_method || "Incentive"} description</td>
-                                <td>{props.behavior.incentive_description}</td>
+                                <td>{behavior.incentive_method || "Incentive"} description</td>
+                                <td>{behavior.incentive_description}</td>
                             </tr>
                         )
                     }
