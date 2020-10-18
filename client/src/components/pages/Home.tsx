@@ -24,30 +24,26 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
         }}
         fluid
     >
-      <Container fluid>
-        <Row>
-      <h1
-          style={{
-              color: "$base3",
-          }}
-      >
-        Your dog doesn't speak human. Help them.
-      </h1>
-      </Row>
-      <Row>
-        <LoginButton variant="primary" size="lg" />
-      </Row>
-      <Row>
-        <Link to="/about">
-          <Button
-              variant="primary"
-              size="sm"
-          >
-                Learn more
+        <Container fluid>
+            <Row className="mb-3">
+                <h1 style="color: $base3;">
+                    Your dog doesn't speak human. Help them.
+                </h1>
+            </Row>
+            <Row className="mb-3">
+                <LoginButton variant="primary" size="lg" />
+            </Row>
+            <Row className="mb-3">
+                <Link to="/about">
+                    <Button
+                        variant="primary"
+                        size="sm"
+                    >
+                        Learn more
             </Button>
-        </Link>
-      </Row>
-      </Container>
+                </Link>
+            </Row>
+        </Container>
     </Jumbotron>
 
 );
