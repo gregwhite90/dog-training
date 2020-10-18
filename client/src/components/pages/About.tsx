@@ -15,24 +15,18 @@ const About: React.FC<{}> = (props) => {
     const bucket_dir = "https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public";
     return (
         <Container fluid>
-            <Row>
-              <Jumbotron fluid className="bg-primary text-light">
-                <Col>
-                  <Row>
-                    <h1
-                        style={{
-                            textAlign: "center",
-                        }}
-                    >
-                        Attapuppy helps you train your dog better
-                    </h1>
-                  </Row>
-                </Col>
-                </Jumbotron>
+            <Row className="text-primary">
+              <h1
+                  style={{
+                      textAlign: "center",
+                  }}
+              >
+                Attapuppy helps you train your dog better
+              </h1>
             </Row>
             <Row>
                 <Col lg={6}>
-                    <Card className="mb-3" bg="light">
+                    <Card className="mb-3" bg="light" text="primary">
                         <Card.Header as="h2">
                             Be a better obedience trainer
                         </Card.Header>
@@ -59,7 +53,7 @@ const About: React.FC<{}> = (props) => {
                     </Card>
                 </Col>
                 <Col lg={6}>
-                    <Card className="mb-3" bg="light">
+                    <Card className="mb-3" bg="light" text="primary">
                         <Card.Header as="h2">
                             Collaborate with others
                 </Card.Header>

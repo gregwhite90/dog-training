@@ -49,40 +49,34 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <Router history={history}>
-              <div className="App">
-                <Container fluid>
-                  <Row className="min-vh-100">
-                    <Col>
-                    <Navigation relay={this.state.relay} />
-                    <Switch>
-                        <Route path="/login" render={(_: any) => (
-                            this.props.auth0.loginWithRedirect()
-                        )} />
-                        <Route path="/about" component={About} />
-                        <Route path="/dogs" render={(props: any) => (
-                            <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
-                        )} />
-                        <Route path="/behaviors" render={(props: any) => (
-                            <BehaviorsRouter {...props} relay={this.state.relay} />
-                        )} />
-                        <Route path="/stages" render={(props: any) => (
-                            <TrainingStagesRouter {...props} relay={this.state.relay} />
-                        )} />
-                        <Route path="/sessions" render={(props: any) => (
-                            <TrainingSessionsRouter {...props} relay={this.state.relay} />
-                        )} />
-                        <Route path="/invitations" render={(props: any) => (
-                            <PendingInvitationsRouter {...props} relay={this.state.relay} />
-                        )} />
-                        <Route path="/" render={(props: any) => (
-                            this.props.auth0.isAuthenticated
-                                ? (<Redirect to="/dogs" />)
-                                : (<Home img_url={`${process.env.REACT_APP_S3_BUCKET_URL}/public/addie_confused.JPG`} />)
-                        )} />
-                    </Switch>
-                    </Col>
-                    </Row>
-                    </Container>
+              <div className="App min-vh-100">
+                <Navigation relay={this.state.relay} />
+                <Switch>
+                  <Route path="/login" render={(_: any) => (
+                      this.props.auth0.loginWithRedirect()
+                  )} />
+                  <Route path="/about" component={About} />
+                  <Route path="/dogs" render={(props: any) => (
+                      <DogsRouter {...props} relay={this.state.relay} viewer={this.props.auth0.user} />
+                  )} />
+                  <Route path="/behaviors" render={(props: any) => (
+                      <BehaviorsRouter {...props} relay={this.state.relay} />
+                  )} />
+                  <Route path="/stages" render={(props: any) => (
+                      <TrainingStagesRouter {...props} relay={this.state.relay} />
+                  )} />
+                  <Route path="/sessions" render={(props: any) => (
+                      <TrainingSessionsRouter {...props} relay={this.state.relay} />
+                  )} />
+                  <Route path="/invitations" render={(props: any) => (
+                      <PendingInvitationsRouter {...props} relay={this.state.relay} />
+                  )} />
+                  <Route path="/" render={(props: any) => (
+                      this.props.auth0.isAuthenticated
+                      ? (<Redirect to="/dogs" />)
+                      : (<Home img_url={`${process.env.REACT_APP_S3_BUCKET_URL}/public/addie_confused.JPG`} />)
+                  )} />
+                </Switch>
                 </div>
             </Router>
         );
