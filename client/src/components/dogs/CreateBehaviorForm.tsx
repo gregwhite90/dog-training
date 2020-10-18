@@ -18,16 +18,20 @@ import { IncentiveMethod } from 'generated/graphql';
 import type { CreateBehaviorForm_dog } from '__generated__/CreateBehaviorForm_dog.graphql';
 import type { IEnvironment } from 'relay-runtime';
 import type { CreateBehaviorInput } from 'generated/graphql';
+import type { HeaderLevelProps } from 'components/utils/HeaderLevels';
 
-interface CreateBehaviorFormProps {
+interface CreateBehaviorFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
     dog: CreateBehaviorForm_dog,
 };
 
-const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
+const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = ({
+    relay_environment,
+    dog,
+    headerLevel = "h1",
+}) => {
 
-    console.log(`In CreateBehaviorForm`);
-    console.log(props);
+    const HeaderLevel = headerLevel;
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
@@ -57,10 +61,10 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
 
     return (
         <Container>
-            <h3>Create a desired behavior for {props.dog.name}!</h3>
+            <HeaderLevel>Create a desired behavior for {dog.name}!</HeaderLevel>
             <Formik
                 initialValues={{
-                    dog_id: props.dog.id,
+                    dog_id: dog.id,
                     name: "",
                     explanation: "",
                     incentive_method: "LURE",
@@ -74,9 +78,9 @@ const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = (props) => {
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
                     CreateBehaviorMutation.commit(
-                        props.relay_environment,
+                        relay_environment,
                         {
-                            dog_id: props.dog.id,
+                            dog_id: dog.id,
                             ...validationSchema.cast(values),
                         } as CreateBehaviorInput,
                         () => {
