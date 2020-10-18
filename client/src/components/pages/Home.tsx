@@ -26,7 +26,7 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
     >
         <Container fluid>
             <Row className="mb-3">
-                <h1 style="color: $base3;">
+                <h1 style={{ color: "red"}}>
                     Your dog doesn't speak human. Help them.
                 </h1>
             </Row>
