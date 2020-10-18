@@ -16,19 +16,23 @@ const About: React.FC<{}> = (props) => {
     return (
         <Container fluid>
             <Row>
-                <Jumbotron fluid>
+              <Jumbotron fluid className="bg-primary text-light">
+                <Col>
+                  <Row>
                     <h1
                         style={{
                             textAlign: "center",
                         }}
                     >
                         Attapuppy helps you train your dog better
-            </h1>
+                    </h1>
+                  </Row>
+                </Col>
                 </Jumbotron>
             </Row>
             <Row>
-                <Col md={6}>
-                    <Card>
+                <Col lg={6}>
+                    <Card className="mb-3" bg="light">
                         <Card.Header as="h2">
                             Be a better obedience trainer
                         </Card.Header>
@@ -44,7 +48,7 @@ const About: React.FC<{}> = (props) => {
                     </p>
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                <h3>Diagnose and solve problems in training</h3>
+                                <h3>Diagnose and solve problems</h3>
                                 <p>
                                     Figure out problem areas and progress plateaus.
                                     Plan for fixes and breakthroughs.
@@ -54,8 +58,8 @@ const About: React.FC<{}> = (props) => {
                         </ListGroup>
                     </Card>
                 </Col>
-                <Col md={6}>
-                    <Card>
+                <Col lg={6}>
+                    <Card className="mb-3" bg="light">
                         <Card.Header as="h2">
                             Collaborate with others
                 </Card.Header>

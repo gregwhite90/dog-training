@@ -12,6 +12,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { withAuth0 } from '@auth0/auth0-react';
 import createEnvironment from './lib/createRelayEnvironment';
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import Navigation from 'components/nav/Navigation';
 import Home from 'components/pages/Home';
 import About from 'components/pages/About';
@@ -45,7 +49,10 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <Router history={history}>
-              <div className="App min-vh-100">
+              <div className="App">
+                <Container fluid>
+                  <Row className="min-vh-100">
+                    <Col>
                     <Navigation relay={this.state.relay} />
                     <Switch>
                         <Route path="/login" render={(_: any) => (
@@ -73,6 +80,9 @@ class App extends React.Component<any, any> {
                                 : (<Home img_url={`${process.env.REACT_APP_S3_BUCKET_URL}/public/addie_confused.JPG`} />)
                         )} />
                     </Switch>
+                    </Col>
+                    </Row>
+                    </Container>
                 </div>
             </Router>
         );
