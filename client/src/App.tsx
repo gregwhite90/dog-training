@@ -45,7 +45,7 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <Router history={history}>
-                <div className="App">
+              <div className="App min-vh-100">
                     <Navigation relay={this.state.relay} />
                     <Switch>
                         <Route path="/login" render={(_: any) => (
@@ -70,7 +70,7 @@ class App extends React.Component<any, any> {
                         <Route path="/" render={(props: any) => (
                             this.props.auth0.isAuthenticated
                                 ? (<Redirect to="/dogs" />)
-                                : (<Home img_url="https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public/addie_confused.JPG"/>)
+                                : (<Home img_url={`${process.env.REACT_APP_S3_BUCKET_URL}/public/addie_confused.JPG`} />)
                         )} />
                     </Switch>
                 </div>

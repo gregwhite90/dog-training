@@ -16,13 +16,12 @@ const Home: React.FC<HomeProps> = ({ img_url }) => (
     <Jumbotron
         style={{
             backgroundImage: `url(${img_url})`,
-            filter: "brightness(50%)",
-            height: "100vh",
+            backdropFilter: "brightness(50%)",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            marginBottom: "0px",
         }}
+        className="flex-grow-1 mb-0"
         fluid
     >
         <Container fluid>
