@@ -59,7 +59,7 @@ class App extends React.Component<any, any> {
                                     <About />
                                 </>
                             )} />
-                            <Route path="/" render={(props: any) => (
+                            <Route exact path="/" render={(props: any) => (
                                 <Home img_url="https://dog-training-staging-assets.s3.us-east-1.amazonaws.com/public/addie_confused.JPG" />
                             )} />
                         </Switch>
