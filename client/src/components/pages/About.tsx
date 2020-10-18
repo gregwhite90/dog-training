@@ -17,7 +17,7 @@ const About: React.FC<{}> = (props) => {
             <p>
                 Plan how you want to train a behavior. Track your dog's progression along your plan.
             </p>
-            <h3>Diagnose</h3>
+            <h3>Diagnose and solve problems in training</h3>
             <p>
                 Figure out problem areas and progress plateaus.
                 Plan for fixes and breakthroughs.
