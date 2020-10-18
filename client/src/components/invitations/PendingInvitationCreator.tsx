@@ -7,13 +7,22 @@ import DogsList from 'components/dogs/DogsList';
 import type { PendingInvitationCreatorQuery } from '__generated__/PendingInvitationCreatorQuery.graphql';
 import type { RelayProp } from 'react-relay';
 import type { RouteComponentProps } from 'react-router-dom';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
 // TODO: pass down the match params (empty object in this case)
-interface PendingInvitationCreatorProps extends RouteComponentProps<{}> {
+interface PendingInvitationCreatorProps extends RouteComponentProps<{}>, HeaderLevelProps {
     relay: RelayProp,
 }
 
-const PendingInvitationCreator: React.FC<PendingInvitationCreatorProps> = ({ relay, match }) => {
+const PendingInvitationCreator: React.FC<PendingInvitationCreatorProps> = ({
+    relay,
+    match,
+    headerLevel = 1,
+}) => {
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     return (
@@ -31,7 +40,7 @@ const PendingInvitationCreator: React.FC<PendingInvitationCreatorProps> = ({ rel
                 if (props && props.viewer) {
                     return (
                         <>
-                            <h3>Invite a collaborator for which dog?</h3>
+                            <HeaderLevel>Invite a collaborator for which dog?</HeaderLevel>
                             <DogsList
                                 viewer={props.viewer}
                                 match={match}

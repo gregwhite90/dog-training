@@ -18,7 +18,10 @@ import { IncentiveMethod } from 'generated/graphql';
 import type { CreateBehaviorForm_dog } from '__generated__/CreateBehaviorForm_dog.graphql';
 import type { IEnvironment } from 'relay-runtime';
 import type { CreateBehaviorInput } from 'generated/graphql';
-import type { HeaderLevelProps } from 'components/utils/HeaderLevels';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
 interface CreateBehaviorFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
@@ -28,10 +31,10 @@ interface CreateBehaviorFormProps extends HeaderLevelProps {
 const CreateBehaviorForm: React.FC<CreateBehaviorFormProps> = ({
     relay_environment,
     dog,
-    headerLevel = "h1",
+    headerLevel = 1,
 }) => {
 
-    const HeaderLevel = headerLevel;
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();

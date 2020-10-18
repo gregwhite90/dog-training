@@ -19,12 +19,23 @@ import type { CreateTrainingSessionForm_dog } from '__generated__/CreateTraining
 import type { IEnvironment } from 'relay-runtime';
 import type { CreateTrainingSessionInput } from 'generated/graphql';
 
-interface CreateTrainingSessionFormProps {
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
+interface CreateTrainingSessionFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
     dog: CreateTrainingSessionForm_dog,
 };
 
-const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (props) => {
+const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = ({
+    relay_environment,
+    dog,
+    headerLevel = 1,
+}) => {
+
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
@@ -57,7 +68,7 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
 
     return (
         <Container>
-            <h3>Create a training session for {props.dog.name}!</h3>
+            <HeaderLevel>Create a training session for {dog.name}!</HeaderLevel>
             <Formik
                 initialValues={{
                     start_timestamp: "",
@@ -67,9 +78,9 @@ const CreateTrainingSessionForm: React.FC<CreateTrainingSessionFormProps> = (pro
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
                     CreateTrainingSessionMutation.commit(
-                        props.relay_environment,
+                        relay_environment,
                         {
-                            dog_id: props.dog.id,
+                            dog_id: dog.id,
                             user_id: user.sub,
                             ...validationSchema.cast(values),
                         } as CreateTrainingSessionInput,

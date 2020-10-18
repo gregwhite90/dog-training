@@ -31,7 +31,12 @@ import type {
 } from '__generated__/CreateTrainingStagesForm_behavior.graphql';
 import type { IEnvironment } from 'relay-runtime';
 
-interface CreateTrainingStagesFormProps {
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
+interface CreateTrainingStagesFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
     behavior: CreateTrainingStagesForm_behavior,
 };
@@ -79,15 +84,19 @@ const TrainingStagesError: React.FC<TrainingStagesErrorProps> = ({ errors }) => 
         : null;
 }
 
-const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props) => {
+const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = ({
+    relay_environment,
+    behavior,
+    headerLevel = 1,
+}) => {
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
 
-    if (props.behavior.trainingStages
-        && props.behavior.trainingStages.edges
-        && props.behavior.trainingStages.edges.length > 0) {
-        return <Redirect to={`/behaviors/${props.behavior.id}/stages`} />;
+    if (behavior.trainingStages
+        && behavior.trainingStages.edges
+        && behavior.trainingStages.edges.length > 0) {
+        return <Redirect to={`/behaviors/${behavior.id}/stages`} />;
     }
 
     // TODO: decide which are required
@@ -110,9 +119,12 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
     // TODO: add styling to the error message
     // TODO: use ErrorMessage instead
 
+    const InstructionHeaderLevel = `h${headerLevel}` as HeaderLevelType;
+    const TrainingStageHeaderLevel = `h${Math.min(headerLevel + 1, 6)}` as HeaderLevelType;
+
     return (
         <Container>
-            <h3>Create the training stages for {props.behavior.name}!</h3>
+            <InstructionHeaderLevel>Create the training stages for {behavior.name}!</InstructionHeaderLevel>
             <Formik
                 initialValues={{
                     training_stages: [
@@ -139,9 +151,9 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                     setSubmitting(true);
                     // TODO: create multiple at once.
                     CreateTrainingStagesMutation.commit(
-                        props.relay_environment,
+                        relay_environment,
                         {
-                            behavior_id: props.behavior.id,
+                            behavior_id: behavior.id,
                             training_stages: values.training_stages.map((training_stage, idx) => ({
                                 seq: idx,
                                 reward_frequency: training_stage.reward_frequency as RewardFrequency,
@@ -175,7 +187,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                     <ContainerCard>
                                         {values.training_stages.map((training_stage, index) => (
                                             <ContainerCard key={index}>
-                                                <h4>Stage {index + 1}</h4>
+                                                <TrainingStageHeaderLevel>Stage {index + 1}</TrainingStageHeaderLevel>
                                                 <Form.Row>
                                                     <Form.Group
                                                         controlId={`formTrainingStagesPrompts-${index}`}
@@ -191,7 +203,7 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                             {({ field, form: { errors } }: { field: FieldInputProps<string>, form: { errors: FormikErrors<CreateTrainingStagesFormValues> } }) => (
                                                                 <Form.Check
                                                                     type="checkbox"
-                                                                    label={`${props.behavior.incentive_method}`}
+                                                                    label={`${behavior.incentive_method}`}
                                                                     isInvalid={getIn(errors, `training_stages[${index}].prompts`)}
                                                                     {...field}
                                                                 />
@@ -207,8 +219,8 @@ const CreateTrainingStagesForm: React.FC<CreateTrainingStagesFormProps> = (props
                                                                 <Form.Check
                                                                     type="checkbox"
                                                                     label={
-                                                                        props.behavior.verbal_command
-                                                                            ? `${props.behavior.verbal_command} verbal command`
+                                                                        behavior.verbal_command
+                                                                            ? `${behavior.verbal_command} verbal command`
                                                                             : "Verbal command"
                                                                     }
                                                                     isInvalid={getIn(errors, `training_stages[${index}].prompts`)}

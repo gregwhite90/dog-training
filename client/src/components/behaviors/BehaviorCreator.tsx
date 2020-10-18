@@ -8,12 +8,23 @@ import type { BehaviorCreatorQuery } from '__generated__/BehaviorCreatorQuery.gr
 import type { RelayProp } from 'react-relay';
 import type { RouteComponentProps } from 'react-router-dom';
 
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
 // TODO: pass down the match params (empty object in this case)
-interface BehaviorCreatorProps extends RouteComponentProps<{}> {
+interface BehaviorCreatorProps extends RouteComponentProps<{}>, HeaderLevelProps {
     relay: RelayProp,
 }
 
-const BehaviorCreator: React.FC<BehaviorCreatorProps> = ({ relay, match }) => {
+const BehaviorCreator: React.FC<BehaviorCreatorProps> = ({
+    relay,
+    match,
+    headerLevel = 1,
+}) => {
+
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
     // TODO: authenticate if a user tries to access route without being logged in.
     // TODO: route on to more specific routes?
     return (
@@ -31,7 +42,7 @@ const BehaviorCreator: React.FC<BehaviorCreatorProps> = ({ relay, match }) => {
                 if (props && props.viewer) {
                     return (
                         <>
-                            <h3>Create a behavior for which dog?</h3>
+                            <HeaderLevel>Create a behavior for which dog?</HeaderLevel>
                             <DogsList
                                 viewer={props.viewer}
                                 match={match}

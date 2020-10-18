@@ -9,25 +9,35 @@ import BehaviorName from 'components/behaviors/BehaviorName';
 import type { TrainingStageTrainingProgressesApp_trainingStage } from '__generated__/TrainingStageTrainingProgressesApp_trainingStage.graphql';
 import type { match } from 'react-router-dom';
 
-interface TrainingStageTrainingProgressesAppProps {
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
+interface TrainingStageTrainingProgressesAppProps extends HeaderLevelProps {
     trainingStage: TrainingStageTrainingProgressesApp_trainingStage,
     match: match<{}>,
 };
 
-const TrainingStageTrainingProgressesApp: React.FC<TrainingStageTrainingProgressesAppProps> = (props) => {
+const TrainingStageTrainingProgressesApp: React.FC<TrainingStageTrainingProgressesAppProps> = ({
+    trainingStage,
+    match,
+    headerLevel = 1,
+}) => {
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
     return (
         <>
-            <h3>Training progress for{' '}
+            <HeaderLevel>Training progress for{' '}
                 <TrainingStageName
                     detail={true}
-                    trainingStage={props.trainingStage}
+                    trainingStage={trainingStage}
                 />
                 {' of '}
                 <BehaviorName
-                    behavior={props.trainingStage.behavior}
+                    behavior={trainingStage.behavior}
                 />
-            </h3>
-            <TrainingStageTrainingProgressesList trainingStage={props.trainingStage} match={props.match} />
+            </HeaderLevel>
+            <TrainingStageTrainingProgressesList trainingStage={trainingStage} match={match} />
         </>
     );
 }

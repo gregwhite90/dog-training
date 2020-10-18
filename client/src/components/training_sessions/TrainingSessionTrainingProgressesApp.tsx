@@ -8,23 +8,32 @@ import TrainingSessionName from './TrainingSessionName';
 
 import type { TrainingSessionTrainingProgressesApp_trainingSession } from '__generated__/TrainingSessionTrainingProgressesApp_trainingSession.graphql';
 import type { match } from 'react-router-dom';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
-interface TrainingSessionTrainingProgressesAppProps {
+interface TrainingSessionTrainingProgressesAppProps extends HeaderLevelProps {
     trainingSession: TrainingSessionTrainingProgressesApp_trainingSession,
     match: match<{}>,
 };
 
-const TrainingSessionTrainingProgressesApp: React.FC<TrainingSessionTrainingProgressesAppProps> = (props) => {
+const TrainingSessionTrainingProgressesApp: React.FC<TrainingSessionTrainingProgressesAppProps> = ({
+    trainingSession,
+    match,
+    headerLevel = 1,
+}) => {
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
     return (
         <>
-            <h3>Training progress for {props.trainingSession.dog!.name} in <TrainingSessionName
-                trainingSession={props.trainingSession}
+            <HeaderLevel>Training progress for {trainingSession.dog!.name} in <TrainingSessionName
+                trainingSession={trainingSession}
                 date={true}
                 time={true}
                 minutes={true}
             />
-            </h3>
-            <TrainingSessionTrainingProgressesList trainingSession={props.trainingSession} match={props.match} />
+            </HeaderLevel>
+            <TrainingSessionTrainingProgressesList trainingSession={trainingSession} match={match} />
         </>
     );
 }

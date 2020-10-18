@@ -11,20 +11,29 @@ import BehaviorName from 'components/behaviors/BehaviorName';
 
 import type { match } from 'react-router-dom';
 import type { TrainingStageTrainingProgressesList_trainingStage } from '__generated__/TrainingStageTrainingProgressesList_trainingStage.graphql';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
 // TODO: import "match params" (empty object because hardcoded route) from parent component?
-interface TrainingStageTrainingProgressesListProps {
+interface TrainingStageTrainingProgressesListProps extends HeaderLevelProps {
     trainingStage: TrainingStageTrainingProgressesList_trainingStage,
     match: match<{}>,
 }
 
-const TrainingStageTrainingProgressesList: React.FC<TrainingStageTrainingProgressesListProps> = (props) => {
+const TrainingStageTrainingProgressesList: React.FC<TrainingStageTrainingProgressesListProps> = ({
+    trainingStage,
+    match,
+    headerLevel = 1,
+}) => {
+    const BehaviorHeaderLevel = `h${headerLevel}` as HeaderLevelType;
+    const StageHeaderLevel = `h${Math.min(headerLevel + 1, 6)}` as HeaderLevelType;
     const edges =
-        props
-            && props.trainingStage
-            && props.trainingStage.trainingSessions
-            && props.trainingStage.trainingSessions.edges
-            ? props.trainingStage.trainingSessions.edges.filter(Boolean)
+        trainingStage
+            && trainingStage.trainingSessions
+            && trainingStage.trainingSessions.edges
+            ? trainingStage.trainingSessions.edges.filter(Boolean)
             : [];
     return (
         <>
@@ -32,21 +41,21 @@ const TrainingStageTrainingProgressesList: React.FC<TrainingStageTrainingProgres
                 return (
                     <ContainerCard key={edge!.training_progress.seq} fluid="md">
                         <Row>
-                            <h3>
-                                <Link to={`/behaviors/${props.trainingStage.behavior.id}`}>
-                                    <BehaviorName behavior={props.trainingStage.behavior} />
+                            <BehaviorHeaderLevel>
+                                <Link to={`/behaviors/${trainingStage.behavior.id}`}>
+                                    <BehaviorName behavior={trainingStage.behavior} />
                                 </Link>
-                            </h3>
+                            </BehaviorHeaderLevel>
                         </Row>
                         <Row>
-                            <h4>
-                                <Link to={`/stages/${props.trainingStage.id}`}>
+                            <StageHeaderLevel>
+                                <Link to={`/stages/${trainingStage.id}`}>
                                     <TrainingStageName
                                         detail={false}
-                                        trainingStage={props.trainingStage}
+                                        trainingStage={trainingStage}
                                     />
                                 </Link>
-                            </h4>
+                            </StageHeaderLevel>
                         </Row>
                         <TrainingProgressTrainingStageCard
                             trainingStageToTrainingSessionEdge={edge!}

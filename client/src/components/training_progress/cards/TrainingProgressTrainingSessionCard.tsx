@@ -12,31 +12,41 @@ import type {
     TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge
 } from '__generated__/TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge.graphql';
 
-interface TrainingProgressTrainingSessionCardProps {
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
+interface TrainingProgressTrainingSessionCardProps extends HeaderLevelProps {
     trainingSessionToTrainingStageEdge: TrainingProgressTrainingSessionCard_trainingSessionToTrainingStageEdge,
 };
 
-const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSessionCardProps> = (props) => {
-    const edge = props.trainingSessionToTrainingStageEdge;
+const TrainingProgressTrainingSessionCard: React.FC<TrainingProgressTrainingSessionCardProps> = ({
+    trainingSessionToTrainingStageEdge,
+    headerLevel = 1,
+}) => {
+    const edge = trainingSessionToTrainingStageEdge;
+    const BehaviorHeaderLevel = `h${headerLevel}` as HeaderLevelType;
+    const TrainingStageHeaderLevel = `h${Math.min(headerLevel + 1, 6)}` as HeaderLevelType;
     return (
         <>
             <Row>
                 <Link to={`/behaviors/${edge.node!.behavior!.id}`}>
-                    <h3>
+                    <BehaviorHeaderLevel>
                         <BehaviorName
                             behavior={edge.node!.behavior!}
                         />
-                    </h3>
+                    </BehaviorHeaderLevel>
                 </Link>
             </Row>
             <Row>
                 <Link to={`/stages/${edge.node!.id}`}>
-                    <h4>
+                    <TrainingStageHeaderLevel>
                         <TrainingStageName
                             detail={true}
                             trainingStage={edge.node!}
                         />
-                    </h4>
+                    </TrainingStageHeaderLevel>
                 </Link>
             </Row>
             <TrainingProgressDisplay trainingProgress={edge.training_progress} />

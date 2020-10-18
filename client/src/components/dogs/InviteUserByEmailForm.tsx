@@ -16,9 +16,13 @@ import type { InviteUserByEmailForm_dog } from '__generated__/InviteUserByEmailF
 import type { IEnvironment } from 'relay-runtime';
 import { UserDogRole } from 'generated/graphql';
 import type { InviteUserByEmailInput } from 'generated/graphql';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 // TODO: use RelayProp from react-relay?
 
-interface InviteUserByEmailFormProps {
+interface InviteUserByEmailFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
     dog: InviteUserByEmailForm_dog,
 };
@@ -45,10 +49,11 @@ interface InviteUserByEmailFormProps {
 // TODO: add an invite by email mutation
 // TODO: add a confirm invitation mutation
 
-const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
-
-    console.log(`In InviteUserByEmailForm`);
-    console.log(props);
+const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = ({
+    relay_environment,
+    dog,
+    headerLevel = 1,
+}) => {
 
     const { user } = useAuth0();
 
@@ -66,9 +71,11 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
     // TODO: add styling to the error message
     // TODO: use ErrorMessage instead
 
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
+
     return (
         <Container>
-            <h3>Invite other people to collaborate training {props.dog.name}!</h3>
+            <HeaderLevel>Invite other people to collaborate training {dog.name}!</HeaderLevel>
             <Formik
                 initialValues={{
                     invitee_email: "",
@@ -78,10 +85,10 @@ const InviteUserByEmailForm: React.FC<InviteUserByEmailFormProps> = (props) => {
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
                     InviteUserByEmailMutation.commit(
-                        props.relay_environment,
+                        relay_environment,
                         {
                             invitee_email: values.invitee_email,
-                            dog_id: props.dog.id,
+                            dog_id: dog.id,
                             invited_by: user.sub,
                             user_role: values.user_role as UserDogRole,
                         },

@@ -6,39 +6,49 @@ import Table from 'react-bootstrap/Table';
 import TrainingStageName from 'components/training_stages/TrainingStageName';
 
 import type { TrainingStageCard_trainingStage } from '__generated__/TrainingStageCard_trainingStage.graphql';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
-interface TrainingStageCardProps {
+interface TrainingStageCardProps extends HeaderLevelProps {
     trainingStage: TrainingStageCard_trainingStage,
 };
 
 // TODO: clean up the non-null assertions
-const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
+const TrainingStageCard: React.FC<TrainingStageCardProps> = ({
+    trainingStage,
+    headerLevel = 1,
+}) => {
+    const HeaderLevel = `h${headerLevel}` as HeaderLevelType;
     return (
         <ContainerCard fluid="md">
-            <h3><TrainingStageName detail={false} trainingStage={props.trainingStage} /></h3>
+            <HeaderLevel>
+                <TrainingStageName detail={false} trainingStage={trainingStage} />
+            </HeaderLevel>
             <Table bordered hover>
                 <tbody>
                     <tr>
                         <td>Prompts</td>
                         <td>
                             <ul>
-                                {props.trainingStage.incentive &&
+                                {trainingStage.incentive &&
                                     (
                                         <li key="incentive">
-                                            {props.trainingStage.behavior!.incentive_method!}
+                                            {trainingStage.behavior!.incentive_method!}
                                         </li>
                                     )
                                 }
-                                {props.trainingStage.verbal &&
+                                {trainingStage.verbal &&
                                     (
                                         <li key="verbal">
-                                            {props.trainingStage.behavior!.verbal_command
-                                                ? `${props.trainingStage.behavior!.verbal_command} verbal command`
+                                            {trainingStage.behavior!.verbal_command
+                                                ? `${trainingStage.behavior!.verbal_command} verbal command`
                                                 : "Verbal command"}
                                         </li>
                                     )
                                 }
-                                {props.trainingStage.hand &&
+                                {trainingStage.hand &&
                                     (
                                         <li key="hand">
                                             Hand signal
@@ -48,11 +58,11 @@ const TrainingStageCard: React.FC<TrainingStageCardProps> = (props) => {
                             </ul>
                         </td>
                     </tr>
-                    {props.trainingStage.reward_frequency &&
+                    {trainingStage.reward_frequency &&
                         (
                             <tr>
                                 <td>Reward frequency</td>
-                                <td>{props.trainingStage.reward_frequency}</td>
+                                <td>{trainingStage.reward_frequency}</td>
                             </tr>
                         )
                     }

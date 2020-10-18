@@ -41,7 +41,12 @@ import type {
 } from '__generated__/CreateTrainingProgressesForm_trainingSession.graphql';
 import type { IEnvironment } from 'relay-runtime';
 
-interface CreateTrainingProgressesFormProps {
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
+interface CreateTrainingProgressesFormProps extends HeaderLevelProps {
     relay_environment: IEnvironment,
     trainingSession: CreateTrainingProgressesForm_trainingSession,
 };
@@ -58,16 +63,23 @@ interface CreateTrainingProgressesFormValues {
     }>,
 }
 
-const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> = (props) => {
+const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> = ({
+    relay_environment,
+    trainingSession,
+    headerLevel = 1,
+}) => {
+
+    const InstructionHeaderLevel = `h${headerLevel}` as HeaderLevelType;
+    const TrainingProgressHeaderLevel = `h${Math.min(headerLevel + 1, 6)}` as HeaderLevelType;
 
     // TODO: decide how to use
     const { user, isAuthenticated } = useAuth0();
 
     // TODO: confirm redirect link
-    if (props.trainingSession.trainingStages
-        && props.trainingSession.trainingStages.edges
-        && props.trainingSession.trainingStages.edges.length > 0) {
-        return <Redirect to={`/sessions/${props.trainingSession.id}`} />;
+    if (trainingSession.trainingStages
+        && trainingSession.trainingStages.edges
+        && trainingSession.trainingStages.edges.length > 0) {
+        return <Redirect to={`/sessions/${trainingSession.id}`} />;
     }
 
     // TODO: decide which are required
@@ -82,8 +94,8 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
     const validationSchema = yup.object().shape({
         training_progresses: yup.array().of(
             yup.object().shape({
-                behavior_id: yup.string().required().oneOf(props.trainingSession!.dog!.behaviors!.edges!.map(edge => edge!.node!.id)),
-                training_stage_id: yup.string().required().oneOf(props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                behavior_id: yup.string().required().oneOf(trainingSession!.dog!.behaviors!.edges!.map(edge => edge!.node!.id)),
+                training_stage_id: yup.string().required().oneOf(trainingSession!.dog!.behaviors!.edges!.map(edge => (
                     edge!.node!.trainingStages!.edges!.map(e => e!.node!.id)
                 )).flat()),
                 successes: nullable_number(
@@ -124,7 +136,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
 
     return (
         <Container>
-            <h3>Log the progress you made in this training session!</h3>
+          <InstructionHeaderLevel>
+            Log the progress you made in this training session!
+          </InstructionHeaderLevel>
             <Formik
                 initialValues={{
                     training_progresses: [
@@ -137,9 +151,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                     // TODO: create multiple at once.
                     const cast_values = validationSchema.cast(values);
                     CreateTrainingProgressesMutation.commit(
-                        props.relay_environment,
+                        relay_environment,
                         {
-                            training_session_id: props.trainingSession.id,
+                            training_session_id: trainingSession.id,
                             training_progresses: cast_values!.training_progresses.map((training_progress, idx) => ({
                                 seq: idx,
                                 training_stage_id: training_progress!.training_stage_id,
@@ -171,7 +185,9 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                     <ContainerCard>
                                         {values.training_progresses.map((training_progress, index) => (
                                             <ContainerCard key={index}>
-                                                <h4>Stage trained number {index + 1}</h4>
+                                              <TrainingProgressHeaderLevel>
+                                                Stage trained number {index + 1}
+                                              </TrainingProgressHeaderLevel>
                                                 <Form.Row>
                                                     <Form.Group
                                                         controlId={`formTrainingProgressesBehavior-${index}`}
@@ -187,7 +203,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                             onChange={handleChange}
                                                         >
                                                             <option value=""></option>
-                                                            {props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                                                            {trainingSession!.dog!.behaviors!.edges!.map(edge => (
                                                                 <option key={edge!.node!.id} value={edge!.node!.id}>{edge!.node!.name}</option>
                                                             ))
                                                             }
@@ -211,7 +227,7 @@ const CreateTrainingProgressesForm: React.FC<CreateTrainingProgressesFormProps> 
                                                                     onChange={handleChange}
                                                                 >
                                                                     <option value=""></option>
-                                                                    {props.trainingSession!.dog!.behaviors!.edges!.map(edge => (
+                                                                    {trainingSession!.dog!.behaviors!.edges!.map(edge => (
                                                                         edge!.node!.trainingStages!.edges!.map(e => (
                                                                             <option key={e!.node!.id} value={e!.node!.id}>
                                                                                 <TrainingStageName

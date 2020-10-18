@@ -12,52 +12,63 @@ import BehaviorName from 'components/behaviors/BehaviorName';
 import type { match } from 'react-router-dom';
 import type { BehaviorTrainingProgressesList_behavior } from '__generated__/BehaviorTrainingProgressesList_behavior.graphql';
 
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
+
 // TODO: import "match params" (empty object because hardcoded route) from parent component?
-interface BehaviorTrainingProgressesListProps {
+interface BehaviorTrainingProgressesListProps extends HeaderLevelProps {
     behavior: BehaviorTrainingProgressesList_behavior,
     match: match<{}>,
 }
 
-const BehaviorTrainingProgressesList: React.FC<BehaviorTrainingProgressesListProps> = (props) => {
+const BehaviorTrainingProgressesList: React.FC<BehaviorTrainingProgressesListProps> = ({
+    behavior,
+    match,
+    headerLevel = 1,
+}) => {
+    const TrainingStageHeaderLevel = `h${headerLevel}` as HeaderLevelType;
+    const TrainingSessionHeaderLevel = `h${Math.min(headerLevel + 1, 6)}` as HeaderLevelType;
+    const TrainingSessionStageHeaderLevel = `h${Math.min(headerLevel + 2, 6)}` as HeaderLevelType;
     const stageEdges =
-        props
-            && props.behavior
-            && props.behavior.trainingStages
-            && props.behavior.trainingStages.edges
-            ? props.behavior.trainingStages.edges.filter(Boolean)
+        behavior
+            && behavior.trainingStages
+            && behavior.trainingStages.edges
+            ? behavior.trainingStages.edges.filter(Boolean)
             : [];
     return (
         <>
             {stageEdges.map(stageEdge => {
                 return (
                     <ContainerCard key={stageEdge!.node!.id} fluid="md">
-                        <h4>
+                        <TrainingStageHeaderLevel>
                             Training progress for <TrainingStageName
                                 detail={true}
                                 trainingStage={stageEdge!.node!}
                             />
-                        </h4>
+                        </TrainingStageHeaderLevel>
                         {stageEdge!.node!.trainingSessions!.edges!.map(edge => {
                             return (
                                 <ContainerCard
                                     key={`${stageEdge!.node!.id}-${edge!.training_progress.seq}`}
                                     fluid="md" >
                                     <Row>
-                                        <h3>
-                                            <Link to={`/behaviors/${props.behavior.id}`}>
-                                                <BehaviorName behavior={props.behavior} />
+                                        <TrainingSessionHeaderLevel>
+                                            <Link to={`/behaviors/${behavior.id}`}>
+                                                <BehaviorName behavior={behavior} />
                                             </Link>
-                                        </h3>
+                                        </TrainingSessionHeaderLevel>
                                     </Row>
                                     <Row>
-                                        <h4>
+                                        <TrainingSessionStageHeaderLevel>
                                             <Link to={`/stages/${stageEdge!.node!.id}`}>
                                                 <TrainingStageName
                                                     detail={true}
                                                     trainingStage={stageEdge!.node!}
                                                 />
                                             </Link>
-                                        </h4>
+                                        </TrainingSessionStageHeaderLevel>
                                     </Row>
                                     <TrainingProgressTrainingStageCard
                                         trainingStageToTrainingSessionEdge={edge!}

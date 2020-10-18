@@ -4,15 +4,23 @@ import ContainerCard from 'components/utils/ContainerCard';
 import Table from 'react-bootstrap/Table';
 
 import type { BehaviorCard_behavior } from '__generated__/BehaviorCard_behavior.graphql';
+import type {
+    HeaderLevelProps,
+    HeaderLevelType,
+} from 'components/utils/HeaderLevels';
 
-interface BehaviorCardProps {
+interface BehaviorCardProps extends HeaderLevelProps {
     behavior: BehaviorCard_behavior,
 };
 
-const BehaviorCard: React.FC<BehaviorCardProps> = (props) => {
+const BehaviorCard: React.FC<BehaviorCardProps> = ({
+    behavior,
+    headerLevel = 1,
+}) => {
+    const BehaviorHeaderLevel = `h${headerLevel}` as HeaderLevelType;
     return (
         <ContainerCard fluid="md">
-            <h3>{props.behavior.name}</h3>
+            <BehaviorHeaderLevel>{props.behavior.name}</BehaviorHeaderLevel>
             <p>{props.behavior.explanation}</p>
             <Table bordered hover>
                 <tbody>
