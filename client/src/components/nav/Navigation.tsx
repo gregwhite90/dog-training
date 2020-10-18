@@ -25,7 +25,12 @@ const Navigation: React.FC<NavigationProps> = ({ relay }) => {
     const { isAuthenticated } = useAuth0();
 
     return (
-        <Navbar bg="light" expand="md" className="border-bottom border-primary">
+        <Navbar
+            bg="light"
+            expand="md"
+            className="border-bottom border-primary"
+            sticky="top"
+        >
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Brand href="/">
                 <img src={logo} height="30" alt="logo" />
