@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TrainingStageCard from './TrainingStageCard';
 import TrainingStageBreadcrumb from './TrainingStageBreadcrumb';
