@@ -2,6 +2,8 @@ import React from 'react';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
 
+import Spinner from 'react-bootstrap/Spinner';
+
 import DogsList from 'components/dogs/DogsList';
 
 import type { PendingInvitationCreatorQuery } from '__generated__/PendingInvitationCreatorQuery.graphql';
@@ -53,12 +55,20 @@ const PendingInvitationCreator: React.FC<PendingInvitationCreatorProps> = ({
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(PendingInvitationCreator, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

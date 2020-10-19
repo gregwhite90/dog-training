@@ -3,6 +3,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import DogBreadcrumb from './DogBreadcrumb';
 
@@ -38,24 +39,32 @@ const DogBehaviorsPage: React.FC<DogBehaviorsPageProps> = ({ relay, match, dog_i
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <DogBreadcrumb dog={props.node} final="behaviors" active={true} />
                             <Container>
                                 <DogBehaviorsApp dog={props.node} match={match} />
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(DogBehaviorsPage, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

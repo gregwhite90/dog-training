@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TrainingStageBreadcrumb from './TrainingStageBreadcrumb';
 
@@ -38,7 +39,7 @@ const TrainingStageTrainingProgressesPage: React.FC<TrainingStageTrainingProgres
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <TrainingStageBreadcrumb
                                 trainingStage={props.node}
                                 progresses={true}
@@ -47,18 +48,27 @@ const TrainingStageTrainingProgressesPage: React.FC<TrainingStageTrainingProgres
                             <Container>
                                 <TrainingStageTrainingProgressesApp trainingStage={props.node} match={match} />
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
-                return <div>Loading...</div>;
+
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(TrainingStageTrainingProgressesPage, {
-    onRedirecting: () => (<div>Redirecting you to the login page</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

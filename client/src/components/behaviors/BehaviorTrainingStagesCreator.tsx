@@ -3,6 +3,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 
@@ -37,7 +38,7 @@ const BehaviorTrainingStagesCreator: React.FC<BehaviorTrainingStagesCreatorProps
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <BehaviorBreadcrumb
                                 behavior={props.node}
                                 active={false}
@@ -48,19 +49,27 @@ const BehaviorTrainingStagesCreator: React.FC<BehaviorTrainingStagesCreatorProps
                                     behavior={props.node}
                                     relay_environment={relay.environment} />
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(BehaviorTrainingStagesCreator, {
-    onRedirecting: () => (<div>Redirecting you to the login page</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

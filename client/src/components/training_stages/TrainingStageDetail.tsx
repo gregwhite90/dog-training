@@ -40,7 +40,7 @@ const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match,
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <TrainingStageBreadcrumb
                                 trainingStage={props.node}
                                 progresses={false}
@@ -54,19 +54,27 @@ const TrainingStageDetail: React.FC<TrainingStageDetailProps> = ({ relay, match,
                                     </Button>
                                 </Link>
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(TrainingStageDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

@@ -1,6 +1,9 @@
 import React from 'react';
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
+
+import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import DogsApp from './DogsApp';
 import DogsBreadcrumb from './DogsBreadcrumb';
@@ -34,22 +37,30 @@ const DogsPage: React.FC<DogsPageProps> = ({ relay, match }) => {
             render={({ error, props }) => {
                 if (props && props.viewer) {
                     return (
-                        <>
+                        <Container fluid>
                             <DogsBreadcrumb active={true} />
                             <DogsApp viewer={props.viewer} match={match} />
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(DogsPage, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

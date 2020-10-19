@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TrainingSessionCard from './TrainingSessionCard';
 import TrainingSessionBreadcrumb from './TrainingSessionBreadcrumb';
@@ -40,7 +41,7 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <TrainingSessionBreadcrumb
                                 trainingSession={props.node}
                                 active={true}
@@ -54,19 +55,27 @@ const TrainingSessionDetail: React.FC<TrainingSessionDetailProps> = ({ relay, ma
                                     </Button>
                                 </Link>
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(TrainingSessionDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

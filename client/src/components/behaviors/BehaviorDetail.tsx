@@ -4,6 +4,7 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 
 import BehaviorCard from './BehaviorCard';
@@ -39,7 +40,7 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <BehaviorBreadcrumb
                                 behavior={props.node}
                                 active={true}
@@ -57,19 +58,27 @@ const BehaviorDetail: React.FC<BehaviorDetailProps> = ({ relay, match, behavior_
                                     </Button>
                                 </Link>
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(BehaviorDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

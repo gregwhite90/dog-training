@@ -1,10 +1,9 @@
 import React from 'react';
 import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import BehaviorBreadcrumb from './BehaviorBreadcrumb';
 
@@ -38,7 +37,7 @@ const BehaviorTrainingProgressesPage: React.FC<BehaviorTrainingProgressesPagePro
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <BehaviorBreadcrumb
                                 behavior={props.node}
                                 leaf="progress"
@@ -47,18 +46,26 @@ const BehaviorTrainingProgressesPage: React.FC<BehaviorTrainingProgressesPagePro
                             <Container>
                                 <BehaviorTrainingProgressesApp behavior={props.node} match={match} />
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(BehaviorTrainingProgressesPage, {
-    onRedirecting: () => (<div>Redirecting you to the login page</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

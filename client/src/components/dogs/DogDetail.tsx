@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 import DogCard from './DogCard';
-import InviteUserByEmailForm from './InviteUserByEmailForm';
 import DogBreadcrumb from './DogBreadcrumb';
 
 // TODO: authorization check
@@ -40,7 +41,7 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <DogBreadcrumb dog={props.node} active={true} />
                             <Container>
                                 <DogCard dog={props.node} />
@@ -55,19 +56,27 @@ const DogDetail: React.FC<DogDetailProps> = ({ relay, match, dog_id }) => {
                                     </Button>
                                 </Link>
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
                     return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(DogDetail, {
-    onRedirecting: () => (<div>Redirecting you to the login page...</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });

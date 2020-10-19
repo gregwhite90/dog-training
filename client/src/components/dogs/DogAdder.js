@@ -4,6 +4,8 @@ import {
 } from 'react-router-dom';
 import { withAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
+import Container from 'react-bootstrap/Container';
+
 import DogsBreadcrumb from './DogsBreadcrumb';
 
 import CreateDogForm from './CreateDogForm';
@@ -66,13 +68,13 @@ class DogAdder extends React.Component {
         switch (this.state.step) {
             case 0:
                 return (
-                    <>
+                    <Container fluid>
                         <DogsBreadcrumb active={false} />
                         <CreateDogForm
                             fieldValues={this.fieldValues}
                             saveCreation={this.saveCreation}
                         />
-                    </>
+                    </Container>
                 );
             case 1:
                 return (

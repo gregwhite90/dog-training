@@ -37,7 +37,7 @@ const TrainingSessionTrainingProgressesCreator: React.FC<TrainingSessionTraining
             render={({ error, props }) => {
                 if (props && props.node) {
                     return (
-                        <>
+                        <Container fluid>
                             <TrainingSessionBreadcrumb
                                 trainingSession={props.node}
                                 active={false}
@@ -48,19 +48,27 @@ const TrainingSessionTrainingProgressesCreator: React.FC<TrainingSessionTraining
                                     trainingSession={props.node}
                                     relay_environment={relay.environment} />
                             </Container>
-                        </>
+                        </Container>
                     );
                 } else if (error) {
                     console.log(error);
-                    return <div>error.message</div>;
+                    return <div>{error.message}</div>;
                 }
 
-                return <div>Loading...</div>;
+                return (
+                    <Spinner animation="border" variant="primary">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }}
         />
     );
 }
 
 export default withAuthenticationRequired(TrainingSessionTrainingProgressesCreator, {
-    onRedirecting: () => (<div>Redirecting you to the login page</div>)
+    onRedirecting: () => (
+        <Spinner animation="border" variant="primary">
+            <span className="sr-only">Redirecting you to the login page...</span>
+        </Spinner>
+    )
 });
