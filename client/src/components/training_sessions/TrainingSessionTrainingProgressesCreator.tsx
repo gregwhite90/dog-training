@@ -3,6 +3,7 @@ import { graphql, QueryRenderer } from 'react-relay';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TrainingSessionBreadcrumb from './TrainingSessionBreadcrumb';
 
