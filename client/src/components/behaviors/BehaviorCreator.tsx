@@ -1,6 +1,8 @@
 import React from 'react';
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { graphql, QueryRenderer } from 'react-relay';
+
+import Spinner from 'react-bootstrap/Spinner';
 
 import DogsList from 'components/dogs/DogsList';
 
